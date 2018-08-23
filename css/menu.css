@@ -1,0 +1,220 @@
+div.click-capture {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+	z-index: 888;
+	pointer-events: auto;
+}
+
+.points {
+	pointer-events: none;
+    z-index: 900;
+}
+
+img.search-btn {
+	/*position: fixed;
+	left: 20px;
+	bottom: 20px;*/
+	width: 30px;
+	pointer-events: auto;
+	cursor: pointer;
+    z-index: 900;
+}
+
+img.pratt-logo {
+	position: fixed;
+	right: 20px;
+	bottom: 5%;
+	/*width: 5vw;*/
+	height: 30px;
+	pointer-events: auto;
+	cursor: pointer;
+    z-index: 900;
+}
+
+
+div.nav-menu {
+
+    display: flex;
+
+	position: fixed;
+	/*top: 45%;*/
+	bottom: 5%;
+	left: 0px;
+	overflow: hidden;
+    padding: 5px 20px;
+    align-items: center;
+
+	font-size: 18px;
+	font-weight: bold;
+	font-color: #ccc;
+
+	border: thin solid #ccc;
+	background-color: #fff;
+	height: 50px;
+	width: 150px;
+
+	-webkit-transition: width 0.25s ease, opacity 0.25s ease; /* For Safari 3.1 to 6.0 */
+    transition: width 0.25s ease, opacity 0.25s ease;
+
+	pointer-events: auto;
+    cursor: pointer;
+
+    z-index: 900;
+}
+
+div.menu-open {
+	left: 0px;
+	width: auto;
+	opacity: 1;
+	z-index: 900;
+}
+
+
+div.cat-wrap {
+
+    padding: 0px;
+	border: none;
+	background-color: none;
+	height: 50px;
+
+	left: 0px;
+	width: auto;
+	opacity: 1;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    pointer-events: auto;
+
+}
+
+div.menu-category {
+	/*float: left;*/
+	position: relative;
+	/*display: inline-block !important;*/
+	margin: 0px;
+}
+
+span.cat-box {
+	display: block;
+	margin: 15px 25px;
+	pointer-events: auto;
+}
+span.cat-box-search {
+	margin: 15px 15px;
+}
+
+div.fade-out {
+	left: -100px;
+	width: 0px;
+	opacity: 0;
+}
+
+div.flyout, div.subfly {
+	/*display: block;*/
+	position: fixed;
+	/*top: 50%;
+	transform: translateY(-50%);*/
+	bottom: 0px;
+	z-index: 901;
+	background-color: #fff;
+	height: auto;
+
+	max-height: 100vh;
+    /*overflow: scroll;*/
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    white-space: nowrap;
+
+	margin: auto 0px;
+	padding: 0px;
+	pointer-events: auto;
+
+	width: 0px;
+	opacity: 0;
+
+    /*transition: width 0.35s ease, opacity 0.35s ease;*/
+    transition: all 0.35s ease;
+
+    z-index: 900;
+
+}
+
+div.reveal-horz {
+	width: auto;
+	opacity: 1;
+    /*transition: width 0.35s ease, opacity 0.35s ease;*/
+    transition: all 0.35s ease;
+}
+
+div.reveal-vert {
+	opacity: 1;
+	pointer-events: auto;
+	bottom: 50px;
+}
+
+div.flyout span, div.subfly span {
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+	/*margin: 10px 20px;*/
+	margin: 0px;
+	pointer-events: auto;
+	cursor: pointer;
+    z-index: 900;
+    padding: 5px 20px;
+
+    color: #000;
+    transition: color 0.2s ease;
+
+	background-color: #fff;
+    transition: background-color 0.2s ease;
+}
+
+div.flyout span:hover, div.subfly span:hover {
+	text-decoration: underline;
+	color: #fff;
+	background-color: #39f;
+}
+
+.warn {
+	color : #900;
+}
+
+.okay {
+	color: #060;
+}
+
+.hasImg {
+	color: #990;
+}
+
+.noImg {
+	color: #900;
+}
+
+div.poi-box {
+	position: fixed;
+	top: 35px;
+	right: 35px;
+	width: 0px;
+	height: 75%;
+	z-index: 999;
+	overflow: hidden;
+	opacity: 0;
+}
+
+div.poi-box img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+
+
+
+

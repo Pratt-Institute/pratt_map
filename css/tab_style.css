@@ -1,0 +1,244 @@
+/* Style the tab */
+
+div.tab {
+	position: absolute;
+	left: 50px;
+	bottom: -200px;
+	overflow: hidden;
+	border: 1px solid #ccc;
+	background-color: #f1f1f1;
+	width: 350px;
+	height: 400px;
+	opacity: 0;
+
+
+	-webkit-transition: bottom 0.5s ease, opacity 0.5s ease; /* For Safari 3.1 to 6.0 */
+    transition: bottom 0.5s ease, opacity 0.5s ease;
+
+}
+
+div.contain-list {
+	overflow-x: hidden;
+	overflow-y: scroll;
+	width: 105%;
+	height: 360px;
+	padding-right: 17px;
+	box-sizing: content-box;
+}
+
+/* Style the buttons that are used to open the tab content */
+
+.tab button {
+	background-color: inherit;
+	display: block;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 14px 16px;
+	transition: 0.3s;
+	border-bottom: 1px solid gray;
+	width: 100%;
+}
+
+/* Change background color of buttons on hover */
+
+.tab button:hover {
+	background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+
+.tab button.active {
+	background-color: #ccc;
+}
+
+/* Style the tab content */
+
+.tabcontent {
+	display: none;
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-top: none;
+}
+
+/*
+div.filter {
+	height: 30px;
+	border: thin solid #ccc;
+	border-radius: 3px;
+	margin: 3px;
+	background-color: #fff;
+	padding: 3px;
+}
+*/
+
+input.filter {
+	float: left;
+    box-sizing: border-box;
+    width: 300px;
+	height: 32px;
+    padding: 3px 20px;
+    border: thin solid #ccc;
+    border-right: none;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+    margin: 3px 0px 3px 3px;
+    font-size: 17px;
+}
+
+.tab button {
+	float: left;
+	padding: 6px 10px ;
+    margin: 3px 3px 3px 0px;
+	background: #ddd;
+	font-size: 17px;
+    border: thin solid #ccc;
+    border-left: none;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+	cursor: pointer;
+	width: 40px;
+	height: 32px;
+}
+
+.tab button:hover {
+	background: #ccc;
+}
+
+ul.list-group {
+	margin: 3px;
+}
+
+li.list-group-item {
+	font-weight: bold;
+	padding: 0px ;
+	cursor: pointer;
+	height: 35px;
+}
+
+li.list-group-item:hover {
+
+}
+
+li.seen {
+	color: #666;
+}
+
+.li-col {
+	display: inline-block;
+	white-space: nowrap;
+	display: inline-block;
+	float: left;
+	border: none;
+	text-align: left;
+	margin-top: 6px;
+}
+
+.li-col span {
+	margin: 20px;
+}
+
+.li-label {
+	width: 180px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.li-bldg {
+	border-left: thin solid #ccc;
+	border-right: thin solid #ccc;
+	width: 70px;
+}
+
+/* custom select menu styles */
+
+/*
+select {
+  margin: 3px;
+  width: 342px;
+  padding: 5px 35px 5px 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  height: 34px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /*background: url(http://www.stackoverflow.com/favicon.ico) 96% / 15% no-repeat #eee;*/
+}
+
+/* CAUTION: IE hackery ahead */
+/*
+select::-ms-expand {
+    display: none; /* remove default arrow on ie10 and ie11 */
+}
+
+/* target Internet Explorer 9 to undo the custom arrow */
+/*
+@media screen and (min-width:0\0) {
+    select {
+        background:none\9;
+        padding: 5px\9;
+    }
+}
+*/
+
+/*
+body {
+  background: #f2f2f2;
+}
+ */
+
+.selectdiv {
+	float: left;
+	min-width: 200px;
+	margin: 0px;
+}
+
+.selectdiv label {
+	display: inline;
+}
+
+.selectdiv:after {
+    content: '\f078';
+    font: normal normal normal 17px/1 FontAwesome;
+    color: #333;
+    right: 5px;
+    top: 4px;
+    height: 30px;
+    width: 40px;
+    padding: 5px 0px 0px 11px;
+    /*border-left: 1px solid #ccc;*/
+    position: absolute;
+    pointer-events: none;
+    background-color: #ddd;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+	display: none;
+}
+
+.selectdiv select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	display: block;
+	width: 98%;
+	margin: 3px;
+	height: 32px;
+    padding: 3px 16px;
+	font-size: 16px;
+	line-height: 1.75;
+	color: #333;
+	background-color: #ffffff;
+	background-image: none;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	-ms-word-break: normal;
+	word-break: normal;
+}
+
+
+
+
+

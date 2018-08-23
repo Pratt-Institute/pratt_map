@@ -1,0 +1,106 @@
+academics	architecture	undergraduate	Undergraduate Architecture
+academics	architecture	undergraduate	Construction Management
+academics	architecture	graduate	City and Regional Planning
+academics	architecture	graduate	Facilities Management
+academics	architecture	graduate	Graduate Architecture and Urban Design
+academics	architecture	graduate	Historic Preservation
+academics	architecture	graduate	Graduate Center for Planning and the Environment
+academics	architecture	graduate	Real Estate Practice
+academics	architecture	graduate	Sustainable Environmental Systems
+academics	architecture	graduate	Urban Placemaking and Management
+academics	art	undergraduate	Art and Design Education
+academics	art	undergraduate	Associate Degrees
+academics	art	undergraduate	Digital Arts
+academics	art	undergraduate	Film/Video
+academics	art	undergraduate	Fine Arts
+academics	art	undergraduate	Foundation
+academics	art	undergraduate	Photography
+academics	art	graduate	Arts and Cultural Management
+academics	art	graduate	Art and Design Education
+academics	art	graduate	Creative Arts Therapy
+academics	art	graduate	Design Management
+academics	art	graduate	Digital Arts
+academics	art	graduate	Fine Arts
+academics	design	undergraduate	Communications Design
+academics	design	undergraduate	Fashion Design
+academics	design	undergraduate	Foundation
+academics	design	undergraduate	Industrial Design
+academics	design	undergraduate	Interior Design
+academics	design	graduate	Communications Design
+academics	design	graduate	Industrial Design
+academics	design	graduate	Interior Design
+academics	design	graduate	Package Design
+academics	information	degrees	Library and Information Science (M.S.L.I.S.)
+academics	information	degrees	Data Analytics and Visualization (M.S.)
+academics	information	degrees	Information Experience Design (M.S.)
+academics	information	degrees	Museums and Digital Culture (M.S.)
+academics	information	degrees	Digital Art and Information (M.F.A. and M.S.L.I.S.)
+academics	information	degrees	History of Art and LIS (M.A. and M.S.L.I.S.)
+academics	information	advanced certificates	Archives
+academics	information	advanced certificates	Conservation and Digital Curation
+academics	information	advanced certificates	Digital Humanities
+academics	information	advanced certificates	Museum Libraries
+academics	information	advanced certificates	Museum Studies
+academics	information	advanced certificates	Spatial Analysis and Design
+academics	information	advanced certificates	User Experience
+academics	liberal arts and sciences	undergraduate	Social Science and Cultural Studies
+academics	liberal arts and sciences	undergraduate	Humanities and Media Studies
+academics	liberal arts and sciences	undergraduate	Mathematics and Science
+academics	liberal arts and sciences	undergraduate	Critical and Visual Studies
+academics	liberal arts and sciences	undergraduate	The Writing Program
+academics	liberal arts and sciences	undergraduate	History of Art and Design
+academics	liberal arts and sciences	undergraduate	Intensive English Program
+academics	liberal arts and sciences	undergraduate	Writing and Tutorial Center
+academics	liberal arts and sciences	undergraduate	General Education
+academics	liberal arts and sciences	graduate	Media Studies
+academics	liberal arts and sciences	graduate	Writing Program
+academics	liberal arts and sciences	graduate	History of Art and Design
+academics	liberal arts and sciences	graduate	Performance and Performance Studies
+academics	liberal arts and sciences	minors	Cinema Studies
+academics	liberal arts and sciences	minors	Creative Writing
+academics	liberal arts and sciences	minors	Cultural Studies
+academics	liberal arts and sciences	minors	History of Art and Design
+academics	liberal arts and sciences	minors	Literature and Writing
+academics	liberal arts and sciences	minors	Media Studies
+academics	liberal arts and sciences	minors	Performance and Performance Studies
+academics	liberal arts and sciences	minors	Philosophy
+academics	liberal arts and sciences	minors	Psychology
+academics	liberal arts and sciences	minors	Social Justice/Social Practice
+academics	liberal arts and sciences	minors	Sustainability Studies
+academics	continuing and professional studies	School of Continuing and Professional Studies
+academics	continuing and professional studies	Art and Design Courses
+academics	continuing and professional studies	Certificate Programs
+academics	continuing and professional studies	Custom Training
+academics	continuing and professional studies	International Students
+academics	continuing and professional studies	Professional Studies
+academics	continuing and professional studies	PreCollege
+academics	continuing and professional studies	Summer Intensives
+academics	Research and Centers	Pratt Center for Community Development
+academics	Research and Centers	Center for Art, Design, and Community Engagement K-12
+academics	Research and Centers	Brooklyn Fashion and Design Incubator (BF+DA)
+academics	Research and Centers	The Consortium for Research and Robotics
+academics	Research and Centers	Spatial Analysis and Visualization Initiative
+academics	Research and Centers	Additional Research, Centers, and Labs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

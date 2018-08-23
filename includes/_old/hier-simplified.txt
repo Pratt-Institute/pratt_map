@@ -1,0 +1,118 @@
+$arr['academics']['architecture']['Undergraduate Architecture']
+$arr['academics']['architecture']['Construction Management']
+
+$arr['academics']['architecture']['City and Regional Planning']
+$arr['academics']['architecture']['Facilities Management']
+$arr['academics']['architecture']['Graduate Architecture and Urban Design']
+$arr['academics']['architecture']['Historic Preservation']
+$arr['academics']['architecture']['Graduate Center for Planning and the Environment']
+$arr['academics']['architecture']['Real Estate Practice']
+$arr['academics']['architecture']['Sustainable Environmental Systems']
+$arr['academics']['architecture']['Urban Placemaking and Management']
+
+$arr['academics']['art']['Art and Design Education']
+$arr['academics']['art']['Associate Degrees']
+$arr['academics']['art']['Digital Arts']
+$arr['academics']['art']['Film/Video']
+$arr['academics']['art']['Fine Arts']
+$arr['academics']['art']['Foundation']
+$arr['academics']['art']['Photography']
+
+$arr['academics']['art']['Arts and Cultural Management']
+$arr['academics']['art']['Art and Design Education']
+$arr['academics']['art']['Creative Arts Therapy']
+$arr['academics']['art']['Design Management']
+$arr['academics']['art']['Digital Arts']
+$arr['academics']['art']['Fine Arts']
+
+$arr['academics']['design']['Communications Design']
+$arr['academics']['design']['Fashion Design']
+$arr['academics']['design']['Foundation']
+$arr['academics']['design']['Industrial Design']
+$arr['academics']['design']['Interior Design']
+
+$arr['academics']['design']['Communications Design']
+$arr['academics']['design']['Industrial Design']
+$arr['academics']['design']['Interior Design']
+$arr['academics']['design']['Package Design']
+
+$arr['academics']['information']['Library and Information Science (M.S.L.I.S.)']
+$arr['academics']['information']['Data Analytics and Visualization (M.S.)']
+$arr['academics']['information']['Information Experience Design (M.S.)']
+$arr['academics']['information']['Museums and Digital Culture (M.S.)']
+$arr['academics']['information']['Digital Art and Information (M.F.A. and M.S.L.I.S.)']
+$arr['academics']['information']['History of Art and LIS (M.A. and M.S.L.I.S.)']
+
+$arr['academics']['information']['Archives']
+$arr['academics']['information']['Conservation and Digital Curation']
+$arr['academics']['information']['Digital Humanities']
+$arr['academics']['information']['Museum Libraries']
+$arr['academics']['information']['Museum Studies']
+$arr['academics']['information']['Spatial Analysis and Design']
+$arr['academics']['information']['User Experience']
+
+$arr['academics']['liberal arts and sciences']['Social Science and Cultural Studies']
+$arr['academics']['liberal arts and sciences']['Humanities and Media Studies']
+$arr['academics']['liberal arts and sciences']['Mathematics and Science']
+$arr['academics']['liberal arts and sciences']['Critical and Visual Studies']
+$arr['academics']['liberal arts and sciences']['The Writing Program']
+$arr['academics']['liberal arts and sciences']['History of Art and Design']
+$arr['academics']['liberal arts and sciences']['Intensive English Program']
+$arr['academics']['liberal arts and sciences']['Writing and Tutorial Center']
+$arr['academics']['liberal arts and sciences']['General Education']
+
+$arr['academics']['liberal arts and sciences']['Media Studies']
+$arr['academics']['liberal arts and sciences']['Writing Program']
+$arr['academics']['liberal arts and sciences']['History of Art and Design']
+$arr['academics']['liberal arts and sciences']['Performance and Performance Studies']
+
+$arr['academics']['liberal arts and sciences']['Cinema Studies']
+$arr['academics']['liberal arts and sciences']['Creative Writing']
+$arr['academics']['liberal arts and sciences']['Cultural Studies']
+$arr['academics']['liberal arts and sciences']['History of Art and Design']
+$arr['academics']['liberal arts and sciences']['Literature and Writing']
+$arr['academics']['liberal arts and sciences']['Media Studies']
+$arr['academics']['liberal arts and sciences']['Performance and Performance Studies']
+$arr['academics']['liberal arts and sciences']['Philosophy']
+$arr['academics']['liberal arts and sciences']['Psychology']
+$arr['academics']['liberal arts and sciences']['Social Justice/Social Practice']
+$arr['academics']['liberal arts and sciences']['Sustainability Studies']
+
+$arr['academics']['continuing and professional studies']['School of Continuing and Professional Studies']
+$arr['academics']['continuing and professional studies']['Art and Design Courses']
+$arr['academics']['continuing and professional studies']['Certificate Programs']
+$arr['academics']['continuing and professional studies']['Custom Training']
+$arr['academics']['continuing and professional studies']['International Students']
+$arr['academics']['continuing and professional studies']['Professional Studies']
+$arr['academics']['continuing and professional studies']['PreCollege']
+$arr['academics']['continuing and professional studies']['Summer Intensives']
+
+$arr['academics']['Research and Centers']['Pratt Center for Community Development']
+$arr['academics']['Research and Centers']['Center for Art, Design, and Community Engagement K-12']
+$arr['academics']['Research and Centers']['Brooklyn Fashion and Design Incubator (BF+DA)']
+$arr['academics']['Research and Centers']['The Consortium for Research and Robotics']
+$arr['academics']['Research and Centers']['Spatial Analysis and Visualization Initiative']
+$arr['academics']['Research and Centers']['Additional Research, Centers, and Labs']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

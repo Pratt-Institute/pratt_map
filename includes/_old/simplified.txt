@@ -1,0 +1,83 @@
+academics	architecture	Undergraduate Architecture	Undergraduate Architecture
+academics	architecture	Construction Management	Construction Management
+academics	architecture	City and Regional Planning	City and Regional Planning
+academics	architecture	Facilities Management	Facilities Management
+academics	architecture	Graduate Architecture and Urban Design	Graduate Architecture and Urban Design
+academics	architecture	Historic Preservation	Historic Preservation
+academics	architecture	Graduate Center for Planning and the Environment	Graduate Center for Planning and the Environment
+academics	architecture	Real Estate Practice	Real Estate Practice
+academics	architecture	Sustainable Environmental Systems	Sustainable Environmental Systems
+academics	architecture	Urban Placemaking and Management	Urban Placemaking and Management
+academics	art	Art and Design Education	Art and Design Education
+academics	art	Associate Degrees	Associate Degrees
+academics	art	Digital Arts	Digital Arts
+academics	art	Film/Video	Film/Video
+academics	art	Fine Arts	Fine Arts
+academics	art	Foundation	Foundation
+academics	art	Photography	Photography
+academics	art	Arts and Cultural Management	Arts and Cultural Management
+academics	art	Art and Design Education	Art and Design Education
+academics	art	Creative Arts Therapy	Creative Arts Therapy
+academics	art	Design Management	Design Management
+academics	art	Digital Arts	Digital Arts
+academics	art	Fine Arts	Fine Arts
+academics	design	Communications Design	Communications Design
+academics	design	Fashion Design	Fashion Design
+academics	design	Foundation	Foundation
+academics	design	Industrial Design	Industrial Design
+academics	design	Interior Design	Interior Design
+academics	design	Communications Design	Communications Design
+academics	design	Industrial Design	Industrial Design
+academics	design	Interior Design	Interior Design
+academics	design	Package Design	Package Design
+academics	information	Library and Information Science (M.S.L.I.S.)	Library and Information Science (M.S.L.I.S.)
+academics	information	Data Analytics and Visualization (M.S.)	Data Analytics and Visualization (M.S.)
+academics	information	Information Experience Design (M.S.)	Information Experience Design (M.S.)
+academics	information	Museums and Digital Culture (M.S.)	Museums and Digital Culture (M.S.)
+academics	information	Digital Art and Information (M.F.A. and M.S.L.I.S.)	Digital Art and Information (M.F.A. and M.S.L.I.S.)
+academics	information	History of Art and LIS (M.A. and M.S.L.I.S.)	History of Art and LIS (M.A. and M.S.L.I.S.)
+academics	information	Archives	Archives
+academics	information	Conservation and Digital Curation	Conservation and Digital Curation
+academics	information	Digital Humanities	Digital Humanities
+academics	information	Museum Libraries	Museum Libraries
+academics	information	Museum Studies	Museum Studies
+academics	information	Spatial Analysis and Design	Spatial Analysis and Design
+academics	information	User Experience	User Experience
+academics	liberal arts and sciences	Social Science and Cultural Studies	Social Science and Cultural Studies
+academics	liberal arts and sciences	Humanities and Media Studies	Humanities and Media Studies
+academics	liberal arts and sciences	Mathematics and Science	Mathematics and Science
+academics	liberal arts and sciences	Critical and Visual Studies	Critical and Visual Studies
+academics	liberal arts and sciences	The Writing Program	The Writing Program
+academics	liberal arts and sciences	History of Art and Design	History of Art and Design
+academics	liberal arts and sciences	Intensive English Program	Intensive English Program
+academics	liberal arts and sciences	Writing and Tutorial Center	Writing and Tutorial Center
+academics	liberal arts and sciences	General Education	General Education
+academics	liberal arts and sciences	Media Studies	Media Studies
+academics	liberal arts and sciences	Writing Program	Writing Program
+academics	liberal arts and sciences	History of Art and Design	History of Art and Design
+academics	liberal arts and sciences	Performance and Performance Studies	Performance and Performance Studies
+academics	liberal arts and sciences	Cinema Studies	Cinema Studies
+academics	liberal arts and sciences	Creative Writing	Creative Writing
+academics	liberal arts and sciences	Cultural Studies	Cultural Studies
+academics	liberal arts and sciences	History of Art and Design	History of Art and Design
+academics	liberal arts and sciences	Literature and Writing	Literature and Writing
+academics	liberal arts and sciences	Media Studies	Media Studies
+academics	liberal arts and sciences	Performance and Performance Studies	Performance and Performance Studies
+academics	liberal arts and sciences	Philosophy	Philosophy
+academics	liberal arts and sciences	Psychology	Psychology
+academics	liberal arts and sciences	Social Justice/Social Practice	Social Justice/Social Practice
+academics	liberal arts and sciences	Sustainability Studies	Sustainability Studies
+academics	continuing and professional studies	School of Continuing and Professional Studies	School of Continuing and Professional Studies
+academics	continuing and professional studies	Art and Design Courses	Art and Design Courses
+academics	continuing and professional studies	Certificate Programs	Certificate Programs
+academics	continuing and professional studies	Custom Training	Custom Training
+academics	continuing and professional studies	International Students	International Students
+academics	continuing and professional studies	Professional Studies	Professional Studies
+academics	continuing and professional studies	PreCollege	PreCollege
+academics	continuing and professional studies	Summer Intensives	Summer Intensives
+academics	research and centers	Pratt Center for Community Development	Pratt Center for Community Development
+academics	research and centers	Center for Art, Design, and Community Engagement K-12	Center for Art, Design, and Community Engagement K-12
+academics	research and centers	Brooklyn Fashion and Design Incubator (BF+DA)	Brooklyn Fashion and Design Incubator (BF+DA)
+academics	research and centers	The Consortium for Research and Robotics	The Consortium for Research and Robotics
+academics	research and centers	Spatial Analysis and Visualization Initiative	Spatial Analysis and Visualization Initiative
+academics	research and centers	Additional Research, Centers, and Labs	Additional Research, Centers, and Labs
