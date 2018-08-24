@@ -38,7 +38,7 @@
   <title>Ambiarc</title>
   <meta charset="UTF-8">
 
-  <link rel="stylesheet" media="all" href="TemplateData/css/bootstrap.min.css?nc=<?php echo time(); ?>" />
+  <link rel="stylesheet" media="all" href="TemplateData/css/bootstrap.css?nc=<?php echo time(); ?>" />
   <link rel="stylesheet" media="all" href="css/demo-ui.css?nc=<?php echo time(); ?>" />
 
   <link rel="stylesheet" media="all" href="css/tab_style.css?nc=<?php echo time(); ?>" />
@@ -49,12 +49,12 @@
 
   <script src="js/demo-ui.js?nc=<?php echo time(); ?>"></script>
 
-  <script src="TemplateData/js/jquery-2.2.4.min.js"></script>
-  <script src="TemplateData/js/bootstrap.min.js"></script>
+  <script src="TemplateData/js/jquery-2.2.4.min.js?nc=<?php echo time(); ?>"></script>
+  <script src="TemplateData/js/bootstrap.min.js?nc=<?php echo time(); ?>"></script>
   <script src="js/menu.js?nc=<?php echo time(); ?>"></script>
   <script src="js/jquery.cookie.js?nc=<?php echo time(); ?>"></script>
 
-  <script src="js/jquery.virtual_keyboard.js" type="text/javascript"></script>
+  <script src="js/jquery.virtual_keyboard.js?nc=<?php echo time(); ?>" type="text/javascript"></script>
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 

@@ -392,7 +392,7 @@
 		}, 125);
 	}
 
-	function searchFunction () {
+	function searchFunction() {
 		var filter = $("input.filter").val();
 		$(".list-group-item").not(":containsi('" + filter + "')").addClass("hidden");
 		$(".list-group-item:containsi('" + filter + "')").removeClass("hidden");

@@ -243,7 +243,9 @@
             elementoDOM.focus();
 
 			/// trigger filter here
+			console.log('one '+value);
 			searchFunction();
+			console.log('two '+value);
 
             return true;
         };
