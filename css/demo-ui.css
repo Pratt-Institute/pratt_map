@@ -1,5 +1,11 @@
  body {
-     padding-top: 20px;
+	padding-top: 20px;
+	pointer-events: none;
+
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
  }
 
  .ui-item {
@@ -12,7 +18,11 @@
  }
 
  .bootstrapMenu {
-    pointer-events: all;
+   pointer-events: all;
+ }
+
+ iframe {
+   pointer-events: all;
  }
 
  .poiName {
@@ -96,3 +106,24 @@
     background-image: url('../icons/ic_remove.png');
 }
 
+ .controls-btn {
+   font-size: 25px;
+   background-color: #ffffff;
+   border-radius: 50%;
+   width: 35px;
+   height: 35px;
+   text-align: center;
+   box-shadow: 0px 2px #A9A9A9;
+   margin: 5px;
+   cursor: pointer;
+   font-weight: 100;
+   padding: 4px;
+ }
+
+ .controls-btn.ctrl-rotate-left {
+   margin-left: -30px;
+ }
+
+ .controls-btn.ctrl-rotate-right {
+   margin-left: 20px;
+ }

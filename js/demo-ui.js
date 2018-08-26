@@ -38,6 +38,13 @@ var onAmbiarcLoaded = function() {
     ambiarc.registerForEvent(ambiarc.eventLabel.StartedLoadingMap, mapStartedLoading);
     ambiarc.registerForEvent(ambiarc.eventLabel.FinishedLoadingMap, mapFinishedLoading);
 
+
+	/// ??? need this ?
+	ambiarc.registerForEvent(ambiarc.eventLabel.MapLabelSelected, (event) => {
+		adjustMapFocus($("#" + event.detail)[0], event.detail)
+	});
+
+
     var full = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+(window.location.pathname ? window.location.pathname.substring(0,window.location.pathname.lastIndexOf("/")) : '');
 
     ambiarc.setMapAssetBundleURL(full+'/ambiarc/');
@@ -78,9 +85,10 @@ var onAmbiarcLoaded = function() {
     var token = $.cookie('token');
     var hash = Math.random().toString(36).substr(2, 5);
 
-    ambiarc.loadRemoteMapLabels("https://map.pratt.edu/facilities/web/facilities/get?token="+token+"&hash="+hash).then((out) => {
+    //ambiarc.loadRemoteMapLabels("https://map.pratt.edu/facilities/web/facilities/get?token="+token+"&hash="+hash).then((out) => {
+    ambiarc.loadRemoteMapLabels("http://facilities.local/facilities/get").then((out) => {
 
-    	console.log(out);
+    	//console.log(out);
 
 		window.mapStuff = out;
 

@@ -89,7 +89,7 @@
         </div>
       </div>
     </div>
-  <div id="controls-section" style="pointer-events: all">
+  <div id="controls-section" style="pointer-events: all; z-index:9999;">
         <ul>
             <li class="" onclick="zoomInHandler()">
                 <span class="controls-btn ctrl-zoom-in"  aria-hidden="true"></span>
@@ -110,24 +110,6 @@
     0; z-index:-1; position:fixed; pointer-events: all;">
     Your browser doesn't support iframes
   </iframe>
-
-          <div class="tab points" style="">
-			<div class="selectdiv ">
-			  <label>
-				  <select class="menu-buildings">
-					  <option value="">:: Select Building ::</option>
-				  </select>
-			  </label>
-			</div>
-
-
-        	<input type="text" class="filter" placeholder="">
-        	<button><i class="fa fa-search"></i></button>
-        	<br clear="all">
-        	<div class="contain-list">
-				<ul class="list-group"></ul>
-			</div>
-		</div>
 
   <div class="nav-menu menu-open">menu</div>
 
@@ -156,6 +138,22 @@
 	</div>
 
 	<img class="pratt-logo" src="images/Pratt_Logo_Black.png">
+
+	<div class="tab points" style="">
+		<div class="selectdiv ">
+			<label>
+				<select class="menu-buildings">
+				<option value="">:: Select Building ::</option>
+				</select>
+			</label>
+		</div>
+		<input type="text" class="filter" placeholder="">
+		<button><i class="fa fa-search"></i></button>
+		<br clear="all">
+		<div class="contain-list">
+			<ul class="list-group"></ul>
+		</div>
+	</div>
 
 </body>
 

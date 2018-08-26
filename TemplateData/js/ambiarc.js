@@ -289,7 +289,13 @@
               element.properties.latitude = element.geometry.coordinates[1];
               element.properties.longitude = element.geometry.coordinates[0];
               window.Ambiarc.createMapLabel(element.properties.type, element.properties, function(id) {
-                 element.properties.mapLabelId = id;
+
+              	 console.log('++++++++++++++++++++');
+              	 console.log(id);
+              	 console.log(element);
+                 console.log('--------------------');
+
+                 element.properties.mapLabelId = id; ///Is this wrong?
                  ///element.properties.id = id;
               })
             });

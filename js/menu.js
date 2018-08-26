@@ -9,17 +9,25 @@
 		});
 
 		$(document).on("click", "li.list-group-item", function(e){
+
 			var id = $(this).attr('data-id');
 			var item = $(this).attr('data-itemid');
+
+			console.log(id + ' -- ' + item);
 			console.log(mapStuff[item]);
-			adjustMapFocus(e.currentTarget, item, function(){ });
+
+			//adjustMapFocus(e.currentTarget, item, function(){ });
+			adjustMapFocus(e.currentTarget, id);
+
 			if ($(this).hasClass('hasImg')) {
 				doPoiImage(id);
 			} else {
 				$('.poi-box').remove();
 			}
 			$(this).addClass('seen').siblings().removeClass('active');
-			hideInactivePoints(false, item);
+
+			///hideInactivePoints(false, item);
+
 		});
 
 		$(document).on('click', '.search-btn', function() {
@@ -168,21 +176,17 @@
 					}
 
 					///console.log(type + ' +++ ' + (mapStuff[item].user_properties.gkDepartment));
-
-					if (mapStuff[item].user_properties.gkDepartment.indexOf(type) != -1) {
-
-						//console.log(mapStuff[item]);
-						//var id = mapStuff[item].properties.mapLabelId;
-						var id = mapStuff[item].user_properties.itemId;
-
-						//console.log(id);
-
-						adjustMapFocus(e.currentTarget, id, function(){ });
-
-						collapseMenus();
-
-						break;
-
+					if (typeof mapStuff[item].user_properties.gkDepartment != 'undefined' ) {
+						if (mapStuff[item].user_properties.gkDepartment.indexOf(type) != -1) {
+							//console.log(mapStuff[item]);
+							var mapLabelId = mapStuff[item].properties.mapLabelId;
+							//var id = mapStuff[item].user_properties.itemId;
+							//console.log(id);
+							//adjustMapFocus(e.currentTarget, id, function(){ });
+							adjustMapFocus(e.currentTarget, mapLabelId);
+							collapseMenus();
+							break;
+						}
 					}
 				}
 			}
@@ -224,7 +228,8 @@
 						//var id = mapStuff[item].user_properties.recordId;
 						var id = mapStuff[item].user_properties.itemId;
 						//ambiarc.showMapLabel(id, true);
-						adjustMapFocus(e.currentTarget, id, function(){ });
+						//adjustMapFocus(e.currentTarget, id, function(){ });
+						adjustMapFocus(e.currentTarget, id);
 						collapseMenus();
 						break;
 					}
@@ -407,10 +412,12 @@
 			if (mapStuff[item].user_properties.gkDepartment == '') {
 				continue;
 			}
-			if (mapStuff[item].user_properties.gkDepartment.indexOf(find) != -1) {
-				//console.log(mapStuff[item]);
-				return true;
-				break;
+			if (typeof mapStuff[item].user_properties.gkDepartment != 'undefined' ) {
+				if (mapStuff[item].user_properties.gkDepartment.indexOf(find) != -1) {
+					//console.log(mapStuff[item]);
+					return true;
+					break;
+				}
 			}
 		}
 		//console.log(find + ' +++ ' + (mapStuff[item].user_properties.gkDepartment));
@@ -438,7 +445,7 @@
 	}
 
 	function setupMenuBuildings(MapLabels){
-		lButtons = {};
+		lButtons = '';
 		lBldgs = {};
 		$(MapLabels).each(function(key, record){
 
@@ -446,38 +453,46 @@
 
 			var imgExt = checkImage(imgUrl);
 
-			//console.log(imgExt);
-
 			if (record.properties.label == 'Sculpture') {
 				record.properties.label = record.user_properties.gkArtName;
 			}
 
 			lBldgs[record.user_properties.bldgAbbr] = record.user_properties.bldgName;
-			lButtons[record.properties.mapLabelId] = '<li  id="'+record.properties.mapLabelId+'"  data-itemId="'+record.user_properties.itemId+'"  data-id="'+record.properties.mapLabelId+'"  data-building="'+record.user_properties.bldgAbbr+'"  class="list-group-item '+imgExt+'">';
-			lButtons[record.properties.mapLabelId] += '<div class="li-col li-label"><span>'+record.properties.label+'</span></div>';
-			lButtons[record.properties.mapLabelId] += '<div class="li-col li-bldg"><span>'+record.user_properties.bldgAbbr+'</span></div>';
-			lButtons[record.properties.mapLabelId] += '<div class="li-col li-room"><span>'+record.user_properties.newRoomNo+'</span></div></li>';
+
+			lButtons += '<li  id="'+record.properties.mapLabelId+'"  data-itemId="'+record.user_properties.itemId+'"  data-id="'+record.properties.mapLabelId+'"  data-building="'+record.user_properties.bldgAbbr+'"  class="list-group-item '+imgExt+'">';
+			lButtons += '<div class="li-col li-label"><span>'+record.properties.label+'</span></div>';
+			lButtons += '<div class="li-col li-bldg"><span>'+record.user_properties.bldgAbbr+'</span></div>';
+			lButtons += '<div class="li-col li-room"><span>'+record.user_properties.newRoomNo+'</span></div></li>';
+
 		});
-		joined = $.map(lButtons, function(e){
-			return e;
-		}).join(' ');
-		$('ul.list-group').append(joined);
-		//console.log(lBldgs);
+
+		$('ul.list-group').append(lButtons);
+		lButtons = '';
+
 		bOptions = {};
 		catBuildings = {};
 		for (var prop in lBldgs) {
 			bOptions[prop] = '<option value="'+prop+'">'+lBldgs[prop]+'</option>';
 			catBuildings[prop] = '<span data-cat="buildings">'+lBldgs[prop]+'</span>';
+			lBldgs[prop] = null;
 		}
+
 		joined = $.map(bOptions, function(e){
 			return e;
 		}).join(' ');
+
 		$('select.menu-buildings').append(joined);
 		joined = $.map(catBuildings, function(e){
 			return e;
 		}).join('');
+
 		$('div.buildings').append(joined);
-		hideAllPoints();
+
+		bOptions = '';
+		catBuildings = '';
+		joined = '';
+
+		//hideAllPoints();
 	}
 
 	function setupMenuAcademics() {
@@ -533,7 +548,6 @@
 	}
 
 
-
 	// Tells Ambiarc to focus on a map label id
 	function adjustMapFocus(target, mapLabelId, callback) {
 	  // Declare all variables
@@ -550,15 +564,11 @@
 	  // Retrieve ambiarc object
 	  var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
-	  //console.log(ambiarc);
-
-	  //alert(mapLabelId);
-
-	  //mapStuff[mapLabelId].properties.location = 'URL';
-
-	  //console.log(mapStuff[mapLabelId]);
-
 	  var props = mapStuff[mapLabelId].properties;
+
+	  console.log(mapStuff[mapLabelId]);
+	  alert(mapLabelId);
+
 	  props.location = 'URL';
 
 	  ambiarc.updateMapLabel(mapLabelId, ambiarc.mapLabel.IconWithText, props);
@@ -571,14 +581,14 @@
 		//		ambiarc.hideMapLabel(id, true);
 		// 	});
 
-		setTimeout(function(){
-
-			for(var item in mapStuff) {
-				var id = mapStuff[item].user_properties.recordId;
-				ambiarc.hideMapLabel(id, true);
-			}
-
-		}, 3000);
+	// 	setTimeout(function(){
+	//
+	// 		for(var item in mapStuff) {
+	// 			var id = mapStuff[item].user_properties.recordId;
+	// 			ambiarc.hideMapLabel(id, true);
+	// 		}
+	//
+	// 	}, 3000);
 
 	  //ambiarc.zoomInHandler();
 
