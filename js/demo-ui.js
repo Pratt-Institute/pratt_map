@@ -38,83 +38,155 @@ var onAmbiarcLoaded = function() {
     ambiarc.registerForEvent(ambiarc.eventLabel.StartedLoadingMap, mapStartedLoading);
     ambiarc.registerForEvent(ambiarc.eventLabel.FinishedLoadingMap, mapFinishedLoading);
 
-
 	/// ??? need this ?
 	ambiarc.registerForEvent(ambiarc.eventLabel.MapLabelSelected, (event) => {
 		adjustMapFocus($("#" + event.detail)[0], event.detail)
 	});
-
 
     var full = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+(window.location.pathname ? window.location.pathname.substring(0,window.location.pathname.lastIndexOf("/")) : '');
 
     ambiarc.setMapAssetBundleURL(full+'/ambiarc/');
     ambiarc.loadMap("pratt");
 
-  };
+};//-------------
 
-  var mapStartedLoading = function() {
+var mapStartedLoading = function() {
 
-  }
+}
 
-  var mapFinishedLoading = function() {
-    // creating objecct where we will store all our points property values
-    ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+var mapFinishedLoading = function() {
 
-    ambiarc.hideLoadingScreen();
+	// creating objecct where we will store all our points property values
+	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
-    ambiarc.getAllBuildings(function(buildingsArray){
-      buildingsArray.forEach(function(bldgID, i){
-        ambiarc.getBuildingLabelID(bldgID, function(id){
-          var poiObject = {};
-          poiObject.label = "test";
-          poiObject.type = "Icon"
-          poiObject.location = "URL"
-          poiObject.partialPath = "/icons/ic_expand.png"
-          poiObject.collapsedIconPartialPath = "/icons/ic_expand.png"
-          poiObject.collapsedIconLocation = "URL"
-          poiObject.ignoreCollision = false;
-          ambiarc.updateMapLabel(id, ambiarc.mapLabel.Icon, poiObject);
-        });
-      });
-    });
-    $('#bootstrap').removeAttr('hidden');
-    $('#back-button').hide();
-    ambiarc.setMapTheme(ambiarc.mapTheme.light);
+	ambiarc.hideLoadingScreen();
 
+	ambiarc.getAllBuildings(function(buildingsArray){
+	  buildingsArray.forEach(function(bldgID, i){
+		ambiarc.getBuildingLabelID(bldgID, function(id){
+		  var poiObject = {};
+		  poiObject.label = "test";
+		  poiObject.type = "Icon"
+		  poiObject.location = "URL"
+		  poiObject.partialPath = "/icons/ic_expand.png"
+		  poiObject.collapsedIconPartialPath = "/icons/ic_expand.png"
+		  poiObject.collapsedIconLocation = "URL"
+		  poiObject.ignoreCollision = false;
+		  ambiarc.updateMapLabel(id, ambiarc.mapLabel.Icon, poiObject);
+		});
+	  });
+	});
+	$('#bootstrap').removeAttr('hidden');
+	$('#back-button').hide();
+	ambiarc.setMapTheme(ambiarc.mapTheme.light);
 
-    var token = $.cookie('token');
-    var hash = Math.random().toString(36).substr(2, 5);
+// 	params = {};
+// 	params.fetch = 'all'
+// 	params.bldg = '';
+// 	fetchPoisFromApi(params);
 
-    //ambiarc.loadRemoteMapLabels("https://map.pratt.edu/facilities/web/facilities/get?token="+token+"&hash="+hash).then((out) => {
-    ambiarc.loadRemoteMapLabels("http://facilities.local/facilities/get").then((out) => {
+}//++++++++++++++++++
 
-    	//console.log(out);
+var fetchPoisFromApi = function(params) {
 
-		window.mapStuff = out;
+	console.log('fetchPoisFromApi');
 
- 		setupMenuBuildings(out);
- 		setupMenuAcademics();
- 		setupMenuOffices();
- 		setupMenuOffices();
- 		setupMenuFacilities();
-		loadKeyboard();
+	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+	//ambiarc.mapStuff = null;
+
+	if (typeof ambiarc.mapStuff == 'undefined') {
+		ambiarc.mapStuff = {};
+	} else {
+		//console.log(ambiarc.mapStuff.length);
+		//alert('length');
+		//return true;
+	}
+
+	if (typeof currentBuilding != 'undefined') {
+		if (currentBuilding == params.bldg) {
+			console.log('skipping--mapstuff is already set');
+			if (params.action == 'focusAfterDataLoad') {
+				var itemId = poiMap[params.recordId]
+				focusAfterDataLoad(itemId);
+			}
+			return true;
+		}
+	}
+
+	var token = $.cookie('token');
+	var hash = Math.random().toString(36).substr(2, 5);
+
+	// 	var str;
+	// 	$(params).each(function(k,v){
+	// 		str += "&"+k+"="+v
+	// 	});
+
+	if (typeof params == 'undefined') {
+		alert('Error, fetch params not defined.');
+		return true;
+	}
+
+	var str = '';
+	for (var prop in params) {
+		str += "&"+prop+"="+params[prop];
+	}
+
+	var url = "https://map.pratt.edu/facilities/web/facilities/get?token="+token+"&hash="+hash+str;
+	ambiarc.loadRemoteMapLabels(url).then((out) => {
+
+		if (params.fetch == 'all') {
+			return true;
+		}
+
+		ambiarc.mapStuff = null;
+
+		console.log('new load')
+		console.log(url)
+
+		ambiarc.mapStuff = out;
+
+		window.poiMap = {};
+
+		$.each(out, function(k,v){
+			poiMap[v.user_properties.recordId] = v.user_properties.ambiarc_id;
+		});
+
+		console.log(poiMap);
+		//alert('map');
+
+		console.log(ambiarc.mapStuff)
+
+		if (params.fetch == 'all') {
+			//setupMenuBuildings(out);
+			setupMenuAcademics();
+			setupMenuOffices();
+			setupMenuFacilities();
+			loadKeyboard();
+			//window.mapStuff = null;
+			//console.log('clear mapStuff');
+		} else {
+			console.log(params);
+			window.currentBuilding = params.bldg;
+		}
+
+		if (params.action == 'focusAfterDataLoad') {
+			var itemId = poiMap[params.recordId]
+			focusAfterDataLoad(itemId);
+		}
 
 	});
 
-
-  }
+	return true;
+}
 
 //Event callback handlers
 var onRightMouseDown = function(event) {
-
- console.log("Ambiarc received a RightMouseDown event");
+	console.log("Ambiarc received a RightMouseDown event");
 }
 
 var BuildingExitCompleted = function(event) {
-
-  $('#back-button').hide();
+	$('#back-button').hide();
 }
-
 
 var onFloorSelected = function(event) {
  var floorInfo = event.detail;
@@ -149,7 +221,6 @@ var onFloorSelectorFocusChanged = function(event) {
    " and a new floorId of " + event.detail.newFloorId + " coming from a floor with the id of " + event.detail.oldFloorId);
 }
 
-
 //Rotate handlers
 var rotateLeft = function(){
   var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
@@ -175,10 +246,6 @@ var zoomInHandler = function(){
  ambiarc.zoomCamera(0.2, 0.3);
 };
 
-
-
-
-
  /// added functions /////////////////////////////////////////////////////////////////////
 
  var cameraCompletedHandler = function(event){
@@ -189,8 +256,8 @@ var zoomInHandler = function(){
     try{
 		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 		setTimeout(function(){
-			for(var item in mapStuff) {
-				var id = mapStuff[item].user_properties.recordId;
+			for(var item in ambiarc.mapStuff) {
+				var id = ambiarc.mapStuff[item].user_properties.recordId;
 				ambiarc.hideMapLabel(id, true);
 			}
 		}, 125);
@@ -233,30 +300,29 @@ var zoomInHandler = function(){
 
 };
 
+// Callback thats updates the UI after a POI is created
+var mapLabelCreatedCallback = function(labelId, labelName, mapLabelInfo) {
+    // push reference of POI to list
+    poisInScene.push(labelId);
+    mapLabelInfo.mapLabelId = labelId;
+    ambiarc.poiList[labelId] = mapLabelInfo;
+    addElementToPoiList(labelId, labelName, mapLabelInfo);
+};
+
 var destroyAllLabels = function(){
+
+	console.log('destroyAllLabels');
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
-	$.each(ambiarc.poiList, function(MapLabelID, a){
+	//$.each(ambiarc.poiList, function(MapLabelID, a){
+	$.each(ambiarc.mapStuff, function(MapLabelID, a){
+		console.log(MapLabelID);
+		console.log(a);
 		ambiarc.destroyMapLabel(parseInt(MapLabelID));
 	});
 
-	ambiarc.poiList = {};
-	poisInScene = [];
-	colorsInScene = {
-		'Wall' : '#01abba',
-		'Room' : '#01abba',
-		'Restroom' : '#01abba',
-		'Walkway' : '#01abba',
-		'Stairs' : '#01abba',
-		'Elevator' : '#01abba',
-		'Escalator' : '#01abba',
-		'Ramp' : '#01abba',
-		'Non-Public' : '#01abba'
-	};
-
-	updatePoiList();
-	showPoiList();
+	return true;
 };
 
 var hideInactivePoints = function(immediate=true, currentLabelId) {
@@ -311,4 +377,29 @@ var hideInactivePoints = function(immediate=true, currentLabelId) {
 
 };
 
+var focusAfterDataLoad = function(itemId) {
+
+		console.log('focusAfterDataLoad '+itemId);
+
+		if (itemId) {
+
+			try {
+
+				var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				ambiarc.focusOnMapLabel(itemId, 200);
+
+// TODO need to handle sculpture paths
+
+// 		if ($(this).hasClass('hasImg')) {
+// 			doPoiImage(itemId);
+// 		} else {
+// 			$('.poi-box').remove();
+// 		}
+// 		$(this).addClass('seen').siblings().removeClass('active');
+
+			} catch(err) {
+				console.log(err);
+			}
+		}
+	}
 

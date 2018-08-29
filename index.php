@@ -30,6 +30,15 @@
 		}
 	}
 	//die();
+
+	$slists = $obj->buildSearchList();
+
+	// 	echo '<pre>';
+	// 	print_r($slists);
+	// 	echo '</pre>';
+	//
+	// 	die();
+
 ?>
 
 <html>
@@ -122,7 +131,7 @@
 	<div class="menu-category" style="background-color:#fff"><span class="cat-box cat-box-search"><img class="search-btn" src="images/view.png"></span></div>
   </div>
 
-	<div class="flyout buildings"></div>
+	<div class="flyout buildings"><?php echo $slists['bldg_menu']; ?></div>
 	<div class="flyout academics"></div>
 	<div class="flyout offices"></div>
 	<div class="flyout facilities"></div>
@@ -144,6 +153,7 @@
 			<label>
 				<select class="menu-buildings">
 				<option value="">:: Select Building ::</option>
+				<?php echo $slists['bldg_options']; ?>
 				</select>
 			</label>
 		</div>
@@ -151,7 +161,7 @@
 		<button><i class="fa fa-search"></i></button>
 		<br clear="all">
 		<div class="contain-list">
-			<ul class="list-group"></ul>
+			<ul class="list-group"><?php echo $slists['room_list']; ?></ul>
 		</div>
 	</div>
 

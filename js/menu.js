@@ -10,25 +10,54 @@
 
 		$(document).on("click", "li.list-group-item", function(e){
 
-			var id = $(this).attr('data-id');
-			var item = $(this).attr('data-itemid');
+			// 	var id = $(this).attr('data-id');
+			// 	var item = $(this).attr('data-itemid');
+			// 	console.log(id + ' -- ' + item);
+			// 	console.log(mapStuff[item]);
 
-			console.log(id + ' -- ' + item);
-			console.log(mapStuff[item]);
-
-			//adjustMapFocus(e.currentTarget, item, function(){ });
-			adjustMapFocus(e.currentTarget, id);
-
-			if ($(this).hasClass('hasImg')) {
-				doPoiImage(id);
-			} else {
-				$('.poi-box').remove();
+			params = {};
+			params.bldg = $(this).attr('data-building');
+			params.recordId = $(this).attr('data-recordid');
+			params.action = 'focusAfterDataLoad';
+			if (fetchPoisFromApi(params)) {
+				console.log('did it work?');
 			}
-			$(this).addClass('seen').siblings().removeClass('active');
-
-			///hideInactivePoints(false, item);
 
 		});
+
+		// 	function findItemId(property,value) {
+		//
+		// 		ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+		//
+		// 		console.log('findItemId');
+		// 		console.log(ambiarc.mapStuff);
+		// 		alert('findItemId');
+		//
+		// 		for(var key in ambiarc.mapStuff) {
+		//
+		// 			console.log(key);
+		// 			console.log(ambiarc.mapStuff[key])
+		//
+		// 			var out = ambiarc.mapStuff[key].user_properties[property];
+		//
+		// 			//alert(out + ' -- ' + value);
+		//
+		// 			if (out == value) {
+		// 				console.log('findMapLabelId one');
+		// 				console.log(ambiarc.mapStuff[key]);
+		// 				console.log('findMapLabelId two');
+		// 				//return mapStuff[item].properties.mapLabelId;
+		// 				//return ambiarc.mapStuff[itemId].properties.mapLabelId;
+		// 				return key;
+		// 				break;
+		// 			}
+		// 		}
+		//
+		//
+		// 		alert('not found');
+		// 		return false;
+		//
+		// 	}
 
 		$(document).on('click', '.search-btn', function() {
 			$('.nav-menu').fadeOut();
@@ -151,6 +180,8 @@
 
 		$(document).on('click', '.fly-box', function(e) {
 
+			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+
 			$('.subfly').removeClass('reveal-horz');
 			var pos = $(this).closest('div').position();
 			var wid = $(this).closest('div').width();
@@ -169,17 +200,17 @@
 
 				//console.log('fly '+cat + ' ' +type);
 
-				for(var item in mapStuff) {
+				for(var item in ambiarc.mapStuff) {
 
-					if (mapStuff[item].user_properties.gkDepartment == '') {
+					if (ambiarc.mapStuff[item].user_properties.gkDepartment == '') {
 						continue;
 					}
 
 					///console.log(type + ' +++ ' + (mapStuff[item].user_properties.gkDepartment));
-					if (typeof mapStuff[item].user_properties.gkDepartment != 'undefined' ) {
-						if (mapStuff[item].user_properties.gkDepartment.indexOf(type) != -1) {
+					if (typeof ambiarc.mapStuff[item].user_properties.gkDepartment != 'undefined' ) {
+						if (ambiarc.mapStuff[item].user_properties.gkDepartment.indexOf(type) != -1) {
 							//console.log(mapStuff[item]);
-							var mapLabelId = mapStuff[item].properties.mapLabelId;
+							var mapLabelId = ambiarc.mapStuff[item].properties.mapLabelId;
 							//var id = mapStuff[item].user_properties.itemId;
 							//console.log(id);
 							//adjustMapFocus(e.currentTarget, id, function(){ });
@@ -216,20 +247,20 @@
 
 			}
 
-			for(var item in mapStuff) {
-				if (mapStuff[item].user_properties.gkDepartment == '') {
+			for(var item in ambiarc.mapStuff) {
+				if (ambiarc.mapStuff[item].user_properties.gkDepartment == '') {
 					continue;
 				}
-				if (mapStuff[item].user_properties.bldgAbbr == bldg) {
+				if (ambiarc.mapStuff[item].user_properties.bldgAbbr == bldg) {
 					//console.log(dept + ' +++ ' + (mapStuff[item].user_properties.gkDepartment));
-					if (mapStuff[item].user_properties.gkDepartment.indexOf(dept) != -1) {
+					if (ambiarc.mapStuff[item].user_properties.gkDepartment.indexOf(dept) != -1) {
 						//console.log(mapStuff[item]);
-						//var id = mapStuff[item].properties.mapLabelId;
+						var mapLabelId = ambiarc.mapStuff[item].properties.mapLabelId;
 						//var id = mapStuff[item].user_properties.recordId;
-						var id = mapStuff[item].user_properties.itemId;
+						//var id = mapStuff[item].user_properties.itemId;
 						//ambiarc.showMapLabel(id, true);
 						//adjustMapFocus(e.currentTarget, id, function(){ });
-						adjustMapFocus(e.currentTarget, id);
+						adjustMapFocus(e.currentTarget, mapLabelId);
 						collapseMenus();
 						break;
 					}
@@ -253,6 +284,10 @@
 		$("style:not('#position')").remove();
 
 	});
+
+
+
+
 
 	function loadKeyboard() {
 
@@ -408,12 +443,13 @@
 	}
 
 	function searchPropertiesGkDept(find){
-		for(var item in mapStuff) {
-			if (mapStuff[item].user_properties.gkDepartment == '') {
+		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+		for(var item in ambiarc.mapStuff) {
+			if (ambiarc.mapStuff[item].user_properties.gkDepartment == '') {
 				continue;
 			}
-			if (typeof mapStuff[item].user_properties.gkDepartment != 'undefined' ) {
-				if (mapStuff[item].user_properties.gkDepartment.indexOf(find) != -1) {
+			if (typeof ambiarc.mapStuff[item].user_properties.gkDepartment != 'undefined' ) {
+				if (ambiarc.mapStuff[item].user_properties.gkDepartment.indexOf(find) != -1) {
 					//console.log(mapStuff[item]);
 					return true;
 					break;
@@ -445,6 +481,13 @@
 	}
 
 	function setupMenuBuildings(MapLabels){
+
+		return true;
+
+		console.log('setupMenuBuildings');
+		//console.log('MapLabels');
+		//alert('setupMenuBuildings');
+
 		lButtons = '';
 		lBldgs = {};
 		$(MapLabels).each(function(key, record){
@@ -459,7 +502,7 @@
 
 			lBldgs[record.user_properties.bldgAbbr] = record.user_properties.bldgName;
 
-			lButtons += '<li  id="'+record.properties.mapLabelId+'"  data-itemId="'+record.user_properties.itemId+'"  data-id="'+record.properties.mapLabelId+'"  data-building="'+record.user_properties.bldgAbbr+'"  class="list-group-item '+imgExt+'">';
+			lButtons += '<li id="'+record.properties.mapLabelId+'" data-id="'+record.properties.mapLabelId+'"  data-building="'+record.user_properties.bldgAbbr+'"  data-recordId="'+record.user_properties.recordId+'"  class="list-group-item '+imgExt+'">';
 			lButtons += '<div class="li-col li-label"><span>'+record.properties.label+'</span></div>';
 			lButtons += '<div class="li-col li-bldg"><span>'+record.user_properties.bldgAbbr+'</span></div>';
 			lButtons += '<div class="li-col li-room"><span>'+record.user_properties.newRoomNo+'</span></div></li>';
@@ -547,54 +590,19 @@
 		$('div.facilities').append(facString);
 	}
 
-
 	// Tells Ambiarc to focus on a map label id
 	function adjustMapFocus(target, mapLabelId, callback) {
-	  // Declare all variables
-	  var i, tablinks;
 
-	  // Get all elements with class="tablinks" and remove the class "active"
-		//   tablinks = document.getElementsByClassName("tablinks");
-		//   for (i = 0; i < tablinks.length; i++) {
-		//     tablinks[i].className = tablinks[i].className.replace(" active", "");
-		//   }
+		console.log('adjustMapFocus');
+		console.log(target);
+		console.log(mapLabelId);
+		var i, tablinks;
+		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+		ambiarc.focusOnMapLabel(mapLabelId, 200);
 
-	  // Show the current tab, and add an "active" class to the button that opened the tab
-	  ///if (target != undefined) target.className += " active";
-	  // Retrieve ambiarc object
-	  var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-
-	  var props = mapStuff[mapLabelId].properties;
-
-	  console.log(mapStuff[mapLabelId]);
-	  alert(mapLabelId);
-
-	  props.location = 'URL';
-
-	  ambiarc.updateMapLabel(mapLabelId, ambiarc.mapLabel.IconWithText, props);
-
-	  // call the focusOnMapLabel with the map label id
-	  //ambiarc.focusOnMapLabel(mapLabelId);
-	  ambiarc.focusOnMapLabel(mapLabelId, 200);
-
-		//	$.each(mapStuff, function(id, obj){
-		//		ambiarc.hideMapLabel(id, true);
-		// 	});
-
-	// 	setTimeout(function(){
-	//
-	// 		for(var item in mapStuff) {
-	// 			var id = mapStuff[item].user_properties.recordId;
-	// 			ambiarc.hideMapLabel(id, true);
-	// 		}
-	//
-	// 	}, 3000);
-
-	  //ambiarc.zoomInHandler();
-
-	  if (callback && typeof(callback) === "function") {
-		callback();
-	  }
+		if (callback && typeof(callback) === "function") {
+			callback();
+		}
 
 	}
 
