@@ -176,6 +176,17 @@
 		$(document).on("change", "select.menu-buildings", function(e){
 			//alert(this.value);
 			searchFunction();
+
+			// TODO building focus trigger here
+
+			params = {};
+			params.bldg = $(this).val();
+			//params.recordId = $(this).attr('data-recordid');
+			//params.action = 'focusAfterDataLoad';
+			if (fetchPoisFromApi(params)) {
+				console.log('2did it work?');
+			}
+
 		});
 
 		$(document).on('click', '.fly-box', function(e) {
