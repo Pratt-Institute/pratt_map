@@ -10,54 +10,16 @@
 
 		$(document).on("click", "li.list-group-item", function(e){
 
-			// 	var id = $(this).attr('data-id');
-			// 	var item = $(this).attr('data-itemid');
-			// 	console.log(id + ' -- ' + item);
-			// 	console.log(mapStuff[item]);
-
 			params = {};
 			params.bldg = $(this).attr('data-building');
 			params.recordId = $(this).attr('data-recordid');
 			params.action = 'focusAfterDataLoad';
+
 			if (fetchPoisFromApi(params)) {
 				console.log('did it work?');
 			}
 
 		});
-
-		// 	function findItemId(property,value) {
-		//
-		// 		ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-		//
-		// 		console.log('findItemId');
-		// 		console.log(ambiarc.mapStuff);
-		// 		alert('findItemId');
-		//
-		// 		for(var key in ambiarc.mapStuff) {
-		//
-		// 			console.log(key);
-		// 			console.log(ambiarc.mapStuff[key])
-		//
-		// 			var out = ambiarc.mapStuff[key].user_properties[property];
-		//
-		// 			//alert(out + ' -- ' + value);
-		//
-		// 			if (out == value) {
-		// 				console.log('findMapLabelId one');
-		// 				console.log(ambiarc.mapStuff[key]);
-		// 				console.log('findMapLabelId two');
-		// 				//return mapStuff[item].properties.mapLabelId;
-		// 				//return ambiarc.mapStuff[itemId].properties.mapLabelId;
-		// 				return key;
-		// 				break;
-		// 			}
-		// 		}
-		//
-		//
-		// 		alert('not found');
-		// 		return false;
-		//
-		// 	}
 
 		$(document).on('click', '.search-btn', function() {
 			$('.nav-menu').fadeOut();
@@ -217,6 +179,8 @@
 						continue;
 					}
 
+					// TODO make a map of gkDept so we don't have to do this loop
+
 					///console.log(type + ' +++ ' + (mapStuff[item].user_properties.gkDepartment));
 					if (typeof ambiarc.mapStuff[item].user_properties.gkDepartment != 'undefined' ) {
 						if (ambiarc.mapStuff[item].user_properties.gkDepartment.indexOf(type) != -1) {
@@ -297,7 +261,7 @@
 	});
 
 
-
+	//////////////////////////////////////////////////////////////////////////////////////
 
 
 	function loadKeyboard() {

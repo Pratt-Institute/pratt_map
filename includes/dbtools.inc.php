@@ -82,6 +82,10 @@ class DbTools {
 		echo json_encode($arr);
 	}
 
+	public function poiHasImage() {
+
+	}
+
 	public function buildSearchList() {
 
 		try {

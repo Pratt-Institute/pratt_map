@@ -297,7 +297,7 @@
 				///element.properties.mapLabelId = id;
 				element.properties.mapLabelId = element.user_properties.recordId;
 				element.properties.id = element.user_properties.recordId;
-				element.user_properties.ambiarc_id = id;
+				element.user_properties.ambiarcId = id;
 
               })
             });

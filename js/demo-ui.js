@@ -94,8 +94,8 @@ var fetchPoisFromApi = function(params) {
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 	//ambiarc.mapStuff = null;
 
-	if (typeof ambiarc.mapStuff == 'undefined') {
-		ambiarc.mapStuff = {};
+	if (typeof ambiarc.poiStuff == 'undefined') {
+		ambiarc.poiStuff = {};
 	} else {
 		//console.log(ambiarc.mapStuff.length);
 		//alert('length');
@@ -116,11 +116,6 @@ var fetchPoisFromApi = function(params) {
 	var token = $.cookie('token');
 	var hash = Math.random().toString(36).substr(2, 5);
 
-	// 	var str;
-	// 	$(params).each(function(k,v){
-	// 		str += "&"+k+"="+v
-	// 	});
-
 	if (typeof params == 'undefined') {
 		alert('Error, fetch params not defined.');
 		return true;
@@ -132,29 +127,47 @@ var fetchPoisFromApi = function(params) {
 	}
 
 	var url = "https://map.pratt.edu/facilities/web/facilities/get?token="+token+"&hash="+hash+str;
+
+	//var url = "http://localhost/~iancampbell/PrattSDK-mod/points_sample.json";
+
 	ambiarc.loadRemoteMapLabels(url).then((out) => {
 
 		if (params.fetch == 'all') {
 			return true;
 		}
 
-		ambiarc.mapStuff = null;
+		//ambiarc.mapStuff = null;
+		ambiarc.poiStuff = null;
 
 		console.log('new load')
 		console.log(url)
 
-		ambiarc.mapStuff = out;
+		//ambiarc.mapStuff = out;
+		ambiarc.poiStuff = [];
 
 		window.poiMap = {};
 
 		$.each(out, function(k,v){
-			poiMap[v.user_properties.recordId] = v.user_properties.ambiarc_id;
+			poiMap[v.user_properties.recordId] = v.user_properties.ambiarcId;
+
+			var s = {};
+
+			s['ambiarcId']		= v.user_properties.ambiarcId;
+			s['recordId']		= v.user_properties.recordId;
+			s['accessible']		= v.user_properties.accessible;
+			s['bldgName']		= v.user_properties.bldgName;
+			s['bldgAbbr']		= v.user_properties.bldgAbbr;
+			s['gkDisplay']		= v.user_properties.gkDisplay;
+			s['gkDepartment']	= v.user_properties.gkDepartment;
+
+			ambiarc.poiStuff.push(s);
+
 		});
 
-		console.log(poiMap);
-		//alert('map');
+		console.log(ambiarc.poiStuff);
+		alert('poiStuff');
 
-		console.log(ambiarc.mapStuff)
+		//console.log(ambiarc.mapStuff)
 
 		if (params.fetch == 'all') {
 			//setupMenuBuildings(out);
