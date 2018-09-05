@@ -79,6 +79,10 @@
 		document.fac = JSON.parse(fac);
 		$.cookie('token', "<?php echo $_SESSION['token'] ?>", { expires: 1, secure: false });
 		//$.cookie('token', token, { expires: 1, path: '/', domain: 'jquery.com', secure: true });
+		var deptMap =  '<?php $obj->buildDepartmentMap() ?>';
+		document.deptMap = JSON.parse(deptMap);
+		//console.log('deptMap');
+		//console.log(deptMap['Library']);
 	</script>
 
 </head>

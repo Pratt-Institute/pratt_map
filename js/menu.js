@@ -171,98 +171,177 @@
 
 			} else {
 
-				//console.log('fly '+cat + ' ' +type);
+				params = {};
+				params.currentTarget = e.currentTarget;
+				params.type = type;
+				//params.bldg = $(this).attr('data-bldg');
+				params.dept = $(this).attr('data-dept');
+				params.office = $(this).attr('data-office');
+				//params.schl = $(this).closest('div').attr('data-type');
 
-				for(var item in ambiarc.mapStuff) {
-
-					if (ambiarc.mapStuff[item].user_properties.gkDepartment == '') {
-						continue;
-					}
-
-					// TODO make a map of gkDept so we don't have to do this loop
-
-					///console.log(type + ' +++ ' + (mapStuff[item].user_properties.gkDepartment));
-					if (typeof ambiarc.mapStuff[item].user_properties.gkDepartment != 'undefined' ) {
-						if (ambiarc.mapStuff[item].user_properties.gkDepartment.indexOf(type) != -1) {
-							//console.log(mapStuff[item]);
-							var mapLabelId = ambiarc.mapStuff[item].properties.mapLabelId;
-							//var id = mapStuff[item].user_properties.itemId;
-							//console.log(id);
-							//adjustMapFocus(e.currentTarget, id, function(){ });
-							adjustMapFocus(e.currentTarget, mapLabelId);
-							collapseMenus();
-							break;
-						}
-					}
+				if ($(this).attr('data-cat')) {
+					params.cat = $(this).attr('data-cat');
 				}
+				if ($(this).attr('data-lat')) {
+					params.lat = $(this).attr('data-lat');
+				}
+				if ($(this).attr('data-long')) {
+					params.long = $(this).attr('data-long');
+				}
+				if ($(this).attr('data-bldg')) {
+					params.bldg = $(this).attr('data-bldg');
+				} else {
+					//params.bldg = deptMap[params.dept].name
+				}
+
+				if (params.cat == 'office') {
+					params.bldg = document.deptMap[params.office].bldgAbbr;
+					params.recordId = document.deptMap[params.office].recordId;
+					params.action = 'focusAfterDataLoad';
+				}
+
+				console.log(params);
+				console.log(document.deptMap);
+				console.log(document.deptMap[params.office]);
+				alert(params.office);
+
+				if (fetchPoisFromApi(params)) {
+					console.log('did it work?');
+				}
+
+				// 	for(var item in ambiarc.mapStuff) {
+				//
+				// 		if (ambiarc.mapStuff[item].user_properties.gkDepartment == '') {
+				// 			continue;
+				// 		}
+				//
+				// 		// TODO make a map of gkDept so we don't have to do this loop
+				//
+				// 		///console.log(type + ' +++ ' + (mapStuff[item].user_properties.gkDepartment));
+				// 		if (typeof ambiarc.mapStuff[item].user_properties.gkDepartment != 'undefined' ) {
+				// 			if (ambiarc.mapStuff[item].user_properties.gkDepartment.indexOf(type) != -1) {
+				// 				//console.log(mapStuff[item]);
+				// 				var mapLabelId = ambiarc.mapStuff[item].properties.mapLabelId;
+				// 				//var id = mapStuff[item].user_properties.itemId;
+				// 				//console.log(id);
+				// 				//adjustMapFocus(e.currentTarget, id, function(){ });
+				// 				adjustMapFocus(e.currentTarget, mapLabelId);
+				// 				collapseMenus();
+				// 				break;
+				// 			}
+				// 		}
+				// 	}
 			}
 
 		});
 
 		$(document).on("click", "div.subfly>span", function(e){
 
-			//data-bldg="FLSH"
-			//hideAllPoints();
+			window.bldg = $(this).attr('data-bldg');
 
-			var bldg = $(this).attr('data-bldg');
-			window.bldg = bldg;
+			params = {};
+			params.currentTarget = e.currentTarget;
+			params.bldg = $(this).attr('data-bldg');
+			params.dept = $(this).attr('data-dept');
+			params.schl = $(this).closest('div').attr('data-type');
+			params.action = 'doFocusAfterFetch';
 
-			if (bldg == 'FLSH' || bldg == 'CRR') {
-				doPopupMap(bldg);
-				return true;
+			if (fetchPoisFromApi(params)) {
+				console.log('did it work?');
 			}
 
-			var dept = $(this).attr('data-dept');
-			var schl = $(this).closest('div').attr('data-type');
-			//alert(bldg + ' - ' + dept + ' - ' + schl);
-
-			var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-
-			if (dept == '') {
-
-			}
-
-			for(var item in ambiarc.mapStuff) {
-				if (ambiarc.mapStuff[item].user_properties.gkDepartment == '') {
-					continue;
-				}
-				if (ambiarc.mapStuff[item].user_properties.bldgAbbr == bldg) {
-					//console.log(dept + ' +++ ' + (mapStuff[item].user_properties.gkDepartment));
-					if (ambiarc.mapStuff[item].user_properties.gkDepartment.indexOf(dept) != -1) {
-						//console.log(mapStuff[item]);
-						var mapLabelId = ambiarc.mapStuff[item].properties.mapLabelId;
-						//var id = mapStuff[item].user_properties.recordId;
-						//var id = mapStuff[item].user_properties.itemId;
-						//ambiarc.showMapLabel(id, true);
-						//adjustMapFocus(e.currentTarget, id, function(){ });
-						adjustMapFocus(e.currentTarget, mapLabelId);
-						collapseMenus();
-						break;
-					}
-				}
-			}
 		});
 
-		/// clean up the popup maps
+		/// department map is trusted
 		setTimeout(function(){
-
-			//console.log('clean up pop map');
-			//$(document).remove('.place-card');
-			//$('#gmap_canvas').contents().find('.place-card').remove();
-			//var iframe = document.getElementById("gmap_canvas");
-			//var elmnt = iframe.contentWindow.document.findElementByAttribute("class", "place-card");
-			//elmnt.style.display = "none";
-
-		}, 2000);
+			//deptMap = eval("(" + deptMap + ")");
+		}, 1000);
 
 		/// weird style injection coming from somewhere
 		$("style:not('#position')").remove();
 
-	});
+		deptMap = eval("(" + deptMap + ")");
+		//console.log(deptMap);
+		//console.log(deptMap['Library']);
+		//alert('deptMap');
 
+	});
 
 	//////////////////////////////////////////////////////////////////////////////////////
 
+	function lookupBuilding(params) {
+
+		console.log(params);
+
+		alert('lookupBuilding');
+
+		if (typeof params.lat != 'undefined') {
+			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+			ambiarc.setGPSCoordinatesOrigin(params.lat, params.long);
+			return true;
+		}
+
+		if (typeof params.bldg != 'undefined') {
+			doFocusAfterFetch(params);
+		}
+
+		if (params.cat == 'buildings') {
+
+		}
+
+		// 	var url = "https://map.pratt.edu/facilities/web/facilities/FetchBuildingFromDept";
+		//
+		// 	var url = "http://local.facilities.com/facilities/bldg";
+		//
+		// 	var saveData = $.ajax({
+		// 		type: 'POST',
+		// 		url: url,
+		// 		data: { dept: params.dept },
+		// 		contentType: "application/json",
+		// 		dataType: "json",
+		// 		success: function(res) {
+		//
+		// 			console.log(res);
+		//
+		// 			params.bldg = res.bldg;
+		// 			doFocusAfterFetch(params);
+		//
+		// 		}
+		// 	});
+		// 	saveData.error(function() { alert("Something went wrong"); });
+	}
+
+	function doFocusAfterFetch(params) {
+
+		console.log('doFocusAfterFetch');
+		console.log(params);
+
+		if (params.bldg == 'FLSH' || params.bldg == 'CRR') {
+			doPopupMap(params.bldg);
+			return true;
+		}
+
+		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+
+		for(var item in ambiarc.poiStuff) {
+			if (ambiarc.poiStuff[item].gkDepartment == '') {
+				continue;
+			}
+			if (ambiarc.poiStuff[item].bldgAbbr == params.bldg) {
+				if (ambiarc.poiStuff[item].gkDepartment.indexOf(params.dept) != -1) {
+					var ambiarcId = ambiarc.poiStuff[item].ambiarcId;
+
+					//ambiarc.setGPSCoordinatesOrigin(ambiarc.poiStuff[item].latitude, ambiarc.poiStuff[item].longitude);
+					//break;
+
+					adjustMapFocus(params.currentTarget, ambiarcId);
+					collapseMenus();
+					break;
+				}
+			}
+		}
+
+	}
 
 	function loadKeyboard() {
 
@@ -459,56 +538,56 @@
 
 		return true;
 
-		console.log('setupMenuBuildings');
-		//console.log('MapLabels');
-		//alert('setupMenuBuildings');
-
-		lButtons = '';
-		lBldgs = {};
-		$(MapLabels).each(function(key, record){
-
-			var imgUrl = 'images/pois/'+record.properties.mapLabelId+'.jpg';
-
-			var imgExt = checkImage(imgUrl);
-
-			if (record.properties.label == 'Sculpture') {
-				record.properties.label = record.user_properties.gkArtName;
-			}
-
-			lBldgs[record.user_properties.bldgAbbr] = record.user_properties.bldgName;
-
-			lButtons += '<li id="'+record.properties.mapLabelId+'" data-id="'+record.properties.mapLabelId+'"  data-building="'+record.user_properties.bldgAbbr+'"  data-recordId="'+record.user_properties.recordId+'"  class="list-group-item '+imgExt+'">';
-			lButtons += '<div class="li-col li-label"><span>'+record.properties.label+'</span></div>';
-			lButtons += '<div class="li-col li-bldg"><span>'+record.user_properties.bldgAbbr+'</span></div>';
-			lButtons += '<div class="li-col li-room"><span>'+record.user_properties.newRoomNo+'</span></div></li>';
-
-		});
-
-		$('ul.list-group').append(lButtons);
-		lButtons = '';
-
-		bOptions = {};
-		catBuildings = {};
-		for (var prop in lBldgs) {
-			bOptions[prop] = '<option value="'+prop+'">'+lBldgs[prop]+'</option>';
-			catBuildings[prop] = '<span data-cat="buildings">'+lBldgs[prop]+'</span>';
-			lBldgs[prop] = null;
-		}
-
-		joined = $.map(bOptions, function(e){
-			return e;
-		}).join(' ');
-
-		$('select.menu-buildings').append(joined);
-		joined = $.map(catBuildings, function(e){
-			return e;
-		}).join('');
-
-		$('div.buildings').append(joined);
-
-		bOptions = '';
-		catBuildings = '';
-		joined = '';
+		// 		console.log('setupMenuBuildings');
+		// 		//console.log('MapLabels');
+		// 		//alert('setupMenuBuildings');
+		//
+		// 		lButtons = '';
+		// 		lBldgs = {};
+		// 		$(MapLabels).each(function(key, record){
+		//
+		// 			var imgUrl = 'images/pois/'+record.properties.mapLabelId+'.jpg';
+		//
+		// 			var imgExt = checkImage(imgUrl);
+		//
+		// 			if (record.properties.label == 'Sculpture') {
+		// 				record.properties.label = record.user_properties.gkArtName;
+		// 			}
+		//
+		// 			lBldgs[record.user_properties.bldgAbbr] = record.user_properties.bldgName;
+		//
+		// 			lButtons += '<li id="'+record.properties.mapLabelId+'" data-id="'+record.properties.mapLabelId+'"  data-building="'+record.user_properties.bldgAbbr+'"  data-recordId="'+record.user_properties.recordId+'"  class="list-group-item '+imgExt+'">';
+		// 			lButtons += '<div class="li-col li-label"><span>'+record.properties.label+'</span></div>';
+		// 			lButtons += '<div class="li-col li-bldg"><span>'+record.user_properties.bldgAbbr+'</span></div>';
+		// 			lButtons += '<div class="li-col li-room"><span>'+record.user_properties.newRoomNo+'</span></div></li>';
+		//
+		// 		});
+		//
+		// 		$('ul.list-group').append(lButtons);
+		// 		lButtons = '';
+		//
+		// 		bOptions = {};
+		// 		catBuildings = {};
+		// 		for (var prop in lBldgs) {
+		// 			bOptions[prop] = '<option value="'+prop+'">'+lBldgs[prop]+'</option>';
+		// 			catBuildings[prop] = '<span data-cat="buildings">'+lBldgs[prop]+'</span>';
+		// 			lBldgs[prop] = null;
+		// 		}
+		//
+		// 		joined = $.map(bOptions, function(e){
+		// 			return e;
+		// 		}).join(' ');
+		//
+		// 		$('select.menu-buildings').append(joined);
+		// 		joined = $.map(catBuildings, function(e){
+		// 			return e;
+		// 		}).join('');
+		//
+		// 		$('div.buildings').append(joined);
+		//
+		// 		bOptions = '';
+		// 		catBuildings = '';
+		// 		joined = '';
 
 		//hideAllPoints();
 	}
@@ -580,15 +659,4 @@
 		}
 
 	}
-
-
-
-
-
-
-
-
-
-
-
 

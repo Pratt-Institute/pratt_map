@@ -80,10 +80,10 @@ var mapFinishedLoading = function() {
 	$('#back-button').hide();
 	ambiarc.setMapTheme(ambiarc.mapTheme.light);
 
-// 	params = {};
-// 	params.fetch = 'all'
-// 	params.bldg = '';
-// 	fetchPoisFromApi(params);
+	params = {};
+	params.fetch = 'first'
+	params.bldg = 'MH';
+	fetchPoisFromApi(params);
 
 }//++++++++++++++++++
 
@@ -132,26 +132,26 @@ var fetchPoisFromApi = function(params) {
 
 	ambiarc.loadRemoteMapLabels(url).then((out) => {
 
+		/// show labels if building exploded
+		ambiarc.EnableAutoShowPOIsOnFloorEnter();
+
 		if (params.fetch == 'all') {
 			return true;
 		}
 
-		//ambiarc.mapStuff = null;
 		ambiarc.poiStuff = null;
 
 		console.log('new load')
 		console.log(url)
 
-		//ambiarc.mapStuff = out;
 		ambiarc.poiStuff = [];
 
 		window.poiMap = {};
+		window.deptMap = {};
 
 		$.each(out, function(k,v){
 			poiMap[v.user_properties.recordId] = v.user_properties.ambiarcId;
-
 			var s = {};
-
 			s['ambiarcId']		= v.user_properties.ambiarcId;
 			s['recordId']		= v.user_properties.recordId;
 			s['accessible']		= v.user_properties.accessible;
@@ -159,17 +159,12 @@ var fetchPoisFromApi = function(params) {
 			s['bldgAbbr']		= v.user_properties.bldgAbbr;
 			s['gkDisplay']		= v.user_properties.gkDisplay;
 			s['gkDepartment']	= v.user_properties.gkDepartment;
-
+			s['latitude']		= v.user_properties.latitude;
+			s['longitude']		= v.user_properties.longitude;
 			ambiarc.poiStuff.push(s);
-
 		});
 
-		console.log(ambiarc.poiStuff);
-		alert('poiStuff');
-
-		//console.log(ambiarc.mapStuff)
-
-		if (params.fetch == 'all') {
+		if (params.fetch == 'first') {
 			//setupMenuBuildings(out);
 			setupMenuAcademics();
 			setupMenuOffices();
@@ -185,6 +180,14 @@ var fetchPoisFromApi = function(params) {
 		if (params.action == 'focusAfterDataLoad') {
 			var itemId = poiMap[params.recordId]
 			focusAfterDataLoad(itemId);
+		}
+
+		if (params.action == 'doFocusAfterFetch') {
+			doFocusAfterFetch(params);
+		}
+
+		if (params.action == 'lookupBuilding') {
+			lookupBuilding(params);
 		}
 
 	});
@@ -269,8 +272,8 @@ var zoomInHandler = function(){
     try{
 		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 		setTimeout(function(){
-			for(var item in ambiarc.mapStuff) {
-				var id = ambiarc.mapStuff[item].user_properties.recordId;
+			for(var item in ambiarc.poiStuff) {
+				var id = ambiarc.poiStuff[item].recordId;
 				ambiarc.hideMapLabel(id, true);
 			}
 		}, 125);
