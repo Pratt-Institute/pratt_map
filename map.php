@@ -14,6 +14,7 @@
   <script src="map/04cfd823429f9d23bbb0a65451607432.js?nc=<?php echo time(); ?>"></script>
   <script src="TemplateData/js/UnityCompatibility.js?nc=<?php echo time(); ?>"></script>
   <script>
+
     var gameInstance = UnityLoader.instantiate("gameContainer", "map/d7f9ce40642fba0a7085d421fe814f35.json?nc=<?php echo time(); ?>", {
       onProgress: UnityProgress,
       Module: {
@@ -22,6 +23,10 @@
         }
       }
     });
+
+	//console.log(gameInstance);
+	//alert('gameInstance');
+
   </script>
 </head>
 

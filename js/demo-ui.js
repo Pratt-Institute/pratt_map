@@ -102,16 +102,16 @@ var fetchPoisFromApi = function(params) {
 		//return true;
 	}
 
-	if (typeof currentBuilding != 'undefined') {
-		if (currentBuilding == params.bldg) {
-			console.log('skipping--mapstuff is already set');
-			if (params.action == 'focusAfterDataLoad') {
-				var itemId = poiMap[params.recordId]
-				focusAfterDataLoad(itemId);
-			}
-			return true;
-		}
-	}
+// 	if (typeof currentBuilding != 'undefined') {
+// 		if (currentBuilding == params.bldg) {
+// 			console.log('skipping--mapstuff is already set');
+// 			if (params.action == 'focusAfterDataLoad') {
+// 				var itemId = poiMap[params.recordId]
+// 				focusAfterDataLoad(itemId);
+// 			}
+// 			return true;
+// 		}
+// 	}
 
 	var token = $.cookie('token');
 	var hash = Math.random().toString(36).substr(2, 5);
@@ -141,8 +141,8 @@ var fetchPoisFromApi = function(params) {
 
 		ambiarc.poiStuff = null;
 
-		console.log('new load')
-		console.log(url)
+		//console.log('new load')
+		//console.log(url)
 
 		ambiarc.poiStuff = [];
 
@@ -161,7 +161,8 @@ var fetchPoisFromApi = function(params) {
 			s['gkDepartment']	= v.user_properties.gkDepartment;
 			s['latitude']		= v.user_properties.latitude;
 			s['longitude']		= v.user_properties.longitude;
-			ambiarc.poiStuff.push(s);
+			//ambiarc.poiStuff.push(s);
+			ambiarc.poiStuff[v.user_properties.ambiarcId] = s;
 		});
 
 		if (params.fetch == 'first') {
@@ -173,9 +174,33 @@ var fetchPoisFromApi = function(params) {
 			//window.mapStuff = null;
 			//console.log('clear mapStuff');
 		} else {
-			console.log(params);
+			//console.log(params);
 			window.currentBuilding = params.bldg;
 		}
+
+
+		if (params.label) {
+
+			var obj = {};
+			obj.label = params.label;
+			var itemId = poiMap[params.recordId]
+			ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.Icon, obj);
+
+			alert('here');
+
+			console.log('++++++++++++++++++++++++++');
+
+			console.log(ambiarc.poiList);
+
+			console.log(itemId + ' -- ' + params.recordId);
+			console.log(params);
+			console.log(poiMap);
+			console.log(ambiarc.poiStuff[itemId]);
+			console.log('++++++++++++++++++++++++++');
+		}
+
+
+
 
 		if (params.action == 'focusAfterDataLoad') {
 			var itemId = poiMap[params.recordId]

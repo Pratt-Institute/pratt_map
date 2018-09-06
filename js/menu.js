@@ -177,6 +177,7 @@
 				//params.bldg = $(this).attr('data-bldg');
 				params.dept = $(this).attr('data-dept');
 				params.office = $(this).attr('data-office');
+				params.facility = $(this).attr('data-facility');
 				//params.schl = $(this).closest('div').attr('data-type');
 
 				if ($(this).attr('data-cat')) {
@@ -195,47 +196,35 @@
 				}
 
 				if (params.cat == 'office') {
+					params.label = params.office;
 					params.bldg = document.deptMap[params.office].bldgAbbr;
 					params.recordId = document.deptMap[params.office].recordId;
 					params.action = 'focusAfterDataLoad';
 				}
 
-				console.log(params);
-				console.log(document.deptMap);
-				console.log(document.deptMap[params.office]);
-				alert(params.office);
+				if (params.cat == 'facility') {
+					params.label = params.facility;
+					params.bldg = document.deptMap[params.facility].bldgAbbr;
+					params.recordId = document.deptMap[params.facility].recordId;
+					params.action = 'focusAfterDataLoad';
+				}
+
+				//console.log(params);
+				//console.log(document.deptMap);
+				//console.log(document.deptMap[params.office]);
+				//alert(params.facility);
 
 				if (fetchPoisFromApi(params)) {
 					console.log('did it work?');
 				}
 
-				// 	for(var item in ambiarc.mapStuff) {
-				//
-				// 		if (ambiarc.mapStuff[item].user_properties.gkDepartment == '') {
-				// 			continue;
-				// 		}
-				//
-				// 		// TODO make a map of gkDept so we don't have to do this loop
-				//
-				// 		///console.log(type + ' +++ ' + (mapStuff[item].user_properties.gkDepartment));
-				// 		if (typeof ambiarc.mapStuff[item].user_properties.gkDepartment != 'undefined' ) {
-				// 			if (ambiarc.mapStuff[item].user_properties.gkDepartment.indexOf(type) != -1) {
-				// 				//console.log(mapStuff[item]);
-				// 				var mapLabelId = ambiarc.mapStuff[item].properties.mapLabelId;
-				// 				//var id = mapStuff[item].user_properties.itemId;
-				// 				//console.log(id);
-				// 				//adjustMapFocus(e.currentTarget, id, function(){ });
-				// 				adjustMapFocus(e.currentTarget, mapLabelId);
-				// 				collapseMenus();
-				// 				break;
-				// 			}
-				// 		}
-				// 	}
 			}
 
 		});
 
 		$(document).on("click", "div.subfly>span", function(e){
+
+			alert('subfly span');
 
 			window.bldg = $(this).attr('data-bldg');
 
@@ -244,7 +233,11 @@
 			params.bldg = $(this).attr('data-bldg');
 			params.dept = $(this).attr('data-dept');
 			params.schl = $(this).closest('div').attr('data-type');
-			params.action = 'doFocusAfterFetch';
+			//params.action = 'doFocusAfterFetch';
+			params.action = 'focusAfterDataLoad';
+
+			params.label = params.dept;
+			params.recordId = document.deptMap[params.dept].recordId;
 
 			if (fetchPoisFromApi(params)) {
 				console.log('did it work?');

@@ -102,7 +102,7 @@
         </div>
       </div>
     </div>
-  <div id="controls-section" style="pointer-events: all; z-index:9999;">
+    <div id="controls-section" style="pointer-events: all; z-index:9999;">
         <ul>
             <li class="" onclick="zoomInHandler()">
                 <span class="controls-btn ctrl-zoom-in"  aria-hidden="true"></span>
