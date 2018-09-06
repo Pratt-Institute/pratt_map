@@ -184,7 +184,7 @@ var fetchPoisFromApi = function(params) {
 			var obj = {};
 			obj.label = params.label;
 			var itemId = poiMap[params.recordId]
-			ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.Icon, obj);
+			ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.Text, obj);
 
 			alert('here');
 
