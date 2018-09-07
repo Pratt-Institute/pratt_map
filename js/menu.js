@@ -13,7 +13,12 @@
 			params = {};
 			params.bldg = $(this).attr('data-building');
 			params.recordId = $(this).attr('data-recordid');
+			params.ambiarcId = poiMap[$(this).attr('data-recordid')];
 			params.action = 'focusAfterDataLoad';
+			params.label = 'Hello World';
+
+			console.log(params);
+			//return true;
 
 			if (fetchPoisFromApi(params)) {
 				console.log('did it work?');
@@ -216,6 +221,7 @@
 
 				if (fetchPoisFromApi(params)) {
 					console.log('did it work?');
+					collapseMenus();
 				}
 
 			}
@@ -233,7 +239,6 @@
 			params.bldg = $(this).attr('data-bldg');
 			params.dept = $(this).attr('data-dept');
 			params.schl = $(this).closest('div').attr('data-type');
-			//params.action = 'doFocusAfterFetch';
 			params.action = 'focusAfterDataLoad';
 
 			params.label = params.dept;
@@ -241,6 +246,7 @@
 
 			if (fetchPoisFromApi(params)) {
 				console.log('did it work?');
+				collapseMenus();
 			}
 
 		});
@@ -262,79 +268,38 @@
 
 	//////////////////////////////////////////////////////////////////////////////////////
 
-	function lookupBuilding(params) {
-
-		console.log(params);
-
-		alert('lookupBuilding');
-
-		if (typeof params.lat != 'undefined') {
-			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			ambiarc.setGPSCoordinatesOrigin(params.lat, params.long);
-			return true;
-		}
-
-		if (typeof params.bldg != 'undefined') {
-			doFocusAfterFetch(params);
-		}
-
-		if (params.cat == 'buildings') {
-
-		}
-
-		// 	var url = "https://map.pratt.edu/facilities/web/facilities/FetchBuildingFromDept";
-		//
-		// 	var url = "http://local.facilities.com/facilities/bldg";
-		//
-		// 	var saveData = $.ajax({
-		// 		type: 'POST',
-		// 		url: url,
-		// 		data: { dept: params.dept },
-		// 		contentType: "application/json",
-		// 		dataType: "json",
-		// 		success: function(res) {
-		//
-		// 			console.log(res);
-		//
-		// 			params.bldg = res.bldg;
-		// 			doFocusAfterFetch(params);
-		//
-		// 		}
-		// 	});
-		// 	saveData.error(function() { alert("Something went wrong"); });
-	}
-
-	function doFocusAfterFetch(params) {
-
-		console.log('doFocusAfterFetch');
-		console.log(params);
-
-		if (params.bldg == 'FLSH' || params.bldg == 'CRR') {
-			doPopupMap(params.bldg);
-			return true;
-		}
-
-		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-
-		for(var item in ambiarc.poiStuff) {
-			if (ambiarc.poiStuff[item].gkDepartment == '') {
-				continue;
-			}
-			if (ambiarc.poiStuff[item].bldgAbbr == params.bldg) {
-				if (ambiarc.poiStuff[item].gkDepartment.indexOf(params.dept) != -1) {
-					var ambiarcId = ambiarc.poiStuff[item].ambiarcId;
-
-					//ambiarc.setGPSCoordinatesOrigin(ambiarc.poiStuff[item].latitude, ambiarc.poiStuff[item].longitude);
-					//break;
-
-					adjustMapFocus(params.currentTarget, ambiarcId);
-					collapseMenus();
-					break;
-				}
-			}
-		}
-
-	}
+	// 	function doFocusAfterFetch(params) {
+	//
+	// 		console.log('doFocusAfterFetch');
+	// 		console.log(params);
+	//
+	// 		if (params.bldg == 'FLSH' || params.bldg == 'CRR') {
+	// 			doPopupMap(params.bldg);
+	// 			return true;
+	// 		}
+	//
+	// 		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+	//
+	// 		for(var item in ambiarc.poiStuff) {
+	// 			if (ambiarc.poiStuff[item].gkDepartment == '') {
+	// 				continue;
+	// 			}
+	// 			console.log('doFocusAfterFetch loop');
+	// 			if (ambiarc.poiStuff[item].bldgAbbr == params.bldg) {
+	// 				if (ambiarc.poiStuff[item].gkDepartment.indexOf(params.dept) != -1) {
+	// 					var ambiarcId = ambiarc.poiStuff[item].ambiarcId;
+	//
+	// 					//ambiarc.setGPSCoordinatesOrigin(ambiarc.poiStuff[item].latitude, ambiarc.poiStuff[item].longitude);
+	// 					//break;
+	//
+	// 					adjustMapFocus(params.currentTarget, ambiarcId);
+	// 					collapseMenus();
+	// 					break;
+	// 				}
+	// 			}
+	// 		}
+	//
+	// 	}
 
 	function loadKeyboard() {
 
@@ -435,6 +400,7 @@
 	}
 
 	function hideAllPoints() {
+		console.log('hideAllPoints');
 		// 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 		// 	$(mapStuff).each(function(){
 		// 		console.log(this.properties.mapLabelId);
@@ -443,6 +409,7 @@
 	}
 
 	function resetMenus() {
+		console.log('resetMenus');
 		$('.nav-menu').removeAttr('style');
 		$('.poi-box').remove();
 		$('.menu-open').removeClass('fade-out');
@@ -457,6 +424,7 @@
 	}
 
 	function collapseMenus() {
+		console.log('collapseMenus');
 		setTimeout(function(){
 			$('.subfly').animate({width: '0px', opacity: 0}).promise().then(function(){
 				$('.subfly').removeClass('reveal-horz').promise().then(function(){
@@ -480,6 +448,7 @@
 	}
 
 	function searchFunction() {
+		console.log('searchFunction');
 		var filter = $("input.filter").val();
 		$(".list-group-item").not(":containsi('" + filter + "')").addClass("hidden");
 		$(".list-group-item:containsi('" + filter + "')").removeClass("hidden");
@@ -490,6 +459,7 @@
 	}
 
 	function searchPropertiesGkDept(find){
+		console.log('searchPropertiesGkDept');
 		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 		for(var item in ambiarc.mapStuff) {
 			if (ambiarc.mapStuff[item].user_properties.gkDepartment == '') {
@@ -509,6 +479,7 @@
 
 	function checkImage(imgUrl) {
 
+		console.log('checkImage');
 		///return 'noImg';
 
 		var imgExt = 'noImg';
@@ -527,64 +498,6 @@
 
 	}
 
-	function setupMenuBuildings(MapLabels){
-
-		return true;
-
-		// 		console.log('setupMenuBuildings');
-		// 		//console.log('MapLabels');
-		// 		//alert('setupMenuBuildings');
-		//
-		// 		lButtons = '';
-		// 		lBldgs = {};
-		// 		$(MapLabels).each(function(key, record){
-		//
-		// 			var imgUrl = 'images/pois/'+record.properties.mapLabelId+'.jpg';
-		//
-		// 			var imgExt = checkImage(imgUrl);
-		//
-		// 			if (record.properties.label == 'Sculpture') {
-		// 				record.properties.label = record.user_properties.gkArtName;
-		// 			}
-		//
-		// 			lBldgs[record.user_properties.bldgAbbr] = record.user_properties.bldgName;
-		//
-		// 			lButtons += '<li id="'+record.properties.mapLabelId+'" data-id="'+record.properties.mapLabelId+'"  data-building="'+record.user_properties.bldgAbbr+'"  data-recordId="'+record.user_properties.recordId+'"  class="list-group-item '+imgExt+'">';
-		// 			lButtons += '<div class="li-col li-label"><span>'+record.properties.label+'</span></div>';
-		// 			lButtons += '<div class="li-col li-bldg"><span>'+record.user_properties.bldgAbbr+'</span></div>';
-		// 			lButtons += '<div class="li-col li-room"><span>'+record.user_properties.newRoomNo+'</span></div></li>';
-		//
-		// 		});
-		//
-		// 		$('ul.list-group').append(lButtons);
-		// 		lButtons = '';
-		//
-		// 		bOptions = {};
-		// 		catBuildings = {};
-		// 		for (var prop in lBldgs) {
-		// 			bOptions[prop] = '<option value="'+prop+'">'+lBldgs[prop]+'</option>';
-		// 			catBuildings[prop] = '<span data-cat="buildings">'+lBldgs[prop]+'</span>';
-		// 			lBldgs[prop] = null;
-		// 		}
-		//
-		// 		joined = $.map(bOptions, function(e){
-		// 			return e;
-		// 		}).join(' ');
-		//
-		// 		$('select.menu-buildings').append(joined);
-		// 		joined = $.map(catBuildings, function(e){
-		// 			return e;
-		// 		}).join('');
-		//
-		// 		$('div.buildings').append(joined);
-		//
-		// 		bOptions = '';
-		// 		catBuildings = '';
-		// 		joined = '';
-
-		//hideAllPoints();
-	}
-
 	function setupMenuAcademics() {
 
 		$(document.acad.academics).each(function(key, record){
@@ -593,6 +506,9 @@
 		var schoolString = '';
 		var subFly;
 		$(schoolList).each(function(key0, level0){
+
+			console.log('setupMenuAcademics loop');
+
 			schoolString += '<span class="fly-box" data-cat="school" data-school="'+level0+'" >'+level0+'</span>';
 			subFly = '<div class="subfly" data-type="'+level0+'" >';
 			$(document.acad.academics[level0]).each(function(key1, level1){
@@ -616,6 +532,9 @@
 	function setupMenuOffices() {
 		var offString = '';
 		$(document.off).each(function(key, office){
+
+			console.log('setupMenuOffices loop');
+
 			var menuHightlight = 'warn';
 			if (searchPropertiesGkDept(office)) {
 				menuHightlight = '';
@@ -628,6 +547,9 @@
 	function setupMenuFacilities() {
 		var facString = '';
 		$(document.fac).each(function(key, facility){
+
+			console.log('setupMenuFacilities loop');
+
 			var menuHightlight = 'warn';
 			if (searchPropertiesGkDept(facility)) {
 				menuHightlight = '';
@@ -641,6 +563,7 @@
 	function adjustMapFocus(target, mapLabelId, callback) {
 
 		console.log('adjustMapFocus');
+
 		console.log(target);
 		console.log(mapLabelId);
 		var i, tablinks;
