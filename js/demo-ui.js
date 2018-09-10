@@ -141,6 +141,13 @@ var fetchPoisFromApi = function(params) {
 			return true;
 		}
 
+		console.log(out);
+
+		if (out[0].user_properties.ambiarcId.length < '1') {
+			console.log(out);
+			return true;
+		}
+
 		ambiarc.poiStuff = null;
 		ambiarc.poiStuff = [];
 		window.poiMap = {};
@@ -173,7 +180,7 @@ var fetchPoisFromApi = function(params) {
 			//alert('load menus');
 			//setupMenuBuildings(out);
 			setupMenuAcademics();
-			setupMenuOffices();
+			//setupMenuOffices();
 			setupMenuFacilities();
 			loadKeyboard();
 			//window.mapStuff = null;
@@ -183,18 +190,19 @@ var fetchPoisFromApi = function(params) {
 			console.log('set currentBuilding here: ' + ambiarc.currentBuilding);
 		}
 
-		if (params.labelz) {
+		if (params.label) {
 
 			console.log('set label '+params.label);
 
-			var obj = {};
-			obj.label = params.label;
 			var itemId = poiMap[params.recordId]
 
-			if (typeof itemId != 'undefined') {
-				alert(itemId + ' ' + params.recordId);
-				// TODO this crashes the map
-				//ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
+			if (typeof itemId != 'undefined' && typeof params.label != 'undefined') {
+
+				var obj = {};
+				obj.label = params.label;
+
+				ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
+				//ambiarc.labelObj = obj;
 			} else {
 				alert('itemId is undefined');
 			}
@@ -217,7 +225,7 @@ var fetchPoisFromApi = function(params) {
 
 	});
 
-	//return true;
+	return false;
 }
 
 //Event callback handlers
@@ -310,6 +318,11 @@ var cameraCompletedHandler = function(event){
 					ambiarc.showMapLabel(id, true);
 				}
 			}
+
+			// 	if (typeof ambiarc.labelObj != 'undefined' ) {
+			// 		ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
+			// 	}
+
 		}, 125);
 	} catch(err) {
 		console.log(err);

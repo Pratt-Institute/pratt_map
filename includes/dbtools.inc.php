@@ -76,41 +76,60 @@ class DbTools {
 		echo json_encode($arr);
 	}
 
-	public function fetchOfficesArray() {
-		include_once('includes/offices.inc.php');
-		echo json_encode($arr);
-	}
-
-	// 	public function fetchBuildingsArray() {
-	//
-	// 		try {
-	// 			$sql = " select id, bldg_abbre, bldg_name, gk_bldg_id from facilities order by bldg_name asc";
-	// 			$stmt = $this->dbh->prepare($sql);
-	// 			$stmt->execute();
-	// 			$rows = $stmt->fetchAll();
-	//
-	// 			if ($rows[0]['id']) {
-	//
-	// 				foreach($rows as $field=>$record) {
-	// 					$bldg[$record['bldg_abbre']]['gk_bldg_id'] = $record['gk_bldg_id'];
-	// 					$bldg[$record['bldg_abbre']]['name'] = $record['bldg_name'];
-	// 				}
-	//
-	// 				foreach($bldg as $bldg_abbre=>$val) {
-	// 				}
-	//
-	// 				// 	echo '<pre>';
-	// 				// 	print_r($out);
-	// 				// 	echo '</pre>';
-	// 				// 	die();
-	//
-	// 				return $out;
-	// 			}
-	// 			return false;
-	// 		} catch(PDOException $e) {
-	// 			echo $sql . "<br>" . $e->getMessage();
-	// 		}
+	// 	public function fetchOfficesArray() {
+	// 		include_once('includes/offices.inc.php');
+	// 		echo json_encode($arr);
 	// 	}
+
+	public function fetchOfficesMenu() {
+
+		try {
+			$sql = "
+				select
+					id,
+					bldg_abbre,
+					bldg_name,
+					gk_bldg_id,
+					gk_department
+					from facilities
+					where gk_department != ''
+					order by bldg_name asc";
+
+			$stmt = $this->dbh->prepare($sql);
+			$stmt->execute();
+			$rows = $stmt->fetchAll();
+
+			if ($rows[0]['id']) {
+
+				foreach($rows as $field=>$record) {
+					$dept_exp = explode(',',$record['gk_department']);
+					foreach($dept_exp as $dept) {
+						$dept = trim($dept);
+						if ($dept != '') {
+							// 	$out[$dept]['recordid']	= $record['id'];
+							// 	$out[$dept]['dept']	= $dept;
+							// 	$out[$dept]['bldg']	= trim($record['bldg_abbre']);
+							$out[] = "<span class=\"fly-box\" data-cat=\"office\"  data-office=\"$dept\" >$dept</span>";
+						}
+					}
+				}
+
+				//ksort($out);
+
+				// 	echo '<pre>';
+				// 	print_r($out);
+				// 	echo '</pre>';
+				// 	die();
+
+				return implode('',$out);
+
+				//return true;
+			}
+			return false;
+		} catch(PDOException $e) {
+			echo $sql . "<br>" . $e->getMessage();
+		}
+	}
 
 	public function fetchFacilitiesArray() {
 		include_once('includes/facilities.inc.php');
@@ -198,6 +217,16 @@ class DbTools {
 					$bldgs[$record['bldg_abbre']]['latitude'] = $record['latitude'];
 					$bldgs[$record['bldg_abbre']]['longitude'] = $record['longitude'];
 					@$bldg_map[$record['bldg_abbre']] = $record['gk_bldg_id'];
+
+					if (trim($record['gk_department'])!='') {
+						$dept_exp = explode(',',$record['gk_department']);
+						foreach($dept_exp as $dept) {
+							$dept = trim($dept);
+							if ($dept != '') {
+								$offs[$dept] = "<span  class=\"fly-box\"  data-recordid=\"".$record['id']."\"  data-bldg=\"".$record['bldg_abbre']."\"  data-cat=\"office\"  data-dept=\"$dept\"  data-office=\"$dept\" >$dept</span>";
+							}
+						}
+					}
 				}
 
 				@natsort($bldgs);
@@ -206,11 +235,13 @@ class DbTools {
 					$bldgMnu[] = '<span class="fly-box dbtools" data data-cat="buildings" data-buildingId="'.$bldg_map[$bldg_abbre].'" data-buildingAbrev="'.$bldg_abbre.'" data-lat="'.$bldg_stuff['latitude'].'" data-long="'.$bldg_stuff['longitude'].'">'.$bldg_stuff['name'].'</span>';
 				}
 
-				$out['bldg_menu'] = implode('',$bldgMnu);
-				$out['bldg_options'] = implode('',$bldgOpt);
-				$out['room_list'] = implode('',$rooms);
-				return $out;
+				ksort($offs);
 
+				$out['bldg_menu']		= implode('',$bldgMnu);
+				$out['bldg_options']	= implode('',$bldgOpt);
+				$out['room_list']		= implode('',$rooms);
+				$out['off_menu']		= implode('',$offs);
+				return $out;
 			}
 
 			return false;

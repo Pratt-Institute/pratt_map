@@ -200,10 +200,10 @@
 					//params.bldg = deptMap[params.dept].name
 				}
 
-				if (params.cat == 'office') {
+				if ($(this).attr('data-cat') == 'office') {
 					params.label = params.office;
-					params.bldg = document.deptMap[params.office].bldgAbbr;
-					params.recordId = document.deptMap[params.office].recordId;
+					//params.bldg = $(this).attr('data-bldg');
+					params.recordId = $(this).attr('data-recordid');
 					params.action = 'focusAfterDataLoad';
 				}
 
@@ -237,12 +237,20 @@
 			params = {};
 			params.currentTarget = e.currentTarget;
 			params.bldg = $(this).attr('data-bldg');
+
+			if (params.bldg == 'FLSH' || params.bldg == 'CRR' || params.bldg == 'W14') {
+				doPopupMap(params.bldg);
+				return true;
+			}
+
 			params.dept = $(this).attr('data-dept');
 			params.schl = $(this).closest('div').attr('data-type');
 			params.action = 'focusAfterDataLoad';
 
 			params.label = params.dept;
 			params.recordId = document.deptMap[params.dept].recordId;
+
+
 
 			if (fetchPoisFromApi(params)) {
 				console.log('did it work?');
@@ -381,6 +389,12 @@
 			// 		//window.bmap = 'includes/filterframes.php';
 			// 		$('div.mapouter').find('iframe').attr('src',bmap);
 			// 	}
+
+			if (bldg=='W14') {
+				window.bmap = 'https://maps.google.com/maps?q=144%20West%2014th%20Street&t=&z=15&ie=UTF8&iwloc=&output=embed';
+				//window.bmap = 'includes/filterframes.php';
+				$('div.mapouter').find('iframe').attr('src',bmap);
+			}
 
 			if (bldg=='FLSH') {
 				window.bmap = 'https://maps.google.com/maps?q=Brooklyn%20Fashion%20%2B%20Design%20Accelerator&t=&z=15&ie=UTF8&iwloc=&output=embed';
@@ -530,11 +544,13 @@
 	}
 
 	function setupMenuOffices() {
+
+		return false;
+
 		var offString = '';
 		$(document.off).each(function(key, office){
 
 			console.log('setupMenuOffices loop');
-
 			var menuHightlight = 'warn';
 			if (searchPropertiesGkDept(office)) {
 				menuHightlight = '';
