@@ -21,7 +21,7 @@
 			//return true;
 
 			if (fetchPoisFromApi(params)) {
-				console.log('did it work?');
+				alert('focus failed');
 			}
 
 		});
@@ -48,9 +48,9 @@
 			var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
 			ambiarc.viewFloorSelector('0001');
-			setTimeout(function(){
-				ambiarc.viewFloorSelector('0001');
-			}, 750);
+// 	setTimeout(function(){
+// 		ambiarc.viewFloorSelector('0001');
+// 	}, 750);
 		});
 
 		$(document).on('click', '.pratt-logo', function() {
@@ -93,26 +93,30 @@
 			if (close == true) {
 				var hi = $(this).height();
 				$('.flyout').css({height: hi});
-				setTimeout(function(){
+				document.close_flyout = setTimeout(function(){
 					$('.flyout').animate({width: '0px', opacity: 0}).promise().then(function(){
 						$('.flyout').removeClass('reveal-horz').promise().then(function(){
 							setTimeout(function(){ $('.flyout').removeAttr('style'); }, 125);
 						});
 					});
-				}, 125);
+				}, 333);
 			}
+		}).on('mouseenter', function(){
+			clearTimeout(document.close_flyout);
 		});
 
 		$('.subfly').mouseleave(function(e) {
 			var hi = $(this).height();
 			$('.subfly').css({height: hi});
-			setTimeout(function(){
+			document.close_subfly = setTimeout(function(){
 				$('.subfly').animate({width: '0px', opacity: 0}).promise().then(function(){
 					$('.subfly').removeClass('reveal-horz').promise().then(function(){
 						setTimeout(function(){ $('.subfly').removeAttr('style'); }, 125);
 					});
 				});
-			}, 125);
+			}, 333);
+		}).on('mouseenter', function(){
+			clearTimeout(document.close_subfly);
 		});
 
 		$(document).keyup(function(e) {
@@ -151,7 +155,7 @@
 			//params.recordId = $(this).attr('data-recordid');
 			//params.action = 'focusAfterDataLoad';
 			if (fetchPoisFromApi(params)) {
-				console.log('2did it work?');
+				alert('focus failed');
 			}
 
 		});
@@ -196,21 +200,17 @@
 				}
 				if ($(this).attr('data-bldg')) {
 					params.bldg = $(this).attr('data-bldg');
-				} else {
-					//params.bldg = deptMap[params.dept].name
 				}
 
-				if ($(this).attr('data-cat') == 'office') {
-					params.label = params.office;
-					//params.bldg = $(this).attr('data-bldg');
+				if (params.bldg == 'FLSH' || params.bldg == 'CRR' || params.bldg == 'W14') {
+					doPopupMap(params.bldg);
+					return true;
+				}
+
+				if ($(this).attr('data-cat') == 'office' || $(this).attr('data-cat') == 'facility') {
+					params.label = $(this).attr('data-dept');
+					params.bldg = $(this).attr('data-bldg');
 					params.recordId = $(this).attr('data-recordid');
-					params.action = 'focusAfterDataLoad';
-				}
-
-				if (params.cat == 'facility') {
-					params.label = params.facility;
-					params.bldg = document.deptMap[params.facility].bldgAbbr;
-					params.recordId = document.deptMap[params.facility].recordId;
 					params.action = 'focusAfterDataLoad';
 				}
 
@@ -220,8 +220,9 @@
 				//alert(params.facility);
 
 				if (fetchPoisFromApi(params)) {
-					console.log('did it work?');
-					collapseMenus();
+					alert('focus failed');
+					//console.log('did it work?');
+					//collapseMenus();
 				}
 
 			}
@@ -230,7 +231,7 @@
 
 		$(document).on("click", "div.subfly>span", function(e){
 
-			alert('subfly span');
+			//alert('subfly span');
 
 			window.bldg = $(this).attr('data-bldg');
 
@@ -249,8 +250,6 @@
 
 			params.label = params.dept;
 			params.recordId = document.deptMap[params.dept].recordId;
-
-
 
 			if (fetchPoisFromApi(params)) {
 				console.log('did it work?');

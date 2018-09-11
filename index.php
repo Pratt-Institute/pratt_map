@@ -73,9 +73,6 @@
 		//document.token = "<?php echo $_SESSION['token'] ?>";
 		var acad = '<?php $obj->fetchAcademicsArray() ?>';
 		document.acad = JSON.parse(acad);
-
-		var fac = '<?php $obj->fetchFacilitiesArray() ?>';
-		document.fac = JSON.parse(fac);
 		$.cookie('token', "<?php echo $_SESSION['token'] ?>", { expires: 1, secure: false });
 		//$.cookie('token', token, { expires: 1, path: '/', domain: 'jquery.com', secure: true });
 		var deptMap =  '<?php $obj->buildDepartmentMap() ?>';
@@ -137,7 +134,7 @@
 	<div class="flyout buildings"><?php echo $slists['bldg_menu']; ?></div>
 	<div class="flyout academics"></div>
 	<div class="flyout offices"><?php echo $slists['off_menu']; ?></div>
-	<div class="flyout facilities"></div>
+	<div class="flyout facilities"><?php $obj->fetchFacilitiesMenu() ?></div>
 
 	<div class="mapouter map-w14 ">
 		<iframe width="" height="" frameborder="0" src="" scrolling="no"></iframe>

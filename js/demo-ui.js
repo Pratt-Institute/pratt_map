@@ -143,7 +143,7 @@ var fetchPoisFromApi = function(params) {
 
 		console.log(out);
 
-		if (out[0].user_properties.ambiarcId.length < '1') {
+		if (out[0].user_properties.recordId.length < '1') {
 			console.log(out);
 			return true;
 		}
@@ -156,6 +156,9 @@ var fetchPoisFromApi = function(params) {
 		$.each(out, function(k,v){
 
 			console.log('out each '+k);
+			if (typeof v.user_properties.ambiarcId == 'undefined') {
+				console.log(v);
+			}
 
 			poiMap[v.user_properties.recordId] = v.user_properties.ambiarcId;
 			var s = {};
@@ -181,7 +184,7 @@ var fetchPoisFromApi = function(params) {
 			//setupMenuBuildings(out);
 			setupMenuAcademics();
 			//setupMenuOffices();
-			setupMenuFacilities();
+			//setupMenuFacilities();
 			loadKeyboard();
 			//window.mapStuff = null;
 			//console.log('clear mapStuff');
@@ -192,18 +195,23 @@ var fetchPoisFromApi = function(params) {
 
 		if (params.label) {
 
+			console.log(poiMap);
+
 			console.log('set label '+params.label);
 
-			var itemId = poiMap[params.recordId]
+			var itemId = poiMap[params.recordId];
+
+			//alert(itemId);
+			//return true;
 
 			if (typeof itemId != 'undefined' && typeof params.label != 'undefined') {
 
 				var obj = {};
 				obj.label = params.label;
-
-				ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
+				//ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
 				//ambiarc.labelObj = obj;
 			} else {
+				console.log(params);
 				alert('itemId is undefined');
 			}
 

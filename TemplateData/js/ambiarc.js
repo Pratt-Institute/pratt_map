@@ -290,6 +290,8 @@
               element.properties.longitude = element.geometry.coordinates[0];
               window.Ambiarc.createMapLabel(element.properties.type, element.properties, function(id) {
 
+              	//alert(id);
+
 				///console.log('loadRemoteMapLabels');
 				//console.log(id);
 				//console.log(element);
@@ -298,10 +300,14 @@
 				element.properties.id = element.user_properties.recordId;
 				element.user_properties.ambiarcId = id;
 
+				if (typeof id == 'undefined') {
+					alert(element.user_properties.recordId);
+				}
+
               })
             });
            resolve(out.features)
-          });
+          });/////
         })
         .catch(err => {
           console.log(err);
