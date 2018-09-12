@@ -102,16 +102,16 @@ var fetchPoisFromApi = function(params) {
 		//return true;
 	}
 
-	if (typeof ambiarc.currentBuilding != 'undefined') {
-		if (ambiarc.currentBuilding == params.bldg) {
-			console.log('skipping--mapstuff is already set');
-			if (params.action == 'focusAfterDataLoad') {
-				var itemId = poiMap[params.recordId]
-				focusAfterDataLoad(itemId);
-			}
-			return true;
-		}
-	}
+// 	if (typeof ambiarc.currentBuilding != 'undefined') {
+// 		if (ambiarc.currentBuilding == params.bldg && params.bldg != 'SG') {
+// 			console.log('skipping--mapstuff is already set');
+// 			if (params.action == 'focusAfterDataLoad') {
+// 				var itemId = poiMap[params.recordId]
+// 				focusAfterDataLoad(itemId);
+// 			}
+// 			return true;
+// 		}
+// 	}
 
 	var token = $.cookie('token');
 	var hash = Math.random().toString(36).substr(2, 5);
@@ -169,8 +169,8 @@ var fetchPoisFromApi = function(params) {
 			s['bldgAbbr']		= v.user_properties.bldgAbbr;
 			s['gkDisplay']		= v.user_properties.gkDisplay;
 			s['gkDepartment']	= v.user_properties.gkDepartment;
-			s['latitude']		= v.user_properties.latitude;
-			s['longitude']		= v.user_properties.longitude;
+			s['latitude']		= v.geometry.coordinates[1];
+			s['longitude']		= v.geometry.coordinates[0];
 			//ambiarc.poiStuff.push(s);
 			ambiarc.poiStuff[v.user_properties.ambiarcId] = s;
 		});
@@ -180,14 +180,8 @@ var fetchPoisFromApi = function(params) {
 		//return true;
 
 		if (params.fetch == 'first') {
-			//alert('load menus');
-			//setupMenuBuildings(out);
 			setupMenuAcademics();
-			//setupMenuOffices();
-			//setupMenuFacilities();
 			loadKeyboard();
-			//window.mapStuff = null;
-			//console.log('clear mapStuff');
 		} else {
 			ambiarc.currentBuilding = params.bldg;
 			console.log('set currentBuilding here: ' + ambiarc.currentBuilding);
@@ -200,16 +194,19 @@ var fetchPoisFromApi = function(params) {
 			console.log('set label '+params.label);
 
 			var itemId = poiMap[params.recordId];
+			ambiarc.selectedPoiId = itemId;
 
-			//alert(itemId);
-			//return true;
+			//alert(itemId + ' -- ' + params.label);
 
 			if (typeof itemId != 'undefined' && typeof params.label != 'undefined') {
 
-				var obj = {};
-				obj.label = params.label;
-				//ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
-				//ambiarc.labelObj = obj;
+				if (params.label.length > 3) {
+					var obj = {};
+					obj.label = params.label;
+					//ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
+					ambiarc.labelObj = obj;
+				}
+
 			} else {
 				console.log(params);
 				alert('itemId is undefined');
@@ -307,6 +304,11 @@ var zoomInHandler = function(){
 
 var cameraStartedHandler = function(){
 	// do stuff when map motion begins
+	if (typeof ambiarc.labelObj != 'undefined' && typeof ambiarc.selectedPoiId != 'undefined') {
+		console.log(ambiarc.selectedPoiId + ' -- ' + ambiarc.labelObj.label)
+		ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
+	}
+
 };
 
 var cameraCompletedHandler = function(event){
@@ -320,16 +322,26 @@ var cameraCompletedHandler = function(event){
 			for(var item in ambiarc.poiStuff) {
 				console.log('cameraCompletedHandler loop');
 				var id = ambiarc.poiStuff[item].ambiarcId;
-				if (ambiarc.selectedPoiId != id ) {
+
+				if (typeof ambiarc.selectedPoiId == 'undefined') {
+					break;
+				}
+
+				if (ambiarc.selectedPoiId != id) {
+					//alert('hide  ' + ambiarc.selectedPoiId + ' -- ' + id);
 					ambiarc.hideMapLabel(id, true);
 				} else {
-					ambiarc.showMapLabel(id, true);
+					//alert('show  ' + ambiarc.selectedPoiId + ' -- ' + id);
+					//ambiarc.showMapLabel(id, false);
 				}
 			}
 
-			// 	if (typeof ambiarc.labelObj != 'undefined' ) {
-			// 		ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
-			// 	}
+			if (typeof ambiarc.labelObj != 'undefined' && typeof ambiarc.selectedPoiId != 'undefined') {
+				console.log(ambiarc.selectedPoiId + ' -- ' + ambiarc.labelObj.label)
+				ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
+			}
+
+			ambiarc.showMapLabel(ambiarc.selectedPoiId, false);
 
 		}, 125);
 	} catch(err) {

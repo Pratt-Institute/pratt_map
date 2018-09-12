@@ -13,9 +13,9 @@
 			params = {};
 			params.bldg = $(this).attr('data-building');
 			params.recordId = $(this).attr('data-recordid');
-			params.ambiarcId = poiMap[$(this).attr('data-recordid')];
+			//params.ambiarcId = poiMap[$(this).attr('data-recordid')];
 			params.action = 'focusAfterDataLoad';
-			params.label = 'Hello World';
+			//params.label = 'Hello World';
 
 			console.log(params);
 			//return true;
@@ -540,38 +540,6 @@
 		});
 		$('div.academics').append(schoolString);
 
-	}
-
-	function setupMenuOffices() {
-
-		return false;
-
-		var offString = '';
-		$(document.off).each(function(key, office){
-
-			console.log('setupMenuOffices loop');
-			var menuHightlight = 'warn';
-			if (searchPropertiesGkDept(office)) {
-				menuHightlight = '';
-			}
-			offString += '<span class="fly-box '+menuHightlight+'" data-cat="office"  data-office="'+office+'" >'+office+'</span>';
-		});
-		$('div.offices').append(offString);
-	}
-
-	function setupMenuFacilities() {
-		var facString = '';
-		$(document.fac).each(function(key, facility){
-
-			console.log('setupMenuFacilities loop');
-
-			var menuHightlight = 'warn';
-			if (searchPropertiesGkDept(facility)) {
-				menuHightlight = '';
-			}
-			facString += '<span class="fly-box '+menuHightlight+'" data-cat="facility"  data-facility="'+facility+'" >'+facility+'</span>';
-		});
-		$('div.facilities').append(facString);
 	}
 
 	// Tells Ambiarc to focus on a map label id
