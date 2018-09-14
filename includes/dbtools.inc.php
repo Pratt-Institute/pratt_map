@@ -97,7 +97,7 @@ class DbTools {
 
 			$stmt = $this->dbh->prepare($sql);
 			$stmt->execute();
-			$rows = $stmt->fetchAll();
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			if ($rows[0]['id']) {
 
@@ -181,7 +181,7 @@ class DbTools {
 
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->execute();
-		$rows = $stmt->fetchAll();
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		// 	echo '<pre>';
 		// 	print_r($rows);
@@ -192,7 +192,15 @@ class DbTools {
 				$exp = explode(',',$record['gk_department']);
 				foreach($exp as $gk_dept) {
 					$gk_dept = trim($gk_dept);
-					$out[$gk_dept] = "<span  class=\"fly-box\"  data-recordid=\"".$record['id']."\"  data-bldg=\"".$record['bldg_abbre']."\"  data-cat=\"facility\"  data-dept=\"$gk_dept\"  data-facility=\"$gk_dept\" >$gk_dept</span>";
+					$out[$gk_dept] = "<span
+						class=\"fly-box\"
+						data-recordid=\"".$record['id']."\"
+						data-bldg=\"".$record['bldg_abbre']."\"
+						data-floor=\"".$record['gk_floor_id']."\"
+						data-cat=\"facility\"
+						data-dept=\"$gk_dept\"
+						data-facility=\"$gk_dept\"
+					>$gk_dept</span>";
 				}
 			}
 		}
@@ -265,7 +273,7 @@ class DbTools {
 				";
 			$stmt = $this->dbh->prepare($sql);
 			$stmt->execute();
-			$rows = $stmt->fetchAll();
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			// 	echo '<pre>';
 			// 	print_r($rows);
@@ -275,11 +283,23 @@ class DbTools {
 
 				foreach($rows as $field=>$record) {
 					$imgUrl = 'images/pois/'.$record['id'].'.jpg';
-					$rooms[] = '<li id="'.$record['id'].'" data-id="'.$record['id'].'"  data-building="'.$record['bldg_abbre'].'"  data-recordId="'.$record['id'].'"  class="list-group-item '.$imgUrl.'">';
-					$rooms[] = '<div class="li-col li-label"><span>'.$record['room_name'].'</span></div>';
-					$rooms[] = '<div class="li-col li-bldg"><span>'.$record['bldg_abbre'].'</span></div>';
-					$rooms[] = '<div class="li-col li-room"><span>'.$record['new_room_no'].'</span></div></li>';
+
+					$camploc = strtolower($record['on_off_campus']).'camp';
+
+					$rooms[] = '<li id="'.$record['id'].'"
+						data-id="'.$record['id'].'"
+						data-building="'.$record['bldg_abbre'].'"
+						data-floor="'.$record['gk_floor_id'].'"
+						data-recordId="'.$record['id'].'"
+						class="list-group-item '.$imgUrl.'">';
+
+					$rooms[] = '<div class="li-col li-label '.$camploc.'"><span>'.$record['room_name'].'</span></div>';
+					$rooms[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_abbre'].'</span></div>';
+					$rooms[] = '<div class="li-col li-room '.$camploc.'"><span>'.$record['new_room_no'].'</span></div></li>';
+
 					$bldgs[$record['bldg_abbre']]['name'] = $record['bldg_name'];
+					$bldgs[$record['bldg_abbre']]['gk_floor_id'] = $record['gk_floor_id'];
+					$bldgs[$record['bldg_abbre']]['camploc'] = $camploc;
 					$bldgs[$record['bldg_abbre']]['latitude'] = $record['latitude'];
 					$bldgs[$record['bldg_abbre']]['longitude'] = $record['longitude'];
 					@$bldg_map[$record['bldg_abbre']] = $record['gk_bldg_id'];
@@ -289,7 +309,7 @@ class DbTools {
 						foreach($dept_exp as $dept) {
 							$dept = trim($dept);
 							if ($dept != '') {
-								$offs[$dept] = "<span  class=\"fly-box\"  data-recordid=\"".$record['id']."\"  data-bldg=\"".$record['bldg_abbre']."\"  data-cat=\"office\"  data-dept=\"$dept\"  data-office=\"$dept\" >$dept</span>";
+								$offs[$dept] = "<span  class=\"fly-box $camploc\"  data-recordid=\"".$record['id']."\"  data-bldg=\"".$record['bldg_abbre']."\"  data-floor=\"".$record['gk_floor_id']."\"  data-cat=\"office\"  data-dept=\"$dept\"  data-office=\"$dept\" >$dept</span>";
 							}
 						}
 					}
@@ -297,8 +317,25 @@ class DbTools {
 
 				@natsort($bldgs);
 				foreach($bldgs as $bldg_abbre=>$bldg_stuff){
-					$bldgOpt[] = '<option value="'.$bldg_abbre.'">'.$bldg_stuff['name'].'</option>';
-					$bldgMnu[] = '<span class="fly-box dbtools" data data-cat="buildings" data-buildingId="'.$bldg_map[$bldg_abbre].'" data-buildingAbrev="'.$bldg_abbre.'" data-lat="'.$bldg_stuff['latitude'].'" data-long="'.$bldg_stuff['longitude'].'">'.$bldg_stuff['name'].'</span>';
+					$bldgOpt[] = '<option value="'.$bldg_abbre.'" data-floor="'.$bldg_stuff['gk_floor_id'].'">'.$bldg_stuff['name'].'</option>';
+
+					// 	$bldgMnu[] = '<span
+					// 		class="fly-box dbtools"
+					// 		data-cat="buildings"
+					// 		data-buildingId="'.$bldg_abbre.'"
+					// 		data-buildingAbrev="'.$bldg_abbre.'"
+					// 		data-bldg="'.$bldg_abbre.'"
+					// 		data-floor="'.$bldg_stuff['gk_floor_id'].'"
+					// 		data-lat="'.$bldg_stuff['latitude'].'"
+					// 		data-long="'.$bldg_stuff['longitude'].'">'.$bldg_stuff['name'].'</span>';
+
+					$bldgMnu[] = '<span
+						class="fly-box dbtools '.$bldg_stuff['camploc'].'"
+						data-cat="buildings"
+						data-bldg="'.$bldg_abbre.'"
+						data-floor="'.$bldg_stuff['gk_floor_id'].'"
+						data-lat="'.$bldg_stuff['latitude'].'"
+						data-long="'.$bldg_stuff['longitude'].'">'.$bldg_stuff['name'].'</span>';
 				}
 
 				ksort($offs);
@@ -327,7 +364,7 @@ class DbTools {
 				";
 			$stmt = $this->dbh->prepare($sql);
 			$stmt->execute();
-			$rows = $stmt->fetchAll();
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			if ($rows[0]['id']) {
 

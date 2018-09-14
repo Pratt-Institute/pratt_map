@@ -123,8 +123,12 @@ var fetchPoisFromApi = function(params) {
 
 	var str = '';
 	for (var prop in params) {
+		if (prop == 'currentTarget' || typeof params[prop] == 'undefined') {
+			continue;
+		}
 		str += "&"+prop+"="+params[prop];
 	}
+	str = encodeURI(str);
 
 	var url = "https://map.pratt.edu/facilities/web/facilities/get?token="+token+"&hash="+hash+str;
 
@@ -302,50 +306,36 @@ var zoomInHandler = function(){
 
 /// added functions /////////////////////////////////////////////////////////////////////
 
-var cameraStartedHandler = function(){
+var cameraStartedHandler = function(event){
 	// do stuff when map motion begins
+	//ambiarc.showMapLabel(ambiarc.selectedPoiId, true);
+	//window.doShowHidePoints = true;
+
+	clearTimeout(document.startShowHide);
+
+	if (event.detail.indexOf('UNTRACKED') != -1) {
+		return false;
+	}
+
+	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 	if (typeof ambiarc.labelObj != 'undefined' && typeof ambiarc.selectedPoiId != 'undefined') {
-		console.log(ambiarc.selectedPoiId + ' -- ' + ambiarc.labelObj.label)
-		ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
+		console.log('cameraStartedHandler');
+		console.log(event);
 	}
 
 };
 
 var cameraCompletedHandler = function(event){
 	// do stuff when map motion finishes
-	console.log('cameraCompletedHandler');
-	console.log(event);
 
-	try {
-		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-		setTimeout(function(){
-			for(var item in ambiarc.poiStuff) {
-				console.log('cameraCompletedHandler loop');
-				var id = ambiarc.poiStuff[item].ambiarcId;
+	clearTimeout(document.startShowHide);
 
-				if (typeof ambiarc.selectedPoiId == 'undefined') {
-					break;
-				}
+	if (event.detail.indexOf('UNTRACKED') != -1) {
+		return false;
+	}
 
-				if (ambiarc.selectedPoiId != id) {
-					//alert('hide  ' + ambiarc.selectedPoiId + ' -- ' + id);
-					ambiarc.hideMapLabel(id, true);
-				} else {
-					//alert('show  ' + ambiarc.selectedPoiId + ' -- ' + id);
-					//ambiarc.showMapLabel(id, false);
-				}
-			}
-
-			if (typeof ambiarc.labelObj != 'undefined' && typeof ambiarc.selectedPoiId != 'undefined') {
-				console.log(ambiarc.selectedPoiId + ' -- ' + ambiarc.labelObj.label)
-				ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
-			}
-
-			ambiarc.showMapLabel(ambiarc.selectedPoiId, false);
-
-		}, 125);
-	} catch(err) {
-		console.log(err);
+	if (typeof ambiarc.labelObj != 'undefined' && typeof ambiarc.selectedPoiId != 'undefined') {
+		doShowHidePoints();
 	}
 
 	//     if(currentFloorId == null){
@@ -382,6 +372,49 @@ var cameraCompletedHandler = function(event){
 	//     }
 
 };
+
+var doShowHidePoints = function() {
+
+	document.startShowHide = setTimeout(function(){
+
+		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+
+		if (typeof ambiarc.labelObj != 'undefined' && typeof ambiarc.selectedPoiId != 'undefined') {
+
+			console.log('cameraCompletedHandler');
+			console.log(event);
+
+			for(var item in ambiarc.poiStuff) {
+				console.log('cameraCompletedHandler loop');
+				var id = ambiarc.poiStuff[item].ambiarcId;
+
+				if (typeof ambiarc.selectedPoiId == 'undefined') {
+					break;
+				}
+
+				if (ambiarc.selectedPoiId != id) {
+					//alert('hide  ' + ambiarc.selectedPoiId + ' -- ' + id);
+					ambiarc.hideMapLabel(id, true);
+				} else {
+					//alert('show  ' + ambiarc.selectedPoiId + ' -- ' + id);
+					//ambiarc.showMapLabel(id, false);
+				}
+			}
+
+			console.log(ambiarc.selectedPoiId + ' -- ' + ambiarc.labelObj.label)
+			//ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
+			setTimeout(function(){
+				console.log(ambiarc.selectedPoiId + ' -- ' + ambiarc.labelObj.label)
+				ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
+				ambiarc.showMapLabel(ambiarc.selectedPoiId, true);
+			}, 250);
+		} else {
+			console.log('id or label is not set');
+		}
+
+	}, 250);
+
+}
 
 // Callback thats updates the UI after a POI is created
 var mapLabelCreatedCallback = function(labelId, labelName, mapLabelInfo) {

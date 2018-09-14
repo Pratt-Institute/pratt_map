@@ -12,6 +12,7 @@
 
 			params = {};
 			params.bldg = $(this).attr('data-building');
+			params.floor = $(this).attr('data-floor');
 			params.recordId = $(this).attr('data-recordid');
 			//params.ambiarcId = poiMap[$(this).attr('data-recordid')];
 			params.action = 'focusAfterDataLoad';
@@ -48,9 +49,9 @@
 			var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
 			ambiarc.viewFloorSelector('0001');
-// 	setTimeout(function(){
-// 		ambiarc.viewFloorSelector('0001');
-// 	}, 750);
+			setTimeout(function(){
+				ambiarc.viewFloorSelector('0001');
+			}, 750);
 		});
 
 		$(document).on('click', '.pratt-logo', function() {
@@ -99,7 +100,7 @@
 							setTimeout(function(){ $('.flyout').removeAttr('style'); }, 125);
 						});
 					});
-				}, 333);
+				}, 500);
 			}
 		}).on('mouseenter', function(){
 			clearTimeout(document.close_flyout);
@@ -114,7 +115,7 @@
 						setTimeout(function(){ $('.subfly').removeAttr('style'); }, 125);
 					});
 				});
-			}, 333);
+			}, 500);
 		}).on('mouseenter', function(){
 			clearTimeout(document.close_subfly);
 		});
@@ -152,6 +153,7 @@
 
 			params = {};
 			params.bldg = $(this).val();
+			params.floor = $(this).attr('data-floor');
 			//params.recordId = $(this).attr('data-recordid');
 			//params.action = 'focusAfterDataLoad';
 			if (fetchPoisFromApi(params)) {
@@ -183,7 +185,8 @@
 				params = {};
 				params.currentTarget = e.currentTarget;
 				params.type = type;
-				//params.bldg = $(this).attr('data-bldg');
+				params.bldg = $(this).attr('data-bldg');
+				params.floor = $(this).attr('data-floor');
 				params.dept = $(this).attr('data-dept');
 				params.office = $(this).attr('data-office');
 				params.facility = $(this).attr('data-facility');
@@ -201,6 +204,8 @@
 				if ($(this).attr('data-bldg')) {
 					params.bldg = $(this).attr('data-bldg');
 				}
+
+				window.bldg = $(this).attr('data-bldg');
 
 				if (params.bldg == 'FLSH' || params.bldg == 'CRR' || params.bldg == 'W14') {
 					doPopupMap(params.bldg);
@@ -267,50 +272,12 @@
 		$("style:not('#position')").remove();
 
 		deptMap = eval("(" + deptMap + ")");
-		//console.log(deptMap);
-		//console.log(deptMap['Library']);
-		//alert('deptMap');
 
 	});
 
 	//////////////////////////////////////////////////////////////////////////////////////
 
-	// 	function doFocusAfterFetch(params) {
-	//
-	// 		console.log('doFocusAfterFetch');
-	// 		console.log(params);
-	//
-	// 		if (params.bldg == 'FLSH' || params.bldg == 'CRR') {
-	// 			doPopupMap(params.bldg);
-	// 			return true;
-	// 		}
-	//
-	// 		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-	//
-	// 		for(var item in ambiarc.poiStuff) {
-	// 			if (ambiarc.poiStuff[item].gkDepartment == '') {
-	// 				continue;
-	// 			}
-	// 			console.log('doFocusAfterFetch loop');
-	// 			if (ambiarc.poiStuff[item].bldgAbbr == params.bldg) {
-	// 				if (ambiarc.poiStuff[item].gkDepartment.indexOf(params.dept) != -1) {
-	// 					var ambiarcId = ambiarc.poiStuff[item].ambiarcId;
-	//
-	// 					//ambiarc.setGPSCoordinatesOrigin(ambiarc.poiStuff[item].latitude, ambiarc.poiStuff[item].longitude);
-	// 					//break;
-	//
-	// 					adjustMapFocus(params.currentTarget, ambiarcId);
-	// 					collapseMenus();
-	// 					break;
-	// 				}
-	// 			}
-	// 		}
-	//
-	// 	}
-
 	function loadKeyboard() {
-
-		///alert(navigator.appVersion + ' -- ' + navigator.userAgent);
 
 		var isMobile = {
 			Android: function() {
@@ -520,7 +487,7 @@
 		var subFly;
 		$(schoolList).each(function(key0, level0){
 
-			console.log('setupMenuAcademics loop');
+			//console.log('setupMenuAcademics loop');
 
 			schoolString += '<span class="fly-box" data-cat="school" data-school="'+level0+'" >'+level0+'</span>';
 			subFly = '<div class="subfly" data-type="'+level0+'" >';
@@ -532,7 +499,15 @@
 						menuHightlight = '';
 					}
 
-					subFly += '<span class="'+menuHightlight+'" data-bldg="'+level1[item][0]+'" data-cat="dept" data-dept="'+item+'">'+item+'</span>';
+					//console.log(level1[item][0]);
+
+					if (level1[item][0] == 'W14' || level1[item][0] == 'W18' || level1[item][0] == 'FLSH' || level1[item][0] == 'CRR') {
+						var campLoc = 'offcamp';
+					} else {
+						var campLoc = 'oncamp';
+					}
+
+					subFly += '<span class="'+menuHightlight+' '+campLoc+'" data-bldg="'+level1[item][0]+'" data-cat="dept" data-dept="'+item+'">'+item+'</span>';
 				}
 			});
 			subFly += '</div>';

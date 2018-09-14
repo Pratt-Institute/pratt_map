@@ -26,7 +26,7 @@
 		if ($obj->checkToken($_SESSION['token'])) {
 			//is okay
 		} else {
-			echo '<br>error, no token found';
+///			echo '<br>error, no token found';
 		}
 	}
 	//die();
