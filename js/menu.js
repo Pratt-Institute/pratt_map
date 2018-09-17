@@ -8,6 +8,10 @@
 		  }
 		});
 
+		$(document).on("click", "guide-kick-background", function(e){
+
+		});
+
 		$(document).on("click", "li.list-group-item", function(e){
 
 			params = {};
@@ -217,6 +221,41 @@
 					params.bldg = $(this).attr('data-bldg');
 					params.recordId = $(this).attr('data-recordid');
 					params.action = 'focusAfterDataLoad';
+				}
+
+				if ($(this).attr('data-cat') == 'buildings') {
+
+					console.log('guide-kick-background');
+					console.log(e);
+
+					//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+					ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps,function(res){
+						console.log(res);
+						alert('getMapPositionAtCursor');
+					});
+
+					var startingBuilding	= '0024';
+					var startingLevel		= '0093';
+					var startingLatitude	= '40.693454';
+					var startingLongitude	= '-73.963549';
+					var endingBuilding		= $(this).attr('data-bldgid');
+					var endingLevel			= $(this).attr('data-floorid');
+					var endingLatitude		= $(this).attr('data-lat');
+					var endingLongitude		= $(this).attr('data-long');
+
+					//<span class="fly-box dbtools oncamp" data-cat="buildings" data-bldg="LIB" data-bldgid="0002" data-floorid="0006" data-lat="40.690872" data-long="-73.964982">LIBRARY</span>
+
+					ambiarc.getDirections('0024', '0093', '40.693454', '-73.963549', '0002', '0006', '40.690872', '-73.964982', function(res){
+
+					//ambiarc.getDirections(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, function(res){
+
+						console.log(res);
+						alert('yay');
+
+					});
+
+					return true;
+
 				}
 
 				//console.log(params);

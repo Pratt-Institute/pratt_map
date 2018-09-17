@@ -57,7 +57,8 @@
     };
     this.getDirections = function(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, cb) {
       this.messageQueue.push(cb);
-      var json = Json.stringify({
+      //var json = Json.stringify({
+      var json = JSON.stringify({
         startingBuildingId: startingBuilding,
         startingLevelId: startingLevel,
         startingLat: startingLatitude,

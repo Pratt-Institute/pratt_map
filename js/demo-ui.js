@@ -94,6 +94,16 @@ var fetchPoisFromApi = function(params) {
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 	//ambiarc.mapStuff = null;
 
+	if (typeof poiMap != 'undefined') {
+		$.each(poiMap, function(k,v){
+			if (typeof v != 'undefined') {
+				console.log('hide '+v);
+				//ambiarc.hideMapLabel(v,true);
+				ambiarc.destroyMapLabel(v);
+			}
+		});
+	}
+
 	if (typeof ambiarc.poiStuff == 'undefined') {
 		ambiarc.poiStuff = {};
 	} else {
@@ -207,7 +217,7 @@ var fetchPoisFromApi = function(params) {
 				if (params.label.length > 3) {
 					var obj = {};
 					obj.label = params.label;
-					//ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
+					ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
 					ambiarc.labelObj = obj;
 				}
 
@@ -238,9 +248,9 @@ var fetchPoisFromApi = function(params) {
 }
 
 //Event callback handlers
-var onRightMouseDown = function(event) {
-	console.log("Ambiarc received a RightMouseDown event");
-}
+// var onRightMouseDown = function(event) {
+// 	console.log("Ambiarc received a RightMouseDown event");
+// }
 
 var BuildingExitCompleted = function(event) {
 	$('#back-button').hide();
@@ -305,6 +315,36 @@ var zoomInHandler = function(){
 };
 
 /// added functions /////////////////////////////////////////////////////////////////////
+
+// capture right click event and do stuff
+var onRightMouseDown = function(event) {
+
+// 	console.log('onRightMouseDown');
+// 	console.log(event);
+//
+// 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+// 	ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps,function(res){
+//
+// 		console.log(res);
+// 		alert('getMapPositionAtCursor');
+//
+// 	});
+
+	//     if(isFloorSelectorEnabled){
+	//         return;
+	//     }
+	//
+	//     $(poiMenuSelector).css('top', $(window).height() - event.detail.pixelY + "px");
+	//     $(poiMenuSelector).css('left', event.detail.pixelX + "px");
+	//
+	//     if(currentLabelId){
+	//         repositionLabel();
+	//         return;
+	//     }
+	//
+	//     $('#bootstrap').trigger('contextmenu');
+	//     console.log("Ambiarc received a RightMouseDown event");
+};
 
 var cameraStartedHandler = function(event){
 	// do stuff when map motion begins
@@ -405,7 +445,7 @@ var doShowHidePoints = function() {
 			//ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
 			setTimeout(function(){
 				console.log(ambiarc.selectedPoiId + ' -- ' + ambiarc.labelObj.label)
-				ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
+				//ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
 				ambiarc.showMapLabel(ambiarc.selectedPoiId, true);
 			}, 250);
 		} else {

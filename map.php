@@ -30,7 +30,7 @@
   </script>
 </head>
 
-<body class="guide-kick-background">
+<body class="guide-kick-background" oncontextmenu="return false;">
     <div id="gameContainer" hidden="">
       <canvas id="#canvas"></canvas>
       <div class="logo Dark">

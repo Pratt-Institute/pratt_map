@@ -298,6 +298,7 @@ class DbTools {
 					$rooms[] = '<div class="li-col li-room '.$camploc.'"><span>'.$record['new_room_no'].'</span></div></li>';
 
 					$bldgs[$record['bldg_abbre']]['name'] = $record['bldg_name'];
+					$bldgs[$record['bldg_abbre']]['gk_bldg_id'] = $record['gk_bldg_id'];
 					$bldgs[$record['bldg_abbre']]['gk_floor_id'] = $record['gk_floor_id'];
 					$bldgs[$record['bldg_abbre']]['camploc'] = $camploc;
 					$bldgs[$record['bldg_abbre']]['latitude'] = $record['latitude'];
@@ -333,7 +334,8 @@ class DbTools {
 						class="fly-box dbtools '.$bldg_stuff['camploc'].'"
 						data-cat="buildings"
 						data-bldg="'.$bldg_abbre.'"
-						data-floor="'.$bldg_stuff['gk_floor_id'].'"
+						data-bldgid="'.$bldg_stuff['gk_bldg_id'].'"
+						data-floorid="'.$bldg_stuff['gk_floor_id'].'"
 						data-lat="'.$bldg_stuff['latitude'].'"
 						data-long="'.$bldg_stuff['longitude'].'">'.$bldg_stuff['name'].'</span>';
 				}
