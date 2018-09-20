@@ -293,7 +293,7 @@
 
               	//alert(id);
 
-				///console.log('loadRemoteMapLabels');
+				//console.log('~~~loadRemoteMapLabels~~~');
 				//console.log(id);
 				//console.log(element);
 

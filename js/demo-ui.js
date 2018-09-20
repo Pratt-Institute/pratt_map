@@ -82,7 +82,7 @@ var mapFinishedLoading = function() {
 
 	params = {};
 	params.fetch = 'first'
-	params.bldg = 'MH';
+	params.bldg = '0024';
 	fetchPoisFromApi(params);
 
 }//++++++++++++++++++
@@ -95,13 +95,26 @@ var fetchPoisFromApi = function(params) {
 	//ambiarc.mapStuff = null;
 
 	if (typeof poiMap != 'undefined') {
-		$.each(poiMap, function(k,v){
-			if (typeof v != 'undefined') {
-				console.log('hide '+v);
-				//ambiarc.hideMapLabel(v,true);
-				ambiarc.destroyMapLabel(v);
-			}
+
+		// 	$.each(poiMap, function(k,v){
+		// 		if (typeof v != 'undefined') {
+		// 			console.log('destroy '+v);
+		// 			//ambiarc.hideMapLabel(v,true);
+		// 			ambiarc.destroyMapLabel(v);
+		// 		}
+		// 	});
+
+		var list = [];
+		for (var i = -1001; i <= 1001; i++) {
+			list.push(i);
+		}
+
+		$.each(list, function(k,v){
+			ambiarc.destroyMapLabel(v);
+			ambiarc.hideMapLabel(v,true);
+			//console.log('destroy '+v);
 		});
+
 	}
 
 	if (typeof ambiarc.poiStuff == 'undefined') {
@@ -130,6 +143,8 @@ var fetchPoisFromApi = function(params) {
 		alert('Error, fetch params not defined.');
 		return true;
 	}
+
+	params.host = window.location.hostname;
 
 	var str = '';
 	for (var prop in params) {
@@ -164,15 +179,16 @@ var fetchPoisFromApi = function(params) {
 
 		ambiarc.poiStuff = null;
 		ambiarc.poiStuff = [];
+		ambiarc.labelObj = {};
 		window.poiMap = {};
 		window.deptMap = {};
 
 		$.each(out, function(k,v){
 
-			console.log('out each '+k);
-			if (typeof v.user_properties.ambiarcId == 'undefined') {
-				console.log(v);
-			}
+			// 	console.log('out each '+k);
+			// 	if (typeof v.user_properties.ambiarcId == 'undefined') {
+			// 		console.log(v);
+			// 	}
 
 			poiMap[v.user_properties.recordId] = v.user_properties.ambiarcId;
 			var s = {};
@@ -189,7 +205,7 @@ var fetchPoisFromApi = function(params) {
 			ambiarc.poiStuff[v.user_properties.ambiarcId] = s;
 		});
 
-		console.log(ambiarc.currentBuilding + ' -- ' + params.bldg);
+		//console.log(ambiarc.currentBuilding + ' -- ' + params.bldg);
 		//console.log(ambiarc.poiStuff);
 		//return true;
 
@@ -198,14 +214,13 @@ var fetchPoisFromApi = function(params) {
 			loadKeyboard();
 		} else {
 			ambiarc.currentBuilding = params.bldg;
-			console.log('set currentBuilding here: ' + ambiarc.currentBuilding);
+			//console.log('set currentBuilding here: ' + ambiarc.currentBuilding);
 		}
 
 		if (params.label) {
 
 			console.log(poiMap);
-
-			console.log('set label '+params.label);
+			//console.log('set label '+params.label);
 
 			var itemId = poiMap[params.recordId];
 			ambiarc.selectedPoiId = itemId;
@@ -217,6 +232,7 @@ var fetchPoisFromApi = function(params) {
 				if (params.label.length > 3) {
 					var obj = {};
 					obj.label = params.label;
+					obj.clear = 'hide';
 					ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
 					ambiarc.labelObj = obj;
 				}
@@ -226,13 +242,13 @@ var fetchPoisFromApi = function(params) {
 				alert('itemId is undefined');
 			}
 
-			console.log('++++++++++++++++++++++++++');
-			console.log(ambiarc.poiList);
-			console.log(itemId + ' -- ' + params.recordId);
-			console.log(params);
-			console.log(poiMap);
-			console.log(ambiarc.poiStuff[itemId]);
-			console.log('++++++++++++++++++++++++++');
+			// 	console.log('++++++++++++++++++++++++++');
+			// 	console.log(ambiarc.poiList);
+			// 	console.log(itemId + ' -- ' + params.recordId);
+			// 	console.log(params);
+			// 	console.log(poiMap);
+			// 	console.log(ambiarc.poiStuff[itemId]);
+			// 	console.log('++++++++++++++++++++++++++');
 		}
 
 		if (params.action == 'focusAfterDataLoad') {
@@ -257,36 +273,73 @@ var BuildingExitCompleted = function(event) {
 }
 
 var onFloorSelected = function(event) {
- var floorInfo = event.detail;
- currentFloorId = floorInfo.floorId;
 
-   $('#back-button').show();
-   isFloorSelectorEnabled = false;
+	console.log('onFloorSelected');
+	console.log(event.detail);
 
- mainBldgID = floorInfo.buildingId;
- console.log("Ambiarc received a FloorSelected event with a buildingId of " + floorInfo.buildingId + " and a floorId of " + floorInfo.floorId);
+	var floorInfo = event.detail;
+	currentFloorId = floorInfo.floorId;
+
+	if (doFloorSelected) {
+
+		$('#back-button').show();
+		isFloorSelectorEnabled = false;
+
+		mainBldgID = floorInfo.buildingId;
+
+		params = {};
+		params.bldg = floorInfo.buildingId;
+		params.floor = floorInfo.floorId;
+		params.select = 'floor';
+		//params.action = 'focusAfterDataLoad';
+
+		console.log(params);
+
+		if (fetchPoisFromApi(params)) {
+			alert('floor selected');
+		}
+
+	}
+
 }
 
 var onEnteredFloorSelector = function(event) {
- var buildingId = event.detail;
- currentFloorId = undefined;
- $('#back-button').show();
-  isFloorSelectorEnabled = true;
+	var buildingId = event.detail;
+	currentFloorId = undefined;
+	$('#back-button').show();
+	isFloorSelectorEnabled = true;
 
- console.log("Ambiarc received a FloorSelectorEnabled event with a building of " + buildingId);
+	console.log("Ambiarc received a FloorSelectorEnabled event with a building of " + buildingId);
 }
 
 var onExitedFloorSelector = function(event) {
- var buildingId = event.detail;
- currentFloorId = undefined;
 
-   isFloorSelectorEnabled = false;
- console.log("Ambiarc received a FloorSelectorEnabled event with a building of " + buildingId);
+	console.log('onExitedFloorSelector');
+	console.log(event.detail);
+
+	var buildingId = event.detail;
+	currentFloorId = undefined;
+
+	isFloorSelectorEnabled = false;
 }
 
 var onFloorSelectorFocusChanged = function(event) {
-	console.log("Ambiarc received a FloorSelectorFocusChanged event with a building id of: " + event.detail.buildingId +
-	" and a new floorId of " + event.detail.newFloorId + " coming from a floor with the id of " + event.detail.oldFloorId);
+
+	console.log('onFloorSelectorFocusChanged');
+	console.log(event.detail);
+
+	// 	params = {};
+	// 	params.bldg = event.detail.buildingId;
+	// 	//params.floor = event.detail.newFloorId;
+	// 	params.floor = event.detail.newFloodId; /// TODO keep an eye on this typo
+	// 	//params.action = 'focusAfterDataLoad';
+	//
+	// 	console.log(params);
+	//
+	// 	if (fetchPoisFromApi(params)) {
+	// 		alert('floor focus changed');
+	// 	}
+
 }
 
 //Rotate handlers
@@ -421,33 +474,40 @@ var doShowHidePoints = function() {
 
 		if (typeof ambiarc.labelObj != 'undefined' && typeof ambiarc.selectedPoiId != 'undefined') {
 
-			console.log('cameraCompletedHandler');
-			console.log(event);
+			if (ambiarc.labelObj.clear == 'hide') {
 
-			for(var item in ambiarc.poiStuff) {
-				console.log('cameraCompletedHandler loop');
-				var id = ambiarc.poiStuff[item].ambiarcId;
+				console.log('cameraCompletedHandler');
+				console.log(event);
 
-				if (typeof ambiarc.selectedPoiId == 'undefined') {
-					break;
+				for(var item in ambiarc.poiStuff) {
+					console.log('cameraCompletedHandler loop');
+					var id = ambiarc.poiStuff[item].ambiarcId;
+
+					if (typeof ambiarc.selectedPoiId == 'undefined') {
+						break;
+					}
+
+					if (ambiarc.selectedPoiId != id) {
+						//alert('hide  ' + ambiarc.selectedPoiId + ' -- ' + id);
+						ambiarc.hideMapLabel(id, true);
+					} else {
+						//alert('show  ' + ambiarc.selectedPoiId + ' -- ' + id);
+						//ambiarc.showMapLabel(id, false);
+					}
 				}
 
-				if (ambiarc.selectedPoiId != id) {
-					//alert('hide  ' + ambiarc.selectedPoiId + ' -- ' + id);
-					ambiarc.hideMapLabel(id, true);
-				} else {
-					//alert('show  ' + ambiarc.selectedPoiId + ' -- ' + id);
-					//ambiarc.showMapLabel(id, false);
-				}
-			}
-
-			console.log(ambiarc.selectedPoiId + ' -- ' + ambiarc.labelObj.label)
-			//ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
-			setTimeout(function(){
 				console.log(ambiarc.selectedPoiId + ' -- ' + ambiarc.labelObj.label)
 				//ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
-				ambiarc.showMapLabel(ambiarc.selectedPoiId, true);
-			}, 250);
+				setTimeout(function(){
+					console.log(ambiarc.selectedPoiId + ' -- ' + ambiarc.labelObj.label)
+					//ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
+					ambiarc.showMapLabel(ambiarc.selectedPoiId, true);
+
+					window.doFloorSelected = true;
+
+				}, 250);
+
+			}
 		} else {
 			console.log('id or label is not set');
 		}

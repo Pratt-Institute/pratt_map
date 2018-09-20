@@ -37,6 +37,7 @@ class DbTools {
 
 		try {
 			$token = bin2hex(random_bytes(15));
+			//$token = bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM));
 			//echo '<br>insert token: '.$sql = "INSERT INTO `tokens` (`id`, `token`, `create_date`) VALUES (NULL, '".$token."', CURRENT_TIMESTAMP)";
 			$sql = "INSERT INTO `tokens` (`id`, `token`, `create_date`) VALUES (NULL, '".$token."', CURRENT_TIMESTAMP)";
 			$this->dbh->exec($sql);

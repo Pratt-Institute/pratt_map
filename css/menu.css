@@ -41,7 +41,8 @@ div.nav-menu {
 
 	position: fixed;
 	/*top: 45%;*/
-	bottom: 5%;
+	/*bottom: 5%;*/
+	bottom: 40px;
 	left: 0px;
 	overflow: hidden;
     padding: 5px 20px;
@@ -119,7 +120,8 @@ div.flyout, div.subfly {
 	position: fixed;
 	/*top: 50%;
 	transform: translateY(-50%);*/
-	bottom: 0px;
+	bottom: 90px;
+	top: 0px;
 	z-index: 901;
 	background-color: #fff;
 	height: auto;
@@ -220,6 +222,16 @@ div.poi-box img {
 
 .offcamp {
 	color: #900 !important;
+}
+
+div#back-button button {
+	background-color: transparent !important;
+	border-color: transparent !important;
+	padding: 0px !important;
+}
+
+div#back-button button img {
+	height: 45px;
 }
 
 

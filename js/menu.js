@@ -1,6 +1,8 @@
 
 	$(document).ready(function(){
 
+		window.doFloorSelected = true;
+
 		$.extend($.expr[':'], {
 		  'containsi': function(elem, i, match, array) {
 			return (elem.textContent || elem.innerText || '').toLowerCase()
@@ -14,6 +16,8 @@
 
 		$(document).on("click", "li.list-group-item", function(e){
 
+			window.doFloorSelected = false;
+
 			params = {};
 			params.bldg = $(this).attr('data-building');
 			params.floor = $(this).attr('data-floor');
@@ -21,6 +25,7 @@
 			//params.ambiarcId = poiMap[$(this).attr('data-recordid')];
 			params.action = 'focusAfterDataLoad';
 			//params.label = 'Hello World';
+
 
 			console.log(params);
 			//return true;
@@ -168,6 +173,8 @@
 
 		$(document).on('click', '.fly-box', function(e) {
 
+			window.doFloorSelected = false;
+
 			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
 			$('.subfly').removeClass('reveal-horz');
@@ -231,7 +238,7 @@
 					//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 					ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps,function(res){
 						console.log(res);
-						alert('getMapPositionAtCursor');
+						//alert('getMapPositionAtCursor');
 					});
 
 					var startingBuilding	= '0024';
@@ -250,7 +257,7 @@
 					//ambiarc.getDirections(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, function(res){
 
 						console.log(res);
-						alert('yay');
+						alert('Sorry, menu not active yet.');
 
 					});
 
@@ -275,6 +282,7 @@
 
 		$(document).on("click", "div.subfly>span", function(e){
 
+			window.doFloorSelected = false;
 			//alert('subfly span');
 
 			window.bldg = $(this).attr('data-bldg');
@@ -303,9 +311,15 @@
 		});
 
 		/// department map is trusted
-		setTimeout(function(){
+		window.intRefresh = setTimeout(function(){
 			//deptMap = eval("(" + deptMap + ")");
-		}, 1000);
+			location.href = location.href;
+		}, parseInt(50*60*1000));
+
+		$(document).on('mousemove keypress click', function() {
+			clearTimeout(intRefresh);
+			intRefresh;
+		});
 
 		/// weird style injection coming from somewhere
 		$("style:not('#position')").remove();

@@ -1,5 +1,8 @@
 <?php
 
+	//phpinfo();
+	//die();
+
 	//ini_set('error_reporting', E_ERROR & ~E_WARNING);
 	ini_set('error_reporting', E_ALL);
 	ini_set('display_errors', true);
@@ -89,9 +92,9 @@
       <div class="row">
         <div style="pointer-events: all">
 
-          <div  id="back-button" class="floor-selector">
-            <button  onclick="dropdownClicked();" class="btn btn-default" type="button" aria-haspopup="true" aria-expanded="true">
-              Back
+          <div id="back-button" class="floor-selector">
+            <button onclick="dropdownClicked();" class="btn btn-default" type="button" aria-haspopup="true" aria-expanded="true">
+              <img src="images/arrow_left.png">
             </button>
           </div>
 
