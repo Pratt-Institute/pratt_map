@@ -87,21 +87,20 @@
 </head>
 
 <body style="pointer-events: none">
-  <div id="bootstrap" hidden>
-    <div class="container-fluid" style="z-index:100;">
-      <div class="row">
-        <div style="pointer-events: all">
+<div id="bootstrap" hidden>
+	<div class="container-fluid" style="z-index:100;">
+		<div class="row">
+			<div style="pointer-events: all">
+				<div id="back-button" class="floor-selector">
+					<button onclick="dropdownClicked();" class="btn btn-default" type="button" aria-haspopup="true" aria-expanded="true">
+						<img src="images/arrow_left.png">
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-          <div id="back-button" class="floor-selector">
-            <button onclick="dropdownClicked();" class="btn btn-default" type="button" aria-haspopup="true" aria-expanded="true">
-              <img src="images/arrow_left.png">
-            </button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <div id="controls-section" style="pointer-events: all; z-index:9999;">
+    <!--<div id="controls-section" style="pointer-events: all; z-index:9999;">
         <ul>
             <li class="" onclick="zoomInHandler()">
                 <span class="controls-btn ctrl-zoom-in"  aria-hidden="true"></span>
@@ -114,25 +113,24 @@
                 <span class=" controls-btn ctrl-zoom-out" onclick="zoomOutHandler()" aria-hidden="true"></span>
             </li>
         </ul>
-    </div>
+    </div>-->
 
+	</div>
+	<iframe src="./map.php?nc=<?php echo time(); ?>" id="ambiarcIframe" style="width:100%; height:100%; border:none; top:
+	0; z-index:-1; position:fixed; pointer-events: all;">
+		Your browser doesn't support iframes
+	</iframe>
 
-  </div>
-  <iframe src="./map.php?nc=<?php echo time(); ?>" id="ambiarcIframe" style="width:100%; height:100%; border:none; top:
-    0; z-index:-1; position:fixed; pointer-events: all;">
-    Your browser doesn't support iframes
-  </iframe>
+	<div class="nav-menu menu-open">menu</div>
 
-  <div class="nav-menu menu-open">menu</div>
-
-  <div class="nav-menu cat-wrap fade-out">
-	<div class="menu-category" style="background-color:#dde2e2"><span class="cat-box" data-type="buildings">buildings</span></div>
-	<div class="menu-category" style="background-color:#d6cecd"><span class="cat-box" data-type="academics">academics</span></div>
-	<div class="menu-category" style="background-color:#9a8e88"><span class="cat-box" data-type="offices">offices</span></div>
-	<div class="menu-category" style="background-color:#52869f"><span class="cat-box" data-type="facilities">facilities</span></div>
-	<div class="menu-category" style="background-color:#f4581e"><span class="cat-box">accessibility</span></div>
-	<div class="menu-category" style="background-color:#fff"><span class="cat-box cat-box-search"><img class="search-btn" src="images/view.png"></span></div>
-  </div>
+	<div class="nav-menu cat-wrap fade-out">
+		<div class="menu-category" style="background-color:#dde2e2"><span class="cat-box" data-type="buildings">buildings</span></div>
+		<div class="menu-category" style="background-color:#d6cecd"><span class="cat-box" data-type="academics">academics</span></div>
+		<div class="menu-category" style="background-color:#9a8e88"><span class="cat-box" data-type="offices">offices</span></div>
+		<div class="menu-category" style="background-color:#52869f"><span class="cat-box" data-type="facilities">facilities</span></div>
+		<div class="menu-category" style="background-color:#f4581e"><span class="cat-box">accessibility</span></div>
+		<div class="menu-category" style="background-color:#fff"><span class="cat-box cat-box-search"><img class="search-btn" src="images/view.png"></span></div>
+	</div>
 
 	<div class="flyout buildings"><?php echo $slists['bldg_menu']; ?></div>
 	<div class="flyout academics"></div>
@@ -168,6 +166,14 @@
 		<div class="contain-list">
 			<ul class="list-group"><?php echo $slists['room_list']; ?></ul>
 		</div>
+	</div>
+
+	<div class="legend">
+		<span class="bldgName"></span>
+		<br>
+		<span class="floorNo"></span>
+		<br>
+		<span class="roomName"></span>
 	</div>
 
 </body>

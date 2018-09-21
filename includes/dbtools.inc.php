@@ -285,6 +285,12 @@ class DbTools {
 				foreach($rows as $field=>$record) {
 					$imgUrl = 'images/pois/'.$record['id'].'.jpg';
 
+					if (file_exists($imgUrl)) {
+						$has_image = 'hasImg';
+					} else {
+						$has_image = 'noImg';
+					}
+
 					$camploc = strtolower($record['on_off_campus']).'camp';
 
 					$rooms[] = '<li id="'.$record['id'].'"
@@ -292,7 +298,7 @@ class DbTools {
 						data-building="'.$record['bldg_abbre'].'"
 						data-floor="'.$record['gk_floor_id'].'"
 						data-recordId="'.$record['id'].'"
-						class="list-group-item '.$imgUrl.'">';
+						class="list-group-item '.$imgUrl.' '.$has_image.'">';
 
 					$rooms[] = '<div class="li-col li-label '.$camploc.'"><span>'.$record['room_name'].'</span></div>';
 					$rooms[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_abbre'].'</span></div>';

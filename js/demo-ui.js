@@ -89,40 +89,21 @@ var mapFinishedLoading = function() {
 
 var fetchPoisFromApi = function(params) {
 
+	$('.showlegend').removeClass('showlegend');
+
 	console.log('fetchPoisFromApi');
 
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-	//ambiarc.mapStuff = null;
 
 	if (typeof poiMap != 'undefined') {
-
-		// 	$.each(poiMap, function(k,v){
-		// 		if (typeof v != 'undefined') {
-		// 			console.log('destroy '+v);
-		// 			//ambiarc.hideMapLabel(v,true);
-		// 			ambiarc.destroyMapLabel(v);
-		// 		}
-		// 	});
-
 		var list = [];
 		for (var i = -1001; i <= 1001; i++) {
 			list.push(i);
 		}
-
-		$.each(list, function(k,v){
-			ambiarc.destroyMapLabel(v);
-			ambiarc.hideMapLabel(v,true);
-			//console.log('destroy '+v);
-		});
-
 	}
 
 	if (typeof ambiarc.poiStuff == 'undefined') {
 		ambiarc.poiStuff = {};
-	} else {
-		//console.log(ambiarc.mapStuff.length);
-		//alert('length');
-		//return true;
 	}
 
 // 	if (typeof ambiarc.currentBuilding != 'undefined') {
@@ -185,11 +166,6 @@ var fetchPoisFromApi = function(params) {
 
 		$.each(out, function(k,v){
 
-			// 	console.log('out each '+k);
-			// 	if (typeof v.user_properties.ambiarcId == 'undefined') {
-			// 		console.log(v);
-			// 	}
-
 			poiMap[v.user_properties.recordId] = v.user_properties.ambiarcId;
 			var s = {};
 			s['ambiarcId']		= v.user_properties.ambiarcId;
@@ -197,8 +173,11 @@ var fetchPoisFromApi = function(params) {
 			s['accessible']		= v.user_properties.accessible;
 			s['bldgName']		= v.user_properties.bldgName;
 			s['bldgAbbr']		= v.user_properties.bldgAbbr;
+			s['floorNo']		= v.user_properties.floorNo;
+			s['roomNo']			= v.user_properties.roomNo;
 			s['gkDisplay']		= v.user_properties.gkDisplay;
 			s['gkDepartment']	= v.user_properties.gkDepartment;
+			s['roomName']		= v.properties.label;
 			s['latitude']		= v.geometry.coordinates[1];
 			s['longitude']		= v.geometry.coordinates[0];
 			//ambiarc.poiStuff.push(s);
@@ -220,12 +199,9 @@ var fetchPoisFromApi = function(params) {
 		if (params.label) {
 
 			console.log(poiMap);
-			//console.log('set label '+params.label);
 
 			var itemId = poiMap[params.recordId];
 			ambiarc.selectedPoiId = itemId;
-
-			//alert(itemId + ' -- ' + params.label);
 
 			if (typeof itemId != 'undefined' && typeof params.label != 'undefined') {
 
@@ -235,6 +211,9 @@ var fetchPoisFromApi = function(params) {
 					obj.clear = 'hide';
 					ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
 					ambiarc.labelObj = obj;
+
+					popMapLegend(itemId,true);
+
 				}
 
 			} else {
@@ -242,13 +221,13 @@ var fetchPoisFromApi = function(params) {
 				alert('itemId is undefined');
 			}
 
-			// 	console.log('++++++++++++++++++++++++++');
-			// 	console.log(ambiarc.poiList);
-			// 	console.log(itemId + ' -- ' + params.recordId);
-			// 	console.log(params);
-			// 	console.log(poiMap);
-			// 	console.log(ambiarc.poiStuff[itemId]);
-			// 	console.log('++++++++++++++++++++++++++');
+		} else {
+			if (params.fetch != 'first') {
+				for(var ambiarcId in ambiarc.poiStuff) {
+					popMapLegend(ambiarcId,false);
+					break;
+				}
+			}
 		}
 
 		if (params.action == 'focusAfterDataLoad') {
@@ -269,10 +248,18 @@ var fetchPoisFromApi = function(params) {
 // }
 
 var BuildingExitCompleted = function(event) {
+
+	console.log('BuildingExitCompleted');
+	console.log(event);
+
+	//$('.showlegend').removeClass('showlegend');
+
 	$('#back-button').hide();
 }
 
 var onFloorSelected = function(event) {
+
+	//$('.showlegend').removeClass('showlegend');
 
 	console.log('onFloorSelected');
 	console.log(event.detail);
@@ -298,21 +285,27 @@ var onFloorSelected = function(event) {
 		if (fetchPoisFromApi(params)) {
 			alert('floor selected');
 		}
-
 	}
-
 }
 
 var onEnteredFloorSelector = function(event) {
+
+	console.log('onEnteredFloorSelector');
+	console.log(event);
+
+	//$('.showlegend').removeClass('showlegend');
+
 	var buildingId = event.detail;
 	currentFloorId = undefined;
 	$('#back-button').show();
 	isFloorSelectorEnabled = true;
 
-	console.log("Ambiarc received a FloorSelectorEnabled event with a building of " + buildingId);
+	//console.log("Ambiarc received a FloorSelectorEnabled event with a building of " + buildingId);
 }
 
 var onExitedFloorSelector = function(event) {
+
+	//$('.showlegend').removeClass('showlegend');
 
 	console.log('onExitedFloorSelector');
 	console.log(event.detail);
@@ -321,9 +314,12 @@ var onExitedFloorSelector = function(event) {
 	currentFloorId = undefined;
 
 	isFloorSelectorEnabled = false;
+
 }
 
 var onFloorSelectorFocusChanged = function(event) {
+
+	//$('.showlegend').removeClass('showlegend');
 
 	console.log('onFloorSelectorFocusChanged');
 	console.log(event.detail);
@@ -369,6 +365,21 @@ var zoomInHandler = function(){
 
 /// added functions /////////////////////////////////////////////////////////////////////
 
+var popMapLegend = function(ambiarcId,showRoom=false) {
+
+	console.log(ambiarc.poiStuff[ambiarcId]);
+
+	$('.bldgName').html(ambiarc.poiStuff[ambiarcId].bldgName);
+	$('.floorNo').html(ambiarc.poiStuff[ambiarcId].floorNo + ' floor');
+
+	if (showRoom==true) {
+		$('.roomName').html(ambiarc.poiStuff[ambiarcId].roomName);
+	}
+
+	$('.legend').addClass('showlegend');
+
+}
+
 // capture right click event and do stuff
 var onRightMouseDown = function(event) {
 
@@ -404,7 +415,7 @@ var cameraStartedHandler = function(event){
 	//ambiarc.showMapLabel(ambiarc.selectedPoiId, true);
 	//window.doShowHidePoints = true;
 
-	clearTimeout(document.startShowHide);
+	clearTimeout(document.launchDestroyer);
 
 	if (event.detail.indexOf('UNTRACKED') != -1) {
 		return false;
@@ -421,15 +432,13 @@ var cameraStartedHandler = function(event){
 var cameraCompletedHandler = function(event){
 	// do stuff when map motion finishes
 
-	clearTimeout(document.startShowHide);
+	clearTimeout(document.launchDestroyer);
 
 	if (event.detail.indexOf('UNTRACKED') != -1) {
 		return false;
 	}
 
-	if (typeof ambiarc.labelObj != 'undefined' && typeof ambiarc.selectedPoiId != 'undefined') {
-		doShowHidePoints();
-	}
+	destroyOldPoints();
 
 	//     if(currentFloorId == null){
 	//         $('#bldg-floor-select').val('Exterior');
@@ -466,54 +475,40 @@ var cameraCompletedHandler = function(event){
 
 };
 
-var doShowHidePoints = function() {
+var destroyOldPoints = function() {
 
-	document.startShowHide = setTimeout(function(){
+	document.launchDestroyer = setTimeout(function(){
+
+		return true;
+
+		window.haltLoops = false;
 
 		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
-		if (typeof ambiarc.labelObj != 'undefined' && typeof ambiarc.selectedPoiId != 'undefined') {
+		console.log('cameraCompletedHandler');
+		console.log(event);
+		window.doFloorSelected = true;
 
-			if (ambiarc.labelObj.clear == 'hide') {
-
-				console.log('cameraCompletedHandler');
-				console.log(event);
-
-				for(var item in ambiarc.poiStuff) {
-					console.log('cameraCompletedHandler loop');
-					var id = ambiarc.poiStuff[item].ambiarcId;
-
-					if (typeof ambiarc.selectedPoiId == 'undefined') {
-						break;
-					}
-
-					if (ambiarc.selectedPoiId != id) {
-						//alert('hide  ' + ambiarc.selectedPoiId + ' -- ' + id);
-						ambiarc.hideMapLabel(id, true);
-					} else {
-						//alert('show  ' + ambiarc.selectedPoiId + ' -- ' + id);
-						//ambiarc.showMapLabel(id, false);
-					}
-				}
-
-				console.log(ambiarc.selectedPoiId + ' -- ' + ambiarc.labelObj.label)
-				//ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
-				setTimeout(function(){
-					console.log(ambiarc.selectedPoiId + ' -- ' + ambiarc.labelObj.label)
-					//ambiarc.updateMapLabel(ambiarc.selectedPoiId, ambiarc.mapLabel.IconWithText, ambiarc.labelObj);
-					ambiarc.showMapLabel(ambiarc.selectedPoiId, true);
-
-					window.doFloorSelected = true;
-
-				}, 250);
-
-			}
-		} else {
-			console.log('id or label is not set');
+		var list = [];
+		for (var i = -1001; i <= 1001; i++) {
+			list.push(i);
 		}
 
-	}, 250);
+		$.each(poiMap, function(k,v){
+			var i = list.indexOf(v);
+			list.splice(i, 1);
+		});
 
+		$.each(list, function(k,v){
+			if (haltLoops) {
+				return false;
+			}
+			ambiarc.destroyMapLabel(v);
+			ambiarc.hideMapLabel(v,true);
+			//console.log('destroy '+v);
+		});
+
+	}, 1000);
 }
 
 // Callback thats updates the UI after a POI is created

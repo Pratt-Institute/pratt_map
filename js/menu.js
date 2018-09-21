@@ -14,6 +14,10 @@
 
 		});
 
+		$(document).mousemove(function(e) {
+			window.haltLoops = true;
+		});
+
 		$(document).on("click", "li.list-group-item", function(e){
 
 			window.doFloorSelected = false;
@@ -22,13 +26,13 @@
 			params.bldg = $(this).attr('data-building');
 			params.floor = $(this).attr('data-floor');
 			params.recordId = $(this).attr('data-recordid');
-			//params.ambiarcId = poiMap[$(this).attr('data-recordid')];
 			params.action = 'focusAfterDataLoad';
-			//params.label = 'Hello World';
 
-
-			console.log(params);
-			//return true;
+			if ($(this).hasClass('hasImg')) {
+				doPoiImage(params.recordId);
+			} else {
+				$('.poi-box').remove();
+			}
 
 			if (fetchPoisFromApi(params)) {
 				alert('focus failed');

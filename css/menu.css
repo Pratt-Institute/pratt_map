@@ -121,7 +121,6 @@ div.flyout, div.subfly {
 	/*top: 50%;
 	transform: translateY(-50%);*/
 	bottom: 90px;
-	top: 0px;
 	z-index: 901;
 	background-color: #fff;
 	height: auto;
@@ -217,7 +216,7 @@ div.poi-box img {
 }
 
 .hiddenZ {
-  display: none !important;
+	display: none !important;
 }
 
 .offcamp {
@@ -232,6 +231,60 @@ div#back-button button {
 
 div#back-button button img {
 	height: 45px;
+}
+
+div.legend {
+	position: fixed;
+	top: 35px;
+	right: 35px;
+	/*width: 25vw;
+	height: 25vh;*/
+	/*z-index: 999;
+	overflow: hidden;
+	opacity: 0;*/
+	width: auto;
+	height: auto;
+	padding-bottom: 15px;
+	border-radius: 4px;
+	border: thin solid #666;
+	color: #333;
+	opacity: 0;
+    transition: all 0.35s ease;
+}
+
+div.showlegend {
+	opacity: 0.8;
+}
+
+div.legend span {
+	display: inline-block;
+	margin: 0px 25px;
+	white-space: nowrap;
+	line-height: 100%;
+}
+
+div.legend span.bldgName {
+	font-weight: bold;
+	font-size: 36px;
+	margin-top: 15px;
+}
+
+div.legend span.floorNo {
+	font-weight: bold;
+	font-size: 24px;
+	margin-top: 4px;
+}
+
+div.legend span.roomName {
+	font-weight: bold;
+	font-size: 18px;
+	margin-top: 4px;
+}
+
+div.legend span.copy {
+	font-weight: bold;
+	font-size: 12px;
+	margin-top: 4px;
 }
 
 
