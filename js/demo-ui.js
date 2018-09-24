@@ -5,12 +5,17 @@
  var MapLabels = {};
 
 //User clicked the floor selector
-var dropdownClicked = function() {
-	if (isFloorSelectorEnabled) {
-		ambiarc.exitBuilding();
-	} else {
-		ambiarc.viewFloorSelector(mainBldgID,0);
-	}
+var resetMap = function() {
+
+	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+	ambiarc.loadMap("pratt");
+
+	// 	if (isFloorSelectorEnabled) {
+	// 		ambiarc.exitBuilding();
+	// 	} else {
+	// 		ambiarc.viewFloorSelector(mainBldgID,0);
+	// 	}
+
 };
 
 //This method is called when the iframe loads, it subscribes onAmbiarcLoaded so we know when the map loads
@@ -252,14 +257,12 @@ var BuildingExitCompleted = function(event) {
 	console.log('BuildingExitCompleted');
 	console.log(event);
 
-	//$('.showlegend').removeClass('showlegend');
-
 	$('#back-button').hide();
+	//clearMapLegend();
+
 }
 
 var onFloorSelected = function(event) {
-
-	//$('.showlegend').removeClass('showlegend');
 
 	console.log('onFloorSelected');
 	console.log(event.detail);
@@ -293,8 +296,6 @@ var onEnteredFloorSelector = function(event) {
 	console.log('onEnteredFloorSelector');
 	console.log(event);
 
-	//$('.showlegend').removeClass('showlegend');
-
 	var buildingId = event.detail;
 	currentFloorId = undefined;
 	$('#back-button').show();
@@ -304,8 +305,6 @@ var onEnteredFloorSelector = function(event) {
 }
 
 var onExitedFloorSelector = function(event) {
-
-	//$('.showlegend').removeClass('showlegend');
 
 	console.log('onExitedFloorSelector');
 	console.log(event.detail);
@@ -319,10 +318,10 @@ var onExitedFloorSelector = function(event) {
 
 var onFloorSelectorFocusChanged = function(event) {
 
-	//$('.showlegend').removeClass('showlegend');
-
 	console.log('onFloorSelectorFocusChanged');
 	console.log(event.detail);
+
+	popMapLegend('',false,event.detail.newFloodId);
 
 	// 	params = {};
 	// 	params.bldg = event.detail.buildingId;
@@ -365,15 +364,43 @@ var zoomInHandler = function(){
 
 /// added functions /////////////////////////////////////////////////////////////////////
 
-var popMapLegend = function(ambiarcId,showRoom=false) {
+var clearMapLegend = function() {
 
-	console.log(ambiarc.poiStuff[ambiarcId]);
+	console.log('clearMapLegend');
 
-	$('.bldgName').html(ambiarc.poiStuff[ambiarcId].bldgName);
-	$('.floorNo').html(ambiarc.poiStuff[ambiarcId].floorNo + ' floor');
+	$('.bldgName').html('');
+	$('.floorNo').html('');
+	$('.roomName').html('');
 
-	if (showRoom==true) {
-		$('.roomName').html(ambiarc.poiStuff[ambiarcId].roomName);
+	$('.showlegend').removeClass('showlegend');
+
+}
+
+var popMapLegend = function(ambiarcId='',showRoom=false,floorId='') {
+
+	console.log('popMapLegend');
+	console.log( ambiarcId + ' - ' + showRoom + ' - ' + floorId );
+
+	if (ambiarcId != '') {
+
+		console.log(ambiarc.poiStuff[ambiarcId]);
+
+		$('.bldgName').html(ambiarc.poiStuff[ambiarcId].bldgName);
+		$('.floorNo').html(ambiarc.poiStuff[ambiarcId].floorNo + ' floor');
+
+		if (showRoom==true) {
+			$('.roomName').html(ambiarc.poiStuff[ambiarcId].roomName);
+		}
+
+	}
+
+	if (floorId != '') {
+
+		console.log(bldgMap[floorId]);
+
+		$('.bldgName').html(bldgMap[floorId].bldg_name);
+		$('.floorNo').html(bldgMap[floorId].floor + ' floor');
+
 	}
 
 	$('.legend').addClass('showlegend');

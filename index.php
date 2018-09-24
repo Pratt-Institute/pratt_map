@@ -1,5 +1,6 @@
 <?php
 
+	//echo phpversion();
 	//phpinfo();
 	//die();
 
@@ -23,13 +24,13 @@
 		if($obj->createToken()) {
 			//echo '<br>token created';
 		} else {
-			echo '<br>error, token not created';
+			//echo '<br>error, token not created';
 		}
 	} else {
 		if ($obj->checkToken($_SESSION['token'])) {
 			//is okay
 		} else {
-///			echo '<br>error, no token found';
+			//echo '<br>error, no token found';
 		}
 	}
 	//die();
@@ -80,6 +81,9 @@
 		//$.cookie('token', token, { expires: 1, path: '/', domain: 'jquery.com', secure: true });
 		var deptMap =  '<?php $obj->buildDepartmentMap() ?>';
 		document.deptMap = JSON.parse(deptMap);
+
+		var bldgMap =  '<?php $obj->createBuildingMap() ?>';
+		document.bldgMap = JSON.parse(bldgMap);
 		//console.log('deptMap');
 		//console.log(deptMap['Library']);
 	</script>
@@ -92,7 +96,7 @@
 		<div class="row">
 			<div style="pointer-events: all">
 				<div id="back-button" class="floor-selector">
-					<button onclick="dropdownClicked();" class="btn btn-default" type="button" aria-haspopup="true" aria-expanded="true">
+					<button onclick="resetMap();" class="btn btn-default" type="button" aria-haspopup="true" aria-expanded="true">
 						<img src="images/arrow_left.png">
 					</button>
 				</div>

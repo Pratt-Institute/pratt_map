@@ -20,6 +20,8 @@
 
 		$(document).on("click", "li.list-group-item", function(e){
 
+			clearMapLegend();
+
 			window.doFloorSelected = false;
 
 			params = {};
@@ -41,6 +43,9 @@
 		});
 
 		$(document).on('click', '.search-btn', function() {
+
+			clearMapLegend();
+
 			$('.nav-menu').fadeOut();
 			$('.showpopmap').removeClass('showpopmap');
 			$('.points').addClass('reveal-vert');
@@ -54,6 +59,9 @@
 		});
 
 		$(document).on('click', '.menu-open', function() {
+
+			clearMapLegend();
+
 			$('.showpopmap').removeClass('showpopmap');
 			$('.menu-open').addClass('fade-out');
 			$('.cat-wrap').removeClass('fade-out');
@@ -61,16 +69,22 @@
 			isFloorSelectorEnabled = false;
 			var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
-			ambiarc.viewFloorSelector('0001');
-			setTimeout(function(){
-				ambiarc.viewFloorSelector('0001');
-			}, 750);
+			ambiarc.loadMap("pratt");
+
+			// 	ambiarc.viewFloorSelector('0001');
+			// 	clearMapLegend();
+			// 	setTimeout(function(){
+			// 		ambiarc.viewFloorSelector('0001');
+			// 		clearMapLegend();
+			// 	}, 750);
 		});
 
 		$(document).on('click', '.pratt-logo', function() {
 			//collapseMenus();
 			$('.showpopmap').removeClass('showpopmap');
-			resetMenus();
+			//resetMenus();
+			var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+			ambiarc.loadMap("pratt");
 		});
 
 		$(document).on('click', '.cat-box', function() {
@@ -140,8 +154,9 @@
 				//hideAllPoints();
 				isFloorSelectorEnabled = false;
 				var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-				ambiarc.viewFloorSelector('0001');
-				ambiarc.viewFloorSelector('0001');
+				//ambiarc.viewFloorSelector('0001');
+				//ambiarc.viewFloorSelector('0001');
+				ambiarc.loadMap("pratt");
 			}
 		});
 
@@ -176,6 +191,8 @@
 		});
 
 		$(document).on('click', '.fly-box', function(e) {
+
+			clearMapLegend();
 
 			window.doFloorSelected = false;
 
@@ -286,6 +303,8 @@
 
 		$(document).on("click", "div.subfly>span", function(e){
 
+			clearMapLegend();
+
 			window.doFloorSelected = false;
 			//alert('subfly span');
 
@@ -303,6 +322,11 @@
 			params.dept = $(this).attr('data-dept');
 			params.schl = $(this).closest('div').attr('data-type');
 			params.action = 'focusAfterDataLoad';
+
+			console.log('**********************************');
+			console.log(params);
+			console.log(document.deptMap);
+			console.log('**********************************');
 
 			params.label = params.dept;
 			params.recordId = document.deptMap[params.dept].recordId;
@@ -329,6 +353,9 @@
 		$("style:not('#position')").remove();
 
 		deptMap = eval("(" + deptMap + ")");
+		bldgMap = eval("(" + bldgMap + ")");
+
+		console.log(bldgMap);
 
 	});
 
