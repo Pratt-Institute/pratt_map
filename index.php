@@ -142,15 +142,15 @@
 	<div class="flyout facilities"><?php $obj->fetchFacilitiesMenu() ?></div>
 
 	<div class="mapouter map-w14 ">
-		<iframe width="" height="" frameborder="0" src="" scrolling="no"></iframe>
+		<iframe width="" height="" frameborder="0" src="" scrolling="no" sandbox="allow-scripts"></iframe>
 	</div>
 
 	<div class="mapouter map-bfda map-flsh ">
-		<iframe width="" height="" frameborder="0" src="" scrolling="no"></iframe>
+		<iframe width="" height="" frameborder="0" src="" scrolling="no" sandbox="allow-scripts"></iframe>
 	</div>
 
 	<div class="mapouter map-crr ">
-		<iframe width="" height="" frameborder="0" src="" scrolling="no"></iframe>
+		<iframe width="" height="" frameborder="0" src="" scrolling="no" sandbox="allow-scripts"></iframe>
 	</div>
 
 	<img class="pratt-logo" src="images/Pratt_Logo_Black.png">

@@ -363,6 +363,12 @@
 
 	function loadKeyboard() {
 
+		if (typeof keyboardIsLoaded != 'undefined') {
+			if (keyboardIsLoaded == true) {
+				return true;
+			}
+		}
+
 		var isMobile = {
 			Android: function() {
 				return navigator.userAgent.match(/Android/i);
@@ -398,6 +404,9 @@
 			var kLeft = parseInt( (pWid - 776) / 2 );
 			$('div#keyboard').css({'left':kLeft+'px'});
 		}
+
+		window.keyboardIsLoaded = true;
+
 	}
 
 	function doPoiImage(id) {
@@ -564,16 +573,29 @@
 
 	function setupMenuAcademics() {
 
+		if (typeof academicsMenuIsLoaded != 'undefined') {
+			if (academicsMenuIsLoaded == true) {
+				return true;
+			}
+		}
+
+		console.log('setupMenuAcademics');
+
 		$(document.acad.academics).each(function(key, record){
 			window.schoolList = Object.keys(record);
 		});
+
+		console.log(schoolList);
+
+		var schoolArr = [];
 		var schoolString = '';
 		var subFly;
 		$(schoolList).each(function(key0, level0){
 
 			//console.log('setupMenuAcademics loop');
 
-			schoolString += '<span class="fly-box" data-cat="school" data-school="'+level0+'" >'+level0+'</span>';
+			schoolArr[key0] = '<span class="fly-box" data-cat="school" data-school="'+level0+'" >'+level0+'</span>';
+			//schoolString += '<span class="fly-box" data-cat="school" data-school="'+level0+'" >'+level0+'</span>';
 			subFly = '<div class="subfly" data-type="'+level0+'" >';
 			$(document.acad.academics[level0]).each(function(key1, level1){
 				for(var item in level1) {
@@ -597,7 +619,14 @@
 			subFly += '</div>';
 			$('body').append(subFly);
 		});
+
+		console.log(schoolArr);
+
+		schoolString = schoolArr.join('');
+
 		$('div.academics').append(schoolString);
+
+		window.academicsMenuIsLoaded = true;
 
 	}
 

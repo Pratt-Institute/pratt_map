@@ -27,6 +27,9 @@ var iframeLoaded = function() {
 
 // once Ambiarc is loaded, we can use the ambiarc object to call SDK functions
 var onAmbiarcLoaded = function() {
+
+	//alert('onAmbiarcLoaded');
+
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
     // Subscribe to various events needed for this application
