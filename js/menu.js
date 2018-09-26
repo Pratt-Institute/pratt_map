@@ -90,8 +90,9 @@
 		$(document).on('click', '.cat-box', function() {
 			$('.reveal-horz').removeClass('reveal-horz');
 			var pos = $(this).closest('div').position();
+			var maxHei = parseInt($(window).height()-90);
 			var type = $(this).attr('data-type');
-			$('div.'+type).css({left:pos.left});
+			$('div.'+type).css({'left':pos.left,'maxHeight':maxHei});
 			$('div.'+type).addClass('reveal-horz');
 			$("style:not('#position')").remove();
 			var getStyle = $("style[data-type='"+type+"']");
@@ -100,7 +101,7 @@
 				style.id = 'position';
 				style.type = 'text/css';
 				style.setAttribute('data-type', type);
-				style.innerHTML = '.'+type+'{left:'+pos.left+'}';
+				style.innerHTML = '.'+type+'{left:'+pos.left+';max-height:'+maxHei+';}';
 				document.getElementsByTagName('head')[0].appendChild(style);
 			}
 		});
