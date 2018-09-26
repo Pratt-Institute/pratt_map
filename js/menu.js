@@ -67,9 +67,8 @@
 			$('.cat-wrap').removeClass('fade-out');
 			$('body').append('<div class="click-capture"></div>');
 			isFloorSelectorEnabled = false;
-			var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-
-			ambiarc.loadMap("pratt");
+			//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+			//ambiarc.loadMap("pratt");
 
 			// 	ambiarc.viewFloorSelector('0001');
 			// 	clearMapLegend();
@@ -81,10 +80,11 @@
 
 		$(document).on('click', '.pratt-logo', function() {
 			//collapseMenus();
-			$('.showpopmap').removeClass('showpopmap');
+			//$('.showpopmap').removeClass('showpopmap');
 			//resetMenus();
-			var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			ambiarc.loadMap("pratt");
+			//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+			//ambiarc.loadMap("pratt");
+			location.reload();
 		});
 
 		$(document).on('click', '.cat-box', function() {
@@ -153,10 +153,10 @@
 				resetMenus();
 				//hideAllPoints();
 				isFloorSelectorEnabled = false;
-				var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				//ambiarc.viewFloorSelector('0001');
 				//ambiarc.viewFloorSelector('0001');
-				ambiarc.loadMap("pratt");
+				//ambiarc.loadMap("pratt");
 			}
 		});
 
@@ -296,8 +296,19 @@
 					//console.log('did it work?');
 					//collapseMenus();
 				}
-
 			}
+		});
+
+		$(document).on('click', '.reset-map', function() {
+
+			$(this).attr('disabled','disabled');
+
+			clearMapLegend();
+
+			$('.click-capture').remove();
+
+			var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+			ambiarc.loadMap("pratt");
 
 		});
 
@@ -342,7 +353,8 @@
 		window.intRefresh = setTimeout(function(){
 			//deptMap = eval("(" + deptMap + ")");
 			location.href = location.href;
-		}, parseInt(50*60*1000));
+		//}, parseInt(50*60*1000));
+		}, parseInt(600000)); // 10 minutes
 
 		$(document).on('mousemove keypress click', function() {
 			clearTimeout(intRefresh);
@@ -356,6 +368,14 @@
 		bldgMap = eval("(" + bldgMap + ")");
 
 		console.log(bldgMap);
+
+		window.onerror = function() {
+			location.reload();
+		}
+
+		window.addEventListener("error", function(){
+			location.reload();
+		});
 
 	});
 

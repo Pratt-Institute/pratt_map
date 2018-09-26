@@ -5,10 +5,10 @@
  var MapLabels = {};
 
 //User clicked the floor selector
-var resetMap = function() {
+//var resetMap = function() {
 
-	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-	ambiarc.loadMap("pratt");
+//	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+//	ambiarc.loadMap("pratt");
 
 	// 	if (isFloorSelectorEnabled) {
 	// 		ambiarc.exitBuilding();
@@ -16,7 +16,7 @@ var resetMap = function() {
 	// 		ambiarc.viewFloorSelector(mainBldgID,0);
 	// 	}
 
-};
+//};
 
 //This method is called when the iframe loads, it subscribes onAmbiarcLoaded so we know when the map loads
 var iframeLoaded = function() {
@@ -59,10 +59,14 @@ var onAmbiarcLoaded = function() {
 };//-------------
 
 var mapStartedLoading = function() {
+	console.log('mapStartedLoading');
 
+	//$("p").off("click");
 }
 
 var mapFinishedLoading = function() {
+
+	console.log('mapFinishedLoading');
 
 	// creating objecct where we will store all our points property values
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
@@ -70,28 +74,42 @@ var mapFinishedLoading = function() {
 	ambiarc.hideLoadingScreen();
 
 	ambiarc.getAllBuildings(function(buildingsArray){
-	  buildingsArray.forEach(function(bldgID, i){
-		ambiarc.getBuildingLabelID(bldgID, function(id){
-		  var poiObject = {};
-		  poiObject.label = "test";
-		  poiObject.type = "Icon"
-		  poiObject.location = "URL"
-		  poiObject.partialPath = "/icons/ic_expand.png"
-		  poiObject.collapsedIconPartialPath = "/icons/ic_expand.png"
-		  poiObject.collapsedIconLocation = "URL"
-		  poiObject.ignoreCollision = false;
-		  ambiarc.updateMapLabel(id, ambiarc.mapLabel.Icon, poiObject);
-		});
-	  });
+
+		console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+		console.log(buildingsArray);
+		console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+
+		////$.each(out, function(k,v){
+
+			  buildingsArray.forEach(function(bldgID, i){
+				ambiarc.getBuildingLabelID(bldgID, function(id){
+				  var poiObject = {};
+				  poiObject.label = "test";
+				  poiObject.type = "Icon"
+				  poiObject.location = "URL"
+				  poiObject.partialPath = "/icons/ic_expand.png"
+				  poiObject.collapsedIconPartialPath = "/icons/ic_expand.png"
+				  poiObject.collapsedIconLocation = "URL"
+				  poiObject.ignoreCollision = false;
+				  ambiarc.updateMapLabel(id, ambiarc.mapLabel.Icon, poiObject);
+				});
+			  });
+
 	});
+
 	$('#bootstrap').removeAttr('hidden');
-	$('#back-button').hide();
+	//$('#back-button').hide();
 	ambiarc.setMapTheme(ambiarc.mapTheme.light);
 
 	params = {};
 	params.fetch = 'first'
 	params.bldg = '0024';
 	fetchPoisFromApi(params);
+
+	// reactivate reset button after a pause
+	setTimeout(function(){
+		$('.reset-map').removeAttr('disabled');
+	}, 1500);
 
 }//++++++++++++++++++
 
@@ -260,7 +278,7 @@ var BuildingExitCompleted = function(event) {
 	console.log('BuildingExitCompleted');
 	console.log(event);
 
-	$('#back-button').hide();
+	//$('#back-button').hide();
 	//clearMapLegend();
 
 }
@@ -275,7 +293,7 @@ var onFloorSelected = function(event) {
 
 	if (doFloorSelected) {
 
-		$('#back-button').show();
+		//$('#back-button').show();
 		isFloorSelectorEnabled = false;
 
 		mainBldgID = floorInfo.buildingId;
@@ -301,7 +319,7 @@ var onEnteredFloorSelector = function(event) {
 
 	var buildingId = event.detail;
 	currentFloorId = undefined;
-	$('#back-button').show();
+	//$('#back-button').show();
 	isFloorSelectorEnabled = true;
 
 	//console.log("Ambiarc received a FloorSelectorEnabled event with a building of " + buildingId);

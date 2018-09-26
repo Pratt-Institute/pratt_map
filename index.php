@@ -96,7 +96,7 @@
 		<div class="row">
 			<div style="pointer-events: all">
 				<div id="back-button" class="floor-selector">
-					<button onclick="resetMap();" class="btn btn-default" type="button" aria-haspopup="true" aria-expanded="true">
+					<button class="btn btn-default reset-map" type="button" aria-haspopup="true" aria-expanded="true" disabled="disabled">
 						<img src="images/arrow_left.png">
 					</button>
 				</div>
