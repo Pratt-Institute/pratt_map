@@ -20,7 +20,7 @@
 
 		$(document).on("click", "li.list-group-item", function(e){
 
-			clearMapLegend();
+			//clearMapLegend();
 
 			window.doFloorSelected = false;
 
@@ -44,7 +44,7 @@
 
 		$(document).on('click', '.search-btn', function() {
 
-			clearMapLegend();
+			//clearMapLegend();
 
 			$('.nav-menu').fadeOut();
 			$('.showpopmap').removeClass('showpopmap');
@@ -60,7 +60,7 @@
 
 		$(document).on('click', '.menu-open', function() {
 
-			clearMapLegend();
+			//clearMapLegend();
 
 			$('.showpopmap').removeClass('showpopmap');
 			$('.menu-open').addClass('fade-out');
@@ -175,6 +175,8 @@
 		});
 
 		$(document).on("change", "select.menu-buildings", function(e){
+
+			resetMap();
 			//alert(this.value);
 			searchFunction();
 
@@ -193,7 +195,7 @@
 
 		$(document).on('click', '.fly-box', function(e) {
 
-			clearMapLegend();
+			//clearMapLegend();
 
 			window.doFloorSelected = false;
 
@@ -301,21 +303,16 @@
 		});
 
 		$(document).on('click', '.reset-map', function() {
-
 			$(this).attr('disabled','disabled');
-
 			clearMapLegend();
-
 			$('.click-capture').remove();
-
-			var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			ambiarc.loadMap("pratt");
-
+			$('.showlegend').removeClass('showlegend');
+			resetMap();
 		});
 
 		$(document).on("click", "div.subfly>span", function(e){
 
-			clearMapLegend();
+			//ßclearMapLegend();
 
 			window.doFloorSelected = false;
 			//alert('subfly span');

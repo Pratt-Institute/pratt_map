@@ -91,7 +91,9 @@
 </head>
 
 <body style="pointer-events: none">
+
 <div id="bootstrap" hidden>
+
 	<div class="container-fluid" style="z-index:100;">
 		<div class="row">
 			<div style="pointer-events: all">

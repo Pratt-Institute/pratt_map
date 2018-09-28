@@ -5,24 +5,29 @@
  var MapLabels = {};
 
 //User clicked the floor selector
-//var resetMap = function() {
+var resetMap = function() {
 
-//	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-//	ambiarc.loadMap("pratt");
+	if (isFloorSelectorEnabled) {
+		ambiarc.exitBuilding();
+	} else {
+		ambiarc.viewFloorSelector(mainBldgID,0);
+	}
 
-	// 	if (isFloorSelectorEnabled) {
-	// 		ambiarc.exitBuilding();
-	// 	} else {
-	// 		ambiarc.viewFloorSelector(mainBldgID,0);
-	// 	}
+	$('.showlegend').removeClass('showlegend');
 
-//};
+	// reactivate reset button after a pause
+	setTimeout(function(){
+		$('.reset-map').removeAttr('disabled');
+		//$('.showlegend').removeClass('showlegend');
+	}, 3000);
+
+};
 
 //This method is called when the iframe loads, it subscribes onAmbiarcLoaded so we know when the map loads
 var iframeLoaded = function() {
- $("#ambiarcIframe")[0].contentWindow.document.addEventListener('AmbiarcAppInitialized', function() {
-   onAmbiarcLoaded();
- });
+	$("#ambiarcIframe")[0].contentWindow.document.addEventListener('AmbiarcAppInitialized', function() {
+		onAmbiarcLoaded();
+	});
 }
 
 // once Ambiarc is loaded, we can use the ambiarc object to call SDK functions
@@ -53,7 +58,12 @@ var onAmbiarcLoaded = function() {
 
     var full = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+(window.location.pathname ? window.location.pathname.substring(0,window.location.pathname.lastIndexOf("/")) : '');
 
-    ambiarc.setMapAssetBundleURL(full+'/ambiarc/');
+    //ambiarc.setMapAssetBundleURL(full+'/ambiarc/');
+    //ambiarc.loadMap("pratt");
+
+    //var mapFolder = getMapName('map');
+    ambiarc.setMapAssetBundleURL('https://s3-us-west-1.amazonaws.com/gk-web-demo/ambiarc/');
+    //ambiarc.loadMap(mapFolder);
     ambiarc.loadMap("pratt");
 
 };//-------------
@@ -79,22 +89,19 @@ var mapFinishedLoading = function() {
 		console.log(buildingsArray);
 		console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
 
-		////$.each(out, function(k,v){
-
-			  buildingsArray.forEach(function(bldgID, i){
-				ambiarc.getBuildingLabelID(bldgID, function(id){
-				  var poiObject = {};
-				  poiObject.label = "test";
-				  poiObject.type = "Icon"
-				  poiObject.location = "URL"
-				  poiObject.partialPath = "/icons/ic_expand.png"
-				  poiObject.collapsedIconPartialPath = "/icons/ic_expand.png"
-				  poiObject.collapsedIconLocation = "URL"
-				  poiObject.ignoreCollision = false;
-				  ambiarc.updateMapLabel(id, ambiarc.mapLabel.Icon, poiObject);
-				});
-			  });
-
+		buildingsArray.forEach(function(bldgID, i){
+			ambiarc.getBuildingLabelID(bldgID, function(id){
+				var poiObject = {};
+				poiObject.label = "test";
+				poiObject.type = "Icon"
+				poiObject.location = "URL"
+				poiObject.partialPath = "/icons/ic_expand.png"
+				poiObject.collapsedIconPartialPath = "/icons/ic_expand.png"
+				poiObject.collapsedIconLocation = "URL"
+				poiObject.ignoreCollision = false;
+				ambiarc.updateMapLabel(id, ambiarc.mapLabel.Icon, poiObject);
+			});
+		});
 	});
 
 	$('#bootstrap').removeAttr('hidden');
@@ -115,18 +122,18 @@ var mapFinishedLoading = function() {
 
 var fetchPoisFromApi = function(params) {
 
-	$('.showlegend').removeClass('showlegend');
+	//$('.showlegend').removeClass('showlegend');
 
 	console.log('fetchPoisFromApi');
 
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
-	if (typeof poiMap != 'undefined') {
-		var list = [];
-		for (var i = -1001; i <= 1001; i++) {
-			list.push(i);
-		}
-	}
+// 	if (typeof poiMap != 'undefined') {
+// 		var list = [];
+// 		for (var i = -1001; i <= 1001; i++) {
+// 			list.push(i);
+// 		}
+// 	}
 
 	if (typeof ambiarc.poiStuff == 'undefined') {
 		ambiarc.poiStuff = {};
@@ -165,6 +172,7 @@ var fetchPoisFromApi = function(params) {
 	var url = "https://map.pratt.edu/facilities/web/facilities/get?token="+token+"&hash="+hash+str;
 
 	console.log('url '+url);
+	//alert(url);
 
 	//var url = "http://localhost/~iancampbell/PrattSDK-mod/points_sample.json";
 
@@ -181,6 +189,7 @@ var fetchPoisFromApi = function(params) {
 
 		if (out[0].user_properties.recordId.length < '1') {
 			console.log(out);
+			alert('load from api failed...');
 			return true;
 		}
 
@@ -189,6 +198,7 @@ var fetchPoisFromApi = function(params) {
 		ambiarc.labelObj = {};
 		window.poiMap = {};
 		window.deptMap = {};
+		window.legendInfo = {};
 
 		$.each(out, function(k,v){
 
@@ -231,14 +241,18 @@ var fetchPoisFromApi = function(params) {
 
 			if (typeof itemId != 'undefined' && typeof params.label != 'undefined') {
 
-				if (params.label.length > 3) {
+				if (params.label.length > 3 && poiMap.length > 1) {
 					var obj = {};
 					obj.label = params.label;
 					obj.clear = 'hide';
 					ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
 					ambiarc.labelObj = obj;
 
-					popMapLegend(itemId,true);
+					window.legendInfo.ambiarcId = itemId;
+					//legendInfo.showRoom = true;
+					window.legendInfo.floorId = '';
+
+					//popMapLegend();
 
 				}
 
@@ -250,7 +264,12 @@ var fetchPoisFromApi = function(params) {
 		} else {
 			if (params.fetch != 'first') {
 				for(var ambiarcId in ambiarc.poiStuff) {
-					popMapLegend(ambiarcId,false);
+
+					window.legendInfo.ambiarcId = ambiarcId;
+					//legendInfo.showRoom = false;
+					window.legendInfo.floorId = '';
+
+					//popMapLegend();
 					break;
 				}
 			}
@@ -258,6 +277,18 @@ var fetchPoisFromApi = function(params) {
 
 		if (params.action == 'focusAfterDataLoad') {
 			var itemId = poiMap[params.recordId]
+
+			window.legendInfo.ambiarcId = itemId;
+			//legendInfo.showRoom = false;
+			window.legendInfo.floorId = '';
+
+			//popMapLegend(itemId,false);
+
+			console.log('+++++++++++++++++++++++++++++++++++++++');
+			console.log(itemId);
+			console.log(params);
+			console.log('+++++++++++++++++++++++++++++++++++++++');
+
 			if (focusAfterDataLoad(itemId)) {
 				return true;
 			}
@@ -281,17 +312,26 @@ var BuildingExitCompleted = function(event) {
 	//$('#back-button').hide();
 	//clearMapLegend();
 
+	//$('.showlegend').removeClass('showlegend');
+
 }
 
 var onFloorSelected = function(event) {
 
+	console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 	console.log('onFloorSelected');
 	console.log(event.detail);
+	console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
 	var floorInfo = event.detail;
 	currentFloorId = floorInfo.floorId;
 
-	if (doFloorSelected) {
+	//window.legendInfo.ambiarcId = '';
+	//window.legendInfo.floorId = currentFloorId;
+	popMapLegend();
+
+	//if (doFloorSelected) {
+	if (isFloorSelectorEnabled) {
 
 		//$('#back-button').show();
 		isFloorSelectorEnabled = false;
@@ -303,6 +343,11 @@ var onFloorSelected = function(event) {
 		params.floor = floorInfo.floorId;
 		params.select = 'floor';
 		//params.action = 'focusAfterDataLoad';
+
+		console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+		console.log('doFloorSelected');
+		console.log(params);
+		console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
 		console.log(params);
 
@@ -321,6 +366,8 @@ var onEnteredFloorSelector = function(event) {
 	currentFloorId = undefined;
 	//$('#back-button').show();
 	isFloorSelectorEnabled = true;
+
+	window.doFloorSelected = true;
 
 	//console.log("Ambiarc received a FloorSelectorEnabled event with a building of " + buildingId);
 }
@@ -342,7 +389,11 @@ var onFloorSelectorFocusChanged = function(event) {
 	console.log('onFloorSelectorFocusChanged');
 	console.log(event.detail);
 
-	popMapLegend('',false,event.detail.newFloodId);
+	window.legendInfo.ambiarcId = '';
+	//window.legendInfo.showRoom = false;
+	window.legendInfo.floorId = event.detail.newFloodId;
+
+	popMapLegend();
 
 	// 	params = {};
 	// 	params.bldg = event.detail.buildingId;
@@ -393,14 +444,17 @@ var clearMapLegend = function() {
 	$('.floorNo').html('');
 	$('.roomName').html('');
 
-	$('.showlegend').removeClass('showlegend');
+	//$('.showlegend').removeClass('showlegend');
 
 }
 
-var popMapLegend = function(ambiarcId='',showRoom=false,floorId='') {
+var popMapLegend = function() {
+
+	var ambiarcId = window.legendInfo.ambiarcId;
+	var floorId = window.legendInfo.floorId;
 
 	console.log('popMapLegend');
-	console.log( ambiarcId + ' - ' + showRoom + ' - ' + floorId );
+	console.log( ambiarcId + ' -- ' + floorId );
 
 	if (ambiarcId != '') {
 
@@ -408,23 +462,28 @@ var popMapLegend = function(ambiarcId='',showRoom=false,floorId='') {
 
 		$('.bldgName').html(ambiarc.poiStuff[ambiarcId].bldgName);
 		$('.floorNo').html(ambiarc.poiStuff[ambiarcId].floorNo + ' floor');
+		$('.roomName').html(ambiarc.poiStuff[ambiarcId].roomName);
 
-		if (showRoom==true) {
-			$('.roomName').html(ambiarc.poiStuff[ambiarcId].roomName);
-		}
+		$('.legend').addClass('showlegend');
 
+		return true;
 	}
 
 	if (floorId != '') {
 
+		console.log(bldgMap);
 		console.log(bldgMap[floorId]);
 
 		$('.bldgName').html(bldgMap[floorId].bldg_name);
 		$('.floorNo').html(bldgMap[floorId].floor + ' floor');
 
+		$('.legend').addClass('showlegend');
+
+		return true;
 	}
 
-	$('.legend').addClass('showlegend');
+	//$('.showlegend').removeClass('showlegend');
+
 
 }
 
@@ -525,38 +584,38 @@ var cameraCompletedHandler = function(event){
 
 var destroyOldPoints = function() {
 
-	document.launchDestroyer = setTimeout(function(){
-
-		return true;
-
-		window.haltLoops = false;
-
-		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-
-		console.log('cameraCompletedHandler');
-		console.log(event);
-		window.doFloorSelected = true;
-
-		var list = [];
-		for (var i = -1001; i <= 1001; i++) {
-			list.push(i);
-		}
-
-		$.each(poiMap, function(k,v){
-			var i = list.indexOf(v);
-			list.splice(i, 1);
-		});
-
-		$.each(list, function(k,v){
-			if (haltLoops) {
-				return false;
-			}
-			ambiarc.destroyMapLabel(v);
-			ambiarc.hideMapLabel(v,true);
-			//console.log('destroy '+v);
-		});
-
-	}, 1000);
+	// 	document.launchDestroyer = setTimeout(function(){
+	//
+	// 		return true;
+	//
+	// 		window.haltLoops = false;
+	//
+	// 		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+	//
+	// 		console.log('cameraCompletedHandler');
+	// 		console.log(event);
+	// 		window.doFloorSelected = true;
+	//
+	// 		var list = [];
+	// 		for (var i = -1001; i <= 1001; i++) {
+	// 			list.push(i);
+	// 		}
+	//
+	// 		$.each(poiMap, function(k,v){
+	// 			var i = list.indexOf(v);
+	// 			list.splice(i, 1);
+	// 		});
+	//
+	// 		$.each(list, function(k,v){
+	// 			if (haltLoops) {
+	// 				return false;
+	// 			}
+	// 			ambiarc.destroyMapLabel(v);
+	// 			ambiarc.hideMapLabel(v,true);
+	// 			//console.log('destroy '+v);
+	// 		});
+	//
+	// 	}, 1000);
 }
 
 // Callback thats updates the UI after a POI is created

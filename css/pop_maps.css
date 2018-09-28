@@ -4,19 +4,21 @@
 	box-shadow: 0px 0px 25px grey;
 
 	text-align:right;
+
 	position:fixed;
-    top: 50%;
+    top: -50%;
     left: 50%;
     /*width:80%;
     height:80%;*/
     transform: translate(-50%, -50%);
+
     border: 1px solid #ccc;
     background-color: #f3f3f3;
     padding: 25px;
 
-    z-index: 1;
-	opacity: 0;
-	transition: all 0.35s ease;
+    z-index: 899;
+	opacity: 0.333;
+	transition: all 0.75s ease;
 }
 
 .gmap_canvas {
@@ -36,4 +38,11 @@ iframe#gmap_canvas {
 .showpopmap {
 	z-index: 899;
 	opacity: 1;
+
+	position:fixed;
+    top: 50%;
+    left: 50%;
+    /*width:80%;
+    height:80%;*/
+    transform: translate(-50%, -50%);
 }

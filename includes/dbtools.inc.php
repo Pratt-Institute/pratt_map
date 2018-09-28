@@ -424,11 +424,9 @@ class DbTools {
 			if ($rows[0]['id']) {
 				foreach($rows as $field=>$record) {
 
-					if (trim($record['bldg_name']) == 'HIGGINS') {
-						$record['bldg_name'] = 'Higgins Hall';
-					}
+					//$out[$record['gk_floor_id']] = $record;
 
-					if (trim($record['bldg_name']) == 'STEUBEN') {
+					if (trim($record['bldg_name']) == 'HIGGINS') {
 						$record['bldg_name'] = 'Higgins Hall';
 					}
 
@@ -441,12 +439,26 @@ class DbTools {
 					// 	$map[$record['gk_bldg_id']][$record['gk_floor_id']]['floor']		= $record['floor'];
 					// 	$map[$record['gk_bldg_id']][$record['gk_floor_id']]['bldgAbbr']		= $record['bldg_abbre'];
 
+					// 	$map[$record['gk_floor_id']][$record['bldg_abbre']]['recordId']		= $record['id'];
+					// 	$map[$record['gk_floor_id']][$record['bldg_abbre']]['bldg_name']	= $record['bldg_name'];
+					// 	$map[$record['gk_floor_id']][$record['bldg_abbre']]['floor']		= $record['floor'];
+					// 	$map[$record['gk_floor_id']][$record['bldg_abbre']]['bldgAbbr']		= $record['bldg_abbre'];
+
+					//if (trim($record['bldg_name']) == 'STEUBEN') {
+					if (trim($record['gk_bldg_id']) == '0018') {
+						$record['bldg_name'] = 'Steuben Hall/Pratt Studios';
+					}
+
 					$map[$record['gk_floor_id']]['recordId']	= $record['id'];
 					$map[$record['gk_floor_id']]['bldg_name']	= $record['bldg_name'];
 					$map[$record['gk_floor_id']]['floor']		= $record['floor'];
 					$map[$record['gk_floor_id']]['bldgAbbr']	= $record['bldg_abbre'];
-
 				}
+
+				// 	echo '<pre>';
+				// 	print_r($out);
+				// 	echo '</pre>';
+				// 	die();
 
 				echo json_encode($map);
 			}
