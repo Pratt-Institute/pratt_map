@@ -1,43 +1,45 @@
 ﻿(function(){
 	var setup = function AmbiarcThemes() {
-        this.lightTheme = {
-            colors: [{
-                "category": "Obstruction",
-                "colorHex": "#F8C6C600"
-            }, {
-                "category": "Railing",
-                "colorHex": "#A7917900"
-            }, {
-                "category": "Wall",
-                "colorHex": "#DDEEFF00"
-            }, {
-                "category": "Room",
-                "colorHex": "#FFFFFF00"
-            }, {
-                "category": "Stairs",
-                "colorHex": "#FFFFFF00"
-            }, {
-                "category": "Escalator",
-                "colorHex": "#FFFFFF00"
-            }, {
-                "category": "Ramp",
-                "colorHex": "#FFFFFF00"
-            }, {
-                "category": "Walkway",
-                "colorHex": "#EAE0CA00"
-            }, {
-                "category": "Non-Public",
-                "colorHex": "#55555500"
-            }, {
-                "category": "Restroom",
-                "colorHex": "#5EA2FF00"
-            }],
-            lighting: {
-                "sky": "#545454",
-                "equator": "#B0B0B0",
-                "ground": "#0C0B09"
-            }
-        };
+
+		this.lightTheme = {
+			colors: [{
+				"category": "Obstruction",
+				"colorHex": "#F8C6C600"
+			}, {
+				"category": "Railing",
+				"colorHex": "#A7917900"
+			}, {
+				"category": "Wall",
+				"colorHex": "#DDEEFF00"
+			}, {
+				"category": "Room",
+				"colorHex": "#FFFFFF00"
+			}, {
+				"category": "Stairs",
+				"colorHex": "#FFFFFF00"
+			}, {
+				"category": "Escalator",
+				"colorHex": "#FFFFFF00"
+			}, {
+				"category": "Ramp",
+				"colorHex": "#FFFFFF00"
+			}, {
+				"category": "Walkway",
+				"colorHex": "#EAE0CA00"
+			}, {
+				"category": "Non-Public",
+				"colorHex": "#55555500"
+			}, {
+				"category": "Restroom",
+				"colorHex": "#5EA2FF00"
+			}],
+			lighting: {
+				"sky": "#545454",
+				"equator": "#B0B0B0",
+				"ground": "#0C0B09"
+			}
+		};
+
         this.darkTheme = {
             colors: [{
                 "category": "Obstruction",
@@ -53,10 +55,16 @@
                 "colorHex": "#6C738E00"
             }, {
                 "category": "Stairs",
-                "colorHex": "#6C738E00"
+                //"colorHex": "#6C738E00"
+                "colorHex": "#FFFF0000"
+            }, {
+                "category": "Elevator",
+                //"colorHex": "#6C738E00"
+                "colorHex": "#FF660000"
             }, {
                 "category": "Escalator",
-                "colorHex": "#6C738E00"
+                //"colorHex": "#6C738E00"
+                "colorHex": "#FFFF0000"
             }, {
                 "category": "Ramp",
                 "colorHex": "#6C738E00"
@@ -72,10 +80,12 @@
             }],
             lighting: {
                 "sky": "#545454",
-                "equator": "#B0B0B0",
+                //"sky": "#FF000000",
+                "equator": "#000000",
                 "ground": "#0C0B09"
             }
         };
+
 	};
 	window.AmbiarcThemes = new setup();
 })(window);

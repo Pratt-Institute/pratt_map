@@ -33,6 +33,13 @@ class DbTools {
 		}
 	}
 
+	public function fetchThemeMode() {
+
+		return 'dark';
+		//return 'light';
+
+	}
+
 	public function createToken() {
 
 		try {

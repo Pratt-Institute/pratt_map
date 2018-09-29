@@ -19,7 +19,7 @@ var resetMap = function() {
 	setTimeout(function(){
 		$('.reset-map').removeAttr('disabled');
 		//$('.showlegend').removeClass('showlegend');
-	}, 3000);
+	}, 1500);
 
 };
 
@@ -69,12 +69,45 @@ var onAmbiarcLoaded = function() {
 };//-------------
 
 var mapStartedLoading = function() {
+
 	console.log('mapStartedLoading');
 
-	//$("p").off("click");
+	var mode = sessionStorage.getItem('mode');
+	if (mode == 'dark') {
+		ambiarc.setMapTheme(ambiarc.mapTheme.dark);
+		//ambiarc.setEnvironmentLighting('#33333300', '#33333300', '#99000000');
+		ambiarc.setSkyColor('#900', '#600');
+		ambiarc.setLightColor('#ccc', '#666', '#900');
+		setTimeout(function(){
+			$('.mode-banner').addClass('show-mode-banner');
+		}, 500);
+	} else {
+		ambiarc.setMapTheme(ambiarc.mapTheme.light);
+		setTimeout(function(){
+			$('.pratt-logo').addClass('show-pratt-logo');
+		}, 500);
+	}
+
 }
 
 var mapFinishedLoading = function() {
+
+	var mode = sessionStorage.getItem('mode');
+	if (mode == 'dark') {
+		ambiarc.setMapTheme(ambiarc.mapTheme.dark);
+		//ambiarc.setEnvironmentLighting('#33333300', '#33333300', '#99000000');
+		ambiarc.setSkyColor('#900', '#600');
+		ambiarc.setLightColor('#ccc', '#666', '#900');
+		setTimeout(function(){
+			$('.mode-banner').addClass('show-mode-banner');
+		}, 1);
+		$('.legend').css({'color':'#333'});
+	} else {
+		ambiarc.setMapTheme(ambiarc.mapTheme.light);
+		setTimeout(function(){
+			$('.pratt-logo').addClass('show-pratt-logo');
+		}, 1);
+	}
 
 	console.log('mapFinishedLoading');
 
@@ -106,7 +139,7 @@ var mapFinishedLoading = function() {
 
 	$('#bootstrap').removeAttr('hidden');
 	//$('#back-button').hide();
-	ambiarc.setMapTheme(ambiarc.mapTheme.light);
+	//ambiarc.setEnvironmentLighting('#333333', '#333333', '#990000');
 
 	params = {};
 	params.fetch = 'first'

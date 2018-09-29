@@ -60,6 +60,11 @@
 
   <link href="css/jquery.virtual_keyboard.css" rel="stylesheet" type="text/css"/>
 
+  	<script>
+		var mode = '<?php echo $obj->fetchThemeMode() ?>';
+		sessionStorage.setItem('mode',mode);
+	</script>
+
   <script src="js/demo-ui.js?nc=<?php echo time(); ?>"></script>
 
   <script src="TemplateData/js/jquery-2.2.4.min.js?nc=<?php echo time(); ?>"></script>
@@ -73,24 +78,27 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-	<script>
-		//document.token = "<?php echo $_SESSION['token'] ?>";
+    <script>
+
 		var acad = '<?php $obj->fetchAcademicsArray() ?>';
 		document.acad = JSON.parse(acad);
 		$.cookie('token', "<?php echo $_SESSION['token'] ?>", { expires: 1, secure: false });
-		//$.cookie('token', token, { expires: 1, path: '/', domain: 'jquery.com', secure: true });
+
 		var deptMap =  '<?php $obj->buildDepartmentMap() ?>';
 		document.deptMap = JSON.parse(deptMap);
 
 		var bldgMap =  '<?php $obj->createBuildingMap() ?>';
 		document.bldgMap = JSON.parse(bldgMap);
-		//console.log('deptMap');
-		//console.log(deptMap['Library']);
+
 	</script>
 
 </head>
 
 <body style="pointer-events: none">
+
+<div class="mode-banner">
+	<img src="images/tactical.png">
+</div>
 
 <div id="bootstrap" hidden>
 

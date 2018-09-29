@@ -84,7 +84,9 @@
 			//resetMenus();
 			//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 			//ambiarc.loadMap("pratt");
-			location.reload();
+			//location.reload();
+			alert('logo click detected');
+			setModeTheme();
 		});
 
 		$(document).on('click', '.cat-box', function() {
@@ -378,6 +380,12 @@
 	});
 
 	//////////////////////////////////////////////////////////////////////////////////////
+
+	function setModeTheme() {
+
+		alert('setModeTheme');
+
+	}
 
 	function loadKeyboard() {
 
