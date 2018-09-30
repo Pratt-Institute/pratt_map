@@ -137,6 +137,7 @@
 		});
 
 		$('.subfly').mouseleave(function(e) {
+			alert('one');
 			var hi = $(this).height();
 			$('.subfly').css({height: hi});
 			document.close_subfly = setTimeout(function(){
@@ -250,6 +251,7 @@
 				}
 
 				if ($(this).attr('data-cat') == 'office' || $(this).attr('data-cat') == 'facility') {
+
 					params.label = $(this).attr('data-dept');
 					params.bldg = $(this).attr('data-bldg');
 					params.recordId = $(this).attr('data-recordid');

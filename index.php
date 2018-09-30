@@ -43,6 +43,10 @@
 	//
 	// 	die();
 
+	if (@$_POST['mode']) {
+		$obj->setMode = addslashes($_POST['mode']);
+	}
+
 ?>
 
 <html>
@@ -96,9 +100,17 @@
 
 <body style="pointer-events: none">
 
-<div class="mode-banner">
-	<img src="images/tactical.png">
-</div>
+	<form id="myform" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+
+		<button class="mode-button mode-dark" type="submit" name="mode" value="light">
+			<img src="images/tactical.png">
+		</button>
+
+		<button class="mode-button mode-light" type="submit" name="mode" value="dark">
+			<img src="images/Pratt_Logo_Black.png">
+		</button>
+
+	</form>
 
 <div id="bootstrap" hidden>
 
@@ -163,7 +175,9 @@
 		<iframe width="" height="" frameborder="0" src="" scrolling="no" sandbox="allow-scripts"></iframe>
 	</div>
 
-	<img class="pratt-logo" src="images/Pratt_Logo_Black.png">
+
+
+
 
 	<div class="tab points" style="">
 		<div class="selectdiv ">

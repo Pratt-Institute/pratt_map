@@ -17,6 +17,8 @@ class DbTools {
 	private $stmt;
 	private $error;
 
+	public $setMode;
+
 	public function __construct() {
 
 		//echo '<br>'.$dsn = 'mysql:host=' . $this->dbhost . ';dbname=' . $this->dbname;
@@ -35,8 +37,9 @@ class DbTools {
 
 	public function fetchThemeMode() {
 
-		return 'dark';
-		//return 'light';
+		//return 'dark';
+		return 'light';
+		//return $this->setMode;
 
 	}
 
