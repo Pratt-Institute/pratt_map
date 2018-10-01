@@ -260,34 +260,39 @@
 
 				if ($(this).attr('data-cat') == 'buildings') {
 
-					console.log('guide-kick-background');
-					console.log(e);
+					// 	console.log('guide-kick-background');
+					// 	console.log(e);
+					//
+					// 	//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+					// 	ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps,function(res){
+					// 		console.log(res);
+					// 		//alert('getMapPositionAtCursor');
+					// 	});
 
-					//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-					ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps,function(res){
-						console.log(res);
-						//alert('getMapPositionAtCursor');
-					});
+					//var startingBuilding	= '0024';
+					//var startingLevel		= '0093';
+					//var startingLatitude	= '40.693454';
+					//var startingLongitude	= '-73.963549';
+					var buildingId	= $(this).attr('data-bldgid');
+					var floorId	= $(this).attr('data-floorid');
+					var lat		= $(this).attr('data-lat');
+					var lon		= $(this).attr('data-long');
+					var heightAboveFloor = '125';
 
-					var startingBuilding	= '0024';
-					var startingLevel		= '0093';
-					var startingLatitude	= '40.693454';
-					var startingLongitude	= '-73.963549';
-					var endingBuilding		= $(this).attr('data-bldgid');
-					var endingLevel			= $(this).attr('data-floorid');
-					var endingLatitude		= $(this).attr('data-lat');
-					var endingLongitude		= $(this).attr('data-long');
+					ambiarc.focusOnLatLonAndZoomToHeight(buildingId, '', lat, lon, heightAboveFloor);
 
-					//<span class="fly-box dbtools oncamp" data-cat="buildings" data-bldg="LIB" data-bldgid="0002" data-floorid="0006" data-lat="40.690872" data-long="-73.964982">LIBRARY</span>
+					window.legendInfo.ambiarcId = '';
+					window.legendInfo.buildingId = buildingId;
+					window.legendInfo.floorId = floorId;
+					window.legendInfo.roomName = '';
 
-					ambiarc.getDirections('0024', '0093', '40.693454', '-73.963549', '0002', '0006', '40.690872', '-73.964982', function(res){
+					popMapLegend();
 
+					//ambiarc.getDirections('0024', '0093', '40.693454', '-73.963549', '0002', '0006', '40.690872', '-73.964982', function(res){
 					//ambiarc.getDirections(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, function(res){
-
-						console.log(res);
-						alert('Sorry, menu not active yet.');
-
-					});
+					//	console.log(res);
+					//	alert('Sorry, menu not active yet.');
+					//});
 
 					return true;
 

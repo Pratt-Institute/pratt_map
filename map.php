@@ -15,7 +15,7 @@
   <script src="TemplateData/js/UnityCompatibility.js?nc=<?php echo time(); ?>"></script>
   <script>
 
-    var gameInstance = UnityLoader.instantiate("gameContainer", "map/d7f9ce40642fba0a7085d421fe814f35.json?nc=<?php echo time(); ?>", {
+    var gameInstance = UnityLoader.instantiate("gameContainer", "map/7dceb1ef4ea52ac4f0ed33b630899dad.json?nc=<?php echo time(); ?>", {
       onProgress: UnityProgress,
       Module: {
         onRuntimeInitialized: function() {

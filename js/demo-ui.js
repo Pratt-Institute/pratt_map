@@ -513,28 +513,23 @@ var popMapLegend = function() {
 	console.log( ambiarcId + ' -- ' + floorId );
 
 	if (ambiarcId != '') {
-
-		//console.log(ambiarc.poiStuff[ambiarcId]);
-
 		$('.bldgName').html(ambiarc.poiStuff[ambiarcId].bldgName);
 		$('.floorNo').html(ambiarc.poiStuff[ambiarcId].floorNo + ' floor');
 		$('.roomName').html(ambiarc.poiStuff[ambiarcId].roomName);
-
 		$('.legend').addClass('showlegend');
-
 		return true;
 	}
 
-	if (floorId != '' && bldgMap[floorId] != 'undefined') {
-
-		//console.log(bldgMap);
-		//console.log(bldgMap[floorId]);
-
+	if (floorId != '' && typeof bldgMap[floorId] != 'undefined') {
 		$('.bldgName').html(bldgMap[floorId].bldg_name);
 		$('.floorNo').html(bldgMap[floorId].floor + ' floor');
-
 		$('.legend').addClass('showlegend');
+		return true;
+	}
 
+	if (ambiarcId == '' && typeof floorId != 'undefined') {
+		$('.bldgName').html(bldgMap[floorId].bldg_name);
+		$('.legend').addClass('showlegend');
 		return true;
 	}
 
