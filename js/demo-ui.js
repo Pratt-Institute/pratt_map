@@ -512,25 +512,37 @@ var popMapLegend = function() {
 	console.log('popMapLegend');
 	console.log( ambiarcId + ' -- ' + floorId );
 
-	if (ambiarcId != '') {
-		$('.bldgName').html(ambiarc.poiStuff[ambiarcId].bldgName);
-		$('.floorNo').html(ambiarc.poiStuff[ambiarcId].floorNo + ' floor');
-		$('.roomName').html(ambiarc.poiStuff[ambiarcId].roomName);
-		$('.legend').addClass('showlegend');
-		return true;
+	try{
+		if (ambiarcId != '') {
+			$('.bldgName').html(ambiarc.poiStuff[ambiarcId].bldgName);
+			$('.floorNo').html(ambiarc.poiStuff[ambiarcId].floorNo + ' floor');
+			$('.roomName').html(ambiarc.poiStuff[ambiarcId].roomName);
+			$('.legend').addClass('showlegend');
+			return true;
+		}
+	} catch(err) {
+		console.log(err);
 	}
 
-	if (floorId != '' && typeof bldgMap[floorId] != 'undefined') {
-		$('.bldgName').html(bldgMap[floorId].bldg_name);
-		$('.floorNo').html(bldgMap[floorId].floor + ' floor');
-		$('.legend').addClass('showlegend');
-		return true;
+	try{
+		if (ambiarcId == '' && typeof floorId != 'undefined') {
+			$('.bldgName').html(bldgMap[floorId].bldg_name);
+			$('.legend').addClass('showlegend');
+			return true;
+		}
+	} catch(err) {
+		console.log(err);
 	}
 
-	if (ambiarcId == '' && typeof floorId != 'undefined') {
-		$('.bldgName').html(bldgMap[floorId].bldg_name);
-		$('.legend').addClass('showlegend');
-		return true;
+	try{
+		if (floorId != '' && typeof bldgMap[floorId] != 'undefined') {
+			$('.bldgName').html(bldgMap[floorId].bldg_name);
+			$('.floorNo').html(bldgMap[floorId].floor + ' floor');
+			$('.legend').addClass('showlegend');
+			return true;
+		}
+	} catch(err) {
+		console.log(err);
 	}
 
 }

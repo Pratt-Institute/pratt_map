@@ -84,9 +84,9 @@
 			//resetMenus();
 			//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 			//ambiarc.loadMap("pratt");
-			//location.reload();
-			alert('logo click detected');
-			setModeTheme();
+			location.reload();
+			//alert('logo click detected');
+			//setModeTheme();
 		});
 
 		$(document).on('click', '.cat-box', function() {
@@ -179,7 +179,8 @@
 
 		$(document).on("change", "select.menu-buildings", function(e){
 
-			resetMap();
+			//ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+			ambiarc.exitBuilding();
 			//alert(this.value);
 			searchFunction();
 
@@ -288,6 +289,8 @@
 
 					popMapLegend();
 
+					window.doFloorSelected = true;
+
 					//ambiarc.getDirections('0024', '0093', '40.693454', '-73.963549', '0002', '0006', '40.690872', '-73.964982', function(res){
 					//ambiarc.getDirections(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, function(res){
 					//	console.log(res);
@@ -375,14 +378,15 @@
 		bldgMap = eval("(" + bldgMap + ")");
 
 		console.log(bldgMap);
+		console.log('bldgMap bldgMap bldgMap bldgMap bldgMap bldgMap bldgMap bldgMap bldgMap bldgMap ');
 
-		window.onerror = function() {
-			location.reload();
-		}
+		//window.onerror = function() {
+		//	location.reload();
+		//}
 
-		window.addEventListener("error", function(){
-			location.reload();
-		});
+		//window.addEventListener("error", function(){
+		//	location.reload();
+		//});
 
 	});
 

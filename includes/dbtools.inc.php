@@ -245,11 +245,12 @@ class DbTools {
 			and room_name != ''
 			and room_name not like '%storage%'
 			and room_name not like '%corr%'
+
 			";
 
 		//$sql .= " group by bldg_abbre, floor, gk_department, department, room_name, gk_sculpture_name ";
 		//$sql .= " group by bldg_abbre, floor, room_name ";
-		$sql .= " order by bldg_abbre asc, room_name asc, floor asc, new_room_no asc, department asc ";
+		$sql .= " order by bldg_name asc, room_name asc, floor asc, new_room_no asc, department asc ";
 
 		return $sql;
 
@@ -280,6 +281,8 @@ class DbTools {
 
 					$camploc = strtolower($record['on_off_campus']).'camp';
 
+					$record['bldg_name'] = strtoupper(trim($record['bldg_name']));
+
 					$rooms[] = '<li id="'.$record['id'].'"
 						data-id="'.$record['id'].'"
 						data-building="'.$record['bldg_abbre'].'"
@@ -291,12 +294,14 @@ class DbTools {
 					$rooms[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_abbre'].'</span></div>';
 					$rooms[] = '<div class="li-col li-room '.$camploc.'"><span>'.$record['new_room_no'].'</span></div></li>';
 
-					$bldgs[$record['bldg_abbre']]['name'] = $record['bldg_name'];
-					$bldgs[$record['bldg_abbre']]['gk_bldg_id'] = $record['gk_bldg_id'];
-					$bldgs[$record['bldg_abbre']]['gk_floor_id'] = $record['gk_floor_id'];
-					$bldgs[$record['bldg_abbre']]['camploc'] = $camploc;
-					$bldgs[$record['bldg_abbre']]['latitude'] = $record['latitude'];
-					$bldgs[$record['bldg_abbre']]['longitude'] = $record['longitude'];
+					$bldgs[$record['bldg_name']]['name'] = $record['bldg_name'];
+					$bldgs[$record['bldg_name']]['bldg_abbre'] = $record['bldg_abbre'];
+					$bldgs[$record['bldg_name']]['gk_bldg_id'] = $record['gk_bldg_id'];
+					$bldgs[$record['bldg_name']]['gk_floor_id'] = $record['gk_floor_id'];
+					$bldgs[$record['bldg_name']]['camploc'] = $camploc;
+					$bldgs[$record['bldg_name']]['latitude'] = $record['latitude'];
+					$bldgs[$record['bldg_name']]['longitude'] = $record['longitude'];
+
 					@$bldg_map[$record['bldg_abbre']] = $record['gk_bldg_id'];
 
 					if (trim($record['gk_department'])!='') {
@@ -310,12 +315,16 @@ class DbTools {
 					}
 				}
 
-				@natsort($bldgs);
-				foreach($bldgs as $bldg_abbre=>$bldg_stuff){
+				//@natsort($bldgs);
+				@ksort($bldgs);
+				foreach($bldgs as $bldg_name=>$bldg_stuff){
 
 					if ($bldg_stuff['gk_floor_id'] != '') {
 
-						$bldgOpt[] = '<option value="'.$bldg_abbre.'" data-floor="'.$bldg_stuff['gk_floor_id'].'">'.$bldg_stuff['name'].'</option>';
+						$bldg_name = strtolower($bldg_name);
+						$bldg_name = ucwords($bldg_name);
+
+						$bldgOpt[] = '<option value="'.$bldg_stuff['bldg_abbre'].'" data-floor="'.$bldg_stuff['gk_floor_id'].'">'.$bldg_name.'</option>';
 
 						// 	$bldgMnu[] = '<span
 						// 		class="fly-box dbtools"
@@ -330,11 +339,11 @@ class DbTools {
 						$bldgMnu[] = '<span
 							class="fly-box dbtools '.$bldg_stuff['camploc'].'"
 							data-cat="buildings"
-							data-bldg="'.$bldg_abbre.'"
+							data-bldg="'.$bldg_stuff['bldg_abbre'].'"
 							data-bldgid="'.$bldg_stuff['gk_bldg_id'].'"
 							data-floorid="'.$bldg_stuff['gk_floor_id'].'"
 							data-lat="'.$bldg_stuff['latitude'].'"
-							data-long="'.$bldg_stuff['longitude'].'">'.$bldg_stuff['name'].'</span>';
+							data-long="'.$bldg_stuff['longitude'].'">'.$bldg_name.'</span>';
 
 					}
 				}
@@ -412,6 +421,10 @@ class DbTools {
 				foreach($rows as $field=>$record) {
 
 					//$out[$record['gk_floor_id']] = $record;
+
+					if ($record['gk_floor_id'] < '1') {
+						continue;
+					}
 
 					if (trim($record['bldg_name']) == 'HIGGINS') {
 						$record['bldg_name'] = 'Higgins Hall';
