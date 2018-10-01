@@ -106,8 +106,8 @@
 			<img src="images/tactical.png">
 		</button>
 
-		<button class="mode-button mode-light" type="submit" name="mode" value="dark">
-			<img src="images/Pratt_Logo_Black.png">
+		<button class="mode-button mode-light pratt-logo" type="submit" name="mode" value="dark">
+			<img src="images/Pratt_Logo_Black.png"  style="height:30px;opacity:1;">
 		</button>
 
 	</form>

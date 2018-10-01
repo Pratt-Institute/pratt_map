@@ -185,14 +185,14 @@
 
 			// TODO building focus trigger here
 
-			params = {};
-			params.bldg = $(this).val();
-			params.floor = $(this).attr('data-floor');
-			//params.recordId = $(this).attr('data-recordid');
-			//params.action = 'focusAfterDataLoad';
-			if (fetchPoisFromApi(params)) {
-				alert('focus failed');
-			}
+			// 	params = {};
+			// 	params.bldg = $(this).val();
+			// 	params.floor = $(this).attr('data-floor');
+			// 	//params.recordId = $(this).attr('data-recordid');
+			// 	//params.action = 'focusAfterDataLoad';
+			// 	if (fetchPoisFromApi(params)) {
+			// 		alert('focus failed');
+			// 	}
 
 		});
 

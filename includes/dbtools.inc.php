@@ -230,64 +230,36 @@ class DbTools {
 
 	}
 
+	private function runQuery() {
+
+		$sql = " select * from facilities ";
+
+		$sql .= " where department not in ('INACTIVE','UNUSABLE')
+			and room_name not like '%inactive%'
+			and department not like '%inactive%'
+			and major_category not like '%inactive%'
+			and functional_category not like '%inactive%'
+			and gk_display != 'N'
+			and gk_bldg_id != ''
+			and gk_floor_id != ''
+			and room_name != ''
+			and room_name not like '%storage%'
+			and room_name not like '%corr%'
+			";
+
+		//$sql .= " group by bldg_abbre, floor, gk_department, department, room_name, gk_sculpture_name ";
+		//$sql .= " group by bldg_abbre, floor, room_name ";
+		$sql .= " order by bldg_abbre asc, room_name asc, floor asc, new_room_no asc, department asc ";
+
+		return $sql;
+
+	}
+
 	public function buildSearchList() {
 
 		try {
-			//echo '<br>check token: '.$sql = "SELECT * FROM tokens WHERE token = '$token'";
-			$sql = "
-				select * from facilities
 
-				/*where ( gk_display = 'Y' or gk_department != '' or space_type in (1650,7701,7800) )*/
-				where ( gk_display = 'Y' or gk_department != '' )
-
-				and space_type not in (7500,7700,7600)
-
-				and department not in ('CIRCULATION','INACTIVE','UNUSABLE')
-
-				and room_name != ''
-				and gk_display != 'N'
-				and floor not like '%bsm%'
-				and room_name not like '%ele%'
-				and room_name not like '%class%'
-				and room_name not like '%storage%'
-				and room_name not like '%corr%'
-				and room_name not like '%cl.%'
-				and room_name not like '% cl%'
-				and room_name not like '%mech%'
-				and room_name not like '%inactive%'
-				and room_name not like '%tele%'
-				and room_name not like '%equip%'
-				and room_name not like '%closet%'
-				and room_name not like '%elec%'
-				and room_name not like '%lobby%'
-				and room_name not like '%shower%'
-				and room_name not like '%switch%'
-				and room_name not like '%janit%'
-				and room_name not like '%server%'
-				and room_name not like '%booth%'
-				and room_name not like '%cubicle%'
-				and room_name not like '%seat%'
-
-				and room_name not like '%rest%'
-				and room_name not like '%women%'
-				and room_name not like '%men%'
-				and room_name not like '%toilet%'
-
-				and room_name not like '%inactive%'
-				and department not like '%inactive%'
-				and major_category not like '%inactive%'
-				and functional_category not like '%inactive%'
-
-				/*
-				and room_name not like '%fac%'
-				and room_name not like '%tech%'
-				and room_name != 'office'
-				*/
-
-				order by bldg_name asc, room_no asc
-
-				";
-			$stmt = $this->dbh->prepare($sql);
+			$stmt = $this->dbh->prepare($this->runQuery());
 			$stmt->execute();
 			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -340,26 +312,31 @@ class DbTools {
 
 				@natsort($bldgs);
 				foreach($bldgs as $bldg_abbre=>$bldg_stuff){
-					$bldgOpt[] = '<option value="'.$bldg_abbre.'" data-floor="'.$bldg_stuff['gk_floor_id'].'">'.$bldg_stuff['name'].'</option>';
 
-					// 	$bldgMnu[] = '<span
-					// 		class="fly-box dbtools"
-					// 		data-cat="buildings"
-					// 		data-buildingId="'.$bldg_abbre.'"
-					// 		data-buildingAbrev="'.$bldg_abbre.'"
-					// 		data-bldg="'.$bldg_abbre.'"
-					// 		data-floor="'.$bldg_stuff['gk_floor_id'].'"
-					// 		data-lat="'.$bldg_stuff['latitude'].'"
-					// 		data-long="'.$bldg_stuff['longitude'].'">'.$bldg_stuff['name'].'</span>';
+					if ($bldg_stuff['gk_floor_id'] != '') {
 
-					$bldgMnu[] = '<span
-						class="fly-box dbtools '.$bldg_stuff['camploc'].'"
-						data-cat="buildings"
-						data-bldg="'.$bldg_abbre.'"
-						data-bldgid="'.$bldg_stuff['gk_bldg_id'].'"
-						data-floorid="'.$bldg_stuff['gk_floor_id'].'"
-						data-lat="'.$bldg_stuff['latitude'].'"
-						data-long="'.$bldg_stuff['longitude'].'">'.$bldg_stuff['name'].'</span>';
+						$bldgOpt[] = '<option value="'.$bldg_abbre.'" data-floor="'.$bldg_stuff['gk_floor_id'].'">'.$bldg_stuff['name'].'</option>';
+
+						// 	$bldgMnu[] = '<span
+						// 		class="fly-box dbtools"
+						// 		data-cat="buildings"
+						// 		data-buildingId="'.$bldg_abbre.'"
+						// 		data-buildingAbrev="'.$bldg_abbre.'"
+						// 		data-bldg="'.$bldg_abbre.'"
+						// 		data-floor="'.$bldg_stuff['gk_floor_id'].'"
+						// 		data-lat="'.$bldg_stuff['latitude'].'"
+						// 		data-long="'.$bldg_stuff['longitude'].'">'.$bldg_stuff['name'].'</span>';
+
+						$bldgMnu[] = '<span
+							class="fly-box dbtools '.$bldg_stuff['camploc'].'"
+							data-cat="buildings"
+							data-bldg="'.$bldg_abbre.'"
+							data-bldgid="'.$bldg_stuff['gk_bldg_id'].'"
+							data-floorid="'.$bldg_stuff['gk_floor_id'].'"
+							data-lat="'.$bldg_stuff['latitude'].'"
+							data-long="'.$bldg_stuff['longitude'].'">'.$bldg_stuff['name'].'</span>';
+
+					}
 				}
 
 				ksort($offs);

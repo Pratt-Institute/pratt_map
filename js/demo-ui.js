@@ -143,7 +143,7 @@ var mapFinishedLoading = function() {
 
 	params = {};
 	params.fetch = 'first'
-	params.bldg = '0024';
+	params.bldg = '0019';
 	fetchPoisFromApi(params);
 
 	// reactivate reset button after a pause
@@ -200,7 +200,7 @@ var fetchPoisFromApi = function(params) {
 			return true;
 		}
 
-		console.log(out);
+		//console.log(out);
 
 		if (out[0].user_properties.recordId.length < '1') {
 			console.log(out);
@@ -208,35 +208,116 @@ var fetchPoisFromApi = function(params) {
 			return true;
 		}
 
-		ambiarc.poiStuff = null;
+
+
+
+
+
+
+		if (typeof ambiarc.poiStuff != 'undefined') {
+			$.each(ambiarc.poiStuff, function(k, v) {
+				if (typeof v != 'undefined') {
+					var aId = v['ambiarcId'];
+					ambiarc.destroyMapLabel(aId);
+				}
+				delete ambiarc.poiStuff[k];
+			});
+		}
+
+		// 	if (typeof poiMap != 'undefined') {
+		// 		$.each(poiMap, function(k, v){
+		// 			delete poiMap[k];
+		// 		});
+		// 	}
+
+
+		if (typeof poiMap == 'undefined') {
+			window.poiMap = {};
+		}
+
+
+
+
+		//ambiarc.poiStuff = null;
 		ambiarc.poiStuff = [];
 		ambiarc.labelObj = {};
-		window.poiMap = {};
+
 		window.deptMap = {};
 		window.legendInfo = {};
 
 		$.each(out, function(k,v){
 
-			poiMap[v.user_properties.recordId] = v.user_properties.ambiarcId;
-			var s = {};
-			s['ambiarcId']		= v.user_properties.ambiarcId;
-			s['recordId']		= v.user_properties.recordId;
-			s['accessible']		= v.user_properties.accessible;
-			s['bldgName']		= v.user_properties.bldgName;
-			s['bldgAbbr']		= v.user_properties.bldgAbbr;
-			s['floorNo']		= v.user_properties.floorNo;
-			s['roomNo']			= v.user_properties.roomNo;
-			s['gkDisplay']		= v.user_properties.gkDisplay;
-			s['gkDepartment']	= v.user_properties.gkDepartment;
-			s['roomName']		= v.properties.label;
-			s['latitude']		= v.geometry.coordinates[1];
-			s['longitude']		= v.geometry.coordinates[0];
-			//ambiarc.poiStuff.push(s);
-			ambiarc.poiStuff[v.user_properties.ambiarcId] = s;
+			if (typeof v.user_properties.ambiarcId == 'undefined') {
+
+
+
+				console.log('undefined undefined undefined undefined undefined');
+				console.log(k);
+				console.log(v);
+				console.log('undefined undefined undefined undefined undefined');
+				//alert('id is undefined');
+				v.user_properties.ambiarcId = v.properties.mapLabelId;
+
+				// Add the map label to the map
+				/*
+					ambiarc.createMapLabel(v.properties.type, v.properties, (labelId) => {
+
+						// Callback triggered once the label is added
+						//mapLabelCreatedCallback(labelId, mapLabelInfo.label, mapLabelInfo);
+
+						poiMap[v.user_properties.recordId] = v.user_properties.labelId;
+						var s = {};
+						s['ambiarcId']		= v.user_properties.labelId;
+						s['recordId']		= v.user_properties.recordId;
+						s['accessible']		= v.user_properties.accessible;
+						s['bldgName']		= v.user_properties.bldgName;
+						s['bldgAbbr']		= v.user_properties.bldgAbbr;
+						s['floorNo']		= v.user_properties.floorNo;
+						s['roomNo']			= v.user_properties.roomNo;
+						s['gkDisplay']		= v.user_properties.gkDisplay;
+						s['gkDepartment']	= v.user_properties.gkDepartment;
+						s['roomName']		= v.properties.label;
+						s['latitude']		= v.geometry.coordinates[1];
+						s['longitude']		= v.geometry.coordinates[0];
+						//ambiarc.poiStuff.push(s);
+						ambiarc.poiStuff[v.user_properties.labelId] = s;
+
+						alert(v.user_properties.recordId + ' - ' + labelId);
+
+					});
+				 */
+
+
+			} else {
+
+				// 	console.log('defined defined defined defined defined');
+				// 	console.log(k);
+				// 	console.log(v);
+				// 	console.log('defined defined defined defined defined');
+
+				poiMap[v.user_properties.recordId] = v.user_properties.ambiarcId;
+				var s = {};
+				s['ambiarcId']		= v.user_properties.ambiarcId;
+				s['recordId']		= v.user_properties.recordId;
+				s['accessible']		= v.user_properties.accessible;
+				s['bldgName']		= v.user_properties.bldgName;
+				s['bldgAbbr']		= v.user_properties.bldgAbbr;
+				s['floorNo']		= v.user_properties.floorNo;
+				s['roomNo']			= v.user_properties.roomNo;
+				s['gkDisplay']		= v.user_properties.gkDisplay;
+				s['gkDepartment']	= v.user_properties.gkDepartment;
+				s['roomName']		= v.properties.label;
+				s['latitude']		= v.geometry.coordinates[1];
+				s['longitude']		= v.geometry.coordinates[0];
+				//ambiarc.poiStuff.push(s);
+				ambiarc.poiStuff[v.user_properties.ambiarcId] = s;
+
+			}
 		});
 
-		//console.log(ambiarc.currentBuilding + ' -- ' + params.bldg);
-		//console.log(ambiarc.poiStuff);
+		console.log(poiMap);
+		console.log(ambiarc.poiStuff);
+		console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
 		//return true;
 
 		if (params.fetch == 'first') {
@@ -296,6 +377,13 @@ var fetchPoisFromApi = function(params) {
 			window.legendInfo.ambiarcId = itemId;
 			//legendInfo.showRoom = false;
 			window.legendInfo.floorId = '';
+
+			console.log('==========================================');
+			console.log(params);
+			console.log(poiMap);
+			console.log(ambiarc.poiStuff);
+			console.log('==========================================');
+			//alert(itemId);
 
 			if (focusAfterDataLoad(itemId)) {
 				return true;
@@ -426,7 +514,7 @@ var popMapLegend = function() {
 
 	if (ambiarcId != '') {
 
-		console.log(ambiarc.poiStuff[ambiarcId]);
+		//console.log(ambiarc.poiStuff[ambiarcId]);
 
 		$('.bldgName').html(ambiarc.poiStuff[ambiarcId].bldgName);
 		$('.floorNo').html(ambiarc.poiStuff[ambiarcId].floorNo + ' floor');
@@ -439,8 +527,8 @@ var popMapLegend = function() {
 
 	if (floorId != '' && bldgMap[floorId] != 'undefined') {
 
-		console.log(bldgMap);
-		console.log(bldgMap[floorId]);
+		//console.log(bldgMap);
+		//console.log(bldgMap[floorId]);
 
 		$('.bldgName').html(bldgMap[floorId].bldg_name);
 		$('.floorNo').html(bldgMap[floorId].floor + ' floor');

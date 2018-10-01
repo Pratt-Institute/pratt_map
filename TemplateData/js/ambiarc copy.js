@@ -45,6 +45,7 @@
       gameInstance.SendMessage('Ambiarc', 'GetMapPositionAtCursor', coordType);
     };
     this.createMapLabel = function(mapLabelType, maplLabelInfo, idCallback) {
+
       this.messageQueue.push(idCallback);
       var json = JSON.stringify({
         mapLabelType: mapLabelType,
@@ -114,6 +115,18 @@
       gameInstance.SendMessage('Ambiarc', 'StopTrackingMapLabel');
     };
 
+    this.getBuildingLabelID = function(buildingId, cb) {
+      this.messageQueue.push(cb);
+      gameInstance.SendMessage('Ambiarc', 'GetBuildingLabelID', buildingId);
+    };
+
+    this.ShowTooltipForMapLabel = function(mapLabelId) {
+      var json = JSON.stringify({
+        mapLabelId: mapLabelId,
+      });
+      gameInstance.SendMessage('Ambiarc', 'ShowTooltipForMapLabel', json);
+    };
+
      this.TrackMapLabel= function(mapLabelId, height, followSpeed) {
       var json = JSON.stringify({
         mapLabelId: mapLabelId,
@@ -139,6 +152,28 @@
         immediate: immediate
       });
       gameInstance.SendMessage('Ambiarc', 'HideMapLabel', json);
+    };
+    this.hideMapLabelGroup = function(mapLabelIds, immediate) {
+      var json = JSON.stringify({
+        mapLabelIds: mapLabelIds,
+        immediate: immediate
+      });
+      gameInstance.SendMessage('Ambiarc', 'HideMapLabels', json);
+    };
+    this.showMapLabelGroup = function(mapLabelIds, immediate) {
+      var json = JSON.stringify({
+        mapLabelIds: mapLabelIds,
+        immediate: immediate
+      });
+      gameInstance.SendMessage('Ambiarc', 'ShowMapLabels', json);
+    };
+    this.EnableAutoShowPOIsOnFloorEnter = function() {
+
+      gameInstance.SendMessage('Ambiarc', 'EnableAutoShowPOIsOnFloorEnter');
+    };
+    this.DisableAutoShowPOIsOnFloorEnter = function() {
+
+      gameInstance.SendMessage('Ambiarc', 'DisableAutoShowPOIsOnFloorEnter');
     };
     this.showMapCallout = function(mapCallout, idCallback) {
       this.messageQueue.push(idCallback);
@@ -272,55 +307,6 @@
     this.loadEmbeddedPOIs = function() {
       gameInstance.SendMessage('Ambiarc', 'LoadEmbeddedPOIs');
     };
-    this.focusOnLatLonAndZoomToHeight = function (buildingId, floorId, lat, lon, heightAboveFloor) {
-    var json = JSON.stringify({
-        buildingId: buildingId,
-        floorId: floorId,
-        lat: lat,
-    lon: lon,
-    heightAboveFloor: heightAboveFloor
-      });
-      gameInstance.SendMessage('Ambiarc', 'FocusOnLatLonAndZoomToHeight', json);
-  };
-
-      this.hideMapLabelGroup = function(mapLabelIds, immediate) {
-      var json = JSON.stringify({
-        mapLabelIds: mapLabelIds,
-        immediate: immediate
-      });
-      gameInstance.SendMessage('Ambiarc', 'HideMapLabels', json);
-    };
-    this.showMapLabelGroup = function(mapLabelIds, immediate) {
-      var json = JSON.stringify({
-        mapLabelIds: mapLabelIds,
-        immediate: immediate
-      });
-      gameInstance.SendMessage('Ambiarc', 'ShowMapLabels', json);
-    };
-    this.EnableAutoShowPOIsOnFloorEnter = function() {
-
-      gameInstance.SendMessage('Ambiarc', 'EnableAutoShowPOIsOnFloorEnter');
-    };
-    this.DisableAutoShowPOIsOnFloorEnter = function() {
-
-      gameInstance.SendMessage('Ambiarc', 'DisableAutoShowPOIsOnFloorEnter');
-    };
-
-    this.ShowTooltipForMapLabel = function(mapLabelId) {
-      var json = JSON.stringify({
-        mapLabelId: mapLabelId,
-      });
-      gameInstance.SendMessage('Ambiarc', 'ShowTooltipForMapLabel', json);
-    };
-
-
-    this.EnterOverheadCamera = function() {
-      gameInstance.SendMessage('Ambiarc', 'EnterOverheadCamera');
-    };
-
-    this.ExitOverheadCamera = function() {
-      gameInstance.SendMessage('Ambiarc', 'ExitOverheadCamera');
-    };
 
     this.loadRemoteMapLabels = function(url, options) {
       return fetch(url, options)
@@ -349,7 +335,7 @@
               })
             });
            resolve(out.features)
-          });
+          });/////
         })
         .catch(err => {
           console.log(err);
