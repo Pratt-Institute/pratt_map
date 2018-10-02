@@ -135,18 +135,23 @@ li.seen {
 
 .li-col span {
 	margin: 20px;
+	text-overflow: ellipsis;
 }
 
 .li-label {
 	width: 180px;
 	overflow: hidden;
-	text-overflow: ellipsis;
 }
 
 .li-bldg {
 	border-left: thin solid #ccc;
 	border-right: thin solid #ccc;
 	width: 70px;
+}
+
+.li-sculpture {
+	width: 344px;
+	overflow: hidden;
 }
 
 /* custom select menu styles */

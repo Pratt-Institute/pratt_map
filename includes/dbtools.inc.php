@@ -288,11 +288,21 @@ class DbTools {
 						data-building="'.$record['bldg_abbre'].'"
 						data-floor="'.$record['gk_floor_id'].'"
 						data-recordId="'.$record['id'].'"
+						data-lat="'.$record['latitude'].'"
+						data-long="'.$record['longitude'].'"
 						class="list-group-item '.$imgUrl.' '.$has_image.'">';
 
-					$rooms[] = '<div class="li-col li-label '.$camploc.'"><span>'.$record['room_name'].'</span></div>';
-					$rooms[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_abbre'].'</span></div>';
-					$rooms[] = '<div class="li-col li-room '.$camploc.'"><span>'.$record['new_room_no'].'</span></div></li>';
+					if ($record['bldg_abbre'] == 'SG') {
+
+						$rooms[] = '<div class="li-col li-sculpture '.$camploc.'"><span>'.$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist'].'</span></div>';
+
+					} else {
+
+						$rooms[] = '<div class="li-col li-label '.$camploc.'"><span>'.$record['room_name'].'</span></div>';
+						$rooms[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_abbre'].'</span></div>';
+						$rooms[] = '<div class="li-col li-room '.$camploc.'"><span>'.$record['new_room_no'].'</span></div></li>';
+
+					}
 
 					$bldgs[$record['bldg_name']]['name'] = $record['bldg_name'];
 					$bldgs[$record['bldg_name']]['bldg_abbre'] = $record['bldg_abbre'];
@@ -319,7 +329,7 @@ class DbTools {
 				@ksort($bldgs);
 				foreach($bldgs as $bldg_name=>$bldg_stuff){
 
-					if ($bldg_stuff['gk_floor_id'] != '') {
+					//if ($bldg_stuff['gk_floor_id'] != '') {
 
 						$bldg_name = strtolower($bldg_name);
 						$bldg_name = ucwords($bldg_name);
@@ -345,7 +355,7 @@ class DbTools {
 							data-lat="'.$bldg_stuff['latitude'].'"
 							data-long="'.$bldg_stuff['longitude'].'">'.$bldg_name.'</span>';
 
-					}
+					//}
 				}
 
 				ksort($offs);

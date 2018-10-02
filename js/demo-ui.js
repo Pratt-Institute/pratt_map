@@ -371,21 +371,26 @@ var fetchPoisFromApi = function(params) {
 			}
 		}
 
+		var itemId = poiMap[params.recordId]
+		window.legendInfo.ambiarcId = itemId;
+		//legendInfo.showRoom = false;
+		window.legendInfo.floorId = '';
+
+		console.log('==========================================');
+		console.log(params);
+		console.log(poiMap);
+		console.log(ambiarc.poiStuff);
+		console.log('==========================================');
+		//alert(itemId);
+
 		if (params.action == 'focusAfterDataLoad') {
-			var itemId = poiMap[params.recordId]
-
-			window.legendInfo.ambiarcId = itemId;
-			//legendInfo.showRoom = false;
-			window.legendInfo.floorId = '';
-
-			console.log('==========================================');
-			console.log(params);
-			console.log(poiMap);
-			console.log(ambiarc.poiStuff);
-			console.log('==========================================');
-			//alert(itemId);
-
 			if (focusAfterDataLoad(itemId)) {
+				return true;
+			}
+		}
+
+		if (params.action == 'focusOutdoorPoint') {
+			if (ambiarc.showMapLabel(itemId, true)) {
 				return true;
 			}
 		}

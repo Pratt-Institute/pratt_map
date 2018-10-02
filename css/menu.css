@@ -227,7 +227,7 @@ div#back-button button img {
 div.legend {
 	position: fixed;
 	top: 35px;
-	right: 35px;
+	right: -100%;
 	width: auto;
 	height: auto;
 	padding-bottom: 15px;
@@ -240,6 +240,7 @@ div.legend {
 
 div.showlegend {
 	opacity: 0.9;
+	right: 35px;
 }
 
 div.legend span {

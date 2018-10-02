@@ -36,6 +36,28 @@
 				$('.poi-box').remove();
 			}
 
+			if ($(this).attr('data-building') == 'SG') {
+
+				var lat		= $(this).attr('data-lat');
+				var lon		= $(this).attr('data-long');
+				var heightAboveFloor = '50';
+
+				ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, heightAboveFloor);
+
+				window.legendInfo.ambiarcId = '';
+				window.legendInfo.buildingId = '';
+				window.legendInfo.floorId = '';
+				window.legendInfo.roomName = '';
+
+				popMapLegend();
+
+				window.doFloorSelected = true;
+
+				params.action = 'focusOutdoorPoint';
+
+				//return true;
+			}
+
 			if (fetchPoisFromApi(params)) {
 				alert('focus failed');
 			}
@@ -52,10 +74,10 @@
 			$('.menu-open').addClass('fade-out');
 			$('.reveal-horz').removeClass('reveal-horz');
 			$('body').append('<div class="click-capture"></div>');
-			isFloorSelectorEnabled = false;
-			var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			ambiarc.viewFloorSelector('0001');
-			ambiarc.viewFloorSelector('0001');
+			//isFloorSelectorEnabled = false;
+			//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+			//ambiarc.viewFloorSelector('0001');
+			//ambiarc.viewFloorSelector('0001');
 		});
 
 		$(document).on('click', '.menu-open', function() {
