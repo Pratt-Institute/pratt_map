@@ -416,7 +416,7 @@ class DbTools {
 
 	}
 
-	public function createBuildingMap() {
+	public function createHallMap() {
 
 		try {
 			$sql = "
@@ -444,17 +444,54 @@ class DbTools {
 					$record['room_name']	= ucwords(strtolower(trim($record['room_name'])));
 					$record['floor']		= strtolower(trim($record['floor']));
 
-					// 	$map[$record['gk_bldg_id']][$record['gk_floor_id']]['recordId']		= $record['id'];
-					// 	$map[$record['gk_bldg_id']][$record['gk_floor_id']]['bldg_name']	= $record['bldg_name'];
-					// 	$map[$record['gk_bldg_id']][$record['gk_floor_id']]['floor']		= $record['floor'];
-					// 	$map[$record['gk_bldg_id']][$record['gk_floor_id']]['bldgAbbr']		= $record['bldg_abbre'];
-
-					// 	$map[$record['gk_floor_id']][$record['bldg_abbre']]['recordId']		= $record['id'];
-					// 	$map[$record['gk_floor_id']][$record['bldg_abbre']]['bldg_name']	= $record['bldg_name'];
-					// 	$map[$record['gk_floor_id']][$record['bldg_abbre']]['floor']		= $record['floor'];
-					// 	$map[$record['gk_floor_id']][$record['bldg_abbre']]['bldgAbbr']		= $record['bldg_abbre'];
-
 					//if (trim($record['bldg_name']) == 'STEUBEN') {
+					if (trim($record['gk_bldg_id']) == '0018') {
+						$record['bldg_name'] = 'Steuben Hall/Pratt Studios';
+					}
+
+					$map[$record['gk_bldg_id']]['recordId']		= $record['id'];
+					$map[$record['gk_bldg_id']]['bldg_name']	= $record['bldg_name'];
+					$map[$record['gk_bldg_id']]['floor']		= $record['floor'];
+					$map[$record['gk_bldg_id']]['bldgAbbr']		= $record['bldg_abbre'];
+
+				}
+
+				echo json_encode($map);
+			}
+
+			return false;
+		} catch(PDOException $e) {
+			echo $sql . "<br>" . $e->getMessage();
+		}
+
+	}
+
+	public function createBuildingMap() {
+
+		try {
+			$sql = "
+				select * from facilities
+				order by bldg_name asc, floor asc
+				";
+			$stmt = $this->dbh->prepare($sql);
+			$stmt->execute();
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			if ($rows[0]['id']) {
+				foreach($rows as $field=>$record) {
+
+					if ($record['gk_floor_id'] < '1') {
+						continue;
+					}
+
+					if (trim($record['bldg_name']) == 'HIGGINS') {
+						$record['bldg_name'] = 'Higgins Hall';
+					}
+
+					$record['bldg_name']	= ucwords(strtolower(trim($record['bldg_name'])));
+					$record['room_name']	= ucwords(strtolower(trim($record['room_name'])));
+					$record['floor']		= strtolower(trim($record['floor']));
+
 					if (trim($record['gk_bldg_id']) == '0018') {
 						$record['bldg_name'] = 'Steuben Hall/Pratt Studios';
 					}
@@ -463,12 +500,8 @@ class DbTools {
 					$map[$record['gk_floor_id']]['bldg_name']	= $record['bldg_name'];
 					$map[$record['gk_floor_id']]['floor']		= $record['floor'];
 					$map[$record['gk_floor_id']]['bldgAbbr']	= $record['bldg_abbre'];
-				}
 
-				// 	echo '<pre>';
-				// 	print_r($out);
-				// 	echo '</pre>';
-				// 	die();
+				}
 
 				echo json_encode($map);
 			}

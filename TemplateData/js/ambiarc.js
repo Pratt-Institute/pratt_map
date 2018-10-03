@@ -52,7 +52,8 @@
       });
       gameInstance.SendMessage('Ambiarc', 'CreateMapLabel', json);
     };
-        this.getBuildingLabelID = function(buildingId, cb) {
+
+    this.getBuildingLabelID = function(buildingId, cb) {
       this.messageQueue.push(cb);
       gameInstance.SendMessage('Ambiarc', 'GetBuildingLabelID', buildingId);
     };
@@ -79,6 +80,7 @@
       });
       gameInstance.SendMessage('Ambiarc', 'UpdateMapLabel', json);
     };
+
     this.getDirections = function(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, cb) {
       this.messageQueue.push(cb);
       var json = JSON.stringify({
@@ -93,6 +95,7 @@
       });
       gameInstance.SendMessage('Ambiarc', 'GetDirections', json);
     };
+
     this.clearDirections = function() {
       gameInstance.SendMessage('Ambiarc', 'ClearDirections');
     };
@@ -277,13 +280,13 @@
         buildingId: buildingId,
         floorId: floorId,
         lat: lat,
-    lon: lon,
-    heightAboveFloor: heightAboveFloor
-      });
-      gameInstance.SendMessage('Ambiarc', 'FocusOnLatLonAndZoomToHeight', json);
-  };
+		lon: lon,
+		heightAboveFloor: heightAboveFloor
+		  });
+		  gameInstance.SendMessage('Ambiarc', 'FocusOnLatLonAndZoomToHeight', json);
+	  };
 
-      this.hideMapLabelGroup = function(mapLabelIds, immediate) {
+	this.hideMapLabelGroup = function(mapLabelIds, immediate) {
       var json = JSON.stringify({
         mapLabelIds: mapLabelIds,
         immediate: immediate

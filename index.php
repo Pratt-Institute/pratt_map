@@ -94,6 +94,9 @@
 		var bldgMap =  '<?php $obj->createBuildingMap() ?>';
 		document.bldgMap = JSON.parse(bldgMap);
 
+		var hallMap =  '<?php $obj->createHallMap() ?>';
+		document.hallMap = JSON.parse(hallMap);
+
 	</script>
 
 </head>

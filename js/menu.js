@@ -398,9 +398,10 @@
 
 		deptMap = eval("(" + deptMap + ")");
 		bldgMap = eval("(" + bldgMap + ")");
+		hallMap = eval("(" + hallMap + ")");
 
-		console.log(bldgMap);
-		console.log('bldgMap bldgMap bldgMap bldgMap bldgMap bldgMap bldgMap bldgMap bldgMap bldgMap ');
+		console.log(hallMap);
+		console.log('hallMap hallMap hallMap hallMap hallMap hallMap hallMap hallMap hallMap hallMap ');
 
 		//window.onerror = function() {
 		//	location.reload();
