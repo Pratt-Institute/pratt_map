@@ -20,7 +20,10 @@
 
 		$(document).on("click", "li.list-group-item", function(e){
 
-			//clearMapLegend();
+			//resetMap();
+			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+			ambiarc.menuAction = 'yes';
+			//alert('list-item');
 
 			window.doFloorSelected = false;
 
@@ -30,13 +33,18 @@
 			params.recordId = $(this).attr('data-recordid');
 			params.action = 'focusAfterDataLoad';
 
+			window.legendInfo.recordId = $(this).attr('data-recordid');
+			window.legendInfo.buildingId = $(this).attr('data-building');
+			window.legendInfo.floorId = $(this).attr('data-floor');
+			//window.legendInfo.roomName = '';
+
 			if ($(this).hasClass('hasImg')) {
 				doPoiImage(params.recordId);
 			} else {
 				$('.poi-box').remove();
 			}
 
-			if ($(this).attr('data-building') == 'SG') {
+			if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS') {
 
 				var lat		= $(this).attr('data-lat');
 				var lon		= $(this).attr('data-long');
@@ -49,14 +57,14 @@
 				window.legendInfo.floorId = '';
 				window.legendInfo.roomName = '';
 
-				popMapLegend();
-
 				window.doFloorSelected = true;
 
 				params.action = 'focusOutdoorPoint';
 
 				//return true;
 			}
+
+			//popMapLegend();
 
 			if (fetchPoisFromApi(params)) {
 				alert('focus failed');
@@ -66,7 +74,11 @@
 
 		$(document).on('click', '.search-btn', function() {
 
-			//clearMapLegend();
+			resetMap();
+
+			///ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+			///ambiarc.menuAction = 'yes';
+			///alert('search-btn');
 
 			$('.nav-menu').fadeOut();
 			$('.showpopmap').removeClass('showpopmap');
@@ -83,6 +95,9 @@
 		$(document).on('click', '.menu-open', function() {
 
 			//clearMapLegend();
+			//ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+			//ambiarc.menuAction = 'yes';
+			//alert('menu-open');
 
 			$('.showpopmap').removeClass('showpopmap');
 			$('.menu-open').addClass('fade-out');
@@ -132,6 +147,8 @@
 
 		$(document).on('click', '.click-capture', function() {
 			//collapseMenus();
+			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+			ambiarc.menuAction = 'no';
 			$('.showpopmap').removeClass('showpopmap');
 			resetMenus();
 		});
@@ -201,6 +218,11 @@
 
 		$(document).on("change", "select.menu-buildings", function(e){
 
+			//resetMap();
+			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+			ambiarc.menuAction = 'yes';
+			//alert('select.menu-buildings');
+
 			//ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 			ambiarc.exitBuilding();
 			//alert(this.value);
@@ -221,11 +243,11 @@
 
 		$(document).on('click', '.fly-box', function(e) {
 
-			//clearMapLegend();
+			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+			ambiarc.menuAction = 'yes';
+			//alert('fly-box');
 
 			window.doFloorSelected = false;
-
-			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
 			$('.subfly').removeClass('reveal-horz');
 			var pos = $(this).closest('div').position();
@@ -309,7 +331,7 @@
 					window.legendInfo.floorId = floorId;
 					window.legendInfo.roomName = '';
 
-					popMapLegend();
+					//popMapLegend();
 
 					window.doFloorSelected = true;
 
@@ -338,15 +360,15 @@
 
 		$(document).on('click', '.reset-map', function() {
 			$(this).attr('disabled','disabled');
-			clearMapLegend();
+			//clearMapLegend();
 			$('.click-capture').remove();
-			$('.showlegend').removeClass('showlegend');
+			//clearMapLegend();
 			resetMap();
 		});
 
 		$(document).on("click", "div.subfly>span", function(e){
 
-			//ßclearMapLegend();
+			//clearMapLegend();
 
 			window.doFloorSelected = false;
 			//alert('subfly span');

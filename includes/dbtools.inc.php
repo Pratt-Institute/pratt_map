@@ -2,7 +2,7 @@
 
 include_once('includes/sitevars.inc.php');
 
-	ini_set('error_reporting', E_ALL);
+	ini_set('error_reporting', E_ERROR);
 	ini_set('display_errors', true);
 	ini_set('log_errors', 1);
 
