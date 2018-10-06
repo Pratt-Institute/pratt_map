@@ -70,6 +70,7 @@
 	</script>
 
   <script src="js/demo-ui.js?nc=<?php echo time(); ?>"></script>
+  <script src="js/map-events.js?nc=<?php echo time(); ?>"></script>
 
   <script src="TemplateData/js/jquery-2.2.4.min.js?nc=<?php echo time(); ?>"></script>
   <script src="TemplateData/js/bootstrap.min.js?nc=<?php echo time(); ?>"></script>
