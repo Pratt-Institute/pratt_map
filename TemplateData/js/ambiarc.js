@@ -330,27 +330,38 @@
         .then(res => res.json())
         .then((out) => {
           return new Promise(function(resolve, reject) {
-            out.features.forEach(function(element) {
-              element.properties.latitude = element.geometry.coordinates[1];
-              element.properties.longitude = element.geometry.coordinates[0];
-              window.Ambiarc.createMapLabel(element.properties.type, element.properties, function(id) {
 
-				// 	console.log('~~~loadRemoteMapLabels~~~begin~~~');
-				// 	console.log(id);
-				// 	console.log(element);
-				// 	console.log('~~~loadRemoteMapLabels~~~end~~~');
+			  try {
+					out.features.forEach(function(element) {
+					  element.properties.latitude = element.geometry.coordinates[1];
+					  element.properties.longitude = element.geometry.coordinates[0];
+					  window.Ambiarc.createMapLabel(element.properties.type, element.properties, function(id) {
 
-				element.properties.mapLabelId = id;
-				//element.properties.mapLabelId = element.user_properties.recordId;
-				//element.properties.id = element.user_properties.recordId;
-				element.user_properties.ambiarcId = id;
+						// 	console.log('~~~loadRemoteMapLabels~~~begin~~~');
+						// 	console.log(id);
+						// 	console.log(element);
+						// 	console.log('~~~loadRemoteMapLabels~~~end~~~');
 
-				if (typeof id == 'undefined') {
-					alert(element.user_properties.recordId);
+						element.properties.mapLabelId = id;
+
+						element.properties.showOnCreation = false;
+
+						//element.properties.mapLabelId = element.user_properties.recordId;
+						//element.properties.id = element.user_properties.recordId;
+						element.user_properties.ambiarcId = id;
+
+						if (typeof id == 'undefined') {
+							alert(element.user_properties.recordId);
+						}
+
+					  })
+					});
+
+				} catch(err) {
+					console.log();
 				}
 
-              })
-            });
+
            resolve(out.features)
           });
         })

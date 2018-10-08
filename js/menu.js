@@ -20,6 +20,8 @@
 
 		$(document).on("click", "li.list-group-item", function(e){
 
+			clearMapLegend();
+
 			//resetMap();
 			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 			ambiarc.menuAction = 'yes';
@@ -33,9 +35,9 @@
 			params.recordId = $(this).attr('data-recordid');
 			params.action = 'focusAfterDataLoad';
 
-			window.legendInfo.recordId = $(this).attr('data-recordid');
-			window.legendInfo.buildingId = $(this).attr('data-building');
-			window.legendInfo.floorId = $(this).attr('data-floor');
+			//window.legendInfo.recordId = $(this).attr('data-recordid');
+			//window.legendInfo.buildingId = $(this).attr('data-building');
+			//window.legendInfo.floorId = $(this).attr('data-floor');
 			//window.legendInfo.roomName = '';
 
 			if ($(this).hasClass('hasImg')) {
@@ -52,12 +54,12 @@
 
 				ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, heightAboveFloor);
 
-				window.legendInfo.ambiarcId = '';
-				window.legendInfo.buildingId = '';
-				window.legendInfo.floorId = '';
-				window.legendInfo.roomName = '';
+				//window.legendInfo.ambiarcId = '';
+				//window.legendInfo.buildingId = '';
+				//window.legendInfo.floorId = '';
+				//window.legendInfo.roomName = '';
 
-				window.doFloorSelected = true;
+				//window.doFloorSelected = true;
 
 				params.action = 'focusOutdoorPoint';
 
@@ -218,6 +220,8 @@
 
 		$(document).on("change", "select.menu-buildings", function(e){
 
+			clearMapLegend();
+
 			//resetMap();
 			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 			ambiarc.menuAction = 'yes';
@@ -242,6 +246,8 @@
 		});
 
 		$(document).on('click', '.fly-box', function(e) {
+
+			clearMapLegend();
 
 			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 			ambiarc.menuAction = 'yes';
@@ -305,35 +311,42 @@
 
 				if ($(this).attr('data-cat') == 'buildings') {
 
-					// 	console.log('guide-kick-background');
-					// 	console.log(e);
-					//
-					// 	//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-					// 	ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps,function(res){
-					// 		console.log(res);
-					// 		//alert('getMapPositionAtCursor');
-					// 	});
-
-					//var startingBuilding	= '0024';
-					//var startingLevel		= '0093';
-					//var startingLatitude	= '40.693454';
-					//var startingLongitude	= '-73.963549';
 					var buildingId	= $(this).attr('data-bldgid');
 					var floorId	= $(this).attr('data-floorid');
 					var lat		= $(this).attr('data-lat');
 					var lon		= $(this).attr('data-long');
 					var heightAboveFloor = '125';
 
+					// 	if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS') {
+					//
+					// 		var lat		= $(this).attr('data-lat');
+					// 		var lon		= $(this).attr('data-long');
+					// 		var heightAboveFloor = '50';
+					//
+					// 		ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, heightAboveFloor);
+					//
+					// 		params.action = 'focusOutdoorPoint';
+					//
+					// 		if (fetchPoisFromApi(params)) {
+					// 			alert('focus failed');
+					// 		}
+					//
+					// 		return true;
+					// 	}
+
 					ambiarc.focusOnLatLonAndZoomToHeight(buildingId, '', lat, lon, heightAboveFloor);
 
-					window.legendInfo.ambiarcId = '';
-					window.legendInfo.buildingId = buildingId;
-					window.legendInfo.floorId = floorId;
-					window.legendInfo.roomName = '';
+					ambiarc.legendType = 'menuBuilding';
+					ambiarc.ambiarcId = '';
+					ambiarc.buildingId = buildingId;
+					ambiarc.floorId = floorId;
+					ambiarc.roomName = '';
+					ambiarc.lat = lat;
+					ambiarc.lon = lon;
 
-					//popMapLegend();
+					popMapLegend();
 
-					window.doFloorSelected = true;
+					//window.doFloorSelected = true;
 
 					//ambiarc.getDirections('0024', '0093', '40.693454', '-73.963549', '0002', '0006', '40.690872', '-73.964982', function(res){
 					//ambiarc.getDirections(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, function(res){
@@ -342,13 +355,20 @@
 					//});
 
 					return true;
-
 				}
 
 				//console.log(params);
 				//console.log(document.deptMap);
 				//console.log(document.deptMap[params.office]);
 				//alert(params.facility);
+
+				ambiarc.legendType = 'menuOther';
+				ambiarc.ambiarcId = '';
+				ambiarc.buildingId = '';
+				ambiarc.floorId = $(this).attr('data-floorid');
+				ambiarc.roomName = '';
+				ambiarc.lat = '';
+				ambiarc.lon = '';
 
 				if (fetchPoisFromApi(params)) {
 					alert('focus failed');
@@ -366,7 +386,8 @@
 			resetMap();
 		});
 
-		$(document).on("click", "div.subfly>span", function(e){
+		//$(document).on("click", "div.subfly>span", function(e){
+		$(document).on("click", "div.academics>span", function(e){
 
 			//clearMapLegend();
 
@@ -396,9 +417,32 @@
 			params.label = params.dept;
 			params.recordId = document.deptMap[params.dept].recordId;
 
-			if (fetchPoisFromApi(params)) {
-				console.log('did it work?');
-				collapseMenus();
+
+			ambiarc.legendType = 'menuOther';
+			ambiarc.ambiarcId = '';
+			ambiarc.buildingId = '';
+			ambiarc.floorId = '';
+			ambiarc.roomName = '';
+			ambiarc.lat = '';
+			ambiarc.lon = '';
+
+
+			if (params.recordId > '1') {
+
+				if (fetchPoisFromApi(params)) {
+					console.log('did it work?');
+					collapseMenus();
+				}
+
+			} else {
+
+				console.log('**********************************');
+				console.log(params);
+				console.log(document.deptMap);
+				console.log('**********************************');
+
+				alert('no record id');
+
 			}
 
 		});
@@ -676,35 +720,51 @@
 
 			//console.log('setupMenuAcademics loop');
 
-			schoolArr[key0] = '<span class="fly-box" data-cat="school" data-school="'+level0+'" >'+level0+'</span>';
-			//schoolString += '<span class="fly-box" data-cat="school" data-school="'+level0+'" >'+level0+'</span>';
-			subFly = '<div class="subfly" data-type="'+level0+'" >';
+			//	schoolArr[key0] = '<span class="fly-box" data-cat="school" data-school="'+level0+'" >'+level0+'</span>';
+
+			// 	subFly = '<div class="subfly" data-type="'+level0+'" >';
+			// 	$(document.acad.academics[level0]).each(function(key1, level1){
+			// 		for(var item in level1) {
+			// 			var menuHightlight = 'warn';
+			// 			if (searchPropertiesGkDept(item)) {
+			// 				menuHightlight = '';
+			// 			}
+			// 			if (level1[item][0] == 'W14' || level1[item][0] == 'W18' || level1[item][0] == 'FLSH' || level1[item][0] == 'CRR') {
+			// 				var campLoc = 'offcamp';
+			// 			} else {
+			// 				var campLoc = 'oncamp';
+			// 			}
+			// 			subFly += '<span class="'+menuHightlight+' '+campLoc+'" data-bldg="'+level1[item][0]+'" data-cat="dept" data-dept="'+item+'">'+item+'</span>';
+			// 		}
+			// 	});
+			// 	subFly += '</div>';
+			// 	$('body').append(subFly);
+
 			$(document.acad.academics[level0]).each(function(key1, level1){
+
 				for(var item in level1) {
 
 					var menuHightlight = 'warn';
 					if (searchPropertiesGkDept(item)) {
 						menuHightlight = '';
 					}
-
-					//console.log(level1[item][0]);
-
 					if (level1[item][0] == 'W14' || level1[item][0] == 'W18' || level1[item][0] == 'FLSH' || level1[item][0] == 'CRR') {
 						var campLoc = 'offcamp';
 					} else {
 						var campLoc = 'oncamp';
 					}
 
-					subFly += '<span class="'+menuHightlight+' '+campLoc+'" data-bldg="'+level1[item][0]+'" data-cat="dept" data-dept="'+item+'">'+item+'</span>';
+					schoolString += '<span class="fly-box '+menuHightlight+' '+campLoc+'" data-bldg="'+level1[item][0]+'" data-cat="dept" data-dept="'+item+'">'+item+'</span>';
+
+					//schoolArr[key0] = '<span class="fly-box" data-cat="school" data-school="'+level0+'" >'+level0+'</span>';
 				}
 			});
-			subFly += '</div>';
-			$('body').append(subFly);
+
 		});
 
-		console.log(schoolArr);
+		//console.log(schoolArr);
 
-		schoolString = schoolArr.join('');
+		//schoolString = schoolArr.join('');
 
 		$('div.academics').append(schoolString);
 

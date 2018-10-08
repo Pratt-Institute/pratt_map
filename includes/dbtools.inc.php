@@ -346,11 +346,16 @@ class DbTools {
 						// 		data-lat="'.$bldg_stuff['latitude'].'"
 						// 		data-long="'.$bldg_stuff['longitude'].'">'.$bldg_stuff['name'].'</span>';
 
+						if ($bldg_stuff['gk_bldg_id'] == '0000') {
+							continue;
+						}
+
 						$bldgMnu[] = '<span
 							class="fly-box dbtools '.$bldg_stuff['camploc'].'"
 							data-cat="buildings"
 							data-bldg="'.$bldg_stuff['bldg_abbre'].'"
 							data-bldgid="'.$bldg_stuff['gk_bldg_id'].'"
+							data-bldgname="'.$bldg_stuff['bldg_name'].'"
 							data-floorid="'.$bldg_stuff['gk_floor_id'].'"
 							data-lat="'.$bldg_stuff['latitude'].'"
 							data-long="'.$bldg_stuff['longitude'].'">'.$bldg_name.'</span>';

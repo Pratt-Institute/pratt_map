@@ -84,10 +84,12 @@ var BuildingExitCompleted = function(event) {
 }
 
 var onFloorSelected = function(event) {
+
 	console.log('onFloorSelected');
 	console.log(event);
 	var floorInfo = event.detail;
 	currentFloorId = floorInfo.floorId;
+
 	if (event.type == 'FloorSelected') {
 
 		ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
@@ -97,25 +99,10 @@ var onFloorSelected = function(event) {
 		//window.legendInfo.buildingId = event.detail.buildingId;
 		//window.legendInfo.floorId = event.detail.floorId;
 	}
+
 	isFloorSelectorEnabled = false;
 	mainBldgID = floorInfo.buildingId;
-	// 	popMapLegend();
-	//
-	// 	if (doFloorSelected) {
-	//
-	// 		isFloorSelectorEnabled = false;
-	//
-	// 		mainBldgID = floorInfo.buildingId;
-	//
-	// 		params = {};
-	// 		params.bldg = floorInfo.buildingId;
-	// 		params.floor = floorInfo.floorId;
-	// 		params.select = 'floor';
-	//
-	// 		if (fetchPoisFromApi(params)) {
-	// 			alert('floor selected');
-	// 		}
-	// 	}
+
 }
 
 var onEnteredFloorSelector = function(event) {
@@ -137,7 +124,7 @@ var onExitedFloorSelector = function(event) {
 }
 
 var onFloorSelectorFocusChanged = function(event) {
-	clearMapLegend();
+	//clearMapLegend();
 	//alert('onFloorSelectorFocusChanged');
 	console.log('onFloorSelectorFocusChanged');
 	console.log(event.detail);
@@ -181,24 +168,37 @@ var cameraCompletedHandler = function(event){
 		//window.legendInfo.floorId = ambiarc.floorSelected;
 		//window.legendInfo.roomName = '';
 
-		console.log(window.legendInfo);
+		//console.log(window.legendInfo);
 
 		//alert($('.click-capture').length);
 		//if (ambiarc.menuAction != 'yes') {
 
 		//if ($('.click-capture').length > 0) {
-		if (isFloorSelectorEnabled == false && mainBldgID > 0 ) {
+		if (typeof ambiarc.legendType == 'undefined' || ambiarc.legendType == '') {
+			if (isFloorSelectorEnabled == false && mainBldgID > 0 ) {
 
-			params = {};
-			//params.bldg = floorInfo.buildingId;
-			//params.floor = floorInfo.floorId;
-			params.bldg = ambiarc.buildingId;
-			params.floor = ambiarc.floorId;
-			params.action = 'showFloorInfo';
-			params.select = 'floor';
+				params = {};
+				//params.bldg = floorInfo.buildingId;
+				//params.floor = floorInfo.floorId;
+				params.bldg = ambiarc.buildingId;
+				params.floor = ambiarc.floorId;
+				params.action = 'showFloorInfo';
+				params.select = 'floor';
 
-			if (fetchPoisFromApi(params)) {
-				alert('here');
+				if (params.action == 'showFloorInfo' && params.floor != '') {
+
+					if (fetchPoisFromApi(params)) {
+						alert('here');
+					}
+
+				} else {
+
+					console.log('`````````````````````````````````````````````````````````````````');
+					console.log(params);
+					console.log('`````````````````````````````````````````````````````````````````');
+
+
+				}
 			}
 		}
 
