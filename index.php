@@ -163,7 +163,7 @@
 	</div>
 
 	<div class="flyout buildings"><?php echo $slists['bldg_menu']; ?></div>
-	<div class="flyout academics"></div>
+	<div class="flyout academics"><?php echo $slists['acad_menu']; ?></div>
 	<div class="flyout offices"><?php echo $slists['off_menu']; ?></div>
 	<div class="flyout facilities"><?php $obj->fetchFacilitiesMenu() ?></div>
 

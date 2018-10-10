@@ -29,14 +29,51 @@ var iframeLoaded = function() {
 	});
 }
 
+var doTourLoop = function() {
+
+	window.pauseTour = false;
+	var i = 1;
+
+	$('.buildings.oncamp').each(function(){
+		if (!pauseTour) {
+			i++;
+			var elm = this;
+			var tourLoopTimeout = setTimeout(function() {
+				if (!pauseTour) {
+					$(elm).trigger("click");
+				}
+			},i * 3000);
+		} else {
+			return false;
+		}
+	});
+
+}
+
+// var doTour = function() {
+//
+// 	var tour = window.setInterval(function(){
+// 		if (!pauseTour) {
+// 			doTourLoop()
+// 		}
+// 	},82000);
+//
+// }
+
 var createCampusLabels = function() {
 	// creating objecct where we will store all our points property values
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 	ambiarc.hideLoadingScreen();
 	ambiarc.getAllBuildings(function(buildingsArray){
 		console.log('=========================================================================================');
+
+		console.log(buildingsArray);
+
 		ambiarc.bldgIdsList = [];
 		buildingsArray.forEach(function(bldgID, i){
+
+			console.log(i);
+
 			ambiarc.getBuildingLabelID(bldgID, function(id){
 				console.log(bldgID + ' -- ' + id);
 				console.log('=========================================================================================');
@@ -121,7 +158,8 @@ var fetchPoisFromApi = function(params) {
 	ambiarc.loadRemoteMapLabels(url).then((out) => {
 
 		/// show labels if building exploded
-		//ambiarc.EnableAutoShowPOIsOnFloorEnter();
+		ambiarc.EnableAutoShowPOIsOnFloorEnter();
+
 		if (params.fetch == 'all') {
 			return true;
 		}
@@ -202,7 +240,7 @@ var fetchPoisFromApi = function(params) {
 		//return true;
 
 		if (params.fetch == 'first') {
-			setupMenuAcademics();
+			//setupMenuAcademics();
 			loadKeyboard();
 		} else {
 			ambiarc.currentBuilding = params.bldg;
@@ -210,21 +248,25 @@ var fetchPoisFromApi = function(params) {
 		}
 
 		if (params.label) {
+
 			console.log(poiMap);
 			var itemId = poiMap[params.recordId];
 			ambiarc.selectedPoiId = itemId;
+
 			if (typeof itemId != 'undefined' && typeof params.label != 'undefined') {
-				if (params.label.length > 3 && poiMap.length > 1) {
-					var obj = {};
-					obj.label = params.label;
-					obj.clear = 'hide';
-					ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
-					ambiarc.labelObj = obj;
-					//window.legendInfo.ambiarcId = itemId;
-					//legendInfo.showRoom = true;
-					//window.legendInfo.floorId = '';
-					//popMapLegend();
-				}
+
+				// 	if (params.label.length > 3 && poiMap.length > 1) {
+				// 		var obj = {};
+				// 		obj.label = params.label;
+				// 		obj.clear = 'hide';
+				// 		ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
+				// 		ambiarc.labelObj = obj;
+				// 		//window.legendInfo.ambiarcId = itemId;
+				// 		//legendInfo.showRoom = true;
+				// 		//window.legendInfo.floorId = '';
+				// 		//popMapLegend();
+				// 	}
+
 			} else {
 				console.log(params);
 				alert('itemId is undefined');
@@ -255,6 +297,31 @@ var fetchPoisFromApi = function(params) {
 		//alert(itemId);
 
 		if (params.action == 'focusAfterDataLoad') {
+
+			var legendType	= ambiarc.legendType;
+			var ambiarcId	= ambiarc.ambiarcId;
+			var buildingId	= ambiarc.buildingId;
+			var floorId		= ambiarc.floorId;
+			var roomName	= ambiarc.roomName;
+			var lat = ambiarc.lat;
+			var lon = ambiarc.lon;
+
+			setTimeout(function(){
+
+				try {
+					//alert(roomName);
+					if (itemId != '' && roomName != '') {
+						var obj = {};
+						obj.label = roomName;
+						//obj.showOnCreation = true;
+						ambiarc.updateMapLabel(itemId, 'IconWithText', obj);
+					}
+				} catch(err) { console.log(err) }
+
+			},500);
+		}
+
+		if (params.action == 'focusAfterDataLoad') {
 			if (focusAfterDataLoad(itemId)) {
 				return true;
 			}
@@ -269,7 +336,7 @@ var fetchPoisFromApi = function(params) {
 		if (params.action == 'showFloorInfo') {
 			setTimeout(function(){
 				popMapLegend();
-			},500);
+			},1);
 		}
 
 	});
@@ -320,6 +387,15 @@ var popMapLegend = function() {
 	var lat = ambiarc.lat;
 	var lon = ambiarc.lon;
 
+	// 	try {
+	// 		if (ambiarcId != '' && roomName != '') {
+	// 			var obj = {};
+	// 			obj.label = roomName;
+	// 			//obj.showOnCreation = true;
+	// 			ambiarc.updateMapLabel(ambiarcId, 'IconWithText', obj);
+	// 		}
+	// 	} catch(err) { console.log(err) }
+
 	setTimeout(function(){
 		ambiarc.legendType = '';
 		ambiarc.ambiarcId = '';
@@ -368,48 +444,26 @@ var popMapLegend = function() {
 
 				var bldg_name = bldgMap[floorId].bldg_name;
 
-
 				var poiObject = {
-
 					//buildingId: currentBuildingId,
-
 					//floorId: floorId,
-
 					latitude: lat,
-
 					longitude: lon,
-
 					label: bldg_name,
-
 					//fontSize: 26,
-
 					//category: 'Label',
-
 					showOnCreation: true,
-
 					type: 'IconWithText',
-
 					//showToolTip: false,
-
 					//tooltipTitle: '',
-
 					//tooltipBody: '',
-
 					//base64: iconDefault,
-
 					location: 'URL',
-
 					partialPath: 'css/icons/ic_building.png',
-
 					collapsedIconLocation: 'URL',
-
 					collapsedIconPartialPath: '/css/icons/ic_building.png',
-
 					ignoreCollision: true,
-
 				};
-
-
 
 				createTextIcon(poiObject);
 
@@ -422,6 +476,10 @@ var popMapLegend = function() {
 
 		try {
 			$('.floorNo').html(ambiarc.poiStuff[ambiarcId].floorNo + ' floor');
+		} catch(err) { console.log(err) }
+
+		try {
+			$('.roomName').html(ambiarc.poiStuff[ambiarcId].roomName);
 		} catch(err) { console.log(err) }
 
 		try {

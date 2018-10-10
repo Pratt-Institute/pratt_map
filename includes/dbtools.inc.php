@@ -186,7 +186,9 @@ class DbTools {
 					gk_floor_id,
 					gk_department,
 					latitude,
-					longitude
+					longitude,
+					room_no,
+					new_room_no
 					from facilities where gk_department != '' and ( ";
 		foreach($arr as $facility) {
 			$like[] = " gk_department like '%$facility%' ";
@@ -206,16 +208,24 @@ class DbTools {
 		if ($rows[0]['id']) {
 			foreach($rows as $field=>$record) {
 				$exp = explode(',',$record['gk_department']);
+
+				if (trim($record['new_room_no']) != '') {
+					$room_number = trim($record['new_room_no']);
+				} else {
+					$room_number = trim($record['room_no']);
+				}
+
 				foreach($exp as $gk_dept) {
 					$gk_dept = trim($gk_dept);
 					$out[$gk_dept] = "<span
 						class=\"fly-box\"
 						data-recordid=\"".$record['id']."\"
 						data-bldg=\"".$record['bldg_abbre']."\"
-						data-floor=\"".$record['gk_floor_id']."\"
+						data-floorid=\"".$record['gk_floor_id']."\"
 						data-cat=\"facility\"
 						data-dept=\"$gk_dept\"
 						data-facility=\"$gk_dept\"
+						  data-roomno=\"$room_number\"
 					>$gk_dept</span>";
 				}
 			}
@@ -240,8 +250,8 @@ class DbTools {
 			and major_category not like '%inactive%'
 			and functional_category not like '%inactive%'
 			and gk_display != 'N'
-			and gk_bldg_id != ''
-			and gk_floor_id != ''
+			/*and gk_bldg_id != ''
+			and gk_floor_id != ''*/
 			and room_name != ''
 			and room_name not like '%storage%'
 			and room_name not like '%corr%'
@@ -271,6 +281,13 @@ class DbTools {
 			if ($rows[0]['id']) {
 
 				foreach($rows as $field=>$record) {
+
+					if (trim($record['new_room_no']) != '') {
+						$room_number = trim($record['new_room_no']);
+					} else {
+						$room_number = trim($record['room_no']);
+					}
+
 					$imgUrl = 'images/pois/'.$record['id'].'.jpg';
 
 					if (file_exists($imgUrl)) {
@@ -286,7 +303,7 @@ class DbTools {
 					$rooms[] = '<li id="'.$record['id'].'"
 						data-id="'.$record['id'].'"
 						data-building="'.$record['bldg_abbre'].'"
-						data-floor="'.$record['gk_floor_id'].'"
+						data-floorid="'.$record['gk_floor_id'].'"
 						data-recordId="'.$record['id'].'"
 						data-lat="'.$record['latitude'].'"
 						data-long="'.$record['longitude'].'"
@@ -300,10 +317,11 @@ class DbTools {
 
 						$rooms[] = '<div class="li-col li-label '.$camploc.'"><span>'.$record['room_name'].'</span></div>';
 						$rooms[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_abbre'].'</span></div>';
-						$rooms[] = '<div class="li-col li-room '.$camploc.'"><span>'.$record['new_room_no'].'</span></div></li>';
+						$rooms[] = '<div class="li-col li-room '.$camploc.'"><span>'.$room_no.'</span></div></li>';
 
 					}
 
+					# assemble building menu info here
 					$bldgs[$record['bldg_name']]['name'] = $record['bldg_name'];
 					$bldgs[$record['bldg_name']]['bldg_abbre'] = $record['bldg_abbre'];
 					$bldgs[$record['bldg_name']]['gk_bldg_id'] = $record['gk_bldg_id'];
@@ -319,52 +337,72 @@ class DbTools {
 						foreach($dept_exp as $dept) {
 							$dept = trim($dept);
 							if ($dept != '') {
-								$offs[$dept] = "<span  class=\"fly-box $camploc\"  data-recordid=\"".$record['id']."\"  data-bldg=\"".$record['bldg_abbre']."\"  data-floor=\"".$record['gk_floor_id']."\"  data-cat=\"office\"  data-dept=\"$dept\"  data-office=\"$dept\" >$dept</span>";
+								$offs[$dept] = "<span  class=\"fly-box $camploc\"  data-recordid=\"".$record['id']."\"  data-bldg=\"".$record['bldg_abbre']."\"  data-floorid=\"".$record['gk_floor_id']."\"  data-cat=\"office\"  data-dept=\"$dept\"  data-office=\"$dept\"  data-roomno=\"$room_number\">$dept</span>";
 							}
 						}
 					}
+
+					$record['gk_school']		= trim($record['gk_school']);
+					$record['gk_department']	= trim($record['gk_department']);
+
+					# assemble academics menu here
+					if ($record['gk_school']!='' && $record['gk_department']!='') {
+
+						$schl_exp = explode(',',$record['gk_school']);
+						$dept_exp = explode(',',$record['gk_department']);
+
+						if ($record['bldg_abbre'] == 'W14' || $record['bldg_abbre'] == 'W18' || $record['bldg_abbre'] == 'FLSH' || $record['bldg_abbre'] == 'CRR') {
+							$campLoc = 'offcamp';
+						} else {
+							$campLoc = 'oncamp';
+						}
+
+						foreach($schl_exp as $gkschl) {
+
+							$gkschl = trim($gkschl);
+
+							foreach($dept_exp as $gkdept) {
+								$gkdept = trim($gkdept);
+								$acad[$gkschl.'-'.$gkdept] = "<span class=\"fly-box warn ".$campLoc."\" data-recordid=\"".$record['id']."\"  data-floorid=\"".$record['gk_floor_id']."\"    data-bldg=\"".$record['bldg_abbre']."\" data-cat=\"dept\" data-schl=\"".$gkschl."\" data-dept=\"".$gkdept."\"  data-roomno=\"$room_number\">".$gkdept."</span>";
+							}
+						}
+					}
+
 				}
+
+				//echo '<pre>';
+				//print_r($acad);
+				//echo '</pre>';
 
 				//@natsort($bldgs);
 				@ksort($bldgs);
 				foreach($bldgs as $bldg_name=>$bldg_stuff){
 
-					//if ($bldg_stuff['gk_floor_id'] != '') {
+					$bldg_name = strtolower($bldg_name);
+					$bldg_name = ucwords($bldg_name);
 
-						$bldg_name = strtolower($bldg_name);
-						$bldg_name = ucwords($bldg_name);
+					$bldgOpt[] = '<option value="'.$bldg_stuff['bldg_abbre'].'" data-floorid="'.$bldg_stuff['gk_floor_id'].'">'.$bldg_name.'</option>';
 
-						$bldgOpt[] = '<option value="'.$bldg_stuff['bldg_abbre'].'" data-floor="'.$bldg_stuff['gk_floor_id'].'">'.$bldg_name.'</option>';
+					if ($bldg_stuff['gk_bldg_id'] == '0000') {
+						continue;
+					}
 
-						// 	$bldgMnu[] = '<span
-						// 		class="fly-box dbtools"
-						// 		data-cat="buildings"
-						// 		data-buildingId="'.$bldg_abbre.'"
-						// 		data-buildingAbrev="'.$bldg_abbre.'"
-						// 		data-bldg="'.$bldg_abbre.'"
-						// 		data-floor="'.$bldg_stuff['gk_floor_id'].'"
-						// 		data-lat="'.$bldg_stuff['latitude'].'"
-						// 		data-long="'.$bldg_stuff['longitude'].'">'.$bldg_stuff['name'].'</span>';
+					$bldgMnu[] = '<span
+						class="fly-box dbtools '.$bldg_stuff['camploc'].' buildings"
+						data-cat="buildings"
+						data-bldg="'.$bldg_stuff['bldg_abbre'].'"
+						data-bldgid="'.$bldg_stuff['gk_bldg_id'].'"
+						data-bldgname="'.$bldg_stuff['bldg_name'].'"
+						data-floorid="'.$bldg_stuff['gk_floor_id'].'"
+						data-lat="'.$bldg_stuff['latitude'].'"
+						data-long="'.$bldg_stuff['longitude'].'">'.$bldg_name.'</span>';
 
-						if ($bldg_stuff['gk_bldg_id'] == '0000') {
-							continue;
-						}
-
-						$bldgMnu[] = '<span
-							class="fly-box dbtools '.$bldg_stuff['camploc'].'"
-							data-cat="buildings"
-							data-bldg="'.$bldg_stuff['bldg_abbre'].'"
-							data-bldgid="'.$bldg_stuff['gk_bldg_id'].'"
-							data-bldgname="'.$bldg_stuff['bldg_name'].'"
-							data-floorid="'.$bldg_stuff['gk_floor_id'].'"
-							data-lat="'.$bldg_stuff['latitude'].'"
-							data-long="'.$bldg_stuff['longitude'].'">'.$bldg_name.'</span>';
-
-					//}
 				}
 
+				ksort($acad);
 				ksort($offs);
 
+				$out['acad_menu']		= implode('',$acad);
 				$out['bldg_menu']		= implode('',$bldgMnu);
 				$out['bldg_options']	= implode('',$bldgOpt);
 				$out['room_list']		= implode('',$rooms);
