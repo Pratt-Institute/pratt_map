@@ -17,34 +17,46 @@ var onAmbiarcLoaded = function() {
 		adjustMapFocus($("#" + event.detail)[0], event.detail)
 	});
     var full = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+(window.location.pathname ? window.location.pathname.substring(0,window.location.pathname.lastIndexOf("/")) : '');
-    //ambiarc.setMapAssetBundleURL(full+'/ambiarc/');
+    ambiarc.setMapAssetBundleURL(full+'/ambiarc/');
     //ambiarc.loadMap("pratt");
     //var mapFolder = getMapName('map');
-    ambiarc.setMapAssetBundleURL('https://s3-us-west-1.amazonaws.com/gk-web-demo/ambiarc/');
+//    ambiarc.setMapAssetBundleURL('https://s3-us-west-1.amazonaws.com/gk-web-demo/ambiarc/');
     //ambiarc.loadMap(mapFolder);
     ambiarc.loadMap("pratt");
 };
 
 var mapStartedLoading = function() {
-	console.log('mapStartedLoading');
-	var mode = sessionStorage.getItem('mode');
-	if (mode == 'dark') {
-		ambiarc.setMapTheme(ambiarc.mapTheme.dark);
-		//ambiarc.setEnvironmentLighting('#33333300', '#33333300', '#99000000');
-		ambiarc.setSkyColor('#900', '#600');
-		ambiarc.setLightColor('#ccc', '#666', '#900');
-		setTimeout(function(){
-			$('.mode-dark').addClass('show-mode-button');
-		}, 500);
-	} else {
-		ambiarc.setMapTheme(ambiarc.mapTheme.light);
-		setTimeout(function(){
-			$('.mode-light').addClass('show-mode-button');
-		}, 500);
-	}
+
+//	alert('mapStartedLoading');
+
+// 	console.log('mapStartedLoading');
+// 	var mode = sessionStorage.getItem('mode');
+// 	if (mode == 'dark') {
+// 		ambiarc.setMapTheme(ambiarc.mapTheme.dark);
+// 		//ambiarc.setEnvironmentLighting('#33333300', '#33333300', '#99000000');
+// 		ambiarc.setSkyColor('#900', '#600');
+// 		ambiarc.setLightColor('#ccc', '#666', '#900');
+// 		setTimeout(function(){
+// 			$('.mode-dark').addClass('show-mode-button');
+// 		}, 500);
+// 	} else {
+// 		ambiarc.setMapTheme(ambiarc.mapTheme.light);
+// 		setTimeout(function(){
+// 			$('.mode-light').addClass('show-mode-button');
+// 		}, 500);
+// 	}
+
+	ambiarc.setMapTheme(ambiarc.mapTheme.light);
+
+
 }
 
 var mapFinishedLoading = function() {
+
+	loadUiFunctions();
+
+	//alert('mapFinishedLoading?');
+
 	var mode = sessionStorage.getItem('mode');
 	if (mode == 'dark') {
 		ambiarc.setMapTheme(ambiarc.mapTheme.dark);
@@ -66,12 +78,15 @@ var mapFinishedLoading = function() {
 	console.log('mapFinishedLoading');
 	createCampusLabels();
 	$('#bootstrap').removeAttr('hidden');
+
 	//$('#back-button').hide();
 	//ambiarc.setEnvironmentLighting('#333333', '#333333', '#990000');
+
 	params = {};
 	params.fetch = 'first'
 	params.bldg = '0019';
 	fetchPoisFromApi(params);
+
 	// reactivate reset button after a pause
 	setTimeout(function(){
 		$('.reset-map').removeAttr('disabled');
@@ -79,11 +94,9 @@ var mapFinishedLoading = function() {
 		var lon = -73.963883;
 		ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, '400');
 
-		doTourLoop();
-		//doTour();
-
 		//doTourLoop();
-	}, 1);
+
+	}, 1000);
 }
 
 var BuildingExitCompleted = function(event) {
@@ -114,6 +127,13 @@ var onFloorSelected = function(event) {
 }
 
 var onEnteredFloorSelector = function(event) {
+
+	//alert('pause');
+	pauseTour = true;
+	setTimeout(function(){
+		pauseTour = false;
+	},parseInt(30*1000));
+
 	//alert('onEnteredFloorSelector');
 	console.log('onEnteredFloorSelector');
 	console.log(event);

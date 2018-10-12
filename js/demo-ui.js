@@ -31,34 +31,41 @@ var iframeLoaded = function() {
 
 var doTourLoop = function() {
 
-	window.pauseTour = false;
+//	return true;
+
+// 	if (tourIsRunning == true) {
+// 		return true;
+// 	}
+// 	tourIsRunning = true;
 	var i = 1;
-
 	$('.buildings.oncamp').each(function(){
-		if (!pauseTour) {
-			i++;
-			var elm = this;
-			var tourLoopTimeout = setTimeout(function() {
-				if (!pauseTour) {
-					$(elm).trigger("click");
-				}
-			},i * 3000);
-		} else {
-			return false;
-		}
-	});
 
+		i++;
+		var elm = this;
+		var tourLoopTimeout = setTimeout(function() {
+			if (!pauseTour) {
+				$(elm).trigger("click");
+			}
+		},i * 7000);
+
+	});
+	setTimeout(function(){
+		//alert('tour is done');
+		//tourIsRunning = false;
+//		doTourLoop();
+	},parseInt(180*1000));
 }
 
-// var doTour = function() {
-//
-// 	var tour = window.setInterval(function(){
-// 		if (!pauseTour) {
-// 			doTourLoop()
+//var setTourInterval = function(){
+	// 	try {
+	// 		clearInterval(intTour);
+	// 	} catch(err) { console.log(err) }
+	//window.intTour = setInterval(function(){
+// 		if (tourIsRunning == false) {
+// 			doTourLoop();
 // 		}
-// 	},82000);
-//
-// }
+	//}, parseInt(127*1000));
+//}
 
 var createCampusLabels = function() {
 	// creating objecct where we will store all our points property values
@@ -200,6 +207,8 @@ var fetchPoisFromApi = function(params) {
 		window.deptMap = {};
 		//window.legendInfo = {};
 
+		var keepId = '';
+
 		$.each(out, function(k,v){
 			if (typeof v.user_properties.ambiarcId == 'undefined') {
 
@@ -230,6 +239,10 @@ var fetchPoisFromApi = function(params) {
 					s['longitude']		= v.geometry.coordinates[0];
 					//ambiarc.poiStuff.push(s);
 					ambiarc.poiStuff[v.user_properties.ambiarcId] = s;
+
+					if (keepId == '') {
+						keepId = v.user_properties.ambiarcId;
+					}
 				}
 			}
 		});
@@ -321,11 +334,11 @@ var fetchPoisFromApi = function(params) {
 			},500);
 		}
 
-		if (params.action == 'focusAfterDataLoad') {
-			if (focusAfterDataLoad(itemId)) {
-				return true;
-			}
-		}
+		// 	if (params.action == 'focusAfterDataLoad') {
+		// 		if (focusAfterDataLoad(itemId)) {
+		// 			return true;
+		// 		}
+		// 	}
 
 		if (params.action == 'focusOutdoorPoint') {
 			if (ambiarc.showMapLabel(itemId, true)) {
@@ -334,6 +347,41 @@ var fetchPoisFromApi = function(params) {
 		}
 
 		if (params.action == 'showFloorInfo') {
+			setTimeout(function(){
+				popMapLegend();
+			},1);
+		}
+
+		if (params.action == 'doAccessibilityThing') {
+
+			try {
+				if (keepId) {
+					params.lat = ambiarc.poiStuff[keepId].latitude;
+					params.lon = ambiarc.poiStuff[keepId].longitude;
+				}
+			} catch(err) { console.log(err) }
+
+			console.log(ambiarc.poiStuff[keepId]);
+			console.log(params);
+			alert('accessibility ' + keepId);
+
+			//ambiarc.focusOnLatLonAndZoomToHeight(params.bldg, '', params.lat, params.lon, params.heightAboveFloor);
+			ambiarc.focusOnLatLonAndZoomToHeight('', '', params.lat, params.lon, params.heightAboveFloor);
+
+			//setTimeout(function(){
+
+				//try {
+					//alert(roomName);
+					//if (itemId != '' && roomName != '') {
+						var obj = {};
+						obj.label = 'Entrance';
+						obj.showOnCreation = true;
+						ambiarc.updateMapLabel(keepId, 'IconWithText', obj);
+					//}
+				//} catch(err) { console.log(err) }
+
+			//},500);
+
 			setTimeout(function(){
 				popMapLegend();
 			},1);

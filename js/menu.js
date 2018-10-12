@@ -1,499 +1,539 @@
+	function loadUiFunctions() {
 
-	$(document).ready(function(){
+		$(document).ready(function(){
 
-		window.doFloorSelected = true;
+			console.log('loadUiFunctions');
 
-		$.extend($.expr[':'], {
-		  'containsi': function(elem, i, match, array) {
-			return (elem.textContent || elem.innerText || '').toLowerCase()
-				.indexOf((match[3] || "").toLowerCase()) >= 0;
-		  }
-		});
+			window.doFloorSelected	= true;
+			window.tourIsRunning	= false;
+			window.pauseTour		= false;
 
-		$(document).on("click", "guide-kick-background", function(e){
-
-		});
-
-		$(document).mousemove(function(e) {
-			window.haltLoops = true;
-		});
-
-		$(document).on("click", "li.list-group-item", function(e){
-
-			clearMapLegend();
-
-			//resetMap();
-			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			ambiarc.menuAction = 'yes';
-			//alert('list-item');
-
-			window.doFloorSelected = false;
-
-			params = {};
-			params.bldg = $(this).attr('data-building');
-			params.floor = $(this).attr('data-floorid');
-			params.recordId = $(this).attr('data-recordid');
-			params.action = 'focusAfterDataLoad';
-
-			//window.legendInfo.recordId = $(this).attr('data-recordid');
-			//window.legendInfo.buildingId = $(this).attr('data-building');
-			//window.legendInfo.floorId = $(this).attr('data-floor');
-			//window.legendInfo.roomName = '';
-
-			if ($(this).hasClass('hasImg')) {
-				doPoiImage(params.recordId);
-			} else {
-				$('.poi-box').remove();
-			}
-
-			if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS') {
-
-				var lat		= $(this).attr('data-lat');
-				var lon		= $(this).attr('data-long');
-				var heightAboveFloor = '50';
-
-				ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, heightAboveFloor);
-
-				//window.legendInfo.ambiarcId = '';
-				//window.legendInfo.buildingId = '';
-				//window.legendInfo.floorId = '';
-				//window.legendInfo.roomName = '';
-
-				//window.doFloorSelected = true;
-
-				params.action = 'focusOutdoorPoint';
-
-				//return true;
-			}
-
-			//popMapLegend();
-
-			if (fetchPoisFromApi(params)) {
-				alert('focus failed');
-			}
-
-		});
-
-		$(document).on('click', '.search-btn', function() {
-
-			resetMap();
-
-			///ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			///ambiarc.menuAction = 'yes';
-			///alert('search-btn');
-
-			$('.nav-menu').fadeOut();
-			$('.showpopmap').removeClass('showpopmap');
-			$('.points').addClass('reveal-vert');
-			$('.menu-open').addClass('fade-out');
-			$('.reveal-horz').removeClass('reveal-horz');
-			$('body').append('<div class="click-capture"></div>');
-			//isFloorSelectorEnabled = false;
-			//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			//ambiarc.viewFloorSelector('0001');
-			//ambiarc.viewFloorSelector('0001');
-		});
-
-		$(document).on('click', '.menu-open', function() {
-
-			//clearMapLegend();
-			//ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			//ambiarc.menuAction = 'yes';
-			//alert('menu-open');
-
-			$('.showpopmap').removeClass('showpopmap');
-			$('.menu-open').addClass('fade-out');
-			$('.cat-wrap').removeClass('fade-out');
-			$('body').append('<div class="click-capture"></div>');
-			isFloorSelectorEnabled = false;
-			//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			//ambiarc.loadMap("pratt");
-
-			// 	ambiarc.viewFloorSelector('0001');
-			// 	clearMapLegend();
-			// 	setTimeout(function(){
-			// 		ambiarc.viewFloorSelector('0001');
-			// 		clearMapLegend();
-			// 	}, 750);
-		});
-
-		$(document).on('click', '.pratt-logo', function() {
-			//collapseMenus();
-			//$('.showpopmap').removeClass('showpopmap');
-			//resetMenus();
-			//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			//ambiarc.loadMap("pratt");
-			location.reload();
-			//alert('logo click detected');
-			//setModeTheme();
-		});
-
-		$(document).on('click', '.cat-box', function() {
-			$('.reveal-horz').removeClass('reveal-horz');
-			var pos = $(this).closest('div').position();
-			var maxHei = parseInt($(window).height()-90);
-			var type = $(this).attr('data-type');
-			$('div.'+type).css({'left':pos.left,'maxHeight':maxHei});
-			$('div.'+type).addClass('reveal-horz');
-			$("style:not('#position')").remove();
-			var getStyle = $("style[data-type='"+type+"']");
-			if (getStyle.length < 1) {
-				var style = document.createElement('style');
-				style.id = 'position';
-				style.type = 'text/css';
-				style.setAttribute('data-type', type);
-				style.innerHTML = '.'+type+'{left:'+pos.left+';max-height:'+maxHei+';}';
-				document.getElementsByTagName('head')[0].appendChild(style);
-			}
-		});
-
-		$(document).on('click', '.click-capture', function() {
-			//collapseMenus();
-			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			ambiarc.menuAction = 'no';
-			$('.showpopmap').removeClass('showpopmap');
-			resetMenus();
-		});
-
-		$('.flyout').mouseleave(function() {
-			var close = true;
-			$('.subfly').each(function(){
-				if ($(this).css('opacity') > 0) {
-					close = false;
-				}
+			$.extend($.expr[':'], {
+			  'containsi': function(elem, i, match, array) {
+				return (elem.textContent || elem.innerText || '').toLowerCase()
+					.indexOf((match[3] || "").toLowerCase()) >= 0;
+			  }
 			});
-			if (close == true) {
-				var hi = $(this).height();
-				$('.flyout').css({height: hi});
-				document.close_flyout = setTimeout(function(){
-					$('.flyout').animate({width: '0px', opacity: 0}).promise().then(function(){
-						$('.flyout').removeClass('reveal-horz').promise().then(function(){
-							setTimeout(function(){ $('.flyout').removeAttr('style'); }, 125);
-						});
-					});
-				}, 500);
-			}
-		}).on('mouseenter', function(){
-			clearTimeout(document.close_flyout);
-		});
 
-		$('.subfly').mouseleave(function(e) {
-			alert('one');
-			var hi = $(this).height();
-			$('.subfly').css({height: hi});
-			document.close_subfly = setTimeout(function(){
-				$('.subfly').animate({width: '0px', opacity: 0}).promise().then(function(){
-					$('.subfly').removeClass('reveal-horz').promise().then(function(){
-						setTimeout(function(){ $('.subfly').removeAttr('style'); }, 125);
-					});
-				});
-			}, 500);
-		}).on('mouseenter', function(){
-			clearTimeout(document.close_subfly);
-		});
+			$(document).on("click", "guide-kick-background", function(e){
 
-		$(document).keyup(function(e) {
-			if (e.keyCode === 27) {
-				$('.showpopmap').removeClass('showpopmap');
-				resetMenus();
-				//hideAllPoints();
-				isFloorSelectorEnabled = false;
-				//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-				//ambiarc.viewFloorSelector('0001');
-				//ambiarc.viewFloorSelector('0001');
-				//ambiarc.loadMap("pratt");
-			}
-		});
+			});
 
-		$(document).on('click', '*', function(e) {
-			//console.log(e.target.nodeName);
-			if (e.target.nodeName=='BODY' || e.target.nodeName=='HTML') {
-				$('.showpopmap').removeClass('showpopmap');
-				resetMenus();
-			}
-		});
+			$(document).mousemove(function(e) {
+				window.haltLoops = true;
+			});
 
-		$(document).on("keyup", "input.filter", function(e){
-			//alert(this.value);
-			searchFunction();
-		});
+			$(document).on("click", "li.list-group-item", function(e){
 
-		$(document).on("change", "select.menu-buildings", function(e){
+				clearMapLegend();
 
-			clearMapLegend();
+				//resetMap();
+				ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				ambiarc.menuAction = 'yes';
+				//alert('list-item');
 
-			//resetMap();
-			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			ambiarc.menuAction = 'yes';
-			//alert('select.menu-buildings');
-
-			//ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			ambiarc.exitBuilding();
-			//alert(this.value);
-			searchFunction();
-
-			// TODO building focus trigger here
-
-			// 	params = {};
-			// 	params.bldg = $(this).val();
-			// 	params.floor = $(this).attr('data-floor');
-			// 	//params.recordId = $(this).attr('data-recordid');
-			// 	//params.action = 'focusAfterDataLoad';
-			// 	if (fetchPoisFromApi(params)) {
-			// 		alert('focus failed');
-			// 	}
-
-		});
-
-		$(document).on('click', '.fly-box', function(e) {
-
-			clearMapLegend();
-
-			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			ambiarc.menuAction = 'yes';
-			//alert('fly-box');
-
-			window.doFloorSelected = false;
-
-			$('.subfly').removeClass('reveal-horz');
-			var pos = $(this).closest('div').position();
-			var wid = $(this).closest('div').width();
-			var left = parseInt(pos.left + wid);
-			//alert(wid + ' -- ' + left);
-
-			var cat = $(this).attr('data-cat');
-			var type = $(this).attr('data-'+cat);
-
-			if (cat == 'school') {
-
-				$("[data-type='"+type+"']").css({left:left});
-				$("[data-type='"+type+"']").addClass('reveal-horz');
-
-			} else {
+				window.doFloorSelected = false;
 
 				params = {};
-				params.currentTarget = e.currentTarget;
-				params.type = type;
-				params.bldg = $(this).attr('data-bldg');
+				params.bldg = $(this).attr('data-building');
 				params.floor = $(this).attr('data-floorid');
-				params.dept = $(this).attr('data-dept');
-				params.office = $(this).attr('data-office');
-				params.facility = $(this).attr('data-facility');
-				//params.schl = $(this).closest('div').attr('data-type');
+				params.recordId = $(this).attr('data-recordid');
+				params.action = 'focusAfterDataLoad';
 
-				if ($(this).attr('data-cat')) {
-					params.cat = $(this).attr('data-cat');
-				}
-				if ($(this).attr('data-lat')) {
-					params.lat = $(this).attr('data-lat');
-				}
-				if ($(this).attr('data-long')) {
-					params.long = $(this).attr('data-long');
-				}
-				if ($(this).attr('data-bldg')) {
-					params.bldg = $(this).attr('data-bldg');
-				}
+				//window.legendInfo.recordId = $(this).attr('data-recordid');
+				//window.legendInfo.buildingId = $(this).attr('data-building');
+				//window.legendInfo.floorId = $(this).attr('data-floor');
+				//window.legendInfo.roomName = '';
 
-				window.bldg = $(this).attr('data-bldg');
+				// 	if ($(this).hasClass('hasImg')) {
+				// 		doPoiImage(params.recordId);
+				// 	} else {
+				// 		$('.poi-box').remove();
+				// 	}
 
-				if (params.bldg == 'FLSH' || params.bldg == 'CRR' || params.bldg == 'W14') {
-					doPopupMap(params.bldg);
-					return true;
-				}
+				if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS') {
 
-				if ($(this).attr('data-cat') == 'office' || $(this).attr('data-cat') == 'facility' || $(this).attr('data-cat') == 'dept') {
-
-					params.label = $(this).attr('data-dept');
-					params.bldg = $(this).attr('data-bldg');
-					params.recordId = $(this).attr('data-recordid');
-					params.action = 'focusAfterDataLoad';
-				}
-
-				if ($(this).attr('data-cat') == 'buildings') {
-
-					var buildingId	= $(this).attr('data-bldgid');
-					var floorId	= $(this).attr('data-floorid');
 					var lat		= $(this).attr('data-lat');
 					var lon		= $(this).attr('data-long');
-					var heightAboveFloor = '125';
+					var heightAboveFloor = '50';
 
-					// 	if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS') {
-					//
-					// 		var lat		= $(this).attr('data-lat');
-					// 		var lon		= $(this).attr('data-long');
-					// 		var heightAboveFloor = '50';
-					//
-					// 		ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, heightAboveFloor);
-					//
-					// 		params.action = 'focusOutdoorPoint';
-					//
-					// 		if (fetchPoisFromApi(params)) {
-					// 			alert('focus failed');
-					// 		}
-					//
-					// 		return true;
-					// 	}
+					ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, heightAboveFloor);
 
-					ambiarc.focusOnLatLonAndZoomToHeight(buildingId, '', lat, lon, heightAboveFloor);
-
-					ambiarc.legendType = 'menuBuilding';
-					ambiarc.ambiarcId = '';
-					ambiarc.buildingId = buildingId;
-					ambiarc.floorId = floorId;
-					ambiarc.roomName = '';
-					ambiarc.roomNo = '';
-					ambiarc.lat = lat;
-					ambiarc.lon = lon;
-
-					popMapLegend();
+					//window.legendInfo.ambiarcId = '';
+					//window.legendInfo.buildingId = '';
+					//window.legendInfo.floorId = '';
+					//window.legendInfo.roomName = '';
 
 					//window.doFloorSelected = true;
 
-					//ambiarc.getDirections('0024', '0093', '40.693454', '-73.963549', '0002', '0006', '40.690872', '-73.964982', function(res){
-					//ambiarc.getDirections(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, function(res){
-					//	console.log(res);
-					//	alert('Sorry, menu not active yet.');
-					//});
+					params.action = 'focusOutdoorPoint';
 
-					return true;
+					//return true;
 				}
 
-				//console.log(params);
-				//console.log(document.deptMap);
-				//console.log(document.deptMap[params.office]);
-				//alert(params.facility);
-
-				ambiarc.legendType = 'menuOther';
-				ambiarc.ambiarcId = '';
-				ambiarc.buildingId = '';
-				ambiarc.floorId = $(this).attr('data-floorid');
-				ambiarc.roomName = $(this).html();
-				ambiarc.roomNo = $(this).attr('data-roomno');
-				ambiarc.lat = '';
-				ambiarc.lon = '';
+				//popMapLegend();
 
 				if (fetchPoisFromApi(params)) {
 					alert('focus failed');
-					//console.log('did it work?');
-					//collapseMenus();
 				}
-			}
+
+			});
+
+			$(document).on('click', '.search-btn', function() {
+
+				resetMap();
+
+				///ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				///ambiarc.menuAction = 'yes';
+				///alert('search-btn');
+
+				$('.nav-menu').fadeOut();
+				$('.showpopmap').removeClass('showpopmap');
+				$('.points').addClass('reveal-vert');
+				$('.menu-open').addClass('fade-out');
+				$('.reveal-horz').removeClass('reveal-horz');
+				$('body').append('<div class="click-capture"></div>');
+				//isFloorSelectorEnabled = false;
+				//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				//ambiarc.viewFloorSelector('0001');
+				//ambiarc.viewFloorSelector('0001');
+			});
+
+			$(document).on('click', '.menu-open', function() {
+
+				//clearMapLegend();
+				//ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				//ambiarc.menuAction = 'yes';
+				//alert('menu-open');
+
+				$('.showpopmap').removeClass('showpopmap');
+				$('.menu-open').addClass('fade-out');
+				$('.cat-wrap').removeClass('fade-out');
+				$('body').append('<div class="click-capture"></div>');
+				isFloorSelectorEnabled = false;
+				//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				//ambiarc.loadMap("pratt");
+
+				// 	ambiarc.viewFloorSelector('0001');
+				// 	clearMapLegend();
+				// 	setTimeout(function(){
+				// 		ambiarc.viewFloorSelector('0001');
+				// 		clearMapLegend();
+				// 	}, 750);
+			});
+
+			$(document).on('click', '.pratt-logo', function() {
+				//collapseMenus();
+				//$('.showpopmap').removeClass('showpopmap');
+				//resetMenus();
+				//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				//ambiarc.loadMap("pratt");
+				location.reload();
+				//alert('logo click detected');
+				//setModeTheme();
+			});
+
+			$(document).on('click', '.cat-box', function() {
+				$('.reveal-horz').removeClass('reveal-horz');
+				var pos = $(this).closest('div').position();
+				var maxHei = parseInt($(window).height()-90);
+				var type = $(this).attr('data-type');
+				$('div.'+type).css({'left':pos.left,'maxHeight':maxHei});
+				$('div.'+type).addClass('reveal-horz');
+				$("style:not('#position')").remove();
+				var getStyle = $("style[data-type='"+type+"']");
+				if (getStyle.length < 1) {
+					var style = document.createElement('style');
+					style.id = 'position';
+					style.type = 'text/css';
+					style.setAttribute('data-type', type);
+					style.innerHTML = '.'+type+'{left:'+pos.left+';max-height:'+maxHei+';}';
+					document.getElementsByTagName('head')[0].appendChild(style);
+				}
+			});
+
+			$(document).on('click', '.click-capture', function() {
+				//collapseMenus();
+				ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				ambiarc.menuAction = 'no';
+				$('.showpopmap').removeClass('showpopmap');
+				resetMenus();
+			});
+
+			$('.flyout').mouseleave(function() {
+				var close = true;
+				$('.subfly').each(function(){
+					if ($(this).css('opacity') > 0) {
+						close = false;
+					}
+				});
+				if (close == true) {
+					var hi = $(this).height();
+					$('.flyout').css({height: hi});
+					document.close_flyout = setTimeout(function(){
+						$('.flyout').animate({width: '0px', opacity: 0}).promise().then(function(){
+							$('.flyout').removeClass('reveal-horz').promise().then(function(){
+								setTimeout(function(){ $('.flyout').removeAttr('style'); }, 125);
+							});
+						});
+					}, 500);
+				}
+			}).on('mouseenter', function(){
+				clearTimeout(document.close_flyout);
+			});
+
+			$('.subfly').mouseleave(function(e) {
+				alert('one');
+				var hi = $(this).height();
+				$('.subfly').css({height: hi});
+				document.close_subfly = setTimeout(function(){
+					$('.subfly').animate({width: '0px', opacity: 0}).promise().then(function(){
+						$('.subfly').removeClass('reveal-horz').promise().then(function(){
+							setTimeout(function(){ $('.subfly').removeAttr('style'); }, 125);
+						});
+					});
+				}, 500);
+			}).on('mouseenter', function(){
+				clearTimeout(document.close_subfly);
+			});
+
+			$(document).keyup(function(e) {
+				if (e.keyCode === 27) {
+					$('.showpopmap').removeClass('showpopmap');
+					resetMenus();
+					//hideAllPoints();
+					isFloorSelectorEnabled = false;
+					//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+					//ambiarc.viewFloorSelector('0001');
+					//ambiarc.viewFloorSelector('0001');
+					//ambiarc.loadMap("pratt");
+				}
+			});
+
+			$(document).on('click', '*', function(e) {
+				//console.log(e.target.nodeName);
+				if (e.target.nodeName=='BODY' || e.target.nodeName=='HTML') {
+					$('.showpopmap').removeClass('showpopmap');
+					resetMenus();
+				}
+			});
+
+			$(document).on("keyup", "input.filter", function(e){
+				//alert(this.value);
+				searchFunction();
+			});
+
+			$(document).on("change", "select.menu-buildings", function(e){
+
+				clearMapLegend();
+
+				//resetMap();
+				ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				ambiarc.menuAction = 'yes';
+				//alert('select.menu-buildings');
+
+				//ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				ambiarc.exitBuilding();
+				//alert(this.value);
+				searchFunction();
+
+				// TODO building focus trigger here
+
+				// 	params = {};
+				// 	params.bldg = $(this).val();
+				// 	params.floor = $(this).attr('data-floor');
+				// 	//params.recordId = $(this).attr('data-recordid');
+				// 	//params.action = 'focusAfterDataLoad';
+				// 	if (fetchPoisFromApi(params)) {
+				// 		alert('focus failed');
+				// 	}
+
+			});
+
+			$(document).on('click', '.fly-box', function(e) {
+
+				clearMapLegend();
+
+				ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				ambiarc.menuAction = 'yes';
+				//alert('fly-box');
+
+				window.doFloorSelected = false;
+
+				$('.subfly').removeClass('reveal-horz');
+				var pos = $(this).closest('div').position();
+				var wid = $(this).closest('div').width();
+				var left = parseInt(pos.left + wid);
+				//alert(wid + ' -- ' + left);
+
+				var cat = $(this).attr('data-cat');
+				var type = $(this).attr('data-'+cat);
+
+				if (cat == 'school') {
+
+					$("[data-type='"+type+"']").css({left:left});
+					$("[data-type='"+type+"']").addClass('reveal-horz');
+
+				} else {
+
+					params = {};
+					params.currentTarget = e.currentTarget;
+					params.type = type;
+					params.bldg = $(this).attr('data-bldg');
+					params.floor = $(this).attr('data-floorid');
+					params.dept = $(this).attr('data-dept');
+					params.office = $(this).attr('data-office');
+					params.facility = $(this).attr('data-facility');
+					//params.schl = $(this).closest('div').attr('data-type');
+
+					if ($(this).attr('data-cat')) {
+						params.cat = $(this).attr('data-cat');
+					}
+					if ($(this).attr('data-lat')) {
+						params.lat = $(this).attr('data-lat');
+					}
+					if ($(this).attr('data-long')) {
+						params.long = $(this).attr('data-long');
+					}
+					if ($(this).attr('data-bldg')) {
+						params.bldg = $(this).attr('data-bldg');
+					}
+
+					window.bldg = $(this).attr('data-bldg');
+
+					if (params.bldg == 'FLSH' || params.bldg == 'CRR' || params.bldg == 'W14') {
+						doPopupMap(params.bldg);
+						return true;
+					}
+
+					if ($(this).attr('data-cat') == 'office' || $(this).attr('data-cat') == 'facility' || $(this).attr('data-cat') == 'dept') {
+
+						params.label = $(this).attr('data-dept');
+						params.bldg = $(this).attr('data-bldg');
+						params.recordId = $(this).attr('data-recordid');
+						params.action = 'focusAfterDataLoad';
+					}
+
+					if ($(this).attr('data-cat') == 'buildings') {
+
+						var buildingId	= $(this).attr('data-bldgid');
+						var floorId	= $(this).attr('data-floorid');
+						var lat		= $(this).attr('data-lat');
+						var lon		= $(this).attr('data-long');
+						var heightAboveFloor = '125';
+
+						// 	if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS') {
+						//
+						// 		var lat		= $(this).attr('data-lat');
+						// 		var lon		= $(this).attr('data-long');
+						// 		var heightAboveFloor = '50';
+						//
+						// 		ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, heightAboveFloor);
+						//
+						// 		params.action = 'focusOutdoorPoint';
+						//
+						// 		if (fetchPoisFromApi(params)) {
+						// 			alert('focus failed');
+						// 		}
+						//
+						// 		return true;
+						// 	}
+
+
+						ambiarc.legendType = 'menuBuilding';
+						ambiarc.ambiarcId = '';
+						ambiarc.buildingId = buildingId;
+						ambiarc.floorId = floorId;
+						ambiarc.roomName = '';
+						ambiarc.roomNo = '';
+						ambiarc.lat = lat;
+						ambiarc.lon = lon;
+
+						if ($(this).closest('div').hasClass('accessibility')) {
+
+							params.accessible	= 'Y';
+							params.bldg			= buildingId;
+							params.action		= 'doAccessibilityThing';
+							params.lat			= lat;
+							params.lon			= lon;
+							params.heightAboveFloor = '50';
+							delete params.floor	;
+
+							if (fetchPoisFromApi(params)) {
+								alert('focus failed');
+								//console.log('did it work?');
+								//collapseMenus();
+							}
+
+						} else {
+
+							ambiarc.focusOnLatLonAndZoomToHeight(buildingId, '', lat, lon, heightAboveFloor);
+
+							popMapLegend();
+
+						}
+
+						//window.doFloorSelected = true;
+
+						//ambiarc.getDirections('0024', '0093', '40.693454', '-73.963549', '0002', '0006', '40.690872', '-73.964982', function(res){
+						//ambiarc.getDirections(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, function(res){
+						//	console.log(res);
+						//	alert('Sorry, menu not active yet.');
+						//});
+
+						return true;
+					}
+
+					//console.log(params);
+					//console.log(document.deptMap);
+					//console.log(document.deptMap[params.office]);
+					//alert(params.facility);
+
+					ambiarc.legendType = 'menuOther';
+					ambiarc.ambiarcId = '';
+					ambiarc.buildingId = '';
+					ambiarc.floorId = $(this).attr('data-floorid');
+					ambiarc.roomName = $(this).html();
+					ambiarc.roomNo = $(this).attr('data-roomno');
+					ambiarc.lat = '';
+					ambiarc.lon = '';
+
+					if (fetchPoisFromApi(params)) {
+						alert('focus failed');
+						//console.log('did it work?');
+						//collapseMenus();
+					}
+				}
+			});
+
+			$(document).on('click', '.reset-map', function() {
+				$(this).attr('disabled','disabled');
+				//clearMapLegend();
+				$('.click-capture').remove();
+				//clearMapLegend();
+				resetMap();
+			});
+
+			//$(document).on("click", "div.subfly>span", function(e){
+			// 	$(document).on("click", "div.academics>span", function(e){
+			//
+			// 		//clearMapLegend();
+			//
+			// 		window.doFloorSelected = false;
+			// 		//alert('subfly span');
+			//
+			// 		window.bldg = $(this).attr('data-bldg');
+			//
+			// 		params = {};
+			// 		params.currentTarget = e.currentTarget;
+			// 		params.bldg = $(this).attr('data-bldg');
+			//
+			// 		if (params.bldg == 'FLSH' || params.bldg == 'CRR' || params.bldg == 'W14' || params.bldg == 'W18') {
+			// 			doPopupMap(params.bldg);
+			// 			return true;
+			// 		}
+			//
+			// 		params.dept = $(this).attr('data-dept');
+			// 		params.schl = $(this).closest('div').attr('data-type');
+			// 		params.action = 'focusAfterDataLoad';
+			//
+			// 		console.log('**********************************');
+			// 		console.log(params);
+			// 		console.log(document.deptMap);
+			// 		console.log('**********************************');
+			//
+			// 		params.label = params.dept;
+			// 		params.recordId = document.deptMap[params.dept].recordId;
+			//
+			//
+			// 		ambiarc.legendType = 'menuOther';
+			// 		ambiarc.ambiarcId = '';
+			// 		ambiarc.buildingId = '';
+			// 		ambiarc.floorId = '';
+			// 		ambiarc.roomName = '';
+			// 		ambiarc.lat = '';
+			// 		ambiarc.lon = '';
+			//
+			//
+			// 		if (params.recordId > '1') {
+			//
+			// 			if (fetchPoisFromApi(params)) {
+			// 				console.log('did it work?');
+			// 				collapseMenus();
+			// 			}
+			//
+			// 		} else {
+			//
+			// 			console.log('**********************************');
+			// 			console.log(params);
+			// 			console.log(document.deptMap);
+			// 			console.log('**********************************');
+			//
+			// 			alert('no record id');
+			//
+			// 		}
+			//
+			// 	});
+
+			window.intRefresh = setTimeout(function(){
+				//deptMap = eval("(" + deptMap + ")");
+				location.href = location.href;
+			//}, parseInt(50*60*1000));
+			}, parseInt(600000)); // 10 minutes
+
+			// 	window.nudgeTour = setInterval(function(){
+			// 		try {
+			// 			if (typeof tourIsRunning == 'undefined') {
+			// 				setTourInterval();
+			// 			}
+			// 		} catch(err) { console.log(err) }
+			// 		try {
+			// 			if (tourIsRunning == false) {
+			// 				setTourInterval();
+			// 			}
+			// 		} catch(err) { console.log(err) }
+			// 	}, parseInt(120*1000));
+
+			$(document).on('mousemove keypress click', function() {
+				clearTimeout(intRefresh);
+				intRefresh;
+			});
+
+			$(document).on('mousemove keypress', function() {
+				try {
+					clearTimeout(unsetPause);
+				} catch(err) { console.log(err) }
+				console.log('pause tour');
+				//clearInterval(intTour);
+				//setTourInterval();
+				pauseTour = true;
+				window.unsetPause = setTimeout(function(){
+					pauseTour = false;
+				},parseInt(60*1000));
+			});
+
+			/// weird style injection coming from somewhere
+			$("style:not('#position')").remove();
+
+			deptMap = eval("(" + deptMap + ")");
+			bldgMap = eval("(" + bldgMap + ")");
+			hallMap = eval("(" + hallMap + ")");
+
+			console.log(hallMap);
+
+			doTourLoop();
+
+			//window.onerror = function() {
+			//	location.reload();
+			//}
+
+			//window.addEventListener("error", function(){
+			//	location.reload();
+			//});
+
 		});
 
-		$(document).on('click', '.reset-map', function() {
-			$(this).attr('disabled','disabled');
-			//clearMapLegend();
-			$('.click-capture').remove();
-			//clearMapLegend();
-			resetMap();
-		});
-
-		//$(document).on("click", "div.subfly>span", function(e){
-		// 	$(document).on("click", "div.academics>span", function(e){
-		//
-		// 		//clearMapLegend();
-		//
-		// 		window.doFloorSelected = false;
-		// 		//alert('subfly span');
-		//
-		// 		window.bldg = $(this).attr('data-bldg');
-		//
-		// 		params = {};
-		// 		params.currentTarget = e.currentTarget;
-		// 		params.bldg = $(this).attr('data-bldg');
-		//
-		// 		if (params.bldg == 'FLSH' || params.bldg == 'CRR' || params.bldg == 'W14' || params.bldg == 'W18') {
-		// 			doPopupMap(params.bldg);
-		// 			return true;
-		// 		}
-		//
-		// 		params.dept = $(this).attr('data-dept');
-		// 		params.schl = $(this).closest('div').attr('data-type');
-		// 		params.action = 'focusAfterDataLoad';
-		//
-		// 		console.log('**********************************');
-		// 		console.log(params);
-		// 		console.log(document.deptMap);
-		// 		console.log('**********************************');
-		//
-		// 		params.label = params.dept;
-		// 		params.recordId = document.deptMap[params.dept].recordId;
-		//
-		//
-		// 		ambiarc.legendType = 'menuOther';
-		// 		ambiarc.ambiarcId = '';
-		// 		ambiarc.buildingId = '';
-		// 		ambiarc.floorId = '';
-		// 		ambiarc.roomName = '';
-		// 		ambiarc.lat = '';
-		// 		ambiarc.lon = '';
-		//
-		//
-		// 		if (params.recordId > '1') {
-		//
-		// 			if (fetchPoisFromApi(params)) {
-		// 				console.log('did it work?');
-		// 				collapseMenus();
-		// 			}
-		//
-		// 		} else {
-		//
-		// 			console.log('**********************************');
-		// 			console.log(params);
-		// 			console.log(document.deptMap);
-		// 			console.log('**********************************');
-		//
-		// 			alert('no record id');
-		//
-		// 		}
-		//
-		// 	});
-
-
-		window.intRefresh = setTimeout(function(){
-			//deptMap = eval("(" + deptMap + ")");
-			location.href = location.href;
-		//}, parseInt(50*60*1000));
-		}, parseInt(600000)); // 10 minutes
-
-		window.intTour = setInterval(function(){
-			if (pauseTour == true) {
-				window.pauseTour = false;
-				doTourLoop();
-			}
-		//}, parseInt(2*60*1000));
-		}, parseInt(4000));
-
-		$(document).on('mousemove keypress click', function() {
-			clearTimeout(intRefresh);
-			intRefresh;
-		});
-
-		$(document).on('mousemove keypress', function() {
-			console.log('clear tour');
-			//clearTimeout(intTour);
-			pauseTour = true;
-		});
-
-		/// weird style injection coming from somewhere
-		$("style:not('#position')").remove();
-
-		deptMap = eval("(" + deptMap + ")");
-		bldgMap = eval("(" + bldgMap + ")");
-		hallMap = eval("(" + hallMap + ")");
-
-		console.log(hallMap);
-		console.log('hallMap hallMap hallMap hallMap hallMap hallMap hallMap hallMap hallMap hallMap ');
-
-		//window.onerror = function() {
-		//	location.reload();
-		//}
-
-		//window.addEventListener("error", function(){
-		//	location.reload();
-		//});
-
-	});
+	}
 
 	//////////////////////////////////////////////////////////////////////////////////////
 
@@ -777,7 +817,7 @@
 	// Tells Ambiarc to focus on a map label id
 	function adjustMapFocus(target, mapLabelId, callback) {
 
-		console.log('adjustMapFocus');
+		alert('adjustMapFocus');
 
 		console.log(target);
 		console.log(mapLabelId);

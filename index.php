@@ -1,5 +1,7 @@
 <?php
 
+	date_default_timezone_set('America/New_York');
+
 	//echo phpversion();
 	//phpinfo();
 	//die();
@@ -47,6 +49,9 @@
 		$obj->setMode = addslashes($_POST['mode']);
 	}
 
+	//print_r($slists);
+	//die();
+
 ?>
 
 <html>
@@ -69,8 +74,8 @@
 		sessionStorage.setItem('mode',mode);
 	</script>
 
-  <script src="js/demo-ui.js?nc=<?php echo time(); ?>"></script>
   <script src="js/map-events.js?nc=<?php echo time(); ?>"></script>
+  <script src="js/demo-ui.js?nc=<?php echo time(); ?>"></script>
 
   <script src="TemplateData/js/jquery-2.2.4.min.js?nc=<?php echo time(); ?>"></script>
   <script src="TemplateData/js/bootstrap.min.js?nc=<?php echo time(); ?>"></script>
@@ -81,7 +86,6 @@
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
     <script>
 
@@ -158,7 +162,7 @@
 		<div class="menu-category" style="background-color:#d6cecd"><span class="cat-box" data-type="academics">academics</span></div>
 		<div class="menu-category" style="background-color:#9a8e88"><span class="cat-box" data-type="offices">offices</span></div>
 		<div class="menu-category" style="background-color:#52869f"><span class="cat-box" data-type="facilities">facilities</span></div>
-		<div class="menu-category" style="background-color:#f4581e"><span class="cat-box">accessibility</span></div>
+		<div class="menu-category" style="background-color:#f4581e"><span class="cat-box" data-type="accessibility">accessibility</span></div>
 		<div class="menu-category" style="background-color:#fff"><span class="cat-box cat-box-search"><img class="search-btn" src="images/view.png"></span></div>
 	</div>
 
@@ -166,6 +170,7 @@
 	<div class="flyout academics"><?php echo $slists['acad_menu']; ?></div>
 	<div class="flyout offices"><?php echo $slists['off_menu']; ?></div>
 	<div class="flyout facilities"><?php $obj->fetchFacilitiesMenu() ?></div>
+	<div class="flyout accessibility"><?php echo $slists['bldg_menu']; ?></div>
 
 	<div class="mapouter map-w14 ">
 		<iframe width="" height="" frameborder="0" src="" scrolling="no" sandbox="allow-scripts"></iframe>
@@ -206,6 +211,7 @@
 		<span class="floorNo"></span>
 		<br>
 		<span class="roomName"></span>
+		<div class="legend-img"></div>
 	</div>
 
 </body>
