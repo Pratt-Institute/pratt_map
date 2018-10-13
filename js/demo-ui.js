@@ -40,20 +40,24 @@ var doTourLoop = function() {
 	var i = 1;
 	$('.buildings.oncamp').each(function(){
 
+		if ( $(this).closest('div').hasClass('accessibility') ) {
+			return true;
+		}
+
 		i++;
 		var elm = this;
 		var tourLoopTimeout = setTimeout(function() {
 			if (!pauseTour) {
 				$(elm).trigger("click");
 			}
-		},i * 7000);
+		},parseInt(i * 6000));
 
 	});
 	setTimeout(function(){
 		//alert('tour is done');
 		//tourIsRunning = false;
-//		doTourLoop();
-	},parseInt(180*1000));
+		doTourLoop();
+	},parseInt(154*1000));
 }
 
 //var setTourInterval = function(){
@@ -165,7 +169,7 @@ var fetchPoisFromApi = function(params) {
 	ambiarc.loadRemoteMapLabels(url).then((out) => {
 
 		/// show labels if building exploded
-		ambiarc.EnableAutoShowPOIsOnFloorEnter();
+		//ambiarc.EnableAutoShowPOIsOnFloorEnter();
 
 		if (params.fetch == 'all') {
 			return true;
@@ -173,7 +177,8 @@ var fetchPoisFromApi = function(params) {
 
 		console.log(out);
 
-		if (out[0].user_properties.recordId.length < '1') {
+		//if (out[0].user_properties.recordId.length < '1') {
+		if (typeof out == 'undefined') {
 			console.log(out);
 			alert('load from api failed...');
 			return true;
@@ -328,6 +333,7 @@ var fetchPoisFromApi = function(params) {
 						obj.label = roomName;
 						//obj.showOnCreation = true;
 						ambiarc.updateMapLabel(itemId, 'IconWithText', obj);
+						focusAfterDataLoad(itemId);
 					}
 				} catch(err) { console.log(err) }
 
@@ -383,8 +389,9 @@ var fetchPoisFromApi = function(params) {
 			//},500);
 
 			setTimeout(function(){
+				ambiarc.showMapLabel(keepId, true);
 				popMapLegend();
-			},1);
+			},125);
 		}
 
 	});

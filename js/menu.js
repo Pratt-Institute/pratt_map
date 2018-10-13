@@ -161,6 +161,7 @@
 			});
 
 			$('.flyout').mouseleave(function() {
+				var elem = this;
 				var close = true;
 				$('.subfly').each(function(){
 					if ($(this).css('opacity') > 0) {
@@ -169,11 +170,11 @@
 				});
 				if (close == true) {
 					var hi = $(this).height();
-					$('.flyout').css({height: hi});
+					$(elem).css({height: hi});
 					document.close_flyout = setTimeout(function(){
-						$('.flyout').animate({width: '0px', opacity: 0}).promise().then(function(){
-							$('.flyout').removeClass('reveal-horz').promise().then(function(){
-								setTimeout(function(){ $('.flyout').removeAttr('style'); }, 125);
+						$(elem).animate({width: '0px', opacity: 0}).promise().then(function(){
+							$(elem).removeClass('reveal-horz').promise().then(function(){
+								setTimeout(function(){ $(elem).removeAttr('style'); }, 125);
 							});
 						});
 					}, 500);
