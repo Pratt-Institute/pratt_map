@@ -84,6 +84,11 @@
 
   <script src="js/jquery.virtual_keyboard.js?nc=<?php echo time(); ?>" type="text/javascript"></script>
 
+    <script src="js/ripple/src/jquery.ripple.jsz"></script>
+    <script src="js/ripple/test/test.jsz
+    "></script>
+    <script src="js/ripple/md.js"></script>
+
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
@@ -107,6 +112,7 @@
 </head>
 
 <body style="pointer-events: none">
+
 
 	<form id="myform" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 
@@ -184,10 +190,6 @@
 		<iframe width="" height="" frameborder="0" src="" scrolling="no" sandbox="allow-scripts"></iframe>
 	</div>
 
-
-
-
-
 	<div class="tab points" style="">
 		<div class="selectdiv ">
 			<label>
@@ -213,6 +215,8 @@
 		<span class="roomName"></span>
 		<div class="legend-img"></div>
 	</div>
+
+	<div class="md-ripple myRipple tap-to-start"></div>
 
 </body>
 

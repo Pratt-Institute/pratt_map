@@ -329,6 +329,7 @@ class DbTools {
 					$bldgs[$record['bldg_name']]['camploc'] = $camploc;
 					$bldgs[$record['bldg_name']]['latitude'] = $record['latitude'];
 					$bldgs[$record['bldg_name']]['longitude'] = $record['longitude'];
+					$bldgs[$record['bldg_name']]['accessible'][] = $record['accessible'];
 
 					@$bldg_map[$record['bldg_abbre']] = $record['gk_bldg_id'];
 
@@ -387,15 +388,27 @@ class DbTools {
 						continue;
 					}
 
+					$accessible_str = implode('',$bldg_stuff['accessible']);
+					$class_accessible = '';
+					$accessible = 'N';
+					$hide_this = 'hide-this';
+					if (strpos('_'.$accessible_str, 'Y') !== false) {
+						$accessible = 'Y';
+						$class_accessible = 'accessible';
+						$hide_this = '';
+					}
+
 					$bldgMnu[] = '<span
-						class="fly-box dbtools '.$bldg_stuff['camploc'].' buildings"
+						class="fly-box dbtools '.$bldg_stuff['camploc'].' buildings '.$class_accessible.' '.$hide_this.' "
 						data-cat="buildings"
 						data-bldg="'.$bldg_stuff['bldg_abbre'].'"
 						data-bldgid="'.$bldg_stuff['gk_bldg_id'].'"
 						data-bldgname="'.$bldg_stuff['bldg_name'].'"
 						data-floorid="'.$bldg_stuff['gk_floor_id'].'"
 						data-lat="'.$bldg_stuff['latitude'].'"
-						data-long="'.$bldg_stuff['longitude'].'">'.$bldg_name.'</span>';
+						data-long="'.$bldg_stuff['longitude'].'"
+						data-accessible="'.$accessible.'"
+						>'.$bldg_name.'</span>';
 
 				}
 

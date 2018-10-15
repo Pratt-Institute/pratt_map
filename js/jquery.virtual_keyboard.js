@@ -36,7 +36,8 @@
         /* Metodos Privados */
         /********************/
         initKeyboard = function(){
-            $('body').append($layout);
+            ///$('body').append($layout);
+            $($layout).insertBefore('.tap-to-start');
 
             language = languages[optionsKeyboard.language][optionsKeyboard.type];
 

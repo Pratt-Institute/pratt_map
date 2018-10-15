@@ -48,7 +48,6 @@ var mapStartedLoading = function() {
 
 	ambiarc.setMapTheme(ambiarc.mapTheme.light);
 
-
 }
 
 var mapFinishedLoading = function() {
@@ -100,11 +99,18 @@ var mapFinishedLoading = function() {
 }
 
 var BuildingExitCompleted = function(event) {
+
+	//alert('BuildingExitCompleted'); // auto
+
 	//console.log('BuildingExitCompleted');
 	//console.log(event);
 }
 
 var onFloorSelected = function(event) {
+
+	doPauseTour();
+
+	//alert('onFloorSelected');
 
 	console.log('onFloorSelected');
 	console.log(event);
@@ -128,6 +134,10 @@ var onFloorSelected = function(event) {
 
 var onEnteredFloorSelector = function(event) {
 
+	doPauseTour();
+
+	//alert('onEnteredFloorSelector');
+
 	//alert('pause');
 	pauseTour = true;
 	setTimeout(function(){
@@ -144,6 +154,11 @@ var onEnteredFloorSelector = function(event) {
 }
 
 var onExitedFloorSelector = function(event) {
+
+	doPauseTour();
+
+	//alert('onExitedFloorSelector');
+
 	console.log('onExitedFloorSelector');
 	console.log(event.detail);
 	var buildingId = event.detail;
@@ -152,6 +167,11 @@ var onExitedFloorSelector = function(event) {
 }
 
 var onFloorSelectorFocusChanged = function(event) {
+
+	doPauseTour();
+
+	//alert('onFloorSelectorFocusChanged');
+
 	//clearMapLegend();
 	//alert('onFloorSelectorFocusChanged');
 	console.log('onFloorSelectorFocusChanged');
@@ -163,6 +183,9 @@ var onFloorSelectorFocusChanged = function(event) {
 }
 
 var cameraStartedHandler = function(event){
+
+	//alert('cameraStartedHandler'); // auto
+
 	// do stuff when map motion begins
 	//ambiarc.showMapLabel(ambiarc.selectedPoiId, true);
 	//window.doShowHidePoints = true;
@@ -178,6 +201,8 @@ var cameraStartedHandler = function(event){
 };
 
 var cameraCompletedHandler = function(event){
+
+	//alert('cameraCompletedHandler'); // auto
 
 	//clearTimeout(document.scheduleLegend);
 

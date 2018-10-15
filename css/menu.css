@@ -1,5 +1,33 @@
 
 
+
+.md-ripple {
+	overflow: hidden;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+}
+
+.md-ripple * {
+	pointer-events: none;
+}
+
+.md-ripple-effect {
+  pointer-events: none;
+  position: absolute;
+  display: block;
+  background: #000;
+  width: 0;
+  height: 0;
+  border-radius: 100%;
+  z-index: 1;
+}
+
+
+
+
 div.click-capture {
 	position: absolute;
 	top: 0px;
@@ -8,6 +36,15 @@ div.click-capture {
 	right: 0px;
 	z-index: 888;
 	pointer-events: auto;
+}
+
+div.ztap-to-start {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+	pointer-events: none;
 }
 
 .points {
@@ -304,7 +341,10 @@ img.show-mode-button {
 	transition: all .85s ease;
 }
 
-.accessibility .offcamp {
+div.accessibility > span.offcamp {
+	display: none;
+}
+div.accessibility > span.hide-this {
 	display: none;
 }
 

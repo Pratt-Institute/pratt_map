@@ -8,6 +8,21 @@
 			window.tourIsRunning	= false;
 			window.pauseTour		= false;
 
+			new materialTouch('.md-ripple', {
+				classes: {
+				  rippleContainer: 'md-ripple-wrapper',
+				  ripple: 'md-ripple-effect'
+				},
+				transition: {
+				  easing: 'easeOutExpo',
+				  delay: 0,
+				  duration: 600
+				},
+				opacity: 0.25,
+				size: 0.75,
+				center: false
+			});
+
 			$.extend($.expr[':'], {
 			  'containsi': function(elem, i, match, array) {
 				return (elem.textContent || elem.innerText || '').toLowerCase()
@@ -92,7 +107,8 @@
 				$('.points').addClass('reveal-vert');
 				$('.menu-open').addClass('fade-out');
 				$('.reveal-horz').removeClass('reveal-horz');
-				$('body').append('<div class="click-capture"></div>');
+				//$('body').append('<div class="click-capture"></div>');
+				$('<div class="click-capture"></div>').insertBefore('.tap-to-start');
 				//isFloorSelectorEnabled = false;
 				//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				//ambiarc.viewFloorSelector('0001');
@@ -109,7 +125,8 @@
 				$('.showpopmap').removeClass('showpopmap');
 				$('.menu-open').addClass('fade-out');
 				$('.cat-wrap').removeClass('fade-out');
-				$('body').append('<div class="click-capture"></div>');
+				//$('body').append('<div class="click-capture"></div>');
+				$('<div class="click-capture"></div>').insertBefore('.tap-to-start');
 				isFloorSelectorEnabled = false;
 				//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				//ambiarc.loadMap("pratt");
@@ -480,7 +497,7 @@
 				//deptMap = eval("(" + deptMap + ")");
 				location.href = location.href;
 			//}, parseInt(50*60*1000));
-			}, parseInt(600000)); // 10 minutes
+			}, parseInt(10*60*1000)); // 10 minutes
 
 			// 	window.nudgeTour = setInterval(function(){
 			// 		try {
@@ -501,16 +518,7 @@
 			});
 
 			$(document).on('mousemove keypress', function() {
-				try {
-					clearTimeout(unsetPause);
-				} catch(err) { console.log(err) }
-				console.log('pause tour');
-				//clearInterval(intTour);
-				//setTourInterval();
-				pauseTour = true;
-				window.unsetPause = setTimeout(function(){
-					pauseTour = false;
-				},parseInt(60*1000));
+				doPauseTour();
 			});
 
 			/// weird style injection coming from somewhere
@@ -537,6 +545,21 @@
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////
+
+	function doPauseTour() {
+
+		try {
+			clearTimeout(unsetPause);
+		} catch(err) { console.log(err) }
+		console.log('pause tour');
+		//clearInterval(intTour);
+		//setTourInterval();
+		pauseTour = true;
+		window.unsetPause = setTimeout(function(){
+			pauseTour = false;
+		},parseInt(5*60*1000));
+
+	}
 
 	function setModeTheme() {
 
@@ -818,7 +841,7 @@
 	// Tells Ambiarc to focus on a map label id
 	function adjustMapFocus(target, mapLabelId, callback) {
 
-		alert('adjustMapFocus');
+		//alert('adjustMapFocus');
 
 		console.log(target);
 		console.log(mapLabelId);

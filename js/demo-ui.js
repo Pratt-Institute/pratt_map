@@ -179,8 +179,7 @@ var fetchPoisFromApi = function(params) {
 
 		//if (out[0].user_properties.recordId.length < '1') {
 		if (typeof out == 'undefined') {
-			console.log(out);
-			alert('load from api failed...');
+			console.log('load from api failed...');
 			return true;
 		}
 
@@ -369,7 +368,7 @@ var fetchPoisFromApi = function(params) {
 
 			console.log(ambiarc.poiStuff[keepId]);
 			console.log(params);
-			alert('accessibility ' + keepId);
+			console.log('accessibility ' + keepId);
 
 			//ambiarc.focusOnLatLonAndZoomToHeight(params.bldg, '', params.lat, params.lon, params.heightAboveFloor);
 			ambiarc.focusOnLatLonAndZoomToHeight('', '', params.lat, params.lon, params.heightAboveFloor);
