@@ -203,8 +203,18 @@ body {
 }
 
 .selectdiv:after {
-    content: '\f078';
-    font: normal normal normal 17px/1 FontAwesome;
+    /*content: '\f078' !important;*/
+    content: "\f0d7";
+    /* style | variant | weight | size/line-height | family */
+    /*font: normal normal normal 17px/1 FontAwesome;*/
+
+	font-style:		normal;
+	font-variant:	normal;
+	weight:			normal;
+	font-size:		17px;
+	line-height:	1;
+	font-family:	FontAwesome;
+
     color: #333;
     right: 5px;
     top: 4px;

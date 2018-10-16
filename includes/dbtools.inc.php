@@ -242,9 +242,8 @@ class DbTools {
 
 	private function runQuery() {
 
-		$sql = " select * from facilities ";
-
-		$sql .= " where department not in ('INACTIVE','UNUSABLE')
+		$sql = " select * from facilities
+			where department not in ('INACTIVE','UNUSABLE')
 			and room_name not like '%inactive%'
 			and department not like '%inactive%'
 			and major_category not like '%inactive%'
@@ -300,26 +299,32 @@ class DbTools {
 
 					$record['bldg_name'] = strtoupper(trim($record['bldg_name']));
 
-					$rooms[] = '<li id="'.$record['id'].'"
-						data-id="'.$record['id'].'"
-						data-building="'.$record['bldg_abbre'].'"
-						data-floorid="'.$record['gk_floor_id'].'"
-						data-recordId="'.$record['id'].'"
-						data-lat="'.$record['latitude'].'"
-						data-long="'.$record['longitude'].'"
-						class="list-group-item '.$imgUrl.' '.$has_image.'">';
+					if ($record['on_off_campus'] == 'ON') {
 
-					if ($record['bldg_abbre'] == 'SG') {
+						$rooms[] = '<li id="'.$record['id'].'"
+							data-id="'.$record['id'].'"
+							data-building="'.$record['bldg_abbre'].'"
+							data-floorid="'.$record['gk_floor_id'].'"
+							data-recordId="'.$record['id'].'"
+							data-lat="'.$record['latitude'].'"
+							data-long="'.$record['longitude'].'"
+							class="list-group-item '.$imgUrl.' '.$has_image.'">';
 
-						$rooms[] = '<div class="li-col li-sculpture '.$camploc.'"><span>'.$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist'].'</span></div>';
 
-					} else {
+						if ($record['bldg_abbre'] == 'SG') {
 
-						$rooms[] = '<div class="li-col li-label '.$camploc.'"><span>'.$record['room_name'].'</span></div>';
-						$rooms[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_abbre'].'</span></div>';
-						$rooms[] = '<div class="li-col li-room '.$camploc.'"><span>'.$room_no.'</span></div></li>';
+							$rooms[] = '<div class="li-col li-sculpture '.$camploc.'"><span>'.$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist'].'</span></div>';
+
+						} else {
+
+							$rooms[] = '<div class="li-col li-label '.$camploc.'"><span>'.$record['room_name'].'</span></div>';
+							$rooms[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_abbre'].'</span></div>';
+							$rooms[] = '<div class="li-col li-room '.$camploc.'"><span>'.$room_no.'</span></div></li>';
+
+						}
 
 					}
+
 
 					# assemble building menu info here
 					$bldgs[$record['bldg_name']]['name'] = $record['bldg_name'];
@@ -330,6 +335,7 @@ class DbTools {
 					$bldgs[$record['bldg_name']]['latitude'] = $record['latitude'];
 					$bldgs[$record['bldg_name']]['longitude'] = $record['longitude'];
 					$bldgs[$record['bldg_name']]['accessible'][] = $record['accessible'];
+					$bldgs[$record['bldg_name']]['on_off_campus'] = $record['on_off_campus'];
 
 					@$bldg_map[$record['bldg_abbre']] = $record['gk_bldg_id'];
 
@@ -382,7 +388,11 @@ class DbTools {
 					$bldg_name = strtolower($bldg_name);
 					$bldg_name = ucwords($bldg_name);
 
-					$bldgOpt[] = '<option value="'.$bldg_stuff['bldg_abbre'].'" data-floorid="'.$bldg_stuff['gk_floor_id'].'">'.$bldg_name.'</option>';
+					if ($bldg_stuff['on_off_campus'] == 'ON') {
+
+						$bldgOpt[] = '<option value="'.$bldg_stuff['bldg_abbre'].'" data-floorid="'.$bldg_stuff['gk_floor_id'].'">'.$bldg_name.'</option>';
+
+					}
 
 					if ($bldg_stuff['gk_bldg_id'] == '0000') {
 						continue;

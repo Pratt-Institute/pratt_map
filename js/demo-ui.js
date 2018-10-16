@@ -30,20 +30,11 @@ var iframeLoaded = function() {
 }
 
 var doTourLoop = function() {
-
-//	return true;
-
-// 	if (tourIsRunning == true) {
-// 		return true;
-// 	}
-// 	tourIsRunning = true;
 	var i = 1;
 	$('.buildings.oncamp').each(function(){
-
 		if ( $(this).closest('div').hasClass('accessibility') ) {
 			return true;
 		}
-
 		i++;
 		var elm = this;
 		var tourLoopTimeout = setTimeout(function() {
@@ -51,25 +42,12 @@ var doTourLoop = function() {
 				$(elm).trigger("click");
 			}
 		},parseInt(i * 6000));
-
 	});
 	setTimeout(function(){
-		//alert('tour is done');
-		//tourIsRunning = false;
 		doTourLoop();
-	},parseInt(154*1000));
+	},parseInt(15*60*1000));
 }
 
-//var setTourInterval = function(){
-	// 	try {
-	// 		clearInterval(intTour);
-	// 	} catch(err) { console.log(err) }
-	//window.intTour = setInterval(function(){
-// 		if (tourIsRunning == false) {
-// 			doTourLoop();
-// 		}
-	//}, parseInt(127*1000));
-//}
 
 var createCampusLabels = function() {
 	// creating objecct where we will store all our points property values
@@ -166,6 +144,16 @@ var fetchPoisFromApi = function(params) {
 		alert('stop');
 	}
 
+	console.log('==========================================');
+	try { console.log(params) } catch(err) { console.log(err) }
+	try { console.log(poiMap) } catch(err) { console.log(err) }
+	try { console.log(deptMap) } catch(err) { console.log(err) }
+	try { console.log(bldgMap) } catch(err) { console.log(err) }
+	try { console.log(hallMap) } catch(err) { console.log(err) }
+	try { console.log(ambiarc.poiStuff) } catch(err) { console.log(err) }
+	console.log('==========================================');
+	//alert(itemId);
+
 	ambiarc.loadRemoteMapLabels(url).then((out) => {
 
 		/// show labels if building exploded
@@ -211,7 +199,7 @@ var fetchPoisFromApi = function(params) {
 		window.deptMap = {};
 		//window.legendInfo = {};
 
-		var keepId = '';
+		window.keepId = '';
 
 		$.each(out, function(k,v){
 			if (typeof v.user_properties.ambiarcId == 'undefined') {
@@ -251,151 +239,166 @@ var fetchPoisFromApi = function(params) {
 			}
 		});
 
-		console.log(poiMap);
-		console.log(ambiarc.poiStuff);
-		console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-		//return true;
-
-		if (params.fetch == 'first') {
-			//setupMenuAcademics();
-			loadKeyboard();
-		} else {
-			ambiarc.currentBuilding = params.bldg;
-			//console.log('set currentBuilding here: ' + ambiarc.currentBuilding);
-		}
-
-		if (params.label) {
-
-			console.log(poiMap);
-			var itemId = poiMap[params.recordId];
-			ambiarc.selectedPoiId = itemId;
-
-			if (typeof itemId != 'undefined' && typeof params.label != 'undefined') {
-
-				// 	if (params.label.length > 3 && poiMap.length > 1) {
-				// 		var obj = {};
-				// 		obj.label = params.label;
-				// 		obj.clear = 'hide';
-				// 		ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
-				// 		ambiarc.labelObj = obj;
-				// 		//window.legendInfo.ambiarcId = itemId;
-				// 		//legendInfo.showRoom = true;
-				// 		//window.legendInfo.floorId = '';
-				// 		//popMapLegend();
-				// 	}
-
-			} else {
-				console.log(params);
-				alert('itemId is undefined');
-			}
-		} else {
-			if (params.fetch != 'first') {
-				for(var ambiarcId in ambiarc.poiStuff) {
-					//window.legendInfo.ambiarcId = ambiarcId;
-					//legendInfo.showRoom = false;
-					//window.legendInfo.floorId = '';
-					//popMapLegend();
-					break;
-				}
-			}
-		}
-
-		var itemId = poiMap[params.recordId]
-
-		//window.legendInfo.ambiarcId = itemId;
-		//legendInfo.showRoom = false;
-		//window.legendInfo.floorId = '';
-
-		console.log('==========================================');
-		console.log(params);
-		console.log(poiMap);
-		console.log(ambiarc.poiStuff);
-		console.log('==========================================');
-		//alert(itemId);
-
-		if (params.action == 'focusAfterDataLoad') {
-
-			var legendType	= ambiarc.legendType;
-			var ambiarcId	= ambiarc.ambiarcId;
-			var buildingId	= ambiarc.buildingId;
-			var floorId		= ambiarc.floorId;
-			var roomName	= ambiarc.roomName;
-			var lat = ambiarc.lat;
-			var lon = ambiarc.lon;
-
-			setTimeout(function(){
-
-				try {
-					//alert(roomName);
-					if (itemId != '' && roomName != '') {
-						var obj = {};
-						obj.label = roomName;
-						//obj.showOnCreation = true;
-						ambiarc.updateMapLabel(itemId, 'IconWithText', obj);
-						focusAfterDataLoad(itemId);
-					}
-				} catch(err) { console.log(err) }
-
-			},500);
-		}
-
-		// 	if (params.action == 'focusAfterDataLoad') {
-		// 		if (focusAfterDataLoad(itemId)) {
-		// 			return true;
-		// 		}
-		// 	}
-
-		if (params.action == 'focusOutdoorPoint') {
-			if (ambiarc.showMapLabel(itemId, true)) {
-				return true;
-			}
-		}
-
-		if (params.action == 'showFloorInfo') {
-			setTimeout(function(){
-				popMapLegend();
-			},1);
-		}
-
-		if (params.action == 'doAccessibilityThing') {
-
-			try {
-				if (keepId) {
-					params.lat = ambiarc.poiStuff[keepId].latitude;
-					params.lon = ambiarc.poiStuff[keepId].longitude;
-				}
-			} catch(err) { console.log(err) }
-
-			console.log(ambiarc.poiStuff[keepId]);
-			console.log(params);
-			console.log('accessibility ' + keepId);
-
-			//ambiarc.focusOnLatLonAndZoomToHeight(params.bldg, '', params.lat, params.lon, params.heightAboveFloor);
-			ambiarc.focusOnLatLonAndZoomToHeight('', '', params.lat, params.lon, params.heightAboveFloor);
-
-			//setTimeout(function(){
-
-				//try {
-					//alert(roomName);
-					//if (itemId != '' && roomName != '') {
-						var obj = {};
-						obj.label = 'Entrance';
-						obj.showOnCreation = true;
-						ambiarc.updateMapLabel(keepId, 'IconWithText', obj);
-					//}
-				//} catch(err) { console.log(err) }
-
-			//},500);
-
-			setTimeout(function(){
-				ambiarc.showMapLabel(keepId, true);
-				popMapLegend();
-			},125);
-		}
+		processAndRun();
 
 	});
 	return false;
 }
+
+
+
+
+
+
+var processAndRun = function() {
+
+	console.log('processAndRun');
+	console.log(poiMap);
+	console.log(ambiarc.poiStuff);
+	console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+	//return true;
+
+	if (params.fetch == 'first') {
+		//setupMenuAcademics();
+		loadKeyboard();
+	} else {
+		ambiarc.currentBuilding = params.bldg;
+		//console.log('set currentBuilding here: ' + ambiarc.currentBuilding);
+	}
+
+	if (params.label) {
+
+		console.log(poiMap);
+		var itemId = poiMap[params.recordId];
+		ambiarc.selectedPoiId = itemId;
+
+		if (typeof itemId != 'undefined' && typeof params.label != 'undefined') {
+
+			// 	if (params.label.length > 3 && poiMap.length > 1) {
+			// 		var obj = {};
+			// 		obj.label = params.label;
+			// 		obj.clear = 'hide';
+			// 		ambiarc.updateMapLabel(itemId, ambiarc.mapLabel.IconWithText, obj);
+			// 		ambiarc.labelObj = obj;
+			// 		//window.legendInfo.ambiarcId = itemId;
+			// 		//legendInfo.showRoom = true;
+			// 		//window.legendInfo.floorId = '';
+			// 		//popMapLegend();
+			// 	}
+
+		} else {
+			console.log(params);
+			alert('itemId is undefined');
+		}
+	} else {
+		if (params.fetch != 'first') {
+			for(var ambiarcId in ambiarc.poiStuff) {
+				//window.legendInfo.ambiarcId = ambiarcId;
+				//legendInfo.showRoom = false;
+				//window.legendInfo.floorId = '';
+				//popMapLegend();
+				break;
+			}
+		}
+	}
+
+	var itemId = poiMap[params.recordId]
+
+	//window.legendInfo.ambiarcId = itemId;
+	//legendInfo.showRoom = false;
+	//window.legendInfo.floorId = '';
+
+
+
+	if (params.action == 'focusAfterDataLoad') {
+
+		var legendType	= ambiarc.legendType;
+		var ambiarcId	= ambiarc.ambiarcId;
+		var buildingId	= ambiarc.buildingId;
+		var floorId		= ambiarc.floorId;
+		var roomName	= ambiarc.roomName;
+		var lat = ambiarc.lat;
+		var lon = ambiarc.lon;
+
+		setTimeout(function(){
+
+			try {
+				//alert(roomName);
+				if (itemId != '' && roomName != '') {
+					var obj = {};
+					obj.label = roomName;
+					//obj.showOnCreation = true;
+					ambiarc.updateMapLabel(itemId, 'IconWithText', obj);
+				}
+				if (itemId != '') {
+					focusAfterDataLoad(itemId);
+				}
+			} catch(err) { console.log(err) }
+
+		},500);
+	}
+
+	// 	if (params.action == 'focusAfterDataLoad') {
+	// 		if (focusAfterDataLoad(itemId)) {
+	// 			return true;
+	// 		}
+	// 	}
+
+	if (params.action == 'focusOutdoorPoint') {
+		if (ambiarc.showMapLabel(itemId, true)) {
+			return true;
+		}
+	}
+
+	if (params.action == 'showFloorInfo') {
+		setTimeout(function(){
+			popMapLegend();
+		},1);
+	}
+
+	if (params.action == 'doAccessibilityThing') {
+
+		try {
+			if (keepId) {
+				params.lat = ambiarc.poiStuff[keepId].latitude;
+				params.lon = ambiarc.poiStuff[keepId].longitude;
+			}
+		} catch(err) { console.log(err) }
+
+		console.log(ambiarc.poiStuff[keepId]);
+		console.log(params);
+		console.log('accessibility ' + keepId);
+
+		//ambiarc.focusOnLatLonAndZoomToHeight(params.bldg, '', params.lat, params.lon, params.heightAboveFloor);
+		ambiarc.focusOnLatLonAndZoomToHeight('', '', params.lat, params.lon, params.heightAboveFloor);
+
+		//setTimeout(function(){
+
+			//try {
+				//alert(roomName);
+				//if (itemId != '' && roomName != '') {
+					var obj = {};
+					obj.label = 'Entrance';
+					obj.showOnCreation = true;
+					ambiarc.updateMapLabel(keepId, 'IconWithText', obj);
+				//}
+			//} catch(err) { console.log(err) }
+
+		//},500);
+
+		setTimeout(function(){
+			ambiarc.showMapLabel(keepId, true);
+			popMapLegend();
+		},125);
+	}
+
+}
+
+
+
+
+
+
 //Rotate handlers
 var rotateLeft = function(){
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;

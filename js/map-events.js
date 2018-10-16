@@ -138,12 +138,6 @@ var onEnteredFloorSelector = function(event) {
 
 	//alert('onEnteredFloorSelector');
 
-	//alert('pause');
-	pauseTour = true;
-	setTimeout(function(){
-		pauseTour = false;
-	},parseInt(30*1000));
-
 	//alert('onEnteredFloorSelector');
 	console.log('onEnteredFloorSelector');
 	console.log(event);

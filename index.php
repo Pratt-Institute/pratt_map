@@ -84,11 +84,9 @@
 
   <script src="js/jquery.virtual_keyboard.js?nc=<?php echo time(); ?>" type="text/javascript"></script>
 
-    <script src="js/ripple/src/jquery.ripple.jsz"></script>
-    <script src="js/ripple/test/test.jsz
-    "></script>
-    <script src="js/ripple/md.js"></script>
+  <script src="js/ripple.js"></script>
 
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 

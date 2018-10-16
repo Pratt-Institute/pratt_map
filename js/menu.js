@@ -2,6 +2,8 @@
 
 		$(document).ready(function(){
 
+			ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+
 			console.log('loadUiFunctions');
 
 			window.doFloorSelected	= true;
@@ -109,10 +111,7 @@
 				$('.reveal-horz').removeClass('reveal-horz');
 				//$('body').append('<div class="click-capture"></div>');
 				$('<div class="click-capture"></div>').insertBefore('.tap-to-start');
-				//isFloorSelectorEnabled = false;
-				//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-				//ambiarc.viewFloorSelector('0001');
-				//ambiarc.viewFloorSelector('0001');
+
 			});
 
 			$(document).on('click', '.menu-open', function() {
@@ -171,7 +170,7 @@
 
 			$(document).on('click', '.click-capture', function() {
 				//collapseMenus();
-				ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				///ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'no';
 				$('.showpopmap').removeClass('showpopmap');
 				resetMenus();
@@ -246,7 +245,7 @@
 				clearMapLegend();
 
 				//resetMap();
-				ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				///ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'yes';
 				//alert('select.menu-buildings');
 
@@ -272,7 +271,7 @@
 
 				clearMapLegend();
 
-				ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				//ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'yes';
 				//alert('fly-box');
 
@@ -377,11 +376,7 @@
 							params.heightAboveFloor = '50';
 							delete params.floor	;
 
-							if (fetchPoisFromApi(params)) {
-								alert('focus failed');
-								//console.log('did it work?');
-								//collapseMenus();
-							}
+							fetchPoisFromApi(params);
 
 						} else {
 
@@ -551,10 +546,14 @@
 		try {
 			clearTimeout(unsetPause);
 		} catch(err) { console.log(err) }
+
 		console.log('pause tour');
+
 		//clearInterval(intTour);
 		//setTourInterval();
+
 		pauseTour = true;
+
 		window.unsetPause = setTimeout(function(){
 			pauseTour = false;
 		},parseInt(5*60*1000));
@@ -737,7 +736,11 @@
 		}
 	}
 
+	/// delete this
 	function searchPropertiesGkDept(find){
+
+		return true;
+
 		console.log('searchPropertiesGkDept');
 		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 		for(var item in ambiarc.mapStuff) {
@@ -777,6 +780,7 @@
 
 	}
 
+	/// delete this
 	function setupMenuAcademics() {
 
 		return true;
@@ -841,12 +845,12 @@
 	// Tells Ambiarc to focus on a map label id
 	function adjustMapFocus(target, mapLabelId, callback) {
 
-		//alert('adjustMapFocus');
+		alert('adjustMapFocus');
 
 		console.log(target);
 		console.log(mapLabelId);
 		var i, tablinks;
-		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+		///var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 		ambiarc.focusOnMapLabel(mapLabelId, 200);
 
 		if (callback && typeof(callback) === "function") {
