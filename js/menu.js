@@ -9,6 +9,7 @@
 			window.doFloorSelected	= true;
 			window.tourIsRunning	= false;
 			window.pauseTour		= false;
+			window.overhead			= false;
 
 			new materialTouch('.md-ripple', {
 				classes: {
@@ -68,11 +69,16 @@
 				// 		$('.poi-box').remove();
 				// 	}
 
+				//ambiarc.EnterOverheadCamera();
+				//ambiarc.ExitOverheadCamera();
+
 				if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS') {
 
 					var lat		= $(this).attr('data-lat');
 					var lon		= $(this).attr('data-long');
 					var heightAboveFloor = '50';
+
+					//alert(lat + ' ' + lon);
 
 					ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, heightAboveFloor);
 
@@ -150,6 +156,15 @@
 			});
 
 			$(document).on('click', '.cat-box', function() {
+
+				// 	if ($(this).html() == 'accessibility') {
+				// 		ambiarc.EnterOverheadCamera();
+				// 	} else {
+				// 		ambiarc.ExitOverheadCamera();
+				// 	}
+
+				ambiarc.exitBuilding();
+
 				$('.reveal-horz').removeClass('reveal-horz');
 				var pos = $(this).closest('div').position();
 				var maxHei = parseInt($(window).height()-90);
@@ -228,6 +243,7 @@
 			});
 
 			$(document).on('click', '*', function(e) {
+
 				//console.log(e.target.nodeName);
 				if (e.target.nodeName=='BODY' || e.target.nodeName=='HTML') {
 					$('.showpopmap').removeClass('showpopmap');
@@ -269,9 +285,11 @@
 
 			$(document).on('click', '.fly-box', function(e) {
 
+				//ambiarc.exitBuilding();
+
 				clearMapLegend();
 
-				//ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'yes';
 				//alert('fly-box');
 
@@ -356,7 +374,6 @@
 						// 		return true;
 						// 	}
 
-
 						ambiarc.legendType = 'menuBuilding';
 						ambiarc.ambiarcId = '';
 						ambiarc.buildingId = buildingId;
@@ -368,17 +385,43 @@
 
 						if ($(this).closest('div').hasClass('accessibility')) {
 
+							offset = [];
+
+							offset['0021'] = '45'; // Activity Res Ctr
+							offset['0003'] = '-180'; // Dekalb Hall
+							offset['0009'] = '-180'; // East Hall
+							offset['0019'] = '45'; // Film Video
+							offset['0004'] = '0'; // Higgins Hall
+							offset['0001'] = '0'; // Information Science Center
+							offset['0002'] = '0'; // Library
+							offset['0016'] = '-180'; // Machinery
+							offset['0024'] = '0'; // Myrtle Hall
+							offset['0013'] = '-180'; // Pantas Hall
+							offset['0018'] = '-180'; // Pratt Studios
+							offset['0022'] = '-180'; // Stabile Hall
+							offset['0007'] = '-90'; // Student Union
+							offset['0012'] = '45'; // Thrift Hall
+							offset['0014'] = '-90'; // Willoughby Hall
+
+							window.rotation = offset[buildingId];
+
+							//ambiarc.rotateCamera(rot, 0.2);
+
 							params.accessible	= 'Y';
 							params.bldg			= buildingId;
 							params.action		= 'doAccessibilityThing';
 							params.lat			= lat;
 							params.lon			= lon;
 							params.heightAboveFloor = '50';
+							params.rotation		= rotation;
 							delete params.floor	;
 
 							fetchPoisFromApi(params);
 
 						} else {
+
+							window.lat = lat;
+							window.lon = lon;
 
 							ambiarc.focusOnLatLonAndZoomToHeight(buildingId, '', lat, lon, heightAboveFloor);
 

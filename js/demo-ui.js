@@ -3,24 +3,56 @@
  var floors = {};
  var currentFloorId;
  var MapLabels = {};
+ window.oldRotation	= '0';
 
 //User clicked the floor selector
 var resetMap = function() {
+
+	try {
+		if (rotation != '0') {
+			ambiarc.rotateCamera(Number(-1*Number(rotation)), 0);
+			rotation = '0';
+			resetMap();
+			return true;
+		}
+	} catch(err) { console.log(err) }
+
+	console.log('resetMap');
+
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-	//ambiarc.exitBuilding();
+
+	//ambiarc.ExitOverheadCamera();
+
 	if (isFloorSelectorEnabled) {
 		ambiarc.exitBuilding();
-		buildingLableLoop();
 	} else {
 		ambiarc.viewFloorSelector(mainBldgID,0);
+		fullMapView();
 	}
 	clearMapLegend();
 	ambiarc.menuAction = 'no';
 	// reactivate reset button after a pause
 	setTimeout(function(){
 		$('.reset-map').removeAttr('disabled');
+		return true;
 	}, 1500);
 };
+
+var fullMapView = function() {
+	console.log('fullMapView');
+	//ambiarc.ExitOverheadCamera();
+	$('.reset-map').removeAttr('disabled');
+	var lat = 40.689666;
+	var lon = -73.963883;
+	ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, '400');
+}
+
+var justZoomOut = function() {
+	console.log('justZoomOut');
+	//ambiarc.ExitOverheadCamera();
+	$('.reset-map').removeAttr('disabled');
+	ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, '400');
+}
 
 //This method is called when the iframe loads, it subscribes onAmbiarcLoaded so we know when the map loads
 var iframeLoaded = function() {
@@ -40,14 +72,18 @@ var doTourLoop = function() {
 		var tourLoopTimeout = setTimeout(function() {
 			if (!pauseTour) {
 				$(elm).trigger("click");
+				setTimeout(function(){
+					justZoomOut();
+					//ambiarc.exitBuilding();
+				},5000);
 			}
-		},parseInt(i * 6000));
+		},parseInt(i * 7000));
 	});
-	setTimeout(function(){
-		doTourLoop();
-	},parseInt(15*60*1000));
-}
 
+	// 	setTimeout(function(){
+	// 		doTourLoop();
+	// 	},parseInt(15*60*1000));
+}
 
 var createCampusLabels = function() {
 	// creating objecct where we will store all our points property values
@@ -112,6 +148,12 @@ var buildingLabelUpdate = function(bldgId, labelId) {
 }
 
 var fetchPoisFromApi = function(params) {
+
+	// 	if (params.action == 'doAccessibilityThing') {
+	// 		ambiarc.EnterOverheadCamera();
+	// 	} else {
+	// 		ambiarc.ExitOverheadCamera();
+	// 	}
 
 	console.log('fetchPoisFromApi');
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
@@ -359,6 +401,29 @@ var processAndRun = function() {
 	if (params.action == 'doAccessibilityThing') {
 
 		try {
+			if (oldRotation != '0') {
+				var neutral = -1 * Number(oldRotation);
+				var newRotation = neutral + Number(rotation);
+				oldRotation = '0';
+			} else {
+				var neutral = '0';
+				var newRotation = rotation;
+			}
+		} catch(err) {
+			//window.oldRotation	= '0';
+			//newRotation			= '0';
+			//neutral				= '0';
+			console.log(err);
+		}
+
+		alert(neutral + ' ' + oldRotation + ' ' + rotation + ' ' + newRotation);
+
+		ambiarc.rotateCamera(newRotation, 0);
+		window.oldRotation = newRotation;
+
+
+		//resetMap();
+		try {
 			if (keepId) {
 				params.lat = ambiarc.poiStuff[keepId].latitude;
 				params.lon = ambiarc.poiStuff[keepId].longitude;
@@ -372,32 +437,17 @@ var processAndRun = function() {
 		//ambiarc.focusOnLatLonAndZoomToHeight(params.bldg, '', params.lat, params.lon, params.heightAboveFloor);
 		ambiarc.focusOnLatLonAndZoomToHeight('', '', params.lat, params.lon, params.heightAboveFloor);
 
-		//setTimeout(function(){
-
-			//try {
-				//alert(roomName);
-				//if (itemId != '' && roomName != '') {
-					var obj = {};
-					obj.label = 'Entrance';
-					obj.showOnCreation = true;
-					ambiarc.updateMapLabel(keepId, 'IconWithText', obj);
-				//}
-			//} catch(err) { console.log(err) }
-
-		//},500);
+		var obj = {};
+		obj.label = 'Entrance';
+		obj.showOnCreation = true;
+		ambiarc.updateMapLabel(keepId, 'IconWithText', obj);
 
 		setTimeout(function(){
 			ambiarc.showMapLabel(keepId, true);
 			popMapLegend();
 		},125);
 	}
-
 }
-
-
-
-
-
 
 //Rotate handlers
 var rotateLeft = function(){

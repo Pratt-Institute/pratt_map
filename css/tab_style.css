@@ -7,7 +7,7 @@ div.tab {
 	overflow: hidden;
 	border: 1px solid #ccc;
 	background-color: #f1f1f1;
-	width: 350px;
+	width: 400px;
 	height: 400px;
 	opacity: 0;
 
@@ -74,7 +74,7 @@ div.filter {
 input.filter {
 	float: left;
     box-sizing: border-box;
-    width: 300px;
+    width: 350px;
 	height: 32px;
     padding: 3px 20px;
     border: thin solid #ccc;
@@ -126,7 +126,6 @@ li.seen {
 .li-col {
 	display: inline-block;
 	white-space: nowrap;
-	display: inline-block;
 	float: left;
 	border: none;
 	text-align: left;
@@ -139,14 +138,27 @@ li.seen {
 }
 
 .li-label {
-	width: 180px;
+	width: 170px;
+	max-width: 170px;
 	overflow: hidden;
 }
 
 .li-bldg {
 	border-left: thin solid #ccc;
-	border-right: thin solid #ccc;
 	width: 70px;
+	max-width: 70px;
+}
+
+.li-floor {
+	border-left: thin solid #ccc;
+	width: 70px;
+	max-width: 70px;
+}
+
+.li-room {
+	border-left: thin solid #ccc;
+	width: 70px;
+	max-width: 70px;
 }
 
 .li-sculpture {

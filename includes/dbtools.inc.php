@@ -281,10 +281,17 @@ class DbTools {
 
 				foreach($rows as $field=>$record) {
 
-					if (trim($record['new_room_no']) != '') {
-						$room_number = trim($record['new_room_no']);
+					foreach($record as $key=>$value) {
+						if ($key == 'longitude') { continue; }
+						$value = trim($value);
+						$value = trim($value, '-');
+						$record[$key] = $value;
+					}
+
+					if ($record['new_room_no'] != '') {
+						$room_number = $record['new_room_no'];
 					} else {
-						$room_number = trim($record['room_no']);
+						$room_number = $record['room_no'];
 					}
 
 					$imgUrl = 'images/pois/'.$record['id'].'.jpg';
@@ -319,7 +326,9 @@ class DbTools {
 
 							$rooms[] = '<div class="li-col li-label '.$camploc.'"><span>'.$record['room_name'].'</span></div>';
 							$rooms[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_abbre'].'</span></div>';
-							$rooms[] = '<div class="li-col li-room '.$camploc.'"><span>'.$room_no.'</span></div></li>';
+							$rooms[] = '<div class="li-col li-floor '.$camploc.'"><span>'.$record['floor'].'</span></div>';
+							$rooms[] = '<div class="li-col li-room '.$camploc.'"><span>'.$room_number.'</span></div>';
+							$rooms[] = '</li>';
 
 						}
 
@@ -370,7 +379,7 @@ class DbTools {
 
 							foreach($dept_exp as $gkdept) {
 								$gkdept = trim($gkdept);
-								$acad[$gkschl.'-'.$gkdept] = "<span class=\"fly-box warn ".$campLoc."\" data-recordid=\"".$record['id']."\"  data-floorid=\"".$record['gk_floor_id']."\"    data-bldg=\"".$record['bldg_abbre']."\" data-cat=\"dept\" data-schl=\"".$gkschl."\" data-dept=\"".$gkdept."\"  data-roomno=\"$room_number\">".$gkdept."</span>";
+								$acad[$gkschl.'-'.$gkdept] = "<span class=\"fly-box warn ".$campLoc."\" data-recordid=\"".$record['id']."\" data-floorid=\"".$record['gk_floor_id']."\" data-bldg=\"".$record['bldg_abbre']."\" data-cat=\"dept\" data-schl=\"".$gkschl."\" data-dept=\"".$gkdept."\"  data-roomno=\"$room_number\">".$gkdept."</span>";
 							}
 						}
 					}

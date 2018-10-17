@@ -88,14 +88,8 @@ var mapFinishedLoading = function() {
 
 	// reactivate reset button after a pause
 	setTimeout(function(){
-		$('.reset-map').removeAttr('disabled');
-		var lat = 40.689666;
-		var lon = -73.963883;
-		ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, '400');
-
-		//doTourLoop();
-
-	}, 1000);
+		fullMapView()
+	}, 250);
 }
 
 var BuildingExitCompleted = function(event) {
