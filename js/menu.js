@@ -132,7 +132,7 @@
 				$('.cat-wrap').removeClass('fade-out');
 				//$('body').append('<div class="click-capture"></div>');
 				$('<div class="click-capture"></div>').insertBefore('.tap-to-start');
-				isFloorSelectorEnabled = false;
+				//isFloorSelectorEnabled = false;
 				//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				//ambiarc.loadMap("pratt");
 
@@ -157,13 +157,9 @@
 
 			$(document).on('click', '.cat-box', function() {
 
-				// 	if ($(this).html() == 'accessibility') {
-				// 		ambiarc.EnterOverheadCamera();
-				// 	} else {
-				// 		ambiarc.ExitOverheadCamera();
-				// 	}
-
-				ambiarc.exitBuilding();
+				if ($(this).html() == 'accessibility') {
+					resetMap();
+				}
 
 				$('.reveal-horz').removeClass('reveal-horz');
 				var pos = $(this).closest('div').position();
@@ -234,7 +230,7 @@
 					$('.showpopmap').removeClass('showpopmap');
 					resetMenus();
 					//hideAllPoints();
-					isFloorSelectorEnabled = false;
+					//isFloorSelectorEnabled = false;
 					//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 					//ambiarc.viewFloorSelector('0001');
 					//ambiarc.viewFloorSelector('0001');
@@ -243,6 +239,8 @@
 			});
 
 			$(document).on('click', '*', function(e) {
+
+				$('.veil').hide();
 
 				//console.log(e.target.nodeName);
 				if (e.target.nodeName=='BODY' || e.target.nodeName=='HTML') {
@@ -266,7 +264,7 @@
 				//alert('select.menu-buildings');
 
 				//ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-				ambiarc.exitBuilding();
+				//ambiarc.exitBuilding();
 				//alert(this.value);
 				searchFunction();
 
@@ -385,25 +383,57 @@
 
 						if ($(this).closest('div').hasClass('accessibility')) {
 
-							offset = [];
+							// 	ACTIVITY RES CTR	21	Y	Y
+							// 	DEKALB HALL			3	Y	Y
+							// 	EAST HALL			9	Y	Y
+							// 	FILM VIDEO			19	Y	Y
+							// 	HIGGINS HALL		4	Y	Y
+							// 	INFORMATION SCIENCE CENTER	1	Y	Y
+							// 	LIBRARY				2	Y	Y
+							// 	MACHINERY			16	Y	Y
+							// 	MYRTLE HALL			24	Y	Y
+							// 	PANTAS HALL			13	Y	Y
+							// 	PRATT STUDIOS		18	Y	Y
+							// 	STABILE HALL		22	Y	Y
+							// 	STUDENT UNION		7	Y	Y
+							// 	THRIFT HALL			12	Y	Y
+							// 	WILLOUGHBY HALL		14	Y	Y
 
-							offset['0021'] = '45'; // Activity Res Ctr
-							offset['0003'] = '-180'; // Dekalb Hall
-							offset['0009'] = '-180'; // East Hall
-							offset['0019'] = '45'; // Film Video
-							offset['0004'] = '0'; // Higgins Hall
-							offset['0001'] = '0'; // Information Science Center
-							offset['0002'] = '0'; // Library
-							offset['0016'] = '-180'; // Machinery
-							offset['0024'] = '0'; // Myrtle Hall
-							offset['0013'] = '-180'; // Pantas Hall
-							offset['0018'] = '-180'; // Pratt Studios
-							offset['0022'] = '-180'; // Stabile Hall
-							offset['0007'] = '-90'; // Student Union
-							offset['0012'] = '45'; // Thrift Hall
-							offset['0014'] = '-90'; // Willoughby Hall
+							rotation = [];
+							rotation['0021'] = '45'; // Activity Res Ctr
+							rotation['0003'] = '180'; // Dekalb Hall
+							rotation['0009'] = '270'; // East Hall
+							rotation['0019'] = '45'; // Film Video
+							rotation['0004'] = '45'; // Higgins Hall
+							rotation['0001'] = '0'; // Information Science Center
+							rotation['0002'] = '0'; // Library
+							rotation['0016'] = '90'; // Machinery
+							rotation['0024'] = '0'; // Myrtle Hall
+							rotation['0013'] = '135'; // Pantas Hall
+							rotation['0018'] = '135'; // Pratt Studios
+							rotation['0022'] = '0'; // Stabile Hall
+							rotation['0007'] = '270'; // Student Union
+							rotation['0012'] = '45'; // Thrift Hall
+							rotation['0014'] = '270'; // Willoughby Hall
+							rotation = rotation[buildingId];
 
-							window.rotation = offset[buildingId];
+							zoom = [];
+							zoom['0021'] = '50'; // Activity Res Ctr
+							zoom['0003'] = '50'; // Dekalb Hall
+							zoom['0009'] = '25'; // East Hall
+							zoom['0019'] = '50'; // Film Video
+							zoom['0004'] = '50'; // Higgins Hall
+							zoom['0001'] = '50'; // Information Science Center
+							zoom['0002'] = '50'; // Library
+							zoom['0016'] = '25'; // Machinery
+							zoom['0024'] = '50'; // Myrtle Hall
+							zoom['0013'] = '50'; // Pantas Hall
+							zoom['0018'] = '50'; // Pratt Studios
+							zoom['0022'] = '50'; // Stabile Hall
+							zoom['0007'] = '50'; // Student Union
+							zoom['0012'] = '15'; // Thrift Hall
+							zoom['0014'] = '50'; // Willoughby Hall
+							zoom = zoom[buildingId];
 
 							//ambiarc.rotateCamera(rot, 0.2);
 
@@ -412,7 +442,7 @@
 							params.action		= 'doAccessibilityThing';
 							params.lat			= lat;
 							params.lon			= lon;
-							params.heightAboveFloor = '50';
+							params.heightAboveFloor = zoom;
 							params.rotation		= rotation;
 							delete params.floor	;
 
@@ -537,21 +567,15 @@
 			//}, parseInt(50*60*1000));
 			}, parseInt(10*60*1000)); // 10 minutes
 
-			// 	window.nudgeTour = setInterval(function(){
-			// 		try {
-			// 			if (typeof tourIsRunning == 'undefined') {
-			// 				setTourInterval();
-			// 			}
-			// 		} catch(err) { console.log(err) }
-			// 		try {
-			// 			if (tourIsRunning == false) {
-			// 				setTourInterval();
-			// 			}
-			// 		} catch(err) { console.log(err) }
-			// 	}, parseInt(120*1000));
+			window.showVeil = setTimeout(function(){
+				$('.veil').show();
+			//}, parseInt(5*60*1000)); // 5 minutes
+			}, parseInt(5000)); // 5 minutes
 
 			$(document).on('mousemove keypress click', function() {
+				$('.veil').hide();
 				clearTimeout(intRefresh);
+				clearTimeout(showVeil);
 				intRefresh;
 			});
 
@@ -888,7 +912,7 @@
 	// Tells Ambiarc to focus on a map label id
 	function adjustMapFocus(target, mapLabelId, callback) {
 
-		alert('adjustMapFocus');
+		//alert('adjustMapFocus');
 
 		console.log(target);
 		console.log(mapLabelId);

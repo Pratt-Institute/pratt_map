@@ -12,10 +12,19 @@ var onAmbiarcLoaded = function() {
     ambiarc.registerForEvent(ambiarc.eventLabel.CameraMotionStarted, cameraStartedHandler);
     ambiarc.registerForEvent(ambiarc.eventLabel.StartedLoadingMap, mapStartedLoading);
     ambiarc.registerForEvent(ambiarc.eventLabel.FinishedLoadingMap, mapFinishedLoading);
-	/// ??? need this ?
+
 	ambiarc.registerForEvent(ambiarc.eventLabel.MapLabelSelected, (event) => {
 		adjustMapFocus($("#" + event.detail)[0], event.detail)
 	});
+
+	runMapLoad();
+
+};
+
+var runMapLoad = function() {
+
+	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+
     var full = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+(window.location.pathname ? window.location.pathname.substring(0,window.location.pathname.lastIndexOf("/")) : '');
     ambiarc.setMapAssetBundleURL(full+'/ambiarc/');
     //ambiarc.loadMap("pratt");
@@ -23,7 +32,8 @@ var onAmbiarcLoaded = function() {
 //    ambiarc.setMapAssetBundleURL('https://s3-us-west-1.amazonaws.com/gk-web-demo/ambiarc/');
     //ambiarc.loadMap(mapFolder);
     ambiarc.loadMap("pratt");
-};
+
+}
 
 var mapStartedLoading = function() {
 
@@ -90,6 +100,9 @@ var mapFinishedLoading = function() {
 	setTimeout(function(){
 		fullMapView()
 	}, 250);
+
+	$('.veil').show();
+
 }
 
 var BuildingExitCompleted = function(event) {
@@ -190,31 +203,16 @@ var cameraStartedHandler = function(event){
 
 var cameraCompletedHandler = function(event){
 
-	//alert('cameraCompletedHandler'); // auto
+	console.log('cameraCompletedHandler'); // auto
 
-	//clearTimeout(document.scheduleLegend);
-
-	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
 	if (event.detail == 'UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor') {
-
-		//alert(isFloorSelectorEnabled + ' -- ' + mainBldgID);
 
 		console.log('cameraCompletedHandler');
 		console.log(event);
 		console.log(event.detail + ' --- ' + doFloorSelected + ' --- ' + ambiarc.menuAction);
 
-		//window.legendInfo.ambiarcId = '';
-		//window.legendInfo.buildingId = ambiarc.buildingSelected;
-		//window.legendInfo.floorId = ambiarc.floorSelected;
-		//window.legendInfo.roomName = '';
-
-		//console.log(window.legendInfo);
-
-		//alert($('.click-capture').length);
-		//if (ambiarc.menuAction != 'yes') {
-
-		//if ($('.click-capture').length > 0) {
 		if (typeof ambiarc.legendType == 'undefined' || ambiarc.legendType == '') {
 			if (isFloorSelectorEnabled == false && mainBldgID > 0 ) {
 
@@ -227,22 +225,14 @@ var cameraCompletedHandler = function(event){
 				params.select = 'floor';
 
 				if (params.action == 'showFloorInfo' && params.floor != '') {
-
-					if (fetchPoisFromApi(params)) {
-						alert('here');
-					}
-
+					fetchPoisFromApi(params);
 				} else {
-
 					console.log('`````````````````````````````````````````````````````````````````');
 					console.log(params);
 					console.log('`````````````````````````````````````````````````````````````````');
-
-
 				}
 			}
 		}
-
 	}
 
 };

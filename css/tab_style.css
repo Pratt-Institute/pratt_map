@@ -216,23 +216,17 @@ body {
 
 .selectdiv:after {
     /*content: '\f078' !important;*/
-    content: "\f0d7";
+    /*content: "\f0d7";*/
     /* style | variant | weight | size/line-height | family */
     /*font: normal normal normal 17px/1 FontAwesome;*/
-
-	font-style:		normal;
-	font-variant:	normal;
-	weight:			normal;
-	font-size:		17px;
-	line-height:	1;
-	font-family:	FontAwesome;
-
+	/*content: "&#x25BC";*/
+	content: "▼";
     color: #333;
     right: 5px;
     top: 4px;
     height: 30px;
     width: 40px;
-    padding: 5px 0px 0px 11px;
+    padding: 5px 0px 0px 13px;
     /*border-left: 1px solid #ccc;*/
     position: absolute;
     pointer-events: none;

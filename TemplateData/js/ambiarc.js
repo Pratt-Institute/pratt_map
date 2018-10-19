@@ -330,6 +330,9 @@
 
 
 	this.hideMapLabelGroup = function(mapLabelIds, immediate) {
+
+		console.log('ambiarc :: hideMapLabelGroup');
+
       var json = JSON.stringify({
         mapLabelIds: mapLabelIds,
         immediate: immediate

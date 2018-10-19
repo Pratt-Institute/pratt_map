@@ -344,15 +344,43 @@ img.show-mode-button {
 div.accessibility > span.offcamp {
 	display: none;
 }
+
 div.accessibility > span.hide-this {
 	display: none;
 }
 
+div.veil {
+	display: none;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 100vh;
+	width: 100vw;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
 
+div.veil-box {
+	background: #666;
+	opacity: 0.6;
+}
 
-
-
-
+div.veil-text {
+	/*font-family: 'Sarpanch', sans-serif;*/
+	font-family: 'Exo', sans-serif;
+	font-variant: small-caps;
+	position: fixed;
+	top: 50%;
+	transform: translateY(-50%);
+	height: auto;
+	font-weight: bold;
+	letter-spacing: 30px;
+	line-height: 1.75;
+	font-size: 4vw;
+	color: #fff;
+	text-align:	center;
+}
 
 
 

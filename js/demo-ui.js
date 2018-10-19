@@ -3,25 +3,22 @@
  var floors = {};
  var currentFloorId;
  var MapLabels = {};
- window.oldRotation	= '0';
+
+ window.rotation		= '0';
+ window.rotationNew		= '0';
+ window.rotationOld		= '0';
+ window.rotationNeutral	= '0';
 
 //User clicked the floor selector
 var resetMap = function() {
 
-	try {
-		if (rotation != '0') {
-			ambiarc.rotateCamera(Number(-1*Number(rotation)), 0);
-			rotation = '0';
-			resetMap();
-			return true;
-		}
-	} catch(err) { console.log(err) }
-
 	console.log('resetMap');
 
-	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
 	//ambiarc.ExitOverheadCamera();
+
+	console.log('isFloorSelectorEnabled ' + isFloorSelectorEnabled);
 
 	if (isFloorSelectorEnabled) {
 		ambiarc.exitBuilding();
@@ -29,8 +26,10 @@ var resetMap = function() {
 		ambiarc.viewFloorSelector(mainBldgID,0);
 		fullMapView();
 	}
+
 	clearMapLegend();
 	ambiarc.menuAction = 'no';
+
 	// reactivate reset button after a pause
 	setTimeout(function(){
 		$('.reset-map').removeAttr('disabled');
@@ -45,6 +44,14 @@ var fullMapView = function() {
 	var lat = 40.689666;
 	var lon = -73.963883;
 	ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, '400');
+	if (rotationOld != '0') {
+		if (rotationOld != rotation) {
+			var rotationNeutral = -1 * Number(rotationOld);
+			ambiarc.rotateCamera(rotationNeutral, 0);
+			var delay = 1500;
+		}
+		rotationOld = '0';
+	}
 }
 
 var justZoomOut = function() {
@@ -149,14 +156,22 @@ var buildingLabelUpdate = function(bldgId, labelId) {
 
 var fetchPoisFromApi = function(params) {
 
+	clearMapLegend();
+
 	// 	if (params.action == 'doAccessibilityThing') {
 	// 		ambiarc.EnterOverheadCamera();
 	// 	} else {
 	// 		ambiarc.ExitOverheadCamera();
 	// 	}
 
+	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+
+	try {
+		ambiarc.hideMapLabelGroup(poiMap, true);
+	} catch(err) { console.log(err) }
+
 	console.log('fetchPoisFromApi');
-	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+
 	if (typeof ambiarc.poiStuff == 'undefined') {
 		ambiarc.poiStuff = {};
 	}
@@ -205,7 +220,9 @@ var fetchPoisFromApi = function(params) {
 			return true;
 		}
 
+		console.log('----------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>');
 		console.log(out);
+		//alert('out');
 
 		//if (out[0].user_properties.recordId.length < '1') {
 		if (typeof out == 'undefined') {
@@ -400,52 +417,70 @@ var processAndRun = function() {
 
 	if (params.action == 'doAccessibilityThing') {
 
-		try {
-			if (oldRotation != '0') {
-				var neutral = -1 * Number(oldRotation);
-				var newRotation = neutral + Number(rotation);
-				oldRotation = '0';
-			} else {
-				var neutral = '0';
-				var newRotation = rotation;
+		//ambiarc.hideMapLabelGroup(poiMap, true);
+
+		var delay = 1;
+
+		if (rotationOld != '0') {
+			if (rotationOld != rotation) {
+				var rotationNeutral = -1 * Number(rotationOld);
+				ambiarc.rotateCamera(rotationNeutral, 0);
+				var delay = 1500;
 			}
-		} catch(err) {
-			//window.oldRotation	= '0';
-			//newRotation			= '0';
-			//neutral				= '0';
-			console.log(err);
+			//rotationOld = '0';
 		}
 
-		alert(neutral + ' ' + oldRotation + ' ' + rotation + ' ' + newRotation);
+		// 	ambiarc.viewFloorSelector(params.bldg,0);
+		//
+		// 	setTimeout(function(){
+		// 		ambiarc.exitBuilding();
+		// 		fullMapView();
+		// 	},2000);
 
-		ambiarc.rotateCamera(newRotation, 0);
-		window.oldRotation = newRotation;
-
-
-		//resetMap();
-		try {
-			if (keepId) {
-				params.lat = ambiarc.poiStuff[keepId].latitude;
-				params.lon = ambiarc.poiStuff[keepId].longitude;
-			}
-		} catch(err) { console.log(err) }
-
-		console.log(ambiarc.poiStuff[keepId]);
-		console.log(params);
-		console.log('accessibility ' + keepId);
-
-		//ambiarc.focusOnLatLonAndZoomToHeight(params.bldg, '', params.lat, params.lon, params.heightAboveFloor);
-		ambiarc.focusOnLatLonAndZoomToHeight('', '', params.lat, params.lon, params.heightAboveFloor);
-
-		var obj = {};
-		obj.label = 'Entrance';
-		obj.showOnCreation = true;
-		ambiarc.updateMapLabel(keepId, 'IconWithText', obj);
+		console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+		console.log('rotation ' + rotation);
+		console.log('rotationOld ' + rotationOld);
+		console.log('rotationNeutral ' + rotationNeutral);
+		//console.log('rotationNew ' + rotationNew);
+		console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
 
 		setTimeout(function(){
-			ambiarc.showMapLabel(keepId, true);
-			popMapLegend();
-		},125);
+
+			//resetMap();
+			try {
+				if (keepId) {
+					params.lat = ambiarc.poiStuff[keepId].latitude;
+					params.lon = ambiarc.poiStuff[keepId].longitude;
+				}
+			} catch(err) { console.log(err) }
+
+			console.log(ambiarc.poiStuff[keepId]);
+			console.log(params);
+			console.log('accessibility ' + keepId);
+
+			//ambiarc.focusOnLatLonAndZoomToHeight(params.bldg, '', params.lat, params.lon, params.heightAboveFloor);
+			ambiarc.focusOnLatLonAndZoomToHeight('', '', params.lat, params.lon, params.heightAboveFloor);
+
+			var obj = {};
+			obj.label = 'Accessible Entrance';
+			obj.showOnCreation = true;
+			obj.ignoreCollision = true;
+			ambiarc.updateMapLabel(keepId, 'IconWithText', obj);
+
+			setTimeout(function(){
+				ambiarc.showMapLabel(keepId, true);
+				popMapLegend();
+
+				setTimeout(function(){
+					if (rotationOld != rotation) {
+						ambiarc.rotateCamera(rotation, 0);
+						rotationOld = rotation;
+					}
+				},1000);
+
+			},125);
+
+		},delay);
 	}
 }
 
@@ -566,10 +601,10 @@ var popMapLegend = function() {
 					//tooltipBody: '',
 					//base64: iconDefault,
 					location: 'URL',
-					partialPath: 'css/icons/ic_building.png',
+					partialPath: 'images/icons/ic_building.png',
 					collapsedIconLocation: 'URL',
-					collapsedIconPartialPath: '/css/icons/ic_building.png',
-					ignoreCollision: true,
+					collapsedIconPartialPath: 'images/icons/ic_building.png',
+					ignoreCollision: false,
 				};
 
 				createTextIcon(poiObject);
@@ -630,11 +665,16 @@ var mapLabelCreatedCallback = function(labelId, labelName, mapLabelInfo) {
 };
 
 var focusAfterDataLoad = function(itemId) {
+
 	console.log('focusAfterDataLoad '+itemId);
+
+	//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+	//ambiarc.hideMapLabelGroup(poiMap, true);
+
 	if (itemId) {
 
 		try {
-			var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+
 			ambiarc.selectedPoiId = itemId;
 			ambiarc.focusOnMapLabel(itemId, 200);
 		} catch(err) {
@@ -665,24 +705,6 @@ var createTextIcon = function (mapLabelInfo) {
 	console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
 
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-
-// 	var mapLabelInfo = {
-// 		buildingId: currentBuildingId,
-// 		floorId: currentFloorId,
-// 		latitude: parseFloat(latlon.lat),
-// 		longitude: parseFloat(latlon.lon),
-// 		label: 'Information',
-// 		fontSize: 26,
-// 		category: 'Label',
-// 		location: 'Default',
-// 		partialPath: 'Information',
-// 		showOnCreation: true,
-// 		type: ambiarc.mapLabel.IconWithText,
-// 		showToolTip: false,
-// 		tooltipTitle: '',
-// 		tooltipBody: '',
-// 		base64: iconDefault
-// 	};
 
 	if(currentBuildingId == undefined){
 		mapLabelInfo.outside = true;
