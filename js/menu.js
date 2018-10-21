@@ -91,14 +91,21 @@
 
 					params.action = 'focusOutdoorPoint';
 
+					if ($(this).attr('data-building') == 'SG') {
+
+						var sculpture = $(this).find('span').html();
+						var split = sculpture.split(' :: ');
+
+						ambiarc.recordId = $(this).attr('data-recordid');
+						ambiarc.sculptureName = split[0];
+						ambiarc.sculptureArtist = split[1];
+
+						//alert(ambiarc.sculptureName);
+					}
 					//return true;
 				}
-
 				//popMapLegend();
-
-				if (fetchPoisFromApi(params)) {
-					alert('focus failed');
-				}
+				fetchPoisFromApi(params);
 
 			});
 
@@ -682,6 +689,9 @@
 	}
 
 	function doPoiImage(id) {
+
+		return true;
+
 		$('.poi-box').remove();
 		$('body').append('<div class="poi-box"><img src="images/pois/'+id+'.jpg"></div>').promise().then(function(){
 			$('.poi-box').animate({

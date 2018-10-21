@@ -207,12 +207,12 @@
 	</div>
 
 	<div class="legend">
+		<div class="legend-img"></div>
 		<span class="bldgName"></span>
 		<br>
 		<span class="floorNo"></span>
 		<br>
 		<span class="roomName"></span>
-		<div class="legend-img"></div>
 	</div>
 
 	<div class="md-ripple myRipple tap-to-start"></div>

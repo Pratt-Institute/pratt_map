@@ -305,7 +305,11 @@ div.legend span.copy {
 	margin-top: 4px;
 }
 
-
+div.legend img {
+	max-width: 30vw;
+	max-height: 25vh;
+	margin: 25px;
+}
 
 
 .mode-button {

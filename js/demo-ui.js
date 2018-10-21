@@ -298,6 +298,8 @@ var fetchPoisFromApi = function(params) {
 			}
 		});
 
+		//alert('here?');
+
 		processAndRun();
 
 	});
@@ -404,9 +406,10 @@ var processAndRun = function() {
 	// 	}
 
 	if (params.action == 'focusOutdoorPoint') {
-		if (ambiarc.showMapLabel(itemId, true)) {
-			return true;
-		}
+		ambiarc.showMapLabel(itemId, true);
+
+		popMapLegend();
+
 	}
 
 	if (params.action == 'showFloorInfo') {
@@ -529,14 +532,9 @@ var popMapLegend = function() {
 	var lat = ambiarc.lat;
 	var lon = ambiarc.lon;
 
-	// 	try {
-	// 		if (ambiarcId != '' && roomName != '') {
-	// 			var obj = {};
-	// 			obj.label = roomName;
-	// 			//obj.showOnCreation = true;
-	// 			ambiarc.updateMapLabel(ambiarcId, 'IconWithText', obj);
-	// 		}
-	// 	} catch(err) { console.log(err) }
+	var recordId		= ambiarc.recordId;
+	var sculptureName	= ambiarc.sculptureName;
+	var sculptureArtist	= ambiarc.sculptureArtist;
 
 	setTimeout(function(){
 		ambiarc.legendType = '';
@@ -546,6 +544,10 @@ var popMapLegend = function() {
 		ambiarc.roomName = '';
 		ambiarc.lat = '';
 		ambiarc.lon = '';
+
+		ambiarc.recordId = '';
+		ambiarc.sculptureName = '';
+		ambiarc.sculptureArtist = '';
 	},4000);
 
 	document.scheduleLegend = setTimeout(function(){
@@ -560,7 +562,27 @@ var popMapLegend = function() {
 		console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
 
 		try {
+			var img = '<img src="images/buildings/'+bldgMap[floorId].buildingId+'.jpg">'
+			$('div.legend-img').html(img);
+		} catch(err) {
+			console.log(err)
+			$('div.legend-img').html('');
+		}
+
+		try {
+			var img = '<img src="images/pois/'+recordId+'.jpg">'
+			$('div.legend-img').html(img);
+		} catch(err) {
+			console.log(err)
+			$('div.legend-img').html('');
+		}
+
+		try {
 			$('.bldgName').html(bldgMap[floorId].bldg_name);
+		} catch(err) { console.log(err) }
+
+		try {
+			$('.bldgName').html(sculptureName);
 		} catch(err) { console.log(err) }
 
 		try {
@@ -618,6 +640,10 @@ var popMapLegend = function() {
 
 		try {
 			$('.floorNo').html(ambiarc.poiStuff[ambiarcId].floorNo + ' floor');
+		} catch(err) { console.log(err) }
+
+		try {
+			$('.floorNo').html(sculptureArtist);
 		} catch(err) { console.log(err) }
 
 		try {

@@ -572,6 +572,7 @@ class DbTools {
 					}
 
 					$map[$record['gk_floor_id']]['recordId']	= $record['id'];
+					$map[$record['gk_floor_id']]['buildingId']	= $record['gk_bldg_id'];
 					$map[$record['gk_floor_id']]['bldg_name']	= $record['bldg_name'];
 					$map[$record['gk_floor_id']]['floor']		= $record['floor'];
 					$map[$record['gk_floor_id']]['bldgAbbr']	= $record['bldg_abbre'];
