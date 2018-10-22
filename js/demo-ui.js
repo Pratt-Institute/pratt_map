@@ -389,9 +389,13 @@ var processAndRun = function() {
 					var obj = {};
 					obj.label = roomName;
 					//obj.showOnCreation = true;
-					ambiarc.updateMapLabel(itemId, 'IconWithText', obj);
+					//alert('1');
+					try {
+						ambiarc.updateMapLabel(itemId, 'IconWithText', obj);
+					} catch(err) { console.log(err) }
 				}
 				if (itemId != '') {
+					//alert('2');
 					focusAfterDataLoad(itemId);
 				}
 			} catch(err) { console.log(err) }
@@ -529,6 +533,7 @@ var popMapLegend = function() {
 	var buildingId	= ambiarc.buildingId;
 	var floorId		= ambiarc.floorId;
 	var roomName	= ambiarc.roomName;
+	var hasImage	= ambiarc.hasImage;
 	var lat = ambiarc.lat;
 	var lon = ambiarc.lon;
 
@@ -542,6 +547,7 @@ var popMapLegend = function() {
 		ambiarc.buildingId = '';
 		ambiarc.floorId = '';
 		ambiarc.roomName = '';
+		ambiarc.hasImage = '';
 		ambiarc.lat = '';
 		ambiarc.lon = '';
 
@@ -559,30 +565,45 @@ var popMapLegend = function() {
 		console.log('doFloorSelected ' + doFloorSelected);
 		console.log('legendType ' + legendType);
 		console.log('isFloorSelectorEnabled ' + isFloorSelectorEnabled);
+		console.log(bldgMap);
 		console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
 
 		try {
-			var img = '<img src="images/buildings/'+bldgMap[floorId].buildingId+'.jpg">'
-			$('div.legend-img').html(img);
+			var img = '<img src="images/buildingsa/'+bldgMap[floorId].buildingId+'.jpg">'
+			$('div.legend-img-building').html(img);
 		} catch(err) {
 			console.log(err)
-			$('div.legend-img').html('');
+			$('div.legend-img-building').html('');
 		}
 
 		try {
-			var img = '<img src="images/pois/'+recordId+'.jpg">'
-			$('div.legend-img').html(img);
+			if (recordId > '1' && hasImage == 'Y') {
+				var img = '<img src="images/pois/'+recordId+'.jpg">'
+				$('div.legend-img-sculpture').html(img);
+			}
 		} catch(err) {
 			console.log(err)
-			$('div.legend-img').html('');
+			$('div.legend-img-sculpture').html('');
 		}
 
 		try {
-			$('.bldgName').html(bldgMap[floorId].bldg_name);
+			var bldgName = bldgMap[floorId].bldg_name;
+			if (bldgName) {
+				$('.bldgName').html(bldgName);
+			}
 		} catch(err) { console.log(err) }
 
 		try {
-			$('.bldgName').html(sculptureName);
+			if (sculptureName) {
+				$('.bldgName').html(sculptureName);
+			}
+		} catch(err) { console.log(err) }
+
+		try {
+			var bldgName = ambiarc.poiStuff[ambiarcId].bldgName;
+			if (bldgName) {
+				$('.bldgName').html(bldgName);
+			}
 		} catch(err) { console.log(err) }
 
 		try {
@@ -632,10 +653,6 @@ var popMapLegend = function() {
 				createTextIcon(poiObject);
 
 			}
-		} catch(err) { console.log(err) }
-
-		try {
-			$('.bldgName').html(ambiarc.poiStuff[ambiarcId].bldgName);
 		} catch(err) { console.log(err) }
 
 		try {
@@ -692,35 +709,52 @@ var mapLabelCreatedCallback = function(labelId, labelName, mapLabelInfo) {
 
 var focusAfterDataLoad = function(itemId) {
 
-	console.log('focusAfterDataLoad '+itemId);
+	if (typeof itemId != 'undefined') {
 
-	//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-	//ambiarc.hideMapLabelGroup(poiMap, true);
+		console.log('focusAfterDataLoad '+itemId);
 
-	if (itemId) {
+		//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+		//ambiarc.hideMapLabelGroup(poiMap, true);
 
-		try {
+		if (itemId) {
 
-			ambiarc.selectedPoiId = itemId;
-			ambiarc.focusOnMapLabel(itemId, 200);
-		} catch(err) {
-			console.log(err);
+			try {
+
+				ambiarc.selectedPoiId = itemId;
+				ambiarc.focusOnMapLabel(itemId, 200);
+			} catch(err) {
+				console.log(err);
+			}
+
+			try {
+
+				setTimeout(function(){
+
+					ambiarc.legendType = 'menuOther';
+					ambiarc.ambiarcId = itemId;
+					//ambiarc.buildingId = '';
+					//ambiarc.floorId = '';
+					//ambiarc.roomName = '';
+
+					popMapLegend();
+				},125);
+
+			} catch(err) {
+				console.log(err);
+			}
+
+			try {
+
+				setTimeout(function(){
+					window.doFloorSelected = true;
+				}, 3000);
+
+			} catch(err) {
+				console.log(err);
+			}
+
 		}
 
-		setTimeout(function(){
-
-			ambiarc.legendType = 'menuOther';
-			ambiarc.ambiarcId = itemId;
-			ambiarc.buildingId = '';
-			ambiarc.floorId = '';
-			ambiarc.roomName = '';
-
-			popMapLegend();
-		},125);
-
-		setTimeout(function(){
-			window.doFloorSelected = true;
-		}, 3000);
 	}
 }
 

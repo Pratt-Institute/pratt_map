@@ -72,6 +72,10 @@
 				//ambiarc.EnterOverheadCamera();
 				//ambiarc.ExitOverheadCamera();
 
+				ambiarc.recordId = $(this).attr('data-recordid');
+				ambiarc.hasImage = $(this).attr('data-hasimage');
+				ambiarc.floorId = $(this).attr('data-floorid');
+
 				if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS') {
 
 					var lat		= $(this).attr('data-lat');
@@ -96,7 +100,6 @@
 						var sculpture = $(this).find('span').html();
 						var split = sculpture.split(' :: ');
 
-						ambiarc.recordId = $(this).attr('data-recordid');
 						ambiarc.sculptureName = split[0];
 						ambiarc.sculptureArtist = split[1];
 
@@ -732,21 +735,24 @@
 			// 	}
 
 			if (bldg=='W14') {
-				window.bmap = 'https://maps.google.com/maps?q=144%20West%2014th%20Street&t=&z=15&ie=UTF8&iwloc=&output=embed';
-				//window.bmap = 'includes/filterframes.php';
-				$('div.mapouter').find('iframe').attr('src',bmap);
+				//window.bmap = 'https://maps.google.com/maps?q=144%20West%2014th%20Street&t=&z=15&ie=UTF8&iwloc=&output=embed';
+				//$('div.mapouter').find('iframe').attr('src',bmap);
+				$('div.mapouter').css({'background-image':'url("images/w14.png")'});
+				$('div.mapouter').addClass('showpopmap');
 			}
 
 			if (bldg=='FLSH') {
-				window.bmap = 'https://maps.google.com/maps?q=Brooklyn%20Fashion%20%2B%20Design%20Accelerator&t=&z=15&ie=UTF8&iwloc=&output=embed';
-				//window.bmap = 'includes/filterframes.php';
-				$('div.mapouter').find('iframe').attr('src',bmap);
+				//window.bmap = 'https://maps.google.com/maps?q=Brooklyn%20Fashion%20%2B%20Design%20Accelerator&t=&z=15&ie=UTF8&iwloc=&output=embed';
+				//$('div.mapouter').find('iframe').attr('src',bmap);
+				$('div.mapouter').css({'background-image':'url("images/flsh.png")'});
+				$('div.mapouter').addClass('showpopmap');
 			}
 
 			if (bldg=='CRR') {
-				window.bmap = 'https://maps.google.com/maps?q=40.698393%2C%20-73.972519&t=&z=15&ie=UTF8&iwloc=&output=embed';
-				//window.bmap = 'includes/filterframes.php';
-				$('div.mapouter').find('iframe').attr('src',bmap);
+				//window.bmap = 'https://maps.google.com/maps?q=40.698393%2C%20-73.972519&t=&z=15&ie=UTF8&iwloc=&output=embed';
+				//$('div.mapouter').find('iframe').attr('src',bmap);
+				$('div.mapouter').css({'background-image':'url("images/crr.png")'});
+				$('div.mapouter').addClass('showpopmap');
 			}
 
 			$('div.map-'+bldg).addClass('showpopmap');

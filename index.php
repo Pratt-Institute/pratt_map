@@ -177,6 +177,7 @@
 	<div class="flyout facilities"><?php $obj->fetchFacilitiesMenu() ?></div>
 	<div class="flyout accessibility"><?php echo $slists['bldg_menu']; ?></div>
 
+<!--
 	<div class="mapouter map-w14 ">
 		<iframe width="" height="" frameborder="0" src="" scrolling="no" sandbox="allow-scripts"></iframe>
 	</div>
@@ -188,6 +189,9 @@
 	<div class="mapouter map-crr ">
 		<iframe width="" height="" frameborder="0" src="" scrolling="no" sandbox="allow-scripts"></iframe>
 	</div>
+ -->
+
+ 	<div class="mapouter"></div>
 
 	<div class="tab points" style="">
 		<div class="selectdiv ">
@@ -207,7 +211,8 @@
 	</div>
 
 	<div class="legend">
-		<div class="legend-img"></div>
+		<div class="legend-img-building"></div>
+		<div class="legend-img-sculpture"></div>
 		<span class="bldgName"></span>
 		<br>
 		<span class="floorNo"></span>

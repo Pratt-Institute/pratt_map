@@ -281,6 +281,11 @@ class DbTools {
 
 				foreach($rows as $field=>$record) {
 
+					# filter out points that havn't been geolocated yet
+					// 	if (strlen(trim($record['latitude'])) < '13' && $value['gk_department'] == '') {
+					// 		continue;
+					// 	}
+
 					foreach($record as $key=>$value) {
 						if ($key == 'longitude') { continue; }
 						$value = trim($value);
@@ -297,16 +302,18 @@ class DbTools {
 					$imgUrl = 'images/pois/'.$record['id'].'.jpg';
 
 					if (file_exists($imgUrl)) {
-						$has_image = 'hasImg';
+						$has_image	= 'hasImg';
+						$imgAttr	= 'Y';
 					} else {
-						$has_image = 'noImg';
+						$has_image	= 'noImg';
+						$imgAttr	= 'N';
 					}
 
 					$camploc = strtolower($record['on_off_campus']).'camp';
 
 					$record['bldg_name'] = strtoupper(trim($record['bldg_name']));
 
-					if ($record['on_off_campus'] == 'ON') {
+					if ($record['on_off_campus'] == 'ON' && ( strlen(trim($record['latitude'])) > '11' || $value['gk_department'] != '') ) {
 
 						$rooms[] = '<li id="'.$record['id'].'"
 							data-id="'.$record['id'].'"
@@ -315,6 +322,7 @@ class DbTools {
 							data-recordId="'.$record['id'].'"
 							data-lat="'.$record['latitude'].'"
 							data-long="'.$record['longitude'].'"
+							data-hasimage="'.$imgAttr.'"
 							class="list-group-item '.$imgUrl.' '.$has_image.'">';
 
 

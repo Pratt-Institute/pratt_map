@@ -53,9 +53,6 @@ div.ztap-to-start {
 }
 
 img.search-btn {
-	/*position: fixed;
-	left: 20px;
-	bottom: 20px;*/
 	width: 30px;
 	pointer-events: auto;
 	cursor: pointer;
@@ -63,33 +60,24 @@ img.search-btn {
 }
 
 div.nav-menu {
-
     display: flex;
-
 	position: fixed;
-	/*top: 45%;*/
-	/*bottom: 5%;*/
 	bottom: 40px;
 	left: 0px;
 	overflow: hidden;
-    padding: 5px 20px;
+    padding: 5px 30px;
     align-items: center;
-
-	font-size: 24px;
+	font-size: 30px;
 	font-weight: bold;
 	font-color: #ccc;
-
 	border: thin solid #ccc;
 	background-color: #fff;
-	height: 50px;
+	height: 84px;
 	width: 150px;
-
 	-webkit-transition: width 0.25s ease, opacity 0.25s ease; /* For Safari 3.1 to 6.0 */
     transition: width 0.25s ease, opacity 0.25s ease;
-
 	pointer-events: auto;
     cursor: pointer;
-
     z-index: 900;
 }
 
@@ -104,7 +92,7 @@ div.cat-wrap {
     padding: 0px;
 	border: none;
 	background-color: none;
-	height: 60px;
+	height: 84px;
 	left: 0px;
 	width: auto;
 	opacity: 1;
@@ -115,20 +103,18 @@ div.cat-wrap {
 }
 
 div.menu-category {
-	/*float: left;*/
 	position: relative;
-	/*display: inline-block !important;*/
 	margin: 0px;
 }
 
 span.cat-box {
 	display: block;
-	margin: 15px 25px;
+	margin: 22px 32px;
 	pointer-events: auto;
 }
 
 span.cat-box-search {
-	margin: 15px 15px;
+	margin: 15px 25px;
 }
 
 div.fade-out {
@@ -138,40 +124,28 @@ div.fade-out {
 }
 
 div.flyout, div.subfly {
-	/*display: block;*/
 	position: fixed;
-	/*top: 50%;
-	transform: translateY(-50%);*/
-	bottom: 90px;
+	bottom: 124px;
 	z-index: 901;
 	background-color: #fff;
 	height: auto;
-
-	max-height: 100vh;
-    /*overflow: scroll;*/
+	/*max-height: 954px;*/
+	max-height: 800px;
     overflow-y: scroll;
     overflow-x: hidden;
-
     white-space: nowrap;
-
 	margin: auto 0px;
 	padding: 0px;
 	pointer-events: auto;
-
 	width: 0px;
 	opacity: 0;
-
-    /*transition: width 0.35s ease, opacity 0.35s ease;*/
-    transition: all 0.35s ease;
-
+    transition: all 0.125s ease;
     z-index: 900;
-
 }
 
 div.reveal-horz {
 	width: auto;
 	opacity: 1;
-    /*transition: width 0.35s ease, opacity 0.35s ease;*/
     transition: all 0.35s ease;
 }
 
@@ -183,20 +157,33 @@ div.reveal-vert {
 
 div.flyout span, div.subfly span {
 	display: block;
-	font-size: 18px;
+	font-size: 24px;
 	font-weight: bold;
-	/*margin: 10px 20px;*/
 	margin: 0px;
 	pointer-events: auto;
 	cursor: pointer;
     z-index: 900;
     padding: 5px 20px;
-
-    color: #000;
+    /*color: #000;*/
     transition: color 0.2s ease;
-
 	background-color: #fff;
     transition: background-color 0.2s ease;
+}
+
+div.buildings span {
+	background-color: #dde2e2;
+}
+div.academics span {
+	background-color: #d6cecd;
+}
+div.offices span {
+	background-color: #9a8e88;
+}
+div.facilities span {
+	background-color: #52869f;
+}
+div.accessibility span {
+	background-color: #f4581e;
 }
 
 div.flyout span:hover, div.subfly span:hover {
@@ -263,16 +250,32 @@ div.legend {
 	height: auto;
 	padding-bottom: 15px;
 	border-radius: 4px;
-	border: thin solid #333;
-	color: #000;
+	/*border: thin solid #000;*/
+	border: none;
+	color: #F0F0F0 !important;
 	opacity: 0;
+	background: url('images/gray-trans.png');
+	background-repeat: repeat;
     transition: all 0.5s ease;
+    box-shadow: 0 0 200px 200px rgba(56,56,56, 0.4) inset;
 }
 
 div.showlegend {
 	opacity: 1;
 	top: 35px;
 }
+
+/*
+div.legend::after {
+	background-color: #ccc;
+	opacity: 0.7;
+	position: fixed;
+	top: -10px;
+	right: 35px;
+	width: auto;
+	height: auto;
+}
+ */
 
 div.legend span {
 	display: inline-block;
@@ -309,6 +312,7 @@ div.legend img {
 	max-width: 30vw;
 	max-height: 25vh;
 	margin: 25px;
+	opacity: 1;
 }
 
 
