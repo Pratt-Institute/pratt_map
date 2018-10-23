@@ -418,6 +418,8 @@
 							rotation['0001'] = '0'; // Information Science Center
 							rotation['0002'] = '0'; // Library
 							rotation['0016'] = '90'; // Machinery
+							rotation['0015'] = '90'; // Chemistry
+							rotation['0017'] = '90'; // Engineering
 							rotation['0024'] = '0'; // Myrtle Hall
 							rotation['0013'] = '135'; // Pantas Hall
 							rotation['0018'] = '135'; // Pratt Studios
@@ -436,6 +438,8 @@
 							zoom['0001'] = '50'; // Information Science Center
 							zoom['0002'] = '50'; // Library
 							zoom['0016'] = '25'; // Machinery
+							zoom['0015'] = '25'; // Chemistry
+							zoom['0017'] = '25'; // Engineering
 							zoom['0024'] = '50'; // Myrtle Hall
 							zoom['0013'] = '50'; // Pantas Hall
 							zoom['0018'] = '50'; // Pratt Studios
@@ -572,7 +576,6 @@
 			// 	});
 
 			window.intRefresh = setTimeout(function(){
-				//deptMap = eval("(" + deptMap + ")");
 				location.href = location.href;
 			//}, parseInt(50*60*1000));
 			}, parseInt(10*60*1000)); // 10 minutes

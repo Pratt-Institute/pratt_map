@@ -387,7 +387,7 @@ class DbTools {
 
 							foreach($dept_exp as $gkdept) {
 								$gkdept = trim($gkdept);
-								$acad[$gkschl.'-'.$gkdept] = "<span class=\"fly-box warn ".$campLoc."\" data-recordid=\"".$record['id']."\" data-floorid=\"".$record['gk_floor_id']."\" data-bldg=\"".$record['bldg_abbre']."\" data-cat=\"dept\" data-schl=\"".$gkschl."\" data-dept=\"".$gkdept."\"  data-roomno=\"$room_number\">".$gkdept."</span>";
+								$acad[$gkschl.'-'.$gkdept] = "<span class=\"fly-box ".$campLoc."\" data-recordid=\"".$record['id']."\" data-floorid=\"".$record['gk_floor_id']."\" data-bldg=\"".$record['bldg_abbre']."\" data-cat=\"dept\" data-schl=\"".$gkschl."\" data-dept=\"".$gkdept."\"  data-roomno=\"$room_number\">".$gkdept."</span>";
 							}
 						}
 					}

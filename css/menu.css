@@ -257,7 +257,7 @@ div.legend {
 	background: url('images/gray-trans.png');
 	background-repeat: repeat;
     transition: all 0.5s ease;
-    box-shadow: 0 0 200px 200px rgba(56,56,56, 0.4) inset;
+    box-shadow: 0 0 300px 300px rgba(56,56,56, 0.55) inset;
 }
 
 div.showlegend {
@@ -282,6 +282,11 @@ div.legend span {
 	margin: 0px 25px;
 	white-space: nowrap;
 	line-height: 100%;
+}
+
+div.legend hr {
+	width: 90%;
+	border-top: 1px dotted #333;
 }
 
 div.legend span.bldgName {
@@ -309,12 +314,21 @@ div.legend span.copy {
 }
 
 div.legend img {
-	max-width: 30vw;
-	max-height: 25vh;
+	/*max-width: 25vw;
+	max-height: 25vh;*/
+	width: 350px;
+	max-width: 350px;
 	margin: 25px;
 	opacity: 1;
 }
 
+div.legend-img-accessibility {
+	width: 350px;
+	height: 350px;
+	margin: 25px;
+	opacity: 1;
+	background: url(sprites/campus-2067.png);
+}
 
 .mode-button {
 	pointer-events: auto;
@@ -358,6 +372,7 @@ div.accessibility > span.hide-this {
 }
 
 div.veil {
+	pointer-events: auto;
 	display: none;
 	position: absolute;
 	top: 0px;
@@ -367,11 +382,12 @@ div.veil {
 	padding: 0px;
 	margin: 0px;
 	border: 0px;
+	z-index: 1001;
 }
 
 div.veil-box {
-	background: #666;
-	opacity: 0.6;
+	background: #000;
+	opacity: 0.2;
 }
 
 div.veil-text {
@@ -388,6 +404,7 @@ div.veil-text {
 	font-size: 4vw;
 	color: #fff;
 	text-align:	center;
+	z-index: 1002;
 }
 
 

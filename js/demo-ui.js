@@ -220,11 +220,6 @@ var fetchPoisFromApi = function(params) {
 			return true;
 		}
 
-		console.log('----------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>');
-		console.log(out);
-		//alert('out');
-
-		//if (out[0].user_properties.recordId.length < '1') {
 		if (typeof out == 'undefined') {
 			console.log('load from api failed...');
 			return true;
@@ -234,8 +229,6 @@ var fetchPoisFromApi = function(params) {
 			$.each(ambiarc.poiStuff, function(k, v) {
 				if (typeof v != 'undefined') {
 					var aId = v['ambiarcId'];
-					console.log(',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,');
-					console.log(aId);
 					ambiarc.destroyMapLabel(aId);
 				}
 				delete ambiarc.poiStuff[k];
@@ -252,26 +245,15 @@ var fetchPoisFromApi = function(params) {
 			window.poiMap = {};
 		}
 
-		//ambiarc.poiStuff = null;
 		ambiarc.poiStuff = [];
 		ambiarc.labelObj = {};
 		window.deptMap = {};
-		//window.legendInfo = {};
 
 		window.keepId = '';
 
 		$.each(out, function(k,v){
 			if (typeof v.user_properties.ambiarcId == 'undefined') {
-
-				console.log('undefined undefined undefined undefined undefined');
-				console.log(k);
-				console.log(v);
-				///console.log('undefined undefined undefined undefined undefined');
-				//alert('id is undefined');
-
-				/* TODO what was this for? */
-				///v.user_properties.ambiarcId = v.properties.mapLabelId;
-
+				///
 			} else {
 				if (typeof v.user_properties.recordId != 'undefined') {
 					poiMap[v.user_properties.recordId] = v.user_properties.ambiarcId;
@@ -298,18 +280,11 @@ var fetchPoisFromApi = function(params) {
 			}
 		});
 
-		//alert('here?');
-
 		processAndRun();
 
 	});
 	return false;
 }
-
-
-
-
-
 
 var processAndRun = function() {
 
@@ -365,12 +340,6 @@ var processAndRun = function() {
 
 	var itemId = poiMap[params.recordId]
 
-	//window.legendInfo.ambiarcId = itemId;
-	//legendInfo.showRoom = false;
-	//window.legendInfo.floorId = '';
-
-
-
 	if (params.action == 'focusAfterDataLoad') {
 
 		var legendType	= ambiarc.legendType;
@@ -411,9 +380,7 @@ var processAndRun = function() {
 
 	if (params.action == 'focusOutdoorPoint') {
 		ambiarc.showMapLabel(itemId, true);
-
 		popMapLegend();
-
 	}
 
 	if (params.action == 'showFloorInfo') {
@@ -436,13 +403,6 @@ var processAndRun = function() {
 			}
 			//rotationOld = '0';
 		}
-
-		// 	ambiarc.viewFloorSelector(params.bldg,0);
-		//
-		// 	setTimeout(function(){
-		// 		ambiarc.exitBuilding();
-		// 		fullMapView();
-		// 	},2000);
 
 		console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
 		console.log('rotation ' + rotation);
@@ -534,8 +494,8 @@ var popMapLegend = function() {
 	var floorId		= ambiarc.floorId;
 	var roomName	= ambiarc.roomName;
 	var hasImage	= ambiarc.hasImage;
-	var lat = ambiarc.lat;
-	var lon = ambiarc.lon;
+	var lat			= ambiarc.lat;
+	var lon			= ambiarc.lon;
 
 	var recordId		= ambiarc.recordId;
 	var sculptureName	= ambiarc.sculptureName;
@@ -550,13 +510,14 @@ var popMapLegend = function() {
 		ambiarc.hasImage = '';
 		ambiarc.lat = '';
 		ambiarc.lon = '';
-
 		ambiarc.recordId = '';
 		ambiarc.sculptureName = '';
 		ambiarc.sculptureArtist = '';
 	},4000);
 
 	document.scheduleLegend = setTimeout(function(){
+
+		var now = Date.now();
 
 		console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
 		console.log('ambiarcId ' + ambiarcId);
@@ -569,16 +530,94 @@ var popMapLegend = function() {
 		console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
 
 		try {
-			var img = '<img src="images/buildingsa/'+bldgMap[floorId].buildingId+'.jpg">'
+			var img = '<img src="images/buildings/'+bldgMap[floorId].buildingId+'.jpg?time='+now+'">'
 			$('div.legend-img-building').html(img);
 		} catch(err) {
 			console.log(err)
 			$('div.legend-img-building').html('');
 		}
 
+		//try {
+			//var img = '<img src="images/accessibility/'+bldgMap[floorId].buildingId+'.png?time='+now+'">'
+			//$('div.legend-img-accessibility').html(img);
+
+			var bldgId = '';
+
+			if (typeof buildingId != 'undefined' && buildingId > '0') {
+				var bldgId = buildingId;
+			}
+
+			if (typeof floorId != 'undefined' && floorId > '0') {
+				var bldgId = bldgMap[floorId].buildingId;
+			}
+
+			// 	sprt = [];
+			// 	sprt['0001'] = '-200px -1106px';
+			// 	sprt['0002'] = '-165px -1476px';
+			// 	sprt['0003'] = '-191px -1848px';
+			// 	sprt['0004'] = '-189px -2236px';
+			// 	sprt['0005'] = '-511px -1086px';
+			// 	sprt['0006'] = '-520px -1274px';
+			// 	sprt['0007'] = '-520px -1274px';
+			// 	sprt['0008'] = '-520px -1274px';
+			// 	sprt['0009'] = '-573px -1362px';
+			// 	sprt['0010'] = '-451px -1420px';
+			// 	sprt['0011'] = '-441px -1756px';
+			// 	sprt['0012'] = '-411px -1850px';
+			// 	sprt['0013'] = '-511px -1858px';
+			// 	sprt['0014'] = '-849px -738px';
+			// 	sprt['0015'] = '-851px -1278px';
+			// 	sprt['0016'] = '-851px -1278px';
+			// 	sprt['0017'] = '-851px -1278px';
+			// 	sprt['0018'] = '-871px -1788px';
+			// 	sprt['0019'] = '-1245px -432px';
+			// 	sprt['0021'] = '-1171px -1528px';
+			// 	sprt['0022'] = '-1467px -1292px';
+			// 	sprt['0023'] = '-1477px -1588px';
+			// 	sprt['0024'] = '-853px -384px';
+
+			sprt = [];
+			sprt['0001'] = '-200px -1106px';
+			sprt['0002'] = '-165px -1476px';
+			sprt['0003'] = '-191px -1848px';
+			sprt['0004'] = '-189px -2236px';
+			sprt['0005'] = '-511px -1086px';
+			sprt['0006'] = '-520px -1274px';
+			sprt['0007'] = '-520px -1274px';
+			sprt['0008'] = '-520px -1274px';
+			sprt['0009'] = '-573px -1362px';
+			sprt['0010'] = '-451px -1420px';
+			sprt['0011'] = '-441px -1756px';
+			sprt['0012'] = '-411px -1850px';
+			sprt['0013'] = '-511px -1858px';
+			sprt['0014'] = '-849px -738px';
+			sprt['0015'] = '-851px -1278px';
+			sprt['0016'] = '-851px -1278px';
+			sprt['0017'] = '-851px -1278px';
+			sprt['0018'] = '-871px -1788px';
+			sprt['0019'] = '-1245px -432px';
+			sprt['0021'] = '-1171px -1528px';
+			sprt['0022'] = '-1467px -1292px';
+			sprt['0023'] = '-1477px -1588px';
+			sprt['0024'] = '-853px -384px';
+
+			//alert(sprt[bldgId]);
+
+			if (sprt[bldgId] == '') {
+				$('div.legend-img-accessibility').hide();
+			} else {
+				$('div.legend-img-accessibility').show();
+				$('div.legend-img-accessibility').css({'background-position': sprt[bldgId] });
+			}
+
+		//} catch(err) {
+		//	console.log(err)
+			//$('div.legend-img-accessibility').html('');
+		//}
+
 		try {
 			if (recordId > '1' && hasImage == 'Y') {
-				var img = '<img src="images/pois/'+recordId+'.jpg">'
+				var img = '<img src="images/pois/'+recordId+'.jpg?time='+now+'">'
 				$('div.legend-img-sculpture').html(img);
 			}
 		} catch(err) {
@@ -588,6 +627,15 @@ var popMapLegend = function() {
 
 		try {
 			var bldgName = bldgMap[floorId].bldg_name;
+
+			if (bldgName == 'Information Science Center') {
+				bldgName = 'ISC';
+			}
+
+			if (bldgName == 'Steuben Hall/Pratt Studios') {
+				bldgName = 'Steuben Hall &<br>Pratt Studios';
+			}
+
 			if (bldgName) {
 				$('.bldgName').html(bldgName);
 			}
@@ -601,6 +649,15 @@ var popMapLegend = function() {
 
 		try {
 			var bldgName = ambiarc.poiStuff[ambiarcId].bldgName;
+
+			if (bldgName == 'Information Science Center') {
+				bldgName = 'ISC';
+			}
+
+			if (bldgName == 'Steuben Hall/Pratt Studios') {
+				bldgName = 'Steuben Hall &<br>Pratt Studios';
+			}
+
 			if (bldgName) {
 				$('.bldgName').html(bldgName);
 			}
@@ -627,7 +684,11 @@ var popMapLegend = function() {
 				// 	poiObject.collapsedIconLocation = 'URL'
 				// 	poiObject.ignoreCollision = false;
 
+				//alert(floorId);
+
 				var bldg_name = bldgMap[floorId].bldg_name;
+
+				console.log(bldgMap);
 
 				var poiObject = {
 					//buildingId: currentBuildingId,
@@ -647,10 +708,14 @@ var popMapLegend = function() {
 					partialPath: 'images/icons/ic_building.png',
 					collapsedIconLocation: 'URL',
 					collapsedIconPartialPath: 'images/icons/ic_building.png',
-					ignoreCollision: false,
+					ignoreCollision: true,
 				};
 
+				//console.log(poiObject);
+
 				createTextIcon(poiObject);
+
+				//alert('yayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyayyay');
 
 			}
 		} catch(err) { console.log(err) }
@@ -675,7 +740,7 @@ var popMapLegend = function() {
 
 		//alert('legend = ' + isLegendFilled);
 
-		if (isLegendFilled.length > '4') {
+		if (isLegendFilled.length > '2') {
 			$('.legend').addClass('showlegend');
 		} else {
 			$('.legend').removeClass('showlegend');

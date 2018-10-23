@@ -218,6 +218,9 @@
 		<span class="floorNo"></span>
 		<br>
 		<span class="roomName"></span>
+		<br>&nbsp;
+		<hr>
+		<div class="legend-img-accessibility"></div>
 	</div>
 
 	<div class="md-ripple myRipple tap-to-start"></div>
