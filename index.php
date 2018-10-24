@@ -125,34 +125,24 @@
 
 	</form>
 
-<div id="bootstrap" hidden>
+	<div id="bootstrap" hidden>
 
-	<div class="container-fluid" style="z-index:100;">
-		<div class="row">
-			<div style="pointer-events: all">
-				<div id="back-button" class="floor-selector">
-					<button class="btn btn-default reset-map" type="button" aria-haspopup="true" aria-expanded="true" disabled="disabled">
-						<img src="images/arrow_left.png">
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
+		<img  class="reset-map" src="images/arrow_left.png">
 
-    <!--<div id="controls-section" style="pointer-events: all; z-index:9999;">
-        <ul>
-            <li class="" onclick="zoomInHandler()">
-                <span class="controls-btn ctrl-zoom-in"  aria-hidden="true"></span>
-            </li>
-            <li class="">
-                <i id="rotate_left" class=" controls-btn ctrl-rotate-left"  onclick="rotateLeft()" aria-hidden="true"></i>
-                 <i id="rotate_right" class="controls-btn ctrl-rotate-right"  onclick="rotateRight()" aria-hidden="true"></i>
-            </li>
-            <li class="">
-                <span class=" controls-btn ctrl-zoom-out" onclick="zoomOutHandler()" aria-hidden="true"></span>
-            </li>
-        </ul>
-    </div>-->
+		<!--<div id="controls-section" style="pointer-events: all; z-index:9999;">
+			<ul>
+				<li class="" onclick="zoomInHandler()">
+					<span class="controls-btn ctrl-zoom-in"  aria-hidden="true"></span>
+				</li>
+				<li class="">
+					<i id="rotate_left" class=" controls-btn ctrl-rotate-left"  onclick="rotateLeft()" aria-hidden="true"></i>
+					 <i id="rotate_right" class="controls-btn ctrl-rotate-right"  onclick="rotateRight()" aria-hidden="true"></i>
+				</li>
+				<li class="">
+					<span class=" controls-btn ctrl-zoom-out" onclick="zoomOutHandler()" aria-hidden="true"></span>
+				</li>
+			</ul>
+		</div>-->
 
 	</div>
 	<iframe src="./map.php?nc=<?php echo time(); ?>" id="ambiarcIframe" style="width:100%; height:100%; border:none; top:
@@ -213,14 +203,13 @@
 	<div class="legend">
 		<div class="legend-img-building"></div>
 		<div class="legend-img-sculpture"></div>
-		<span class="bldgName"></span>
-		<br>
-		<span class="floorNo"></span>
-		<br>
-		<span class="roomName"></span>
-		<br>&nbsp;
-		<hr>
-		<div class="legend-img-accessibility"></div>
+		<div class="span-container">
+			<span class="bldgName"></span><br>
+			<span class="floorNo"></span><br>
+			<span class="roomName"></span>
+		</div>
+		<!--<hr>
+		<div class="legend-img-accessibility"></div>-->
 	</div>
 
 	<div class="md-ripple myRipple tap-to-start"></div>
@@ -229,5 +218,9 @@
 	<div class="veil veil-text">⋮⋮⋮ TAP TO BEGIN ⋮⋮⋮</div>
 
 </body>
+
+<script>
+	$('.menu-open').hide();
+</script>
 
 </html>

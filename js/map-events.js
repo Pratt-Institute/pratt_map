@@ -88,7 +88,9 @@ var mapFinishedLoading = function() {
 	createCampusLabels();
 	$('#bootstrap').removeAttr('hidden');
 
-	//$('#back-button').hide();
+	$('#back-button').hide();
+	$('.reset-map').removeClass('reset-show');
+
 	//ambiarc.setEnvironmentLighting('#333333', '#333333', '#990000');
 
 	params = {};
@@ -101,6 +103,7 @@ var mapFinishedLoading = function() {
 		fullMapView()
 	}, 250);
 
+	$('.menu-open').show();
 	$('.veil').show();
 
 }
@@ -111,9 +114,16 @@ var BuildingExitCompleted = function(event) {
 
 	//console.log('BuildingExitCompleted');
 	//console.log(event);
+
+	$('#back-button').hide();
+	$('.reset-map').removeClass('reset-show');
+
 }
 
 var onFloorSelected = function(event) {
+
+	$('#back-button').show();
+	$('.reset-map').addClass('reset-show');
 
 	doPauseTour();
 
@@ -141,6 +151,11 @@ var onFloorSelected = function(event) {
 
 var onEnteredFloorSelector = function(event) {
 
+	clearMapLegend();
+
+	$('#back-button').show();
+	$('.reset-map').addClass('reset-show');
+
 	doPauseTour();
 
 	//alert('onEnteredFloorSelector');
@@ -152,6 +167,7 @@ var onEnteredFloorSelector = function(event) {
 	currentFloorId = undefined;
 	//$('#back-button').show();
 	isFloorSelectorEnabled = true;
+	//alert('true');
 }
 
 var onExitedFloorSelector = function(event) {

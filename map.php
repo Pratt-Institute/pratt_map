@@ -54,7 +54,7 @@
 
     <div id="gk-loading-container" class="gk-loading-container">
       <div class="ambiarc-logo-container" id="ambiarc-logo-container">
-        <img class="ambiarc-logo" src="TemplateData/img/logo_Ambiarc_transparent.png" alt="ambiarc logo">
+        <img class="ambiarc-logo" src="images/pratt-yellow-1263-400.png" alt="ambiarc logo">
       </div>
       <div class="gap"></div>
 

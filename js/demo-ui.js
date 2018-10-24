@@ -22,25 +22,27 @@ var resetMap = function() {
 
 	if (isFloorSelectorEnabled) {
 		ambiarc.exitBuilding();
+		setTimeout(function(){
+			fullMapView();
+		},1000);
 	} else {
 		ambiarc.viewFloorSelector(mainBldgID,0);
-		fullMapView();
 	}
 
 	clearMapLegend();
 	ambiarc.menuAction = 'no';
 
 	// reactivate reset button after a pause
-	setTimeout(function(){
-		$('.reset-map').removeAttr('disabled');
-		return true;
-	}, 1500);
+	// 	setTimeout(function(){
+	// 		$('.reset-map').removeAttr('disabled');
+	// 		return true;
+	// 	}, 1500);
 };
 
 var fullMapView = function() {
 	console.log('fullMapView');
 	//ambiarc.ExitOverheadCamera();
-	$('.reset-map').removeAttr('disabled');
+	//$('.reset-map').removeAttr('disabled');
 	var lat = 40.689666;
 	var lon = -73.963883;
 	ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, '400');
@@ -391,9 +393,11 @@ var processAndRun = function() {
 
 	if (params.action == 'doAccessibilityThing') {
 
+		//alert('doAccessibilityThing');
+
 		//ambiarc.hideMapLabelGroup(poiMap, true);
 
-		var delay = 1;
+		var delay = 500;
 
 		if (rotationOld != '0') {
 			if (rotationOld != rotation) {
@@ -530,90 +534,55 @@ var popMapLegend = function() {
 		console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
 
 		try {
-			var img = '<img src="images/buildings/'+bldgMap[floorId].buildingId+'.jpg?time='+now+'">'
+			var img = '<div class="legend-img-stack"><img src="images/buildings/'+bldgMap[floorId].buildingId+'.jpg?time='+now+'">'
+			img += '<img class="accessible-inset" src="images/buildings/'+bldgMap[floorId].buildingId+'.png?time='+now+'"></div>'
 			$('div.legend-img-building').html(img);
 		} catch(err) {
 			console.log(err)
 			$('div.legend-img-building').html('');
 		}
 
-		//try {
-			//var img = '<img src="images/accessibility/'+bldgMap[floorId].buildingId+'.png?time='+now+'">'
-			//$('div.legend-img-accessibility').html(img);
-
-			var bldgId = '';
-
-			if (typeof buildingId != 'undefined' && buildingId > '0') {
-				var bldgId = buildingId;
-			}
-
-			if (typeof floorId != 'undefined' && floorId > '0') {
-				var bldgId = bldgMap[floorId].buildingId;
-			}
-
-			// 	sprt = [];
-			// 	sprt['0001'] = '-200px -1106px';
-			// 	sprt['0002'] = '-165px -1476px';
-			// 	sprt['0003'] = '-191px -1848px';
-			// 	sprt['0004'] = '-189px -2236px';
-			// 	sprt['0005'] = '-511px -1086px';
-			// 	sprt['0006'] = '-520px -1274px';
-			// 	sprt['0007'] = '-520px -1274px';
-			// 	sprt['0008'] = '-520px -1274px';
-			// 	sprt['0009'] = '-573px -1362px';
-			// 	sprt['0010'] = '-451px -1420px';
-			// 	sprt['0011'] = '-441px -1756px';
-			// 	sprt['0012'] = '-411px -1850px';
-			// 	sprt['0013'] = '-511px -1858px';
-			// 	sprt['0014'] = '-849px -738px';
-			// 	sprt['0015'] = '-851px -1278px';
-			// 	sprt['0016'] = '-851px -1278px';
-			// 	sprt['0017'] = '-851px -1278px';
-			// 	sprt['0018'] = '-871px -1788px';
-			// 	sprt['0019'] = '-1245px -432px';
-			// 	sprt['0021'] = '-1171px -1528px';
-			// 	sprt['0022'] = '-1467px -1292px';
-			// 	sprt['0023'] = '-1477px -1588px';
-			// 	sprt['0024'] = '-853px -384px';
-
-			sprt = [];
-			sprt['0001'] = '-200px -1106px';
-			sprt['0002'] = '-165px -1476px';
-			sprt['0003'] = '-191px -1848px';
-			sprt['0004'] = '-189px -2236px';
-			sprt['0005'] = '-511px -1086px';
-			sprt['0006'] = '-520px -1274px';
-			sprt['0007'] = '-520px -1274px';
-			sprt['0008'] = '-520px -1274px';
-			sprt['0009'] = '-573px -1362px';
-			sprt['0010'] = '-451px -1420px';
-			sprt['0011'] = '-441px -1756px';
-			sprt['0012'] = '-411px -1850px';
-			sprt['0013'] = '-511px -1858px';
-			sprt['0014'] = '-849px -738px';
-			sprt['0015'] = '-851px -1278px';
-			sprt['0016'] = '-851px -1278px';
-			sprt['0017'] = '-851px -1278px';
-			sprt['0018'] = '-871px -1788px';
-			sprt['0019'] = '-1245px -432px';
-			sprt['0021'] = '-1171px -1528px';
-			sprt['0022'] = '-1467px -1292px';
-			sprt['0023'] = '-1477px -1588px';
-			sprt['0024'] = '-853px -384px';
-
-			//alert(sprt[bldgId]);
-
-			if (sprt[bldgId] == '') {
-				$('div.legend-img-accessibility').hide();
-			} else {
-				$('div.legend-img-accessibility').show();
-				$('div.legend-img-accessibility').css({'background-position': sprt[bldgId] });
-			}
-
-		//} catch(err) {
-		//	console.log(err)
-			//$('div.legend-img-accessibility').html('');
-		//}
+		// 	try {
+		// 		var bldgId = '';
+		// 		if (typeof buildingId != 'undefined' && buildingId > '0') {
+		// 			var bldgId = buildingId;
+		// 		}
+		// 		if (typeof floorId != 'undefined' && floorId > '0') {
+		// 			var bldgId = bldgMap[floorId].buildingId;
+		// 		}
+		// 		sprt = [];
+		// 		sprt['0001'] = '-200px -1106px';
+		// 		sprt['0002'] = '-165px -1476px';
+		// 		sprt['0003'] = '-191px -1848px';
+		// 		sprt['0004'] = '-189px -2236px';
+		// 		sprt['0005'] = '-511px -1086px';
+		// 		sprt['0006'] = '-520px -1274px';
+		// 		sprt['0007'] = '-520px -1274px';
+		// 		sprt['0008'] = '-520px -1274px';
+		// 		sprt['0009'] = '-573px -1362px';
+		// 		sprt['0010'] = '-451px -1420px';
+		// 		sprt['0011'] = '-441px -1756px';
+		// 		sprt['0012'] = '-411px -1850px';
+		// 		sprt['0013'] = '-511px -1858px';
+		// 		sprt['0014'] = '-849px -738px';
+		// 		sprt['0015'] = '-851px -1278px';
+		// 		sprt['0016'] = '-851px -1278px';
+		// 		sprt['0017'] = '-851px -1278px';
+		// 		sprt['0018'] = '-871px -1788px';
+		// 		sprt['0019'] = '-1245px -432px';
+		// 		sprt['0021'] = '-1171px -1528px';
+		// 		sprt['0022'] = '-1467px -1292px';
+		// 		sprt['0023'] = '-1477px -1588px';
+		// 		sprt['0024'] = '-853px -384px';
+		// 		if (sprt[bldgId] == '') {
+		// 			$('div.legend-img-accessibility').hide();
+		// 		} else {
+		// 			$('div.legend-img-accessibility').show();
+		// 			$('div.legend-img-accessibility').css({'background-position': sprt[bldgId] });
+		// 		}
+		// 	} catch(err) {
+		// 		console.log(err)
+		// 	}
 
 		try {
 			if (recordId > '1' && hasImage == 'Y') {

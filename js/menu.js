@@ -142,7 +142,6 @@
 				$('.cat-wrap').removeClass('fade-out');
 				//$('body').append('<div class="click-capture"></div>');
 				$('<div class="click-capture"></div>').insertBefore('.tap-to-start');
-				//isFloorSelectorEnabled = false;
 				//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				//ambiarc.loadMap("pratt");
 
@@ -240,7 +239,6 @@
 					$('.showpopmap').removeClass('showpopmap');
 					resetMenus();
 					//hideAllPoints();
-					//isFloorSelectorEnabled = false;
 					//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 					//ambiarc.viewFloorSelector('0001');
 					//ambiarc.viewFloorSelector('0001');
