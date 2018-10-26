@@ -58,12 +58,10 @@
       gameInstance.SendMessage('Ambiarc', 'CreateMapLabel', json);
     };
 
-
     this.getBuildingLabelID = function(buildingId, cb) {
       this.messageQueue.push(cb);
       gameInstance.SendMessage('Ambiarc', 'GetBuildingLabelID', buildingId);
     };
-
 
     this.getCanvasPositionAtWorldPosition = function(latitude, longitude, callback) {
       this.messageQueue.push(callback);
@@ -74,12 +72,10 @@
       gameInstance.SendMessage('Ambiarc', 'GetScreenPositionAtPoint', json);
     };
 
-
     this.getCurrentNormalizedZoomLevel = function(callback) {
       this.messageQueue.push(callback);
       gameInstance.SendMessage('Ambiarc', 'GetCurrentNormalizedZoomLevel');
     };
-
 
     this.updateMapLabel = function(mapLabelId, mapLabelType, mapLabelInfo) {
       var json = JSON.stringify({
@@ -89,7 +85,6 @@
       });
       gameInstance.SendMessage('Ambiarc', 'UpdateMapLabel', json);
     };
-
 
     this.getDirections = function(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, cb) {
       this.messageQueue.push(cb);
@@ -105,7 +100,6 @@
       });
       gameInstance.SendMessage('Ambiarc', 'GetDirections', json);
     };
-
 
     this.clearDirections = function() {
       gameInstance.SendMessage('Ambiarc', 'ClearDirections');
@@ -125,11 +119,9 @@
       gameInstance.SendMessage('Ambiarc', 'SmoothUpdateMapLabelPosition', json);
     };
 
-
     this.StopTrackingMapLabel= function() {
       gameInstance.SendMessage('Ambiarc', 'StopTrackingMapLabel');
     };
-
 
     this.TrackMapLabel= function(mapLabelId, height, followSpeed) {
       var json = JSON.stringify({
@@ -139,7 +131,6 @@
       });
       gameInstance.SendMessage('Ambiarc', 'StartTrackingMapLabel', json);
     };
-
 
     this.destroyMapLabel = function(mapLabelId) {
       gameInstance.SendMessage('Ambiarc', 'DestroyMapLabel', mapLabelId);
@@ -328,7 +319,6 @@
 		  gameInstance.SendMessage('Ambiarc', 'FocusOnLatLonAndZoomToHeight', json);
 	  };
 
-
 	this.hideMapLabelGroup = function(mapLabelIds, immediate) {
 
 		console.log('ambiarc :: hideMapLabelGroup');
@@ -349,15 +339,12 @@
     };
 
     this.EnableAutoShowPOIsOnFloorEnter = function() {
-
       gameInstance.SendMessage('Ambiarc', 'EnableAutoShowPOIsOnFloorEnter');
     };
 
     this.DisableAutoShowPOIsOnFloorEnter = function() {
-
       gameInstance.SendMessage('Ambiarc', 'DisableAutoShowPOIsOnFloorEnter');
     };
-
 
     this.ShowTooltipForMapLabel = function(mapLabelId) {
       var json = JSON.stringify({
@@ -366,18 +353,15 @@
       gameInstance.SendMessage('Ambiarc', 'ShowTooltipForMapLabel', json);
     };
 
-
     this.EnterOverheadCamera = function() {
     	window.overhead = true;
       gameInstance.SendMessage('Ambiarc', 'EnterOverheadCamera');
     };
 
-
     this.ExitOverheadCamera = function() {
     	window.overhead = false;
       gameInstance.SendMessage('Ambiarc', 'ExitOverheadCamera');
     };
-
 
     this.loadRemoteMapLabels = function(url, options) {
       return fetch(url, options)
@@ -414,7 +398,6 @@
 				} catch(err) {
 					console.log();
 				}
-
 
            resolve(out.features)
           });

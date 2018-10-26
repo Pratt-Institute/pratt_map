@@ -201,21 +201,15 @@
 	</div>
 
 	<div class="legend">
-
-		<table>
-			<tr>
-				<td class="legend-building"></td>
-			</tr>
-			<tr>
-				<td class="legend-copy">
-					<span class="bldgName"></span><br>
-					<span class="floorNo"></span><br>
-					<span class="roomName"></span><br><br>
-					<span class="history"></span>
-				</td>
-			</tr>
-		</table>
-
+		<div class="legend-img-building"></div>
+		<div class="legend-img-sculpture"></div>
+		<div class="span-container">
+			<span class="bldgName"></span><br>
+			<span class="floorNo"></span><br>
+			<span class="roomName"></span>
+		</div>
+		<!--<hr>
+		<div class="legend-img-accessibility"></div>-->
 	</div>
 
 	<div class="md-ripple myRipple tap-to-start"></div>

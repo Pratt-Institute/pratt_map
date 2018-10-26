@@ -242,22 +242,21 @@ div#back-button button img {
 	height: 45px;
 }
 
+/* legend styles ------------------------------------------------------------------------ */
+
 div.legend {
 	position: fixed;
 	top: 35px;
 	right: 0px;
 	width: 500px;
-	height: 450px;
-	padding-bottom: 15px;
+	height: auto;
+	/*padding-bottom: 15px;*/
 	border-radius: 4px;
-	/*border: thin solid #000;*/
 	border: none;
-	color: #F0F0F0 !important;
 	opacity: 0;
-	background: url('images/gray-trans.png');
-	background-repeat: repeat;
-    transition: all 0.5s ease;
     box-shadow: 0 0 300px 300px rgba(56,56,56, 0.55) inset;
+    transition: all 0.25s ease;
+    line-height: 150%;
 }
 
 div.showlegend {
@@ -265,100 +264,74 @@ div.showlegend {
 	right: 35px;
 }
 
-/*
-div.legend::after {
-	background-color: #ccc;
-	opacity: 0.7;
-	position: fixed;
-	top: -10px;
-	right: 35px;
-	width: auto;
-	height: auto;
+div.legend table {
+	table-layout: fixed;
+	width: 470px;
+    border-collapse: separate;
+    border-spacing: 10px;
+    margin: 15px;
 }
- */
+
+div.legend td {
+	border: none;
+	padding: 0px;
+	margin: 0px;
+	vertical-align: top;
+	color: #fff !important;
+}
+
+div.legend td img {
+	padding: 0px;
+	margin: 0px;
+}
 
 div.legend span {
 	display: inline-block;
-	margin: 0px 25px;
-	white-space: nowrap;
-	line-height: 100%;
-}
-
-div.legend hr {
-	width: 90%;
-	border-top: 1px dotted #333;
-}
-
-div.legend .span-container {
-	position: absolute;
-	top: 310px;
-
+	margin: 0px;
+	margin-bottom: 10px;
+	/*white-space: nowrap;*/
+	font-weight: bold;
 }
 
 div.legend span.bldgName {
-	font-weight: bold;
 	font-size: 36px;
-	margin-top: 15px;
 }
 
 div.legend span.floorNo {
-	font-weight: bold;
 	font-size: 24px;
-	margin-top: 4px;
 }
 
 div.legend span.roomName {
-	font-weight: bold;
 	font-size: 18px;
-	margin-top: 4px;
 }
 
-div.legend span.copy {
-	font-weight: bold;
-	font-size: 12px;
-	margin-top: 4px;
-}
-
-div.legend-img-stack {
-	position: relative;
-	top: 0px;
-	left: 0px;
-
-}
-
-div.legend img {
-	/*max-width: 25vw;
-	max-height: 25vh;
-	width: 350px;
-	max-width: 350px;*/
-	margin: 25px;
-	opacity: 1;
-}
-
-div.legend-img-building img {
-	position: absolute;
-	top: 0px;
-	left: 0px;
+div.legend td.legend-building img {
 	width: 450px;
-}
-
-div.legend-img-building img.accessible-inset {
-	position: absolute;
-	top: 140px;
-	left: 40px;
-	max-width: 140px;
-	margin: 0px;
-	padding: 0px;
-    box-shadow: 0 0 8px 8px rgba(56,56,56,0.5);
-}
-
-div.legend-img-accessibility {
-	width: 350px;
-	height: 350px;
-	margin: 25px;
+	height: auto;
 	opacity: 1;
-	background: url(sprites/campus-2067.png);
 }
+
+div.legend td.legend-access {
+	width: 10px;
+}
+
+div.legend img.access {
+	width: 140px;
+    float: right;
+}
+
+div.legend td.legend-access img {
+	width: 140px;
+    float: right;
+}
+
+div.legend span.history {
+	font-size: 14px;
+	font-weight: normal;
+}
+
+/* -------------------------------------------------------------------------------------- */
+
 
 .mode-button {
 	pointer-events: auto;

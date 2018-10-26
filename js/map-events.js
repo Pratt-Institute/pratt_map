@@ -13,11 +13,56 @@ var onAmbiarcLoaded = function() {
     ambiarc.registerForEvent(ambiarc.eventLabel.StartedLoadingMap, mapStartedLoading);
     ambiarc.registerForEvent(ambiarc.eventLabel.FinishedLoadingMap, mapFinishedLoading);
 
-	ambiarc.registerForEvent(ambiarc.eventLabel.MapLabelSelected, (event) => {
-		adjustMapFocus($("#" + event.detail)[0], event.detail)
-	});
+	ambiarc.registerForEvent(ambiarc.eventLabel.MapLabelSelected, mapLabelSelected);
+
+	ambiarc.registerForEvent(ambiarc.eventLabel.MapLabelSelected, mapLabelClickHandler);
 
 	runMapLoad();
+
+};
+
+var mapLabelSelected = function(e) {
+
+	console.log('mapLabelSelected');
+	console.log(e);
+	console.log(e.detail);
+
+	adjustMapFocus($("#" + e.detail)[0], e.detail);
+
+	currentLabelId = e.detail;
+
+}
+
+var mapLabelClickHandler = function(e) {
+
+    console.log('mapLabelClickHandler');
+	console.log(e);
+	console.log(e.detail);
+	console.log(ambiarc.poiStuff[e.detail]);
+
+	currentLabelId = e.detail;
+
+};
+
+// capture right click event and do stuff
+var onRightMouseDown = function(event) {
+
+	console.log('onRightMouseDown');
+
+	//if(isFloorSelectorEnabled){
+    //    return;
+    //}
+
+	//$(poiMenuSelector).css('top', $(window).height() - event.detail.pixelY + "px");
+	//$(poiMenuSelector).css('left', event.detail.pixelX + "px");
+
+    if (currentLabelId){
+        repositionLabel(currentLabelId);
+        return;
+    }
+
+    //$('#bootstrap').trigger('contextmenu');
+    //console.log("Ambiarc received a RightMouseDown event");
 
 };
 
@@ -151,7 +196,7 @@ var onFloorSelected = function(event) {
 
 var onEnteredFloorSelector = function(event) {
 
-	clearMapLegend();
+	//clearMapLegend();
 
 	$('#back-button').show();
 	$('.reset-map').addClass('reset-show');
@@ -219,15 +264,11 @@ var cameraStartedHandler = function(event){
 
 var cameraCompletedHandler = function(event){
 
-	console.log('cameraCompletedHandler'); // auto
+	//console.log('cameraCompletedHandler'); // auto
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
 	if (event.detail == 'UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor') {
-
-		console.log('cameraCompletedHandler');
-		console.log(event);
-		console.log(event.detail + ' --- ' + doFloorSelected + ' --- ' + ambiarc.menuAction);
 
 		if (typeof ambiarc.legendType == 'undefined' || ambiarc.legendType == '') {
 			if (isFloorSelectorEnabled == false && mainBldgID > 0 ) {
@@ -241,6 +282,10 @@ var cameraCompletedHandler = function(event){
 				params.select = 'floor';
 
 				if (params.action == 'showFloorInfo' && params.floor != '') {
+					console.log('do fetch from cameraCompletedHandler');
+					console.log('cameraCompletedHandler');
+					console.log(event);
+					console.log(event.detail + ' --- ' + doFloorSelected + ' --- ' + ambiarc.menuAction);
 					fetchPoisFromApi(params);
 				} else {
 					console.log('`````````````````````````````````````````````````````````````````');

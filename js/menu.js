@@ -73,6 +73,7 @@
 				//ambiarc.ExitOverheadCamera();
 
 				ambiarc.recordId = $(this).attr('data-recordid');
+				ambiarc.recordIdKeep = $(this).attr('data-recordid');
 				ambiarc.hasImage = $(this).attr('data-hasimage');
 				ambiarc.floorId = $(this).attr('data-floorid');
 
@@ -114,7 +115,7 @@
 
 			$(document).on('click', '.search-btn', function() {
 
-				resetMap();
+				//resetMap();
 
 				///ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				///ambiarc.menuAction = 'yes';
@@ -166,9 +167,9 @@
 
 			$(document).on('click', '.cat-box', function() {
 
-				if ($(this).html() == 'accessibility') {
-					resetMap();
-				}
+				//if ($(this).html() == 'accessibility') {
+				//	resetMap();
+				//}
 
 				$('.reveal-horz').removeClass('reveal-horz');
 				var pos = $(this).closest('div').position();
@@ -293,6 +294,8 @@
 
 				//ambiarc.exitBuilding();
 
+				/// clear old points here
+
 				clearMapLegend();
 
 				var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
@@ -342,8 +345,8 @@
 
 					window.bldg = $(this).attr('data-bldg');
 
-					if (params.bldg == 'FLSH' || params.bldg == 'CRR' || params.bldg == 'W14') {
-						doPopupMap(params.bldg);
+					if ($(this).attr('data-bldg') == 'FLSH' || $(this).attr('data-bldg') == 'CRR' || $(this).attr('data-bldg') == 'W14') {
+						doPopupMap($(this).attr('data-bldg'));
 						return true;
 					}
 
@@ -353,6 +356,7 @@
 						params.bldg = $(this).attr('data-bldg');
 						params.recordId = $(this).attr('data-recordid');
 						params.action = 'focusAfterDataLoad';
+
 					}
 
 					if ($(this).attr('data-cat') == 'buildings') {
@@ -496,11 +500,7 @@
 					ambiarc.lat = '';
 					ambiarc.lon = '';
 
-					if (fetchPoisFromApi(params)) {
-						alert('focus failed');
-						//console.log('did it work?');
-						//collapseMenus();
-					}
+					fetchPoisFromApi(params);
 				}
 			});
 
@@ -597,7 +597,7 @@
 			/// weird style injection coming from somewhere
 			$("style:not('#position')").remove();
 
-			deptMap = eval("(" + deptMap + ")");
+			//deptMap = eval("(" + deptMap + ")");
 			bldgMap = eval("(" + bldgMap + ")");
 			hallMap = eval("(" + hallMap + ")");
 
@@ -614,6 +614,55 @@
 			//});
 
 		});
+
+
+		prattCopy['0001'] = 'Information Science<br>Center (ISC Building)<br>1954-55. Renovated 1973<br>Architects: Firm of McKim, Mead and White<br>Built as a dormitory for women at the same time DeKalb Hall was built for men. By the 1960s after the acquisition of Willoughby Hall, both buildings were being used for offices and classrooms. They had been built during the extensive PrattArea Urban Renewal under the direction of Robert Moses. The renovation made extensive changes for the Graduate School of Information and Library Science as well as for a large computer laboratory.';
+
+		prattCopy['0002'] = 'Library<br>1896. Renovated 1982<br>Architect: William B. Tubby, Interiors by Tiffany firm. Renovation by Cavaglieri and Gran.<br>There was a small library in the Main building when the school began in 1887. The splendid Victorian Renaissance revival structure was built as a public as well as a college library. There was emphasis on service to local children. In 1912, a copy of a Romanesque porch was added to the children\'s entrance. This was relocated near the ARC building during the renovation of 1982. The north porch was added in 1936 by John Mead Howells, and is now an office. Pratt\'s library was the first free Library in New York City. However, as the Institute grew and the public library system expanded, it ceased being a public library in 1941. The elegant interiors, originally designed by the Louis Tiffany firm have a magnificent marble and brass central staircase. The mosaic and glass floors are also noteworthy. The renovation in 1982 enhanced the building and brought an elevator as well as a below-ground wing. The building was designated a New York City Landmark in 1986.';
+
+		prattCopy['0003'] = 'DeKalb Hall<br>1954-55<br>Architects: Firm of McKim, Mead and White<br>Originally a men\'s dormitory designed by the same firm which built theInformation Science Building and North Hall during the urban renewal projectwhich radically reshaped the campus. This is now a building which has classrooms and several offices, including Financial Aid and the Bursar.';
+
+		prattCopy['0004'] = 'Higgins Hall<br><br>1868-1890<br>Architects: Mundell and Teckritz, Ebenezer L. Roberts, Charles C. Haight and William B. Tubby.<br>This was Adelphi Academy, a private school which has evolved into Adelphi University in Garden City, and Adelphi Academy in Bay Ridge, Brooklyn. The original academic building was by Mundell and Teckritz, built in 1868. Pratt acquired the building in the l960s and it houses much of the School of Architecture.';
+
+		prattCopy['0005'] = 'North Hall<br>1958<br>Architects: Firm of McKim, Mead and White<br>Built a little later than DeKalb Hall and the ISC Building by the same architects. Although this firm retained the name of one of America\'s most important firms, it was long after the demise of the famous Charles Follen McKim(1847-1909) and Stanford White (1853-1906). This was originally called the College Union, and currently houses the cafeteria, Security headquarters, a bank and classrooms.';
+
+		prattCopy['0006'] = 'Memorial Hall<br>1926-7<br>Architect: John Mead Howells<br>Sculptor: Rene Chambellan<br>A large auditorium/theater built by the Pratt family in memory of Mary Richardson Pratt, the wife of the founder, Charles Pratt. Originally, it was a lecture hall with a cafeteria below. Currently in need of restoration, it is infrequently used.';
+
+		prattCopy['0007'] = 'Student Union<br>1887<br>Architect: William B. Tubby<br>Built originally as the Trade School Building with a handsome wood truss roof,this was used for courses on brick laying, plumbing and sign painting before it became the old gymnasium. There is a small swimming pool (actually called a\"swimming tank\" and the first to admit women in Brooklyn) still located under thestaging area on the east side of the building. In 1982, this building was remodeled for use as a student union.';
+
+		prattCopy['0008'] = 'Main Building<br>1887<br>Architects: Lamb and Rich (Hugo Lamb and Charles A. Rich)<br>Lamb and Rich was a noted architectural firm in the late 19th century, and here it reflected the influence of H. H. Richardson. This is the original Pratt Institute building constructed of brick in the Romanesque revival style. The porch was added in 1895. It has always housed both offices and classrooms. Today it includes offices of the President as well as the Provost, Dean of Students and the Dean of the School of Art and Design.';
+
+		prattCopy['0009'] = 'East Building<br>1887<br>Architect: William Windrim<br>Although this is part of the original building complex and is connected to the Main Building, it had a different architect. It is an \"L\" shaped structure andthe fifth floor or the north/south section was a later addition. The building wraps around an attractive courtyard and the first floor houses Pratt\'s Power Generating Plant, a National Historic Mechanical Engineering Landmark. There is a viewing area for the power plant, and also on the first floor are the offices of Career Services, Student Activities, International Student Affairs and the Chapel. This was originally called the Mechanical Arts Building. Upper floors contain classrooms and some offices.';
+
+		prattCopy['0010'] = 'South Hall<br>1889-92<br>Architect: William B. Tubby<br>Designed by the same architect as the Library, this was originally the Pratt High School, a three-year coed program. When that was discontinued, this became the Household Science and then the Costume Design Building. It now has offices for the Fine Arts Department and classrooms for art and design.';
+
+		prattCopy['0011'] = 'Esther Lloyd Jones Hall<br>1921<br>Architect: unknown<br>A private apartment building which had the address of 243 Ryerson Street. It was purchased by Pratt Institute in 1964 and became a residence hall.';
+
+		prattCopy['0012'] = 'Thrift Hall<br>1916-17<br>Architects: Shampan and Shampan<br>This was a savings bank which had been founded on the campus by Charles Pratt in1889, meant to teach students and others the value of thrift. Today it houses various offices, including that of the Registrar.';
+
+		prattCopy['0013'] = 'Leo J. Pantas Hall<br>1986-87<br>Architects: Skidmore, Owings and Merrill<br>A contemporary residence for students, situated on DeKalb Avenue between Thrift Hall and the Studio Building. The attractive brick structure fits well into the campus, and the clock tower echoes the clock on the Main Building.';
+
+		prattCopy['0014'] = 'Willoughby Hall<br>1957<br>Architect: S. J. Kessler<br>Built as a private apartment building during the urban renewal project under Robert Moses. The building was acquired as the main residence hall for Pratt Institute in the early 1960s. There are apartments on the top (17th) floor for faculty and staff.';
+
+		prattCopy['0015'] = 'Chemistry Building<br>1904-05<br>Architects: Howells and Stokes<br>John Mead Howells (1868-1959) and I.N. Phelps Stokes (1867-1944) were each noted architects earlier in the twentieth century. Working together, they built this as the first of the three buildings which have been known as the Engineering complex. Despite its name, this building is no longer used for the study of chemistry. The first floor houses the Rubelle and Norman Schaffler Gallery, a major exhibition space. The lower level is occupied by the Printmaking area and there are art and design studios on the upper floors. The building was extensively remodeled in 1985-86.';
+
+		prattCopy['0016'] = 'Machinery Building<br>1914<br>Architects: Howells and Stokes<br>The architects who had, a decade before, designed the Chemistry Building built this as the Manual Training Building. Connected to the Chemistry and Engineering buildings, for many years it was filled with heavy industrial machinery for student use. Today the building is used by the School of Art and Design and there are sculpture and ceramic studios in it.';
+
+		prattCopy['0017'] = 'Engineering Building<br>1928-29.<br>Extended in 1935.<br>Architect: John Mead Howells<br>The most recent of the three buildings in this group. It connects to the Machinery and Chemistry buildings and houses classrooms for various programs.';
+
+		prattCopy['0018'] = 'Steuben Hall<br>Date: unknown<br>Architect: unknown<br>Previously, this was the United Metals factory, which manufactured small metal items. Acquired by Pratt in the early 1970s, the first floor has offices for Campus Management and mail services. PICCED occupies attractively renovated space on the second floor. Most of the rest of the building is used for storage and awaits remodeling.<br><br>Pratt Studio Building<br>Date: unknown<br>Architect: unknown<br>Former industrial building acquired by Pratt in 1962, and converted for use asart and design studios.';
+
+		prattCopy['0019'] = 'Pratt Institute recently opened a new home for the Film/Video Department in the former Prattstore building at 550 Myrtle Avenue on the Brooklyn campus. The 15,000-square-foot facility was designed by WASA/Studio A with lead architect and Pratt alumnus Jack Esterson. The project was recognized with a citation award in the 2015 American Institute of Architects New York State Design Awards.';
+
+		prattCopy['0020'] = '--';
+
+		prattCopy['0021'] = 'Activities Resource Center (ARC Building)<br>1974-75<br>Architects: Ezra Ehrenkranz (lower level), Daniel Tully (upper level)<br>This large building was built to serve many functions. The upper level is a huge gymnasium, while the lower level has classrooms and laboratories. There are facilities for film, photography and computers. The concrete exterior has no windows and displays a fanciful tent-like roofing system.';
+
+		prattCopy['0022'] = 'Vincent A. Stabile Hall opened in the Fall of 1999. Named for the donor and graduate of the Engineering School, Stabile Hall was designed to house new undergraduate students. It houses 224 freshman students in four-person suites. Each suite consists of two double rooms with a shared bath. Suites are single sex, but floors are coed. With few exceptions, the room dimensions, not including the small entry foyer, are 12\' x 12\'. Each suite is responsible for the healthy upkeep of the common bathroom area. There are kitchenettes located on each floor. The award-winning design of the building boasts a large common lounge with smaller work and lounge spaces on each floor, all of which contribute to a vital living and working environment. All rooms are air conditioned. Stabile Hall hosts the Healthy Choices and Global Learning communities.';
+
+		prattCopy['0023'] = 'Cannoneer Court<br>1986-87<br>Architects: Skidmore, Owings and Merrill<br>A rather stark-looking residence hall on the most eastern part of the campus on an area which had been an athletic field. It is connected to the ARC building and was built from pre-fabricated units.';
+
+		prattCopy['0024'] = 'The building, which is located at 536 Myrtle Avenue between Grand Avenue and Steuben Street, was designed by multi-disciplinary architectural firm WASA/Studio A under the leadership of principal Jack Esterson, who received a bachelor\'s degree in architecture from Pratt in 1975.<br>Myrtle Hall recently met the United States Green Building Council standards for LEED (Leadership in Energy and Environmental Design) Gold certification based on its eco-features that include exterior sun shades; a green roof that absorbs rainwater, reflects heat, and sequesters greenhouse gasses; and solar photo-voltaic panels that generate on-site electricity. It is the first higher education building project in Brooklyn to receive any LEED certification and the first academic building to receive a LEED-gold certification in Brooklyn.';
 
 	}
 
