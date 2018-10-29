@@ -37,6 +37,9 @@
 	}
 	//die();
 
+	//	echo $obj->fetchAcademicsArray();
+	//	die();
+
 	$slists = $obj->buildSearchList();
 
 	// 	echo '<pre>';
@@ -68,6 +71,7 @@
   <link rel="stylesheet" media="all" href="css/pop_maps.css?nc=<?php echo time(); ?>" />
 
   <link href="css/jquery.virtual_keyboard.css" rel="stylesheet" type="text/css"/>
+  <link href="css/scroll.css" rel="stylesheet" type="text/css"/>
 
   	<script>
 		var mode = '<?php echo $obj->fetchThemeMode() ?>';
@@ -108,10 +112,19 @@
 
 	</script>
 
+<script type="text/javascript" src="Zjs/jquery.mousewheel.min.js"></script>
+
+<script src="Zjs/slickscroll.js"></script>
+
+<style>
+
+
+
+</style>
+
 </head>
 
 <body style="pointer-events: none">
-
 
 	<form id="myform" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 
@@ -127,7 +140,7 @@
 
 	<div id="bootstrap" hidden>
 
-		<img  class="reset-map" src="images/arrow_left.png">
+		<!--<img  class="reset-map" src="images/arrow_left.png">-->
 
 		<!--<div id="controls-section" style="pointer-events: all; z-index:9999;">
 			<ul>
@@ -150,7 +163,47 @@
 		Your browser doesn't support iframes
 	</iframe>
 
-	<div class="nav-menu menu-open">menu</div>
+	<div class="nav-menu-new">
+		<table class="nav-menu-new">
+			<tr class="row-btn">
+				<td style="background-color:#000" class="menu-category">
+					<img class="reset-map-vert" src="images/arrow_left.png">
+				</td>
+			</tr>
+			<tr class="row-menu">
+				<td style="background-color:#dde2e2" class="menu-category">
+					<span class="cat-box" data-type="buildings">buildings</span>
+				</td>
+			</tr>
+			<tr class="row-menu">
+				<td style="background-color:#d6cecd" class="menu-category">
+					<span class="cat-box" data-type="academics">academics</span>
+				</td>
+			</tr>
+			<tr class="row-menu">
+				<td style="background-color:#9a8e88" class="menu-category">
+					<span class="cat-box" data-type="offices">offices</span>
+				</td>
+			</tr>
+			<tr class="row-menu">
+				<td style="background-color:#52869f" class="menu-category">
+					<span class="cat-box" data-type="facilities">facilities</span>
+				</td>
+			</tr>
+			<tr class="row-menu">
+				<td style="background-color:#f4581e" class="menu-category">
+					<span class="cat-box" data-type="accessibility">accessibility</span>
+				</td>
+			</tr>
+			<tr class="row-btn">
+				<td style="background-color:#fff" class="menu-category">
+					<span class="cat-box cat-box-search"><img class="search-btn" src="images/view.png"></span>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<!--<div class="nav-menu menu-open">menu</div>-->
 
 	<div class="nav-menu cat-wrap fade-out">
 		<div class="menu-category" style="background-color:#dde2e2"><span class="cat-box" data-type="buildings">buildings</span></div>

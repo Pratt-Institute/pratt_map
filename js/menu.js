@@ -173,9 +173,11 @@
 
 				$('.reveal-horz').removeClass('reveal-horz');
 				var pos = $(this).closest('div').position();
-				var maxHei = parseInt($(window).height()-90);
+				//var maxHei = parseInt($(window).height()-90);
+				var maxHei = parseInt($(window).height()-10);
 				var type = $(this).attr('data-type');
-				$('div.'+type).css({'left':pos.left,'maxHeight':maxHei});
+				//$('div.'+type).css({'left':pos.left,'maxHeight':maxHei});
+				$('div.'+type).css({'maxHeight':maxHei});
 				$('div.'+type).addClass('reveal-horz');
 				$("style:not('#position')").remove();
 				var getStyle = $("style[data-type='"+type+"']");
@@ -505,6 +507,14 @@
 			});
 
 			$(document).on('click', '.reset-map', function() {
+				$(this).attr('disabled','disabled');
+				//clearMapLegend();
+				$('.click-capture').remove();
+				//clearMapLegend();
+				resetMap();
+			});
+
+			$(document).on('click', '.reset-map-vert', function() {
 				$(this).attr('disabled','disabled');
 				//clearMapLegend();
 				$('.click-capture').remove();

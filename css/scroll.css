@@ -1,0 +1,18 @@
+  /* Height & width for the container - The rest is done by the jQuery part. */
+  div[rel='scrollcontent1'] { width: 60%; height: 280px;}
+
+  /* Basic CSS for the elements - If rel is "scrollcontent1", style its scrollbar by referring to ".scrollcontent-content", ".scrollcontent-bar", etc. */
+  .scrollcontent1-content { /* background: #eee; */ } /* for vertical content, no explicit width is required for inner DIV */
+  .scrollcontent1-bar { width: 11px; background: #fffeda; border-radius: 4px; box-shadow: inset 0px 0px 5px #444444; overflow: hidden; }
+  .scrollcontent1-drag { background: #ad5134; border-radius: 4px; cursor: pointer; }
+
+  div[rel='scrollcontent2'] { width: 300px; height: 300px; }
+
+  /* Basic CSS for the elements - If rel is "scrollcontent2", style its scrollbar by referring to ".scrollcontent2-content", ".scrollcontent2-bar", etc. */
+  .scrollcontent2-content { width: 999px; } /* for horizontal content, width should be set to total width of all floated inner container elements */
+  .scrollcontent2-bar { height: 15px; background: #ccc; border-radius: 5px; box-shadow: inset 0px 0px 5px #444444; overflow: hidden; }
+  .scrollcontent2-drag { background: #425a8a; border-radius: 5px; cursor: pointer; }
+
+  /* Not needed elements */
+  #contentwrap { padding: 5px; border: 1px #444444 solid; display: block; width: 300px; border-radius: 10px; }
+  .scrollcontent1-content p, .scrollcontent2-content p {margin:0; padding:0}

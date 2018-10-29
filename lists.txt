@@ -1,0 +1,137 @@
+Schools
+
+    art
+    liberal arts and sciences
+    research and centers
+    architecture
+    design
+    continuing and professional studies
+    information
+
+
+Offices
+
+	Academic Computing
+	Computer Labs -- Activity Res Ctr
+	Photography
+	Mathematics and Science
+	Athletics
+	Activity Resource Center
+	Metal Shop
+	Humanities and Media Studies
+	The Writing Program
+	General Education
+	Intensive English Program
+	Media Studies
+	Performance and Performance Studies
+	Cinema Studies
+	Creative Writing
+	Cultural Studies
+	Literature and Writing
+	Philosophy
+	Psychology
+	Sustainability Studies
+	Social Science and Cultural Studies
+	Social Justice/Social Practice
+	Language Resource Center
+	Computer Labs -- DeKalb Hall
+	Computer Labs -- East Hall
+	Career and Professional Dev
+	History of Art and Design
+	Student Involvement
+	3D Printing Center
+	Digital Output Center
+	Engineering Computer Lab (EDS)
+	Computer Labs -- Engineering
+	Information Technology
+	CNC Lab
+	Security
+	Film/Video
+	Brooklyn Fashion and Design Accelerator (BF+DA)
+	Computer Labs -- Higgins Hall
+	City and Regional Planning
+	Historic Preservation
+	Graduate Center for Planning and the Environment
+	Real Estate Practice
+	Sustainable Environmental Systems
+	Urban Placemaking and Management
+	Graduate Architecture and Urban Design
+	Undergraduate Architecture
+	Administrative Support
+	Budget
+	Comptroller
+	Disability Resource Center
+	Spatial Analysis and Visualization Initiative
+	Library
+	Brooklyn Campus Library
+	Multi Media Center
+	Computer Labs -- Machinery
+	Computer Labs -- Main Bldg
+	Arts and Cultural Management
+	Foundation
+	Institutional Research
+	Art and Design Education
+	Center for Art Design and Community Engagement K-12
+	Student Orientation
+	Bursar
+	HEOP
+	Human Resources
+	School of Continuing and Professional Studies
+	Art and Design Courses
+	Certificate Programs
+	Custom Training
+	International Students
+	Professional Studies
+	PreCollege
+	Summer Intensives
+	Institutional Advancement
+	International Affairs
+	Pratt Center for Community Development
+	Admissions
+	Digital Arts
+	Registrar
+	Student Financial Services
+	Undergraduate Advisement
+	The Consortium for Research and Robotics
+	Creative Arts Therapy
+	Writing Center
+	Writing and Tutorial Center
+	Design Management
+	Construction Management
+	Facilities Management
+	Library and Information Science (M.S.L.I.S.)
+	Data Analytics and Visualization (M.S.)
+	Information Experience Design (M.S.)
+	Museums and Digital Culture (M.S.)
+	Digital Art and Information (M.F.A. and M.S.L.I.S.)
+	History of Art and LIS (M.A. and M.S.L.I.S.)
+	Archives
+	Conservation and Digital Curation
+	Digital Humanities
+	Museum Libraries
+	Museum Studies
+	Spatial Analysis and Design
+	User Experience
+	Exhibitions
+	Pratt Public Safety
+	Interior Design
+	Industrial Design
+	Foundation Media Lab
+	Plaster Shop
+	Form and Tech Lab
+	Rapid Prototyping Room
+	Industrial Design Shop
+	Wood Shop
+	Fine Arts
+	K-12 Center
+	Communications Design
+	Package Design
+	Fashion Design
+	Laser Cutting
+	Photo Studio
+	Mail Services
+	Lobby -- Defibrillator
+	Health and Counseling
+	Residential Life
+
+

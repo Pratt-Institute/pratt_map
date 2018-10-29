@@ -362,6 +362,7 @@ class DbTools {
 						foreach($dept_exp as $dept) {
 							$dept = trim($dept);
 							if ($dept != '') {
+								$office_list[$dept] = $dept;
 								$offs[$dept] = "<span  class=\"fly-box $camploc\"  data-recordid=\"".$record['id']."\"  data-bldg=\"".$record['bldg_abbre']."\"  data-floorid=\"".$record['gk_floor_id']."\"  data-cat=\"office\"  data-dept=\"$dept\"  data-office=\"$dept\"  data-roomno=\"$room_number\">$dept</span>";
 							}
 						}
@@ -384,10 +385,11 @@ class DbTools {
 
 						foreach($schl_exp as $gkschl) {
 
-							$gkschl = trim($gkschl);
+							//$gkschl = trim($gkschl);
 
 							foreach($dept_exp as $gkdept) {
 								$gkdept = trim($gkdept);
+								//	$school_list[$gkschl] = $gkschl;
 								$acad[$gkschl.'-'.$gkdept] = "<span class=\"fly-box ".$campLoc."\" data-recordid=\"".$record['id']."\" data-floorid=\"".$record['gk_floor_id']."\" data-bldg=\"".$record['bldg_abbre']."\" data-cat=\"dept\" data-schl=\"".$gkschl."\" data-dept=\"".$gkdept."\"  data-roomno=\"$room_number\">".$gkdept."</span>";
 							}
 						}
@@ -395,9 +397,11 @@ class DbTools {
 
 				}
 
-				//echo '<pre>';
-				//print_r($acad);
-				//echo '</pre>';
+					// 	echo '<pre>';
+					// 	print_r($office_list);
+					// 	echo '</pre>';
+					//echo implode($office_list, "\n");
+					//die();
 
 				//@natsort($bldgs);
 				@ksort($bldgs);

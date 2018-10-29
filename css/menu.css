@@ -81,6 +81,53 @@ div.nav-menu {
     z-index: 900;
 }
 
+table.nav-menu-new {
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	font-size: 28px;
+	font-weight: bold;
+	font-color: #ccc;
+	background-color: transparent;
+	height: 100%;
+	width: 84px;
+	pointer-events: auto;
+    cursor: pointer;
+    z-index: 900;
+
+}
+
+table.nav-menu-new tr.row-menu {
+	height: 20%;
+}
+
+table.nav-menu-new tr.row-btn {
+	height: 1%;
+}
+
+table.nav-menu-new td {
+	border: none;
+}
+
+table.nav-menu-new span {
+	writing-mode: vertical-lr;
+	/*text-orientation: upright;*/
+}
+
+div.nav-menu-new .menu-category {
+	text-align: center;
+	align-items: center;
+	width: 84px;
+}
+
+div.nav-menu-new .menu-category img {
+	/*margin: 0px auto;*/
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 div.menu-open {
 	left: 0px;
 	width: auto;
@@ -125,7 +172,9 @@ div.fade-out {
 
 div.flyout, div.subfly {
 	position: fixed;
-	bottom: 124px;
+	/*bottom: 124px;*/
+	bottom: 0px;
+	left: 94px;
 	z-index: 901;
 	background-color: #fff;
 	height: auto;
@@ -141,6 +190,26 @@ div.flyout, div.subfly {
 	opacity: 0;
     transition: all 0.125s ease;
     z-index: 900;
+}
+
+/* width */
+div.flyout::-webkit-scrollbar {
+    width: 30px;
+}
+
+/* Track */
+div.flyout::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+div.flyout::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+div.flyout::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 div.reveal-horz {
