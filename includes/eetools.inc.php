@@ -5,13 +5,14 @@ include_once('includes/sitevars.inc.php');
 	ini_set('error_reporting', E_ERROR);
 	ini_set('display_errors', true);
 	ini_set('log_errors', 1);
+	ini_set('memory_limit', -1);
 
-class DbTools {
+class EeTools {
 
-	private $dbhost = DB_HOST;
-	private $dbuser = DB_USER;
-	private $dbpass = DB_PASS;
-	private $dbname = DB_NAME;
+	private $dbhost = EE_HOST;///
+	private $dbuser = EE_USER;
+	private $dbpass = EE_PASS;
+	private $dbname = EE_NAME;///
 
 	private $dbh;
 	private $stmt;
@@ -22,7 +23,7 @@ class DbTools {
 	public function __construct() {
 
 		//echo '<br>'.$dsn = 'mysql:host=' . $this->dbhost . ';dbname=' . $this->dbname;
-		$dsn = 'mysql:host=' . $this->dbhost . ';dbname=' . $this->dbname;
+		echo '<p>'.$dsn = 'mysql:host=' . $this->dbhost . ';dbname=' . $this->dbname;
 		$options = array(
 			PDO::ATTR_PERSISTENT => true,
 			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
@@ -35,25 +36,44 @@ class DbTools {
 		}
 	}
 
-	public function fetchFromExpressionEngin() {
+	public function fetchFromExpressionEngine() {
 
 		try {
-			$sql = "
-				SELECT * FROM `exp_channel_data` WHERE `field_id_118` != 'none' ORDER BY `entry_id` DESC LIMIT 20
+			echo '<p>'.$sql = "
+
+				SELECT *
+
+				FROM exp_channel_titles T LEFT JOIN exp_channel_data D ON D.channel_id = T.channel_id
+
+				/*WHERE T.title = 'The Bachelor of Architecture Program is a professional program accredited'*/
+
+				WHERE T.title = 'undergraduate architecture'
+
+				ORDER BY T.entry_id ASC, D.entry_id ASC
+
 				";
 			$stmt = $this->dbh->prepare($sql);
 			$stmt->execute();
 			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			if ($rows[0]['id']) {
-				foreach($rows as $field=>$record) {
+			foreach($rows as $field=>$record) {
 
+				$out[$record['entry_id']] = $record;
+				//$out[$record['title']] = $record;
 
-
-				}
-
-				echo json_encode($map);
 			}
+
+			foreach($out as $key=>$value) {
+
+				echo '<p>#################################################################';
+				echo '<pre>';
+				print_r($value);
+				echo '</pre>';
+
+			}
+
+
+				//echo json_encode($map);
 
 			return false;
 		} catch(PDOException $e) {

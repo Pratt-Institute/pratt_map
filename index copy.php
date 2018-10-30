@@ -20,6 +20,12 @@
 	//print_r($_SESSION);
 
 	//echo __DIR__;
+
+	//include_once('includes/eetools.inc.php');
+	//$ee = new EeTools;
+	//$ee->fetchFromExpressionEngine();
+	//die();
+
 	include_once('includes/dbtools.inc.php');
 	$obj = new DbTools;
 	if (!@$_SESSION['token']) {
@@ -36,6 +42,9 @@
 		}
 	}
 	//die();
+
+	//	echo $obj->fetchAcademicsArray();
+	//	die();
 
 	$slists = $obj->buildSearchList();
 
@@ -68,6 +77,7 @@
   <link rel="stylesheet" media="all" href="css/pop_maps.css?nc=<?php echo time(); ?>" />
 
   <link href="css/jquery.virtual_keyboard.css" rel="stylesheet" type="text/css"/>
+  <link href="css/scroll.css" rel="stylesheet" type="text/css"/>
 
   	<script>
 		var mode = '<?php echo $obj->fetchThemeMode() ?>';
@@ -108,10 +118,11 @@
 
 	</script>
 
+<style></style>
+
 </head>
 
 <body style="pointer-events: none">
-
 
 	<form id="myform" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 
@@ -127,7 +138,7 @@
 
 	<div id="bootstrap" hidden>
 
-		<img  class="reset-map" src="images/arrow_left.png">
+		<!--<img  class="reset-map" src="images/arrow_left.png">-->
 
 		<!--<div id="controls-section" style="pointer-events: all; z-index:9999;">
 			<ul>
@@ -150,7 +161,47 @@
 		Your browser doesn't support iframes
 	</iframe>
 
-	<div class="nav-menu menu-open">menu</div>
+	<div class="nav-menu-new">
+		<table class="nav-menu-new">
+			<tr class="row-btn">
+				<td style="background-color:#fff" class="menu-category">
+					<img class="reset-map-vert" style="margin:5px auto;" src="images/back-arrow.png">
+				</td>
+			</tr>
+			<tr class="row-menu">
+				<td style="background-color:#dde2e2" class="menu-category">
+					<span class="cat-box" data-type="buildings">buildings</span>
+				</td>
+			</tr>
+			<tr class="row-menu">
+				<td style="background-color:#d6cecd" class="menu-category">
+					<span class="cat-box" data-type="academics">academics</span>
+				</td>
+			</tr>
+			<tr class="row-menu">
+				<td style="background-color:#9a8e88" class="menu-category">
+					<span class="cat-box" data-type="offices">offices</span>
+				</td>
+			</tr>
+			<tr class="row-menu">
+				<td style="background-color:#52869f" class="menu-category">
+					<span class="cat-box" data-type="facilities">facilities</span>
+				</td>
+			</tr>
+			<tr class="row-menu">
+				<td style="background-color:#f4581e" class="menu-category">
+					<span class="cat-box" data-type="accessibility">accessibility</span>
+				</td>
+			</tr>
+			<tr class="row-btn">
+				<td style="background-color:#fff" class="menu-category">
+					<span class="cat-box cat-box-search"><img class="search-btn" src="images/view.png"></span>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<!--<div class="nav-menu menu-open">menu</div>-->
 
 	<div class="nav-menu cat-wrap fade-out">
 		<div class="menu-category" style="background-color:#dde2e2"><span class="cat-box" data-type="buildings">buildings</span></div>
@@ -166,6 +217,8 @@
 	<div class="flyout offices"><?php echo $slists['off_menu']; ?></div>
 	<div class="flyout facilities"><?php $obj->fetchFacilitiesMenu() ?></div>
 	<div class="flyout accessibility"><?php echo $slists['bldg_menu']; ?></div>
+
+
 
 <!--
 	<div class="mapouter map-w14 ">
@@ -201,15 +254,21 @@
 	</div>
 
 	<div class="legend">
-		<div class="legend-img-building"></div>
-		<div class="legend-img-sculpture"></div>
-		<div class="span-container">
-			<span class="bldgName"></span><br>
-			<span class="floorNo"></span><br>
-			<span class="roomName"></span>
-		</div>
-		<!--<hr>
-		<div class="legend-img-accessibility"></div>-->
+
+		<table>
+			<tr>
+				<td class="legend-building"></td>
+			</tr>
+			<tr>
+				<td class="legend-copy">
+					<span class="bldgName"></span><br>
+					<span class="floorNo"></span><br>
+					<span class="roomName"></span><br><br>
+					<span class="history"></span>
+				</td>
+			</tr>
+		</table>
+
 	</div>
 
 	<div class="md-ripple myRipple tap-to-start"></div>

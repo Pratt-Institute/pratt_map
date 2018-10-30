@@ -42,6 +42,9 @@ var mapLabelClickHandler = function(e) {
 
 	currentLabelId = e.detail;
 
+	resetMenus();
+	hidePopMap();
+
 };
 
 // capture right click event and do stuff

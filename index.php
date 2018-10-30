@@ -20,6 +20,12 @@
 	//print_r($_SESSION);
 
 	//echo __DIR__;
+
+	//include_once('includes/eetools.inc.php');
+	//$ee = new EeTools;
+	//$ee->fetchFromExpressionEngine();
+	//die();
+
 	include_once('includes/dbtools.inc.php');
 	$obj = new DbTools;
 	if (!@$_SESSION['token']) {
@@ -112,15 +118,7 @@
 
 	</script>
 
-<script type="text/javascript" src="Zjs/jquery.mousewheel.min.js"></script>
-
-<script src="Zjs/slickscroll.js"></script>
-
-<style>
-
-
-
-</style>
+<style></style>
 
 </head>
 
@@ -166,8 +164,8 @@
 	<div class="nav-menu-new">
 		<table class="nav-menu-new">
 			<tr class="row-btn">
-				<td style="background-color:#000" class="menu-category">
-					<img class="reset-map-vert" src="images/arrow_left.png">
+				<td style="background-color:#fff" class="menu-category">
+					<img class="reset-map-vert" style="margin:5px auto;" src="images/back-arrow.png">
 				</td>
 			</tr>
 			<tr class="row-menu">
@@ -197,7 +195,7 @@
 			</tr>
 			<tr class="row-btn">
 				<td style="background-color:#fff" class="menu-category">
-					<span class="cat-box cat-box-search"><img class="search-btn" src="images/view.png"></span>
+					<span class="cat-box cat-box-search" data-type="search-box"><img class="search-btn" src="images/view.png"></span>
 				</td>
 			</tr>
 		</table>
@@ -205,20 +203,30 @@
 
 	<!--<div class="nav-menu menu-open">menu</div>-->
 
-	<div class="nav-menu cat-wrap fade-out">
+	<!--<div class="nav-menu cat-wrap fade-out">
 		<div class="menu-category" style="background-color:#dde2e2"><span class="cat-box" data-type="buildings">buildings</span></div>
 		<div class="menu-category" style="background-color:#d6cecd"><span class="cat-box" data-type="academics">academics</span></div>
 		<div class="menu-category" style="background-color:#9a8e88"><span class="cat-box" data-type="offices">offices</span></div>
 		<div class="menu-category" style="background-color:#52869f"><span class="cat-box" data-type="facilities">facilities</span></div>
 		<div class="menu-category" style="background-color:#f4581e"><span class="cat-box" data-type="accessibility">accessibility</span></div>
-		<div class="menu-category" style="background-color:#fff"><span class="cat-box cat-box-search"><img class="search-btn" src="images/view.png"></span></div>
-	</div>
+		<div class="menu-category" style="background-color:#ffffff"><span class="cat-box" data-type="search"><img class="search-btn" data-type="search" src="images/view.png"></span></div>
+	</div>-->
 
 	<div class="flyout buildings"><?php echo $slists['bldg_menu']; ?></div>
 	<div class="flyout academics"><?php echo $slists['acad_menu']; ?></div>
 	<div class="flyout offices"><?php echo $slists['off_menu']; ?></div>
 	<div class="flyout facilities"><?php $obj->fetchFacilitiesMenu() ?></div>
 	<div class="flyout accessibility"><?php echo $slists['bldg_menu']; ?></div>
+
+	<div class="flyout search-box reveal-keep">
+		<div class="search-list">
+			<ul class="list-group"><?php echo $slists['room_list']; ?></ul>
+		</div>
+		<div class="search-input">
+			<input type="text" class="filter" placeholder="">
+			<button><i class="fa fa-search"></i></button>
+		</div>
+	</div>
 
 <!--
 	<div class="mapouter map-w14 ">
@@ -235,23 +243,6 @@
  -->
 
  	<div class="mapouter"></div>
-
-	<div class="tab points" style="">
-		<div class="selectdiv ">
-			<label>
-				<select class="menu-buildings">
-				<option value="">:: Select Building ::</option>
-				<?php echo $slists['bldg_options']; ?>
-				</select>
-			</label>
-		</div>
-		<input type="text" class="filter" placeholder="">
-		<button><i class="fa fa-search"></i></button>
-		<br clear="all">
-		<div class="contain-list">
-			<ul class="list-group"><?php echo $slists['room_list']; ?></ul>
-		</div>
-	</div>
 
 	<div class="legend">
 

@@ -83,23 +83,27 @@ div.nav-menu {
 
 table.nav-menu-new {
 	position: absolute;
+	table-layout: fixed;
 	top: 0px;
 	bottom: 0px;
 	left: 0px;
-	font-size: 28px;
+	/*font-size: 28px;*/
+	font-size: 3vh;
+	line-height: .75;
 	font-weight: bold;
 	font-color: #ccc;
 	background-color: transparent;
 	height: 100%;
+	min-height: 100%;
+	max-height: 100%;
 	width: 84px;
 	pointer-events: auto;
     cursor: pointer;
     z-index: 900;
-
 }
 
 table.nav-menu-new tr.row-menu {
-	height: 20%;
+	/*height: 20%;*/
 }
 
 table.nav-menu-new tr.row-btn {
@@ -111,7 +115,14 @@ table.nav-menu-new td {
 }
 
 table.nav-menu-new span {
-	writing-mode: vertical-lr;
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+	/*text-orientation: upright;*/
+}
+
+table.nav-menu-new span.cat-box-search {
+	writing-mode: vertical-rl;
+	transform: rotate(0deg);
 	/*text-orientation: upright;*/
 }
 
@@ -122,10 +133,12 @@ div.nav-menu-new .menu-category {
 }
 
 div.nav-menu-new .menu-category img {
-	/*margin: 0px auto;*/
+	margin: 0px auto;
 	display: block;
-    margin-left: auto;
-    margin-right: auto;
+    /*margin-left: auto;
+    margin-right: auto;*/
+    max-width: 50px;
+    max-height: 50px;
 }
 
 div.menu-open {
@@ -174,7 +187,7 @@ div.flyout, div.subfly {
 	position: fixed;
 	/*bottom: 124px;*/
 	bottom: 0px;
-	left: 94px;
+	left: 84px;
 	z-index: 901;
 	background-color: #fff;
 	height: auto;
@@ -194,7 +207,7 @@ div.flyout, div.subfly {
 
 /* width */
 div.flyout::-webkit-scrollbar {
-    width: 30px;
+    width: 40px;
 }
 
 /* Track */
@@ -218,6 +231,20 @@ div.reveal-horz {
     transition: all 0.35s ease;
 }
 
+div.reveal-keep {
+
+	position: fixed;
+	/*bottom: 124px;*/
+	bottom: 0px;
+	left: 84px;
+
+	height: 100%;
+
+	width: 500px;
+	opacity: 1;
+    transition: all 0.35s ease;
+}
+
 div.reveal-vert {
 	opacity: 1;
 	pointer-events: auto;
@@ -237,6 +264,20 @@ div.flyout span, div.subfly span {
     transition: color 0.2s ease;
 	background-color: #fff;
     transition: background-color 0.2s ease;
+}
+
+.search-input {
+	position: absolute;
+	bottom:	0px;
+	left:	0px;
+	width: 500px;
+}
+
+.search-list {
+	position: absolute;
+	top:	0px;
+	height:	90%;
+	width: 500px;
 }
 
 div.buildings span {

@@ -313,8 +313,8 @@ class DbTools {
 
 					$record['bldg_name'] = strtoupper(trim($record['bldg_name']));
 
-					//if ($record['on_off_campus'] == 'ON' && ( strlen(trim($record['latitude'])) > '11' || $value['gk_department'] != '') ) {
-					if ($record['on_off_campus'] == 'ON') {
+					if ($record['on_off_campus'] == 'ON' && ( strlen(trim($record['latitude'])) > '11' || $value['gk_department'] != '') ) {
+					//if ($record['on_off_campus'] == 'ON') {
 
 						$rooms[] = '<li id="'.$record['id'].'"
 							data-id="'.$record['id'].'"
