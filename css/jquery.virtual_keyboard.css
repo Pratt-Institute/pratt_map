@@ -1,6 +1,7 @@
 div#keyboard{
     /*width: 100%;*/
-    width: 1200px;
+    width: 776px;
+    height: 214px;
     position: fixed;
     bottom: 0;
     /*padding-left: 5.5% !important;
@@ -8,6 +9,8 @@ div#keyboard{
     z-index: 1111;
     pointer-events: auto;
     margin: 0 auto !important;
+    border-radius: 5px;
+    box-shadow: 0 0 8px 8px rgba(56,56,56, 0.55);
 }
 
 div#keyboard div{

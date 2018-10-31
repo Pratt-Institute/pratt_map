@@ -11,6 +11,7 @@
  window.currentLabelId	= '0';
  window.poiMap			= {};
  window.prattCopy		= [];
+ window.legendDelay		= 2000;
 
  /// icampb15@pratt.edu
  /// 718.687.5762
@@ -78,6 +79,7 @@ var iframeLoaded = function() {
 }
 
 var doTourLoop = function() {
+	return;
 	var i = 1;
 	$('.buildings.oncamp').each(function(){
 		if ( $(this).closest('div').hasClass('accessibility') ) {
@@ -89,7 +91,7 @@ var doTourLoop = function() {
 			if (!pauseTour) {
 				$(elm).trigger("click");
 				setTimeout(function(){
-					justZoomOut();
+					//justZoomOut();
 					//ambiarc.exitBuilding();
 				},5000);
 			}
@@ -335,7 +337,6 @@ var processAndRun = function() {
 	// 			// 		//window.legendInfo.ambiarcId = itemId;
 	// 			// 		//legendInfo.showRoom = true;
 	// 			// 		//window.legendInfo.floorId = '';
-	// 			// 		//popMapLegend();
 	// 			// 	}
 	//
 	// 		} else {
@@ -348,7 +349,6 @@ var processAndRun = function() {
 	// 				//window.legendInfo.ambiarcId = ambiarcId;
 	// 				//legendInfo.showRoom = false;
 	// 				//window.legendInfo.floorId = '';
-	// 				//popMapLegend();
 	// 				break;
 	// 			}
 	// 		}
@@ -502,7 +502,7 @@ var clearMapLegend = function() {
 	});
 }
 
-var popMapLegend = function() {
+var popMapLegend = function(legendDelay=3000) {
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
@@ -518,21 +518,6 @@ var popMapLegend = function() {
 	var recordId		= ambiarc.recordId;
 	var sculptureName	= ambiarc.sculptureName;
 	var sculptureArtist	= ambiarc.sculptureArtist;
-
-	setTimeout(function(){
-		//ambiarc.legendType	= '';
-		ambiarc.legendType	= '';
-		ambiarc.ambiarcId	= '';
-		ambiarc.buildingId	= '';
-		ambiarc.floorId		= '';
-		ambiarc.roomName	= '';
-		ambiarc.hasImage	= '';
-		ambiarc.lat			= '';
-		ambiarc.lon			= '';
-		ambiarc.recordId	= '';
-		ambiarc.sculptureName	= '';
-		ambiarc.sculptureArtist	= '';
-	},4000);
 
 	document.scheduleLegend = setTimeout(function(){
 
@@ -552,8 +537,10 @@ var popMapLegend = function() {
 
 		try {
 			$('img.access').remove();
-			var imgBldg = '<img src="images/buildings/'+bldgMap[floorId].buildingId+'.jpg?time='+now+'">'
-			var imgAccs = '<img class="access" src="images/buildings/'+bldgMap[floorId].buildingId+'.png?time='+now+'">'
+			//var imgBldg = '<img src="images/buildings/'+bldgMap[floorId].buildingId+'.jpg?time='+now+'">'
+			//var imgAccs = '<img class="access" src="images/buildings/'+bldgMap[floorId].buildingId+'.png?time='+now+'">'
+			var imgBldg = '<img src="images/buildings/'+bldgMap[floorId].buildingId+'.jpg">'
+			var imgAccs = '<img class="access" src="images/buildings/'+bldgMap[floorId].buildingId+'.png">'
 			$('.legend-building').html(imgBldg);
 			//$('.legend-access').html(imgAccs);
 			$('.legend-copy').prepend(imgAccs);
@@ -630,8 +617,6 @@ var popMapLegend = function() {
 				$('.bldgName').html(bldgName);
 			}
 		} catch(err) { console.log(err) }
-
-
 
 		try {
 			var bldgName = ambiarc.poiStuff[ambiarcId].bldgName;
@@ -725,7 +710,17 @@ var popMapLegend = function() {
 
 		try {
 			var bId = bldgMap[floorId].buildingId;
-			$('.history').html(prattCopy[bId]);
+
+			var copyArr = prattCopy[bId].split(' ');
+			console.log(copyArr);
+			$.each(copyArr, function(k, v) {
+				if (v.indexOf(':') != -1) {
+					copyArr[k] = '<br><span class="copy-bold">'+v+'</span>';
+				}
+			});
+			var newCopy = copyArr.join(' ');
+
+			$('.history').html(newCopy);
 		} catch(err) { $('.history').html(''); }
 
 		try {
@@ -745,7 +740,22 @@ var popMapLegend = function() {
 			$('.legend').removeClass('showlegend');
 		}
 
-	},1500);
+		setTimeout(function(){
+			//ambiarc.legendType	= '';
+			ambiarc.legendType	= '';
+			ambiarc.ambiarcId	= '';
+			ambiarc.buildingId	= '';
+			ambiarc.floorId		= '';
+			ambiarc.roomName	= '';
+			ambiarc.hasImage	= '';
+			ambiarc.lat			= '';
+			ambiarc.lon			= '';
+			ambiarc.recordId	= '';
+			ambiarc.sculptureName	= '';
+			ambiarc.sculptureArtist	= '';
+		},1000);
+
+	},legendDelay);
 }
 
 // Callback thats updates the UI after a POI is created

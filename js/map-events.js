@@ -158,6 +158,8 @@ var mapFinishedLoading = function() {
 
 var BuildingExitCompleted = function(event) {
 
+	clearMapLegend();
+
 	//alert('BuildingExitCompleted'); // auto
 
 	//console.log('BuildingExitCompleted');
@@ -199,8 +201,6 @@ var onFloorSelected = function(event) {
 
 var onEnteredFloorSelector = function(event) {
 
-	//clearMapLegend();
-
 	$('#back-button').show();
 	$('.reset-map').addClass('reset-show');
 
@@ -235,16 +235,21 @@ var onFloorSelectorFocusChanged = function(event) {
 
 	doPauseTour();
 
-	//alert('onFloorSelectorFocusChanged');
-
-	//clearMapLegend();
-	//alert('onFloorSelectorFocusChanged');
 	console.log('onFloorSelectorFocusChanged');
 	console.log(event.detail);
-	//window.legendInfo.ambiarcId = '';
-	//window.legendInfo.showRoom = false;
-	//window.legendInfo.floorId = event.detail.newFloodId;
-	//popMapLegend();
+
+	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+
+	if (event.detail.newFloodId > '0000' && ambiarc.floorId == '' && ambiarc.recordId == '' && ambiarc.legendType == '') {
+
+		console.log('do pop legend from focus change ---------------------------------------');
+
+		ambiarc.floorId = event.detail.newFloodId;
+
+		popMapLegend(1000);
+
+	}
+
 }
 
 var cameraStartedHandler = function(event){

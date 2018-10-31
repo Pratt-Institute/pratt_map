@@ -101,12 +101,14 @@
         hideKeyboard = function() {
             if (!$layout.is(':hidden')) {
                 $layout.slideUp(optionsKeyboard.close_speed);
+                keypadVisible = false;
             }
         };
 
         showKeyboard = function() {
             if ($layout.is(':hidden')) {
                 $layout.slideDown(optionsKeyboard.open_speed);
+                keypadVisible = true;
             }
         };
 

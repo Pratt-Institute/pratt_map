@@ -71,36 +71,36 @@ div.filter {
 }
 */
 
-input.filter {
+.search-input input.filter {
 	float: left;
     box-sizing: border-box;
-    width: 350px;
-	height: 32px;
+    width: 420px;
+	height: 60px;
     padding: 3px 20px;
     border: thin solid #ccc;
     border-right: none;
 	border-top-left-radius: 3px;
 	border-bottom-left-radius: 3px;
-    margin: 3px 0px 3px 3px;
-    font-size: 17px;
+    margin: 10px 0px 10px 10px;
+    font-size: 32px;
 }
 
-.tab button {
+.search-input button {
 	float: left;
 	padding: 6px 10px ;
-    margin: 3px 3px 3px 0px;
+    margin: 10px 10px 10px 0px;
 	background: #ddd;
-	font-size: 17px;
+	font-size: 28px;
     border: thin solid #ccc;
     border-left: none;
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
 	cursor: pointer;
-	width: 40px;
-	height: 32px;
+	width: 60px;
+	height: 60px;
 }
 
-.tab button:hover {
+.search-input button:hover {
 	background: #ccc;
 }
 
@@ -112,11 +112,12 @@ li.list-group-item {
 	font-weight: bold;
 	padding: 0px ;
 	cursor: pointer;
-	height: 35px;
+	height: 45px;
+	border: none;
 }
 
 li.list-group-item:hover {
-
+	background-color: #39f;
 }
 
 li.seen {
@@ -133,8 +134,9 @@ li.seen {
 }
 
 .li-col span {
-	font-size: 12px !important;
-	margin: 20px;
+	font-size: 18px !important;
+	font-weight: bold;
+	margin: 10px;
 	text-overflow: ellipsis;
 }
 
@@ -146,14 +148,14 @@ li.seen {
 
 .li-bldg {
 	border-left: thin solid #ccc;
-	width: 70px;
-	max-width: 70px;
+	width: 80px;
+	max-width: 80px;
 }
 
 .li-floor {
 	border-left: thin solid #ccc;
-	width: 70px;
-	max-width: 70px;
+	width: 80px;
+	max-width: 80px;
 }
 
 .li-room {

@@ -76,7 +76,7 @@
   <link rel="stylesheet" media="all" href="css/menu.css?nc=<?php echo time(); ?>" />
   <link rel="stylesheet" media="all" href="css/pop_maps.css?nc=<?php echo time(); ?>" />
 
-  <link href="css/jquery.virtual_keyboard.css" rel="stylesheet" type="text/css"/>
+  <link href="css/jquery.virtual_keyboard.css?nc=<?php echo time(); ?>" rel="stylesheet" type="text/css"/>
   <link href="css/scroll.css" rel="stylesheet" type="text/css"/>
 
   	<script>
@@ -218,14 +218,18 @@
 	<div class="flyout facilities"><?php $obj->fetchFacilitiesMenu() ?></div>
 	<div class="flyout accessibility"><?php echo $slists['bldg_menu']; ?></div>
 
-	<div class="flyout search-box reveal-keep">
-		<div class="search-list">
-			<ul class="list-group"><?php echo $slists['room_list']; ?></ul>
-		</div>
-		<div class="search-input">
-			<input type="text" class="filter" placeholder="">
-			<button><i class="fa fa-search"></i></button>
-		</div>
+	<div class="flyout search-box reveal-keeps">
+		<table class="tbl-search">
+			<tr><td class="search-list">
+				<div class="search-list">
+					<ul class="list-group"><?php echo $slists['room_list']; ?></ul>
+				</div>
+			</td></tr>
+			<tr><td class="search-input">
+					<input type="text" class="filter" placeholder="tap here to search...">
+					<button><i class="fa fa-search"></i></button>
+			</td></tr>
+		</table>
 	</div>
 
 <!--

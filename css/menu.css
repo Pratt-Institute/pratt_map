@@ -192,7 +192,7 @@ div.flyout, div.subfly {
 	background-color: #fff;
 	height: auto;
 	/*max-height: 954px;*/
-	max-height: 800px;
+	max-height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
     white-space: nowrap;
@@ -206,22 +206,22 @@ div.flyout, div.subfly {
 }
 
 /* width */
-div.flyout::-webkit-scrollbar {
+div.search-list::-webkit-scrollbar, div.flyout::-webkit-scrollbar {
     width: 40px;
 }
 
 /* Track */
-div.flyout::-webkit-scrollbar-track {
+div.search-list::-webkit-scrollbar-track, div.flyout::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
 
 /* Handle */
-div.flyout::-webkit-scrollbar-thumb {
+div.search-list::-webkit-scrollbar-thumb, div.flyout::-webkit-scrollbar-thumb {
     background: #888;
 }
 
 /* Handle on hover */
-div.flyout::-webkit-scrollbar-thumb:hover {
+div.search-list::-webkit-scrollbar-thumb:hover, div.flyout::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
 
@@ -231,18 +231,12 @@ div.reveal-horz {
     transition: all 0.35s ease;
 }
 
-div.reveal-keep {
-
+div.search-box {
 	position: fixed;
-	/*bottom: 124px;*/
 	bottom: 0px;
 	left: 84px;
-
 	height: 100%;
-
-	width: 500px;
-	opacity: 1;
-    transition: all 0.35s ease;
+	/*width: 450px;*/
 }
 
 div.reveal-vert {
@@ -262,22 +256,37 @@ div.flyout span, div.subfly span {
     padding: 5px 20px;
     /*color: #000;*/
     transition: color 0.2s ease;
-	background-color: #fff;
+	/*background-color: #fff;*/
     transition: background-color 0.2s ease;
 }
 
-.search-input {
-	position: absolute;
-	bottom:	0px;
-	left:	0px;
+div.search-box {
+	overflow: hidden;
+}
+
+td.search-list {
+	width: 500px;
+	overflow: hidden;
+}
+
+td.search-input {
+	height: 10px;
 	width: 500px;
 }
 
-.search-list {
-	position: absolute;
-	top:	0px;
-	height:	90%;
-	width: 500px;
+div.search-list {
+	position: relative;
+	height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+table.tbl-search {
+	height: 100%;
+}
+
+table.tbl-search td {
+	border: none;
 }
 
 div.buildings span {
@@ -438,6 +447,13 @@ div.legend td.legend-access img {
 div.legend span.history {
 	font-size: 14px;
 	font-weight: normal;
+}
+
+div.legend .copy-bold {
+	font-size: 17px;
+	font-weight: bold;
+	margin: 0px;
+	padding: 0px;
 }
 
 /* -------------------------------------------------------------------------------------- */

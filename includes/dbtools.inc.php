@@ -245,6 +245,13 @@ class DbTools {
 		$sql = " select * from facilities
 			where department not in ('INACTIVE','UNUSABLE')
 			and room_name not like '%inactive%'
+
+			and room_name not like '%elev%'
+			and room_name not like '%stair%'
+			and room_name not like '%toilet%'
+			and room_name not like '%men%'
+			and room_name not like '%women%'
+
 			and department not like '%inactive%'
 			and major_category not like '%inactive%'
 			and functional_category not like '%inactive%'
