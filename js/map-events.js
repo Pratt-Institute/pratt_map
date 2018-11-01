@@ -240,13 +240,15 @@ var onFloorSelectorFocusChanged = function(event) {
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
-	if (event.detail.newFloodId > '0000' && ambiarc.floorId == '' && ambiarc.recordId == '' && ambiarc.legendType == '') {
+	//clearTimeout(document.scheduleLegend);
+
+	if (event.detail.newFloodId > '0000' && ambiarc.floorId == '' && ambiarc.recordId == '' && ambiarc.legendType == '' && ambiarc.ambiarcId == '') {
 
 		console.log('do pop legend from focus change ---------------------------------------');
 
 		ambiarc.floorId = event.detail.newFloodId;
 
-		popMapLegend(1000);
+		popMapLegend(125);
 
 	}
 
@@ -254,12 +256,14 @@ var onFloorSelectorFocusChanged = function(event) {
 
 var cameraStartedHandler = function(event){
 
-	//alert('cameraStartedHandler'); // auto
+	collapseMenus();
 
-	// do stuff when map motion begins
-	//ambiarc.showMapLabel(ambiarc.selectedPoiId, true);
-	//window.doShowHidePoints = true;
+	console.log('cameraStartedHandler'); // auto
+
 	clearTimeout(document.launchDestroyer);
+
+	//clearTimeout(document.scheduleLegend);
+
 	if (event.detail.indexOf('UNTRACKED') != -1) {
 		return false;
 	}

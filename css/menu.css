@@ -52,12 +52,14 @@ div.ztap-to-start {
     z-index: 900;
 }
 
+/*
 img.search-btn {
 	width: 30px;
 	pointer-events: auto;
 	cursor: pointer;
     z-index: 900;
 }
+ */
 
 div.nav-menu {
     display: flex;
@@ -88,7 +90,7 @@ table.nav-menu-new {
 	bottom: 0px;
 	left: 0px;
 	/*font-size: 28px;*/
-	font-size: 3vh;
+	font-size: 2.75vh;
 	line-height: .75;
 	font-weight: bold;
 	font-color: #ccc;
@@ -121,9 +123,20 @@ table.nav-menu-new span {
 }
 
 table.nav-menu-new span.cat-box-search {
+	/*writing-mode: vertical-rl;
+	transform: rotate(0deg);
+	text-orientation: upright;*/
+}
+
+table.nav-menu-new span.nav-icon {
 	writing-mode: vertical-rl;
 	transform: rotate(0deg);
 	/*text-orientation: upright;*/
+	margin: 15px auto;
+}
+
+table.nav-menu-new span.nav-icon img{
+	height: 45px;
 }
 
 div.nav-menu-new .menu-category {
@@ -132,14 +145,15 @@ div.nav-menu-new .menu-category {
 	width: 84px;
 }
 
+/*
 div.nav-menu-new .menu-category img {
 	margin: 0px auto;
 	display: block;
-    /*margin-left: auto;
-    margin-right: auto;*/
+
     max-width: 50px;
     max-height: 50px;
 }
+ */
 
 div.menu-open {
 	left: 0px;
@@ -169,12 +183,8 @@ div.menu-category {
 
 span.cat-box {
 	display: block;
-	margin: 22px 32px;
+	margin: 18px 30px;
 	pointer-events: auto;
-}
-
-span.cat-box-search {
-	margin: 15px 25px;
 }
 
 div.fade-out {
@@ -237,6 +247,7 @@ div.search-box {
 	left: 84px;
 	height: 100%;
 	/*width: 450px;*/
+	background-color: transparent;
 }
 
 div.reveal-vert {
@@ -276,12 +287,17 @@ td.search-input {
 
 div.search-list {
 	position: relative;
-	height: 100%;
+	bottom: 0px;
+	height: auto;
     overflow-y: scroll;
     overflow-x: hidden;
 }
 
 table.tbl-search {
+	height: 100%;
+}
+
+table.tbl-search td.wedge{
 	height: 100%;
 }
 
@@ -301,10 +317,12 @@ div.offices span {
 div.facilities span {
 	background-color: #52869f;
 }
-div.accessibility span {
+div.sculptures span {
 	background-color: #f4581e;
 }
-
+div.accessibility span {
+	background-color: #fff;
+}
 div.flyout span:hover, div.subfly span:hover {
 	text-decoration: underline;
 	color: #fff;
@@ -549,6 +567,14 @@ div.veil-text {
 	cursor: pointer;
 	opacity: 1 !important;
 	left: 30px !important;
+}
+
+div.track {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	z-index: 1003;
+	color: #000;
 }
 
 

@@ -147,6 +147,53 @@ class DbTools {
 		}
 	}
 
+	public function fetchSculptureMenu() {
+
+		try {
+			$sql = "
+				select
+					id,
+					bldg_abbre,
+					bldg_name,
+					gk_bldg_id,
+
+					latitude,
+					longitude,
+
+					gk_sculpture_name,
+					gk_sculpture_artist,
+					gk_sculpture_date
+
+					from facilities
+					where gk_sculpture_name != ''
+					order by gk_sculpture_name asc";
+
+			$stmt = $this->dbh->prepare($sql);
+			$stmt->execute();
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			if ($rows[0]['id']) {
+				foreach($rows as $field=>$record) {
+					$sculpture = $record['gk_sculpture_name'];
+					$out[] = "<span
+						class=\"fly-box fly-sculp\"
+						data-building=\"SG\"
+						data-lat=\"".$record['latitude']."\"
+						data-long=\"".$record['longitude']."\"
+						data-recordid=\"".$record['id']."\"
+						data-cat=\"sculptures\"
+						data-sculptures=\"$sculpture\"
+						data-hasimage=\"Y\"
+						>".$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist']."</span>";
+				}
+				echo implode('',$out);
+			}
+			return false;
+		} catch(PDOException $e) {
+			echo $sql . "<br>" . $e->getMessage();
+		}
+	}
+
 	public function fetchFacilitiesMenu() {
 		//include_once('includes/facilities.inc.php');
 		//echo json_encode($arr);
@@ -225,8 +272,8 @@ class DbTools {
 						data-cat=\"facility\"
 						data-dept=\"$gk_dept\"
 						data-facility=\"$gk_dept\"
-						  data-roomno=\"$room_number\"
-					>$gk_dept</span>";
+						data-roomno=\"$room_number\"
+						>$gk_dept</span>";
 				}
 			}
 		}
@@ -288,6 +335,13 @@ class DbTools {
 
 				foreach($rows as $field=>$record) {
 
+					if (trim($record['floor']) == 'GRND') {
+						$record['floor'] = 'Ground';
+					}
+					if (trim($record['floor']) == 'BSMT') {
+						$record['floor'] = 'Basement';
+					}
+
 					# filter out points that havn't been geolocated yet
 					// 	if (strlen(trim($record['latitude'])) < '13' && $value['gk_department'] == '') {
 					// 		continue;
@@ -331,12 +385,12 @@ class DbTools {
 							data-lat="'.$record['latitude'].'"
 							data-long="'.$record['longitude'].'"
 							data-hasimage="'.$imgAttr.'"
-							class="list-group-item '.$imgUrl.' '.$has_image.'">';
+							class="hidden list-group-item '.$imgUrl.' '.$has_image.'">';
 
 
 						if ($record['bldg_abbre'] == 'SG') {
 
-							$rooms[] = '<div class="li-col li-sculpture '.$camploc.'"><span>'.$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist'].'</span></div>';
+							//$rooms[] = '<div class="li-col li-sculpture '.$camploc.'"><span>'.$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist'].'</span></div>';
 
 						} else {
 
@@ -485,6 +539,13 @@ class DbTools {
 
 				foreach($rows as $field=>$record) {
 
+					if (trim($record['floor']) == 'GRND') {
+						$record['floor'] = 'Ground';
+					}
+					if (trim($record['floor']) == 'BSMT') {
+						$record['floor'] = 'Basement';
+					}
+
 					$exp = explode(',',$record['gk_department']);
 
 					$i=0;
@@ -524,6 +585,13 @@ class DbTools {
 
 			if ($rows[0]['id']) {
 				foreach($rows as $field=>$record) {
+
+					if (trim($record['floor']) == 'GRND') {
+						$record['floor'] = 'Ground';
+					}
+					if (trim($record['floor']) == 'BSMT') {
+						$record['floor'] = 'Basement';
+					}
 
 					//$out[$record['gk_floor_id']] = $record;
 
@@ -574,6 +642,13 @@ class DbTools {
 
 			if ($rows[0]['id']) {
 				foreach($rows as $field=>$record) {
+
+					if (trim($record['floor']) == 'GRND') {
+						$record['floor'] = 'Ground';
+					}
+					if (trim($record['floor']) == 'BSMT') {
+						$record['floor'] = 'Basement';
+					}
 
 					if ($record['gk_floor_id'] < '1') {
 						continue;

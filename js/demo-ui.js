@@ -12,10 +12,31 @@
  window.poiMap			= {};
  window.prattCopy		= [];
  window.legendDelay		= 2000;
+ window.rangePoi = range(-1000,1000);
+ window.trackPoi = [];
 
  /// icampb15@pratt.edu
  /// 718.687.5762
  /// 347.904.6743
+
+ 	function range(start, edge, step=1) {
+		// If only 1 number passed make it the edge and 0 the start
+		if (arguments.length === 1) {
+			edge = start;
+			start = 0;
+		}
+
+		// Validate edge/start
+		edge = edge || 0;
+		step = step || 1;
+
+		// Create array of numbers, stopping before the edge
+		let arr = [];
+		for (arr; (edge - start) * step > 0; start += step) {
+			arr.push(start);
+		}
+		return arr;
+	}
 
 //User clicked the floor selector
 var resetMap = function() {
@@ -193,7 +214,8 @@ var fetchPoisFromApi = function(params) {
 		//ambiarc.hideMapLabelGroup(poiMap, true);
 		$.each(poiMap, function(k, v) {
 			if (typeof v != 'undefined') {
-				ambiarc.hideMapLabel(v, true);
+				//ambiarc.hideMapLabel(v, true);
+				ambiarc.destroyMapLabel(v);
 			}
 		});
 	}
@@ -298,6 +320,9 @@ var fetchPoisFromApi = function(params) {
 			}
 		});
 
+		//var poiArr = Object.values(poiMap);
+		//$('.track').html('POIs '+poiArr.join(','));
+
 		processAndRun();
 
 	});
@@ -396,7 +421,7 @@ var processAndRun = function() {
 
 	if (params.action == 'focusOutdoorPoint') {
 		ambiarc.showMapLabel(itemId, true);
-		popMapLegend();
+		popMapLegend(2000);
 	}
 
 	if (params.action == 'showFloorInfo') {
@@ -454,7 +479,7 @@ var processAndRun = function() {
 
 			setTimeout(function(){
 				ambiarc.showMapLabel(keepId, true);
-				popMapLegend();
+				popMapLegend(2000);
 
 				setTimeout(function(){
 					if (rotationOld != rotation) {
@@ -498,11 +523,13 @@ var clearMapLegend = function() {
 			$('.bldgName').html('');
 			$('.floorNo').html('');
 			$('.roomName').html('');
-		},750);
+		},1);
 	});
 }
 
-var popMapLegend = function(legendDelay=3000) {
+var popMapLegend = function(legendDelay=1000) {
+
+	//clearTimeout(document.scheduleLegend);
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
@@ -518,6 +545,20 @@ var popMapLegend = function(legendDelay=3000) {
 	var recordId		= ambiarc.recordId;
 	var sculptureName	= ambiarc.sculptureName;
 	var sculptureArtist	= ambiarc.sculptureArtist;
+
+	// 	var bldgName1 = '';
+	// 	var bldgName2 = '';
+	//
+	// 	try {
+	// 		bldgName1 = bldgMap[floorId].bldg_name;
+	// 	} catch(err) { console.log(err) }
+	// 	try {
+	// 		bldgName2 = ambiarc.poiStuff[ambiarcId].bldgName;
+	// 	} catch(err) { console.log(err) }
+	//
+	// 	if (bldgName1 == '' && bldgName2 == '' && sculptureName == '') {
+	// 		return true;
+	// 	}
 
 	document.scheduleLegend = setTimeout(function(){
 
@@ -613,7 +654,7 @@ var popMapLegend = function(legendDelay=3000) {
 				bldgName = 'Steuben Hall &<br>Pratt Studios';
 			}
 
-			if (bldgName) {
+			if (bldgName.length > '1') {
 				$('.bldgName').html(bldgName);
 			}
 		} catch(err) { console.log(err) }
@@ -629,7 +670,7 @@ var popMapLegend = function(legendDelay=3000) {
 				bldgName = 'Steuben Hall &<br>Pratt Studios';
 			}
 
-			if (bldgName) {
+			if (bldgName.length > '1') {
 				$('.bldgName').html(bldgName);
 			}
 		} catch(err) { console.log(err) }
@@ -730,15 +771,16 @@ var popMapLegend = function(legendDelay=3000) {
 			}
 		} catch(err) { console.log(err) }
 
-		var isLegendFilled = $('.bldgName').html();
 
-		//alert('legend = ' + isLegendFilled);
-
-		if (isLegendFilled.length > '1') {
-			$('.legend').addClass('showlegend');
-		} else {
-			$('.legend').removeClass('showlegend');
-		}
+		setTimeout(function(){
+			var isLegendFilled = $('.bldgName').html();
+			console.log(isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' )
+			if (isLegendFilled.length > '1') {
+				$('.legend').addClass('showlegend');
+			} else {
+				$('.legend').removeClass('showlegend');
+			}
+		},125);
 
 		setTimeout(function(){
 			//ambiarc.legendType	= '';
@@ -753,7 +795,7 @@ var popMapLegend = function(legendDelay=3000) {
 			ambiarc.recordId	= '';
 			ambiarc.sculptureName	= '';
 			ambiarc.sculptureArtist	= '';
-		},1000);
+		},250);
 
 	},legendDelay);
 }
@@ -780,7 +822,6 @@ var focusAfterDataLoad = function(itemId) {
 		if (itemId) {
 
 			try {
-
 				ambiarc.selectedPoiId = itemId;
 				ambiarc.focusOnMapLabel(itemId, 200);
 			} catch(err) {
@@ -788,28 +829,23 @@ var focusAfterDataLoad = function(itemId) {
 			}
 
 			try {
-
-				setTimeout(function(){
-
+				//setTimeout(function(){
 					ambiarc.legendType = 'menuOther';
 					ambiarc.ambiarcId = itemId;
 					//ambiarc.buildingId = '';
 					//ambiarc.floorId = '';
 					//ambiarc.roomName = '';
-
-					popMapLegend();
-				},1);
-
+					//alert('this one');
+					popMapLegend(2000);
+				//},125);
 			} catch(err) {
 				console.log(err);
 			}
 
 			try {
-
 				setTimeout(function(){
 					window.doFloorSelected = true;
 				}, 3000);
-
 			} catch(err) {
 				console.log(err);
 			}

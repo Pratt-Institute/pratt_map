@@ -165,7 +165,7 @@
 		<table class="nav-menu-new">
 			<tr class="row-btn">
 				<td style="background-color:#fff" class="menu-category">
-					<img class="reset-map-vert" style="margin:5px auto;" src="images/back-arrow.png">
+					<span class="nav-icon"><img class="reset-map-vert"src="images/back-arrow2.png"></span>
 				</td>
 			</tr>
 			<tr class="row-menu">
@@ -190,12 +190,18 @@
 			</tr>
 			<tr class="row-menu">
 				<td style="background-color:#f4581e" class="menu-category">
-					<span class="cat-box" data-type="accessibility">accessibility</span>
+					<span class="cat-box" data-type="sculptures">sculptures</span>
+				</td>
+			</tr>
+			<tr class="row-menu">
+				<td style="background-color:#3cf" class="menu-category">
+					<!--<span class="cat-box" data-type="accessibility">accessibility</span>-->
+					<span class="cat-box nav-icon" data-type="accessibility"><img src="images/accessible.png"></span>
 				</td>
 			</tr>
 			<tr class="row-btn">
 				<td style="background-color:#fff" class="menu-category">
-					<span class="cat-box cat-box-search" data-type="search-box"><img class="search-btn" src="images/view.png"></span>
+					<span class="cat-box cat-box-search nav-icon" data-type="search-box"><img class="search-btn" src="images/view.png"></span>
 				</td>
 			</tr>
 		</table>
@@ -216,10 +222,12 @@
 	<div class="flyout academics"><?php echo $slists['acad_menu']; ?></div>
 	<div class="flyout offices"><?php echo $slists['off_menu']; ?></div>
 	<div class="flyout facilities"><?php $obj->fetchFacilitiesMenu() ?></div>
+	<div class="flyout sculptures"><?php $obj->fetchSculptureMenu() ?></div>
 	<div class="flyout accessibility"><?php echo $slists['bldg_menu']; ?></div>
 
 	<div class="flyout search-box reveal-keeps">
 		<table class="tbl-search">
+			<tr><td class="wedge"></td></tr>
 			<tr><td class="search-list">
 				<div class="search-list">
 					<ul class="list-group"><?php echo $slists['room_list']; ?></ul>
@@ -270,6 +278,8 @@
 
 	<div class="veil veil-box"></div>
 	<div class="veil veil-text">⋮⋮⋮ TAP TO BEGIN ⋮⋮⋮</div>
+
+	<div class="track"></div>
 
 </body>
 

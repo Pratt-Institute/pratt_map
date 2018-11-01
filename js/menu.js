@@ -54,7 +54,7 @@
 				window.haltLoops = true;
 			});
 
-			$(document).on("click", "li.list-group-item", function(e){
+			$(document).on("click", "li.list-group-item, span.fly-sculp", function(e){
 
 				clearMapLegend();
 
@@ -111,7 +111,8 @@
 
 					if ($(this).attr('data-building') == 'SG') {
 
-						var sculpture = $(this).find('span').html();
+						//var sculpture = $(this).find('span').html();
+						var sculpture = $(this).html();
 						var split = sculpture.split(' :: ');
 
 						ambiarc.sculptureName = split[0];
@@ -202,15 +203,16 @@
 				}
 			});
 
-			$(document).on('click', '.click-capture', function() {
+			$(document).on('click touch touchstart touchend', '.click-capture', function() {
 				//collapseMenus();
 				///ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'no';
 				$('.showpopmap').removeClass('showpopmap');
-				resetMenus();
+				collapseMenus();
 			});
 
-			$('.flyout').mouseleave(function() {
+			//$('.flyout').mouseleave(function() {
+			$('.flyout').on('mouseleave touchend', function(e){
 				var elem = this;
 				var close = true;
 				$('.subfly').each(function(){
@@ -229,11 +231,12 @@
 						});
 					}, 500);
 				}
-			}).on('mouseenter', function(){
+			}).on('mouseenter touchstart', function(){
 				clearTimeout(document.close_flyout);
 			});
 
-			$('.subfly').mouseleave(function(e) {
+			//$('.subfly').mouseleave(function(e) {
+			$('.subfly').on('mouseleave touchend', function(e){
 				alert('one');
 				var hi = $(this).height();
 				$('.subfly').css({height: hi});
@@ -244,7 +247,7 @@
 						});
 					});
 				}, 500);
-			}).on('mouseenter', function(){
+			}).on('mouseenter touchstart', function(){
 				clearTimeout(document.close_subfly);
 			});
 
@@ -303,6 +306,12 @@
 			});
 
 			$(document).on('click', '.fly-box', function(e) {
+
+				$('<div class="click-capture"></div>').insertBefore('div.veil-box');
+
+				if ($(this).attr('data-cat') == 'sculptures') {
+					return false;
+				}
 
 				//ambiarc.exitBuilding();
 
@@ -483,7 +492,7 @@
 
 							ambiarc.focusOnLatLonAndZoomToHeight(buildingId, '', lat, lon, heightAboveFloor);
 
-							popMapLegend();
+							popMapLegend(2500);
 
 						}
 
@@ -852,6 +861,10 @@
 	}
 
 	function collapseMenus() {
+
+		$("input.filter").val('');
+		$(".list-group-item").addClass("hidden");
+
 		console.log('collapseMenus');
 		setTimeout(function(){
 			$('.subfly').animate({width: '0px', opacity: 0}).promise().then(function(){
@@ -876,14 +889,30 @@
 	}
 
 	function searchFunction() {
+
 		console.log('searchFunction');
+
 		var filter = $("input.filter").val();
+
 		$(".list-group-item").not(":containsi('" + filter + "')").addClass("hidden");
+
 		$(".list-group-item:containsi('" + filter + "')").removeClass("hidden");
+
 		// 	var building = $("select.menu-buildings").val();
 		// 	if(building != "") {
 		// 		$(".list-group-item[data-building!='"+building+"']").addClass("hidden");
 		// 	}
+
+		if (filter.length == '0') {
+			$(".list-group-item").addClass("hidden");
+		}
+
+		//var maxHei = parseInt($(window).height()-90);
+
+		$('div.search-list').css({
+			'max-height':parseInt($(window).height()-80),
+		});
+
 	}
 
 	/// delete this
@@ -1008,4 +1037,7 @@
 		}
 
 	}
+
+
+
 
