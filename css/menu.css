@@ -199,7 +199,7 @@ div.flyout, div.subfly {
 	bottom: 0px;
 	left: 84px;
 	z-index: 901;
-	background-color: #fff;
+	background-color: transparent;
 	height: auto;
 	/*max-height: 954px;*/
 	max-height: 100%;
@@ -215,24 +215,36 @@ div.flyout, div.subfly {
     z-index: 900;
 }
 
+div.webkit-scroll {
+    margin-right:50px;
+}
+
 /* width */
-div.search-list::-webkit-scrollbar, div.flyout::-webkit-scrollbar {
+div.webkit-scroll::-webkit-scrollbar {
     width: 40px;
+	background-color: transparent;
 }
 
 /* Track */
-div.search-list::-webkit-scrollbar-track, div.flyout::-webkit-scrollbar-track {
-    background: #f1f1f1;
+div.webkit-scroll::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 30px 30px rgba(60,60,60,0.6);
+	border-radius: 4px;
+	margin: 4px;
 }
 
 /* Handle */
-div.search-list::-webkit-scrollbar-thumb, div.flyout::-webkit-scrollbar-thumb {
-    background: #888;
+div.webkit-scroll::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 0 12px rgba(0,0,0,.3);
+	background-color: #555;
 }
 
 /* Handle on hover */
-div.search-list::-webkit-scrollbar-thumb:hover, div.flyout::-webkit-scrollbar-thumb:hover {
-    background: #555;
+div.webkit-scroll::-webkit-scrollbar-thumb:hover {
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 0 12px rgba(0,0,0,.3);
+	background-color: #555;
+	/*background-image: url(images/lines.png)*/
 }
 
 div.reveal-horz {
@@ -276,7 +288,7 @@ div.search-box {
 }
 
 td.search-list {
-	width: 500px;
+	/*width: 500px;*/
 	overflow: hidden;
 }
 
@@ -391,9 +403,10 @@ div.legend {
 	border-radius: 4px;
 	border: none;
 	opacity: 0;
-    box-shadow: 0 0 300px 300px rgba(56,56,56, 0.55) inset;
+    box-shadow: 0 0 300px 300px rgba(60,60,60, 0.7) inset;
     transition: all 0.25s ease;
     line-height: 150%;
+    /*background-image: url(images/lines.png);*/
 }
 
 div.showlegend {

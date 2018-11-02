@@ -218,18 +218,18 @@
 		<div class="menu-category" style="background-color:#ffffff"><span class="cat-box" data-type="search"><img class="search-btn" data-type="search" src="images/view.png"></span></div>
 	</div>-->
 
-	<div class="flyout buildings"><?php echo $slists['bldg_menu']; ?></div>
-	<div class="flyout academics"><?php echo $slists['acad_menu']; ?></div>
-	<div class="flyout offices"><?php echo $slists['off_menu']; ?></div>
-	<div class="flyout facilities"><?php $obj->fetchFacilitiesMenu() ?></div>
-	<div class="flyout sculptures"><?php $obj->fetchSculptureMenu() ?></div>
-	<div class="flyout accessibility"><?php echo $slists['bldg_menu']; ?></div>
+	<div class="flyout webkit-scroll buildings"><?php echo $slists['bldg_menu']; ?></div>
+	<div class="flyout webkit-scroll academics"><?php echo $slists['acad_menu']; ?></div>
+	<div class="flyout webkit-scroll offices"><?php $obj->fetchOfficesMenu() ?></div>
+	<div class="flyout webkit-scroll facilities"><?php $obj->fetchFacilitiesMenu() ?></div>
+	<div class="flyout webkit-scroll sculptures"><?php $obj->fetchSculptureMenu() ?></div>
+	<div class="flyout webkit-scroll accessibility"><?php echo $slists['bldg_menu']; ?></div>
 
 	<div class="flyout search-box reveal-keeps">
 		<table class="tbl-search">
 			<tr><td class="wedge"></td></tr>
 			<tr><td class="search-list">
-				<div class="search-list">
+				<div class="search-list webkit-scroll">
 					<ul class="list-group"><?php echo $slists['room_list']; ?></ul>
 				</div>
 			</td></tr>

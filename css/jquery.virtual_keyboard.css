@@ -10,7 +10,7 @@ div#keyboard{
     pointer-events: auto;
     margin: 0 auto !important;
     border-radius: 5px;
-    box-shadow: 0 0 8px 8px rgba(56,56,56, 0.55);
+    box-shadow: 0 0 8px 8px rgba(56,56,56, 0.55), 0 0 8px 8px rgba(56,56,56, 0.55) inset;
 }
 
 div#keyboard div{

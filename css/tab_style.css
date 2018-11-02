@@ -131,6 +131,8 @@ li.seen {
 	border: none;
 	text-align: left;
 	margin-top: 6px;
+	width: auto;
+	text-overflow: ellipsis;
 }
 
 .li-col span {
@@ -141,27 +143,30 @@ li.seen {
 }
 
 .li-label {
-	width: 170px;
+	/*width: 170px;
 	max-width: 170px;
-	overflow: hidden;
+	overflow: hidden;*/
+	float: left;
+	text-align: right;
 }
 
 .li-bldg {
-	border-left: thin solid #ccc;
+	/*border-left: thin solid #ccc;
 	width: 80px;
-	max-width: 80px;
+	max-width: 80px;*/
+	float: right;
 }
 
 .li-floor {
-	border-left: thin solid #ccc;
+	/*border-left: thin solid #ccc;
 	width: 80px;
-	max-width: 80px;
+	max-width: 80px;*/
 }
 
 .li-room {
-	border-left: thin solid #ccc;
+	/*border-left: thin solid #ccc;
 	width: 70px;
-	max-width: 70px;
+	max-width: 70px;*/
 }
 
 .li-sculpture {
