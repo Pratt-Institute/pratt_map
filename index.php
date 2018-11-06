@@ -58,7 +58,7 @@
 		$obj->setMode = addslashes($_POST['mode']);
 	}
 
-	//print_r($slists);
+	//$obj->makeSearchMenu();
 	//die();
 
 ?>
@@ -103,8 +103,6 @@
 
     <script>
 
-		var acad = '<?php $obj->fetchAcademicsArray() ?>';
-		document.acad = JSON.parse(acad);
 		$.cookie('token', "<?php echo $_SESSION['token'] ?>", { expires: 1, secure: false });
 
 		//var deptMap =  '<?php $obj->buildDepartmentMap() ?>';
@@ -220,9 +218,9 @@
 
 	<div class="flyout webkit-scroll buildings"><?php echo $slists['bldg_menu']; ?></div>
 	<div class="flyout webkit-scroll academics"><?php echo $slists['acad_menu']; ?></div>
-	<div class="flyout webkit-scroll offices"><?php $obj->fetchOfficesMenu() ?></div>
-	<div class="flyout webkit-scroll facilities"><?php $obj->fetchFacilitiesMenu() ?></div>
-	<div class="flyout webkit-scroll sculptures"><?php $obj->fetchSculptureMenu() ?></div>
+	<div class="flyout webkit-scroll offices"><?php $obj->fetchOfficesMenu(); ?></div>
+	<div class="flyout webkit-scroll facilities"><?php $obj->fetchFacilitiesMenu(); ?></div>
+	<div class="flyout webkit-scroll sculptures"><?php $obj->fetchSculptureMenu(); ?></div>
 	<div class="flyout webkit-scroll accessibility"><?php echo $slists['bldg_menu']; ?></div>
 
 	<div class="flyout search-box reveal-keeps">
@@ -230,12 +228,14 @@
 			<tr><td class="wedge"></td></tr>
 			<tr><td class="search-list">
 				<div class="search-list webkit-scroll">
-					<ul class="list-group"><?php echo $slists['room_list']; ?></ul>
+					<ul class="list-group"><?php echo $obj->makeSearchMenu(); ?></ul>
 				</div>
 			</td></tr>
 			<tr><td class="search-input">
-					<input type="text" class="filter" placeholder="tap here to search...">
-					<button><i class="fa fa-search"></i></button>
+					<div style="width:500px">
+						<input type="text" class="filter" placeholder="tap here to search...">
+						<button><i class="fa fa-search"></i></button>
+					</div>
 			</td></tr>
 		</table>
 	</div>

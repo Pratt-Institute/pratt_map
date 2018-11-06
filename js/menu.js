@@ -112,7 +112,7 @@
 					if ($(this).attr('data-building') == 'SG') {
 
 						//var sculpture = $(this).find('span').html();
-						var sculpture = $(this).html();
+						var sculpture = $(this).attr('data-value');
 						var split = sculpture.split(' :: ');
 
 						ambiarc.sculptureName = split[0];
@@ -222,8 +222,9 @@
 				}
 				var elem = this;
 				var close = true;
-				$('.subfly').each(function(){
-					if ($(this).css('opacity') > 0) {
+				//$('.subfly').each(function(){
+				$('.flyout').each(function(){
+					if ($(this).css('opacity') < 1) {
 						close = false;
 					}
 				});
@@ -243,30 +244,25 @@
 			});
 
 			//$('.subfly').mouseleave(function(e) {
-			$('.subfly').on('mouseleave touchend', function(e){
-				alert('one');
-				var hi = $(this).height();
-				$('.subfly').css({height: hi});
-				document.close_subfly = setTimeout(function(){
-					$('.subfly').animate({width: '0px', opacity: 0}).promise().then(function(){
-						$('.subfly').removeClass('reveal-horz').promise().then(function(){
-							setTimeout(function(){ $('.subfly').removeAttr('style'); }, 125);
-						});
-					});
-				}, 500);
-			}).on('mouseenter touchstart', function(){
-				clearTimeout(document.close_subfly);
-			});
+			// 	$('.subfly').on('mouseleave touchend', function(e){
+			// 		alert('one');
+			// 		var hi = $(this).height();
+			// 		$('.subfly').css({height: hi});
+			// 		document.close_subfly = setTimeout(function(){
+			// 			$('.subfly').animate({width: '0px', opacity: 0}).promise().then(function(){
+			// 				$('.subfly').removeClass('reveal-horz').promise().then(function(){
+			// 					setTimeout(function(){ $('.subfly').removeAttr('style'); }, 125);
+			// 				});
+			// 			});
+			// 		}, 500);
+			// 	}).on('mouseenter touchstart', function(){
+			// 		clearTimeout(document.close_subfly);
+			// 	});
 
 			$(document).keyup(function(e) {
 				if (e.keyCode === 27) {
 					$('.showpopmap').removeClass('showpopmap');
 					resetMenus();
-					//hideAllPoints();
-					//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-					//ambiarc.viewFloorSelector('0001');
-					//ambiarc.viewFloorSelector('0001');
-					//ambiarc.loadMap("pratt");
 				}
 			});
 
@@ -276,7 +272,11 @@
 				hidePopMap();
 				//console.log(e.target.nodeName);
 				if (e.target.nodeName=='BODY' || e.target.nodeName=='HTML') {
-					//alert('click *');
+					$('.flyout').each(function(){
+						if ($(this).css('opacity') < 1) {
+							return true;
+						}
+					});
 					resetMenus();
 				}
 			});
@@ -968,66 +968,66 @@
 	}
 
 	/// delete this
-	function setupMenuAcademics() {
-
-		return true;
-
-		if (typeof academicsMenuIsLoaded != 'undefined') {
-			if (academicsMenuIsLoaded == true) {
-				return true;
-			}
-		}
-
-		console.log('setupMenuAcademics');
-
-		$(document.acad.academics).each(function(key, record){
-			window.schoolList = Object.keys(record);
-		});
-
-		console.log(schoolList);
-
-		var schoolArr = [];
-		var schoolString = '';
-		var subFly;
-		$(schoolList).each(function(key0, level0){
-
-			//console.log('setupMenuAcademics loop');
-
-			schoolArr[key0] = '<span class="fly-box" data-cat="school" data-school="'+level0+'" >'+level0+'</span>';
-			//schoolString += '<span class="fly-box" data-cat="school" data-school="'+level0+'" >'+level0+'</span>';
-			subFly = '<div class="subfly" data-type="'+level0+'" >';
-			$(document.acad.academics[level0]).each(function(key1, level1){
-				for(var item in level1) {
-
-					var menuHightlight = 'warn';
-					if (searchPropertiesGkDept(item)) {
-						menuHightlight = '';
-					}
-
-					//console.log(level1[item][0]);
-
-					if (level1[item][0] == 'W14' || level1[item][0] == 'W18' || level1[item][0] == 'FLSH' || level1[item][0] == 'CRR') {
-						var campLoc = 'offcamp';
-					} else {
-						var campLoc = 'oncamp';
-					}
-
-					subFly += '<span class="'+menuHightlight+' '+campLoc+'" data-bldg="'+level1[item][0]+'" data-cat="dept" data-dept="'+item+'">'+item+'</span>';
-				}
-			});
-			subFly += '</div>';
-			$('body').append(subFly);
-		});
-
-		console.log(schoolArr);
-
-		schoolString = schoolArr.join('');
-
-		$('div.academics').append(schoolString);
-
-		window.academicsMenuIsLoaded = true;
-
-	}
+	// 	function setupMenuAcademics() {
+	//
+	// 		return true;
+	//
+	// 		if (typeof academicsMenuIsLoaded != 'undefined') {
+	// 			if (academicsMenuIsLoaded == true) {
+	// 				return true;
+	// 			}
+	// 		}
+	//
+	// 		console.log('setupMenuAcademics');
+	//
+	// 		$(document.acad.academics).each(function(key, record){
+	// 			window.schoolList = Object.keys(record);
+	// 		});
+	//
+	// 		console.log(schoolList);
+	//
+	// 		var schoolArr = [];
+	// 		var schoolString = '';
+	// 		var subFly;
+	// 		$(schoolList).each(function(key0, level0){
+	//
+	// 			//console.log('setupMenuAcademics loop');
+	//
+	// 			schoolArr[key0] = '<span class="fly-box" data-cat="school" data-school="'+level0+'" >'+level0+'</span>';
+	// 			//schoolString += '<span class="fly-box" data-cat="school" data-school="'+level0+'" >'+level0+'</span>';
+	// 			subFly = '<div class="subfly" data-type="'+level0+'" >';
+	// 			$(document.acad.academics[level0]).each(function(key1, level1){
+	// 				for(var item in level1) {
+	//
+	// 					var menuHightlight = 'warn';
+	// 					if (searchPropertiesGkDept(item)) {
+	// 						menuHightlight = '';
+	// 					}
+	//
+	// 					//console.log(level1[item][0]);
+	//
+	// 					if (level1[item][0] == 'W14' || level1[item][0] == 'W18' || level1[item][0] == 'FLSH' || level1[item][0] == 'CRR') {
+	// 						var campLoc = 'offcamp';
+	// 					} else {
+	// 						var campLoc = 'oncamp';
+	// 					}
+	//
+	// 					subFly += '<span class="'+menuHightlight+' '+campLoc+'" data-bldg="'+level1[item][0]+'" data-cat="dept" data-dept="'+item+'">'+item+'</span>';
+	// 				}
+	// 			});
+	// 			subFly += '</div>';
+	// 			$('body').append(subFly);
+	// 		});
+	//
+	// 		console.log(schoolArr);
+	//
+	// 		schoolString = schoolArr.join('');
+	//
+	// 		$('div.academics').append(schoolString);
+	//
+	// 		window.academicsMenuIsLoaded = true;
+	//
+	// 	}
 
 	// Tells Ambiarc to focus on a map label id
 	function adjustMapFocus(target, mapLabelId, callback) {

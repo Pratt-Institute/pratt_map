@@ -87,10 +87,45 @@ class DbTools {
 		}
 	}
 
-	public function fetchAcademicsArray() {
-		include_once('includes/academics.inc.php');
-		echo json_encode($arr);
+	private function runQuery() {
+
+		$sql = " select * from facilities
+			where department not in ('INACTIVE','UNUSABLE')
+			and room_name not like '%inactive%'
+
+
+			and room_name not like '%toilet%'
+			and room_name not like '%men%'
+			and room_name not like '%women%'
+			and room_name not like '%bath%'
+
+			and department not like '%inactive%'
+			and major_category not like '%inactive%'
+			and functional_category not like '%inactive%'
+
+			and gk_display != 'N'
+			/*and gk_bldg_id != ''
+			and gk_floor_id != ''*/
+			and room_name != ''
+			and room_name not like '%storage%'
+			and room_name not like '%corr%'
+			and room_name not like '%elev%'
+			and room_name not like '%stair%'
+
+			";
+
+		//$sql .= " group by bldg_abbre, floor, gk_department, department, room_name, gk_sculpture_name ";
+		//$sql .= " group by bldg_abbre, floor, room_name ";
+		$sql .= " order by bldg_name asc, room_name asc, floor asc, new_room_no asc, department asc ";
+
+		return $sql;
+
 	}
+
+	// 	public function fetchAcademicsArray() {
+	// 		include_once('includes/academics.inc.php');
+	// 		echo json_encode($arr);
+	// 	}
 
 	public function makeFacilitiesArray() {
 
@@ -207,6 +242,84 @@ class DbTools {
 		}
 	}
 
+	public function makeSearchMenu() {
+
+		try {
+
+			$stmt = $this->dbh->prepare($this->runQuery());
+			$stmt->execute();
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			if ($rows[0]['id']) {
+
+				foreach($rows as $record) {
+
+					if ($record['on_off_campus'] == 'ON' && strlen(trim($record['latitude'])) > '8') {
+
+						if (stripos('_'.$record['room_name'], 'shower') !== false) {
+							continue;
+						}
+
+						if (stripos('_'.$record['room_name'], 'washr') !== false) {
+							continue;
+						}
+
+						$pointArr = array();
+
+						if ($record['gk_department'] != '') {
+							$pointArr = explode(',',$record['gk_department']);
+						} else {
+							$pointArr[] = $record['room_name'];
+						}
+
+						foreach($pointArr as $point) {
+
+							if (stripos('_'.$point, 'entr') !== false) {
+								continue;
+							}
+
+							$line = array();
+
+							$line[] = '<li id="'.$record['id'].'"
+								data-id="'.$record['id'].'"
+								data-building="'.$record['bldg_abbre'].'"
+								data-floorid="'.$record['gk_floor_id'].'"
+								data-recordId="'.$record['id'].'"
+								data-lat="'.$record['latitude'].'"
+								data-long="'.$record['longitude'].'"
+								data-hasimage="'.$imgAttr.'"
+								class="hidden list-group-item '.$imgUrl.' '.$has_image.'">';
+
+							if ($record['bldg_abbre'] == 'SG') {
+								//$line[] = '<div class="li-col li-sculpture '.$camploc.'"><span>'.$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist'].'</span></div>';
+							} else {
+								$line[] = '<div class="li-col li-label '.$camploc.'"><span class="list-group-point">'.$point.'</span></div>';
+								$line[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_name'].'</span></div>';
+								//$line[] = '<div class="li-col li-floor '.$camploc.'"><span>'.$record['floor'].'</span></div>';
+								//$line[] = '<div class="li-col li-room '.$camploc.'"><span>'.$room_number.'</span></div>';
+								$line[] = '</li>';
+							}
+
+							$i = $record['bldg_abbre'].$point;
+							$out[$i] = implode('',$line);
+
+							// 	echo '<pre>';
+							// 	print_r($out);
+							// 	echo '</pre>';
+
+						}
+					}
+				}
+
+				echo implode('',$out);
+
+			}
+			return false;
+		} catch(PDOException $e) {
+			echo $sql . "<br>" . $e->getMessage();
+		}
+	}
+
 	public function fetchSculptureMenu() {
 
 		try {
@@ -221,12 +334,15 @@ class DbTools {
 					longitude,
 
 					gk_sculpture_name,
-					gk_sculpture_artist,
+					gk_sculpture_artist_last,
+					gk_sculpture_artist_first,
 					gk_sculpture_date
 
 					from facilities
 					where gk_sculpture_name != ''
-					order by gk_sculpture_name asc";
+					and gk_display != 'N'
+					group by gk_sculpture_artist_last, gk_sculpture_artist_first
+					order by gk_sculpture_artist_last asc, gk_sculpture_artist_first asc";
 
 			$stmt = $this->dbh->prepare($sql);
 			$stmt->execute();
@@ -234,6 +350,15 @@ class DbTools {
 
 			if ($rows[0]['id']) {
 				foreach($rows as $field=>$record) {
+
+					if (strlen(trim($record['latitude'])) > '14') {
+				//		continue;
+					}
+
+					foreach($record as $key=>$value) {
+						$record[$key] = htmlentities(utf8_encode($value), 0, "UTF-8");
+					}
+
 					$sculpture = $record['gk_sculpture_name'];
 					$out[] = "<span
 						class=\"fly-box fly-sculp\"
@@ -244,7 +369,8 @@ class DbTools {
 						data-cat=\"sculptures\"
 						data-sculptures=\"$sculpture\"
 						data-hasimage=\"Y\"
-						>".$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist']."</span>";
+						data-value=\"".$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist_first'].' '.$record['gk_sculpture_artist_last']."\"
+						>".$record['gk_sculpture_artist_first'].' '.$record['gk_sculpture_artist_last']."</span>";
 				}
 				echo implode('',$out);
 			}
@@ -270,12 +396,14 @@ class DbTools {
 					latitude,
 					longitude,
 					room_no,
-					new_room_no
+					new_room_no,
+					on_off_campus
 					from facilities where gk_department != '' and ( ";
 		foreach($arr as $facility) {
 			$like[] = " gk_department like '%$facility%' ";
 		}
 		$sql .= implode (' or ', $like) . ' )';
+		$sql .= " or gk_school like '%research and centers%' ";
 
 		//echo '<p>'.$sql;
 
@@ -307,8 +435,10 @@ class DbTools {
 						continue;
 					}
 
+					$camploc = strtolower($record['on_off_campus']).'camp';
+
 					$out[$gk_dept] = "<span
-						class=\"fly-box\"
+						class=\"fly-box ".$camploc."\"
 						data-recordid=\"".$record['id']."\"
 						data-bldg=\"".$record['bldg_abbre']."\"
 						data-floorid=\"".$record['gk_floor_id']."\"
@@ -330,40 +460,7 @@ class DbTools {
 
 	}
 
-	private function runQuery() {
 
-		$sql = " select * from facilities
-			where department not in ('INACTIVE','UNUSABLE')
-			and room_name not like '%inactive%'
-
-
-			and room_name not like '%toilet%'
-			and room_name not like '%men%'
-			and room_name not like '%women%'
-			and room_name not like '%bath%'
-
-			and department not like '%inactive%'
-			and major_category not like '%inactive%'
-			and functional_category not like '%inactive%'
-
-			and gk_display != 'N'
-			/*and gk_bldg_id != ''
-			and gk_floor_id != ''*/
-			and room_name != ''
-			and room_name not like '%storage%'
-			and room_name not like '%corr%'
-			and room_name not like '%elev%'
-			and room_name not like '%stair%'
-
-			";
-
-		//$sql .= " group by bldg_abbre, floor, gk_department, department, room_name, gk_sculpture_name ";
-		//$sql .= " group by bldg_abbre, floor, room_name ";
-		$sql .= " order by bldg_name asc, room_name asc, floor asc, new_room_no asc, department asc ";
-
-		return $sql;
-
-	}
 
 	public function buildSearchList() {
 
@@ -418,44 +515,48 @@ class DbTools {
 
 					$camploc = strtolower($record['on_off_campus']).'camp';
 
+					if ($record['bldg_name'] == 'PMC') {
+						$record['bldg_name'] = 'Pratt Manhattan';
+					}
+
 					$record['bldg_name'] = strtoupper(trim($record['bldg_name']));
 
 					//if ($record['on_off_campus'] == 'ON' && ( strlen(trim($record['latitude'])) > '11' || $value['gk_department'] != '') ) {
-					if ($record['on_off_campus'] == 'ON' && strlen(trim($record['latitude'])) > '11') {
-
-						$pointArr = array();
-
-						if ($value['gk_department'] != '') {
-							$pointArr = explode(',',$value['gk_department']);
-						} else {
-							$pointArr[] = $record['room_name'];
-						}
-
-						foreach($pointArr as $point) {
-
-							//$i = $record['bldg_abbre'].$point;
-
-							$rooms[] = '<li id="'.$record['id'].'"
-								data-id="'.$record['id'].'"
-								data-building="'.$record['bldg_abbre'].'"
-								data-floorid="'.$record['gk_floor_id'].'"
-								data-recordId="'.$record['id'].'"
-								data-lat="'.$record['latitude'].'"
-								data-long="'.$record['longitude'].'"
-								data-hasimage="'.$imgAttr.'"
-								class="hidden list-group-item '.$imgUrl.' '.$has_image.'">';
-
-							if ($record['bldg_abbre'] == 'SG') {
-								//$rooms[] = '<div class="li-col li-sculpture '.$camploc.'"><span>'.$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist'].'</span></div>';
-							} else {
-								$rooms[] = '<div class="li-col li-label '.$camploc.'"><span class="list-group-point">'.$point.'</span></div>';
-								$rooms[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_name'].'</span></div>';
-								//$rooms[$i] = '<div class="li-col li-floor '.$camploc.'"><span>'.$record['floor'].'</span></div>';
-								//$rooms[$i] = '<div class="li-col li-room '.$camploc.'"><span>'.$room_number.'</span></div>';
-								$rooms[] = '</li>';
-							}
-						}
-					}
+					// 	if ($record['on_off_campus'] == 'ON' && strlen(trim($record['latitude'])) > '11') {
+					//
+					// 		$pointArr = array();
+					//
+					// 		if ($value['gk_department'] != '') {
+					// 			$pointArr = explode(',',$value['gk_department']);
+					// 		} else {
+					// 			$pointArr[] = $record['room_name'];
+					// 		}
+					//
+					// 		foreach($pointArr as $point) {
+					//
+					// 			//$i = $record['bldg_abbre'].$point;
+					//
+					// 			$rooms[] = '<li id="'.$record['id'].'"
+					// 				data-id="'.$record['id'].'"
+					// 				data-building="'.$record['bldg_abbre'].'"
+					// 				data-floorid="'.$record['gk_floor_id'].'"
+					// 				data-recordId="'.$record['id'].'"
+					// 				data-lat="'.$record['latitude'].'"
+					// 				data-long="'.$record['longitude'].'"
+					// 				data-hasimage="'.$imgAttr.'"
+					// 				class="hidden list-group-item '.$imgUrl.' '.$has_image.'">';
+					//
+					// 			if ($record['bldg_abbre'] == 'SG') {
+					// 				//$rooms[] = '<div class="li-col li-sculpture '.$camploc.'"><span>'.$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist'].'</span></div>';
+					// 			} else {
+					// 				$rooms[] = '<div class="li-col li-label '.$camploc.'"><span class="list-group-point">'.$point.'</span></div>';
+					// 				$rooms[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_name'].'</span></div>';
+					// 				//$rooms[$i] = '<div class="li-col li-floor '.$camploc.'"><span>'.$record['floor'].'</span></div>';
+					// 				//$rooms[$i] = '<div class="li-col li-room '.$camploc.'"><span>'.$room_number.'</span></div>';
+					// 				$rooms[] = '</li>';
+					// 			}
+					// 		}
+					// 	}
 
 
 					# assemble building menu info here
@@ -501,10 +602,40 @@ class DbTools {
 
 							//$gkschl = trim($gkschl);
 
+							//if ($gkschl == 'research and centers' || $gkschl == 'continuing and professional studies' || $gkschl == 'information') {
+							if ($gkschl == 'research and centers') {
+								continue;
+							}
+
+							if (stripos('_'.$gkschl, 'center') !== false) {
+								continue;
+							}
+
 							foreach($dept_exp as $gkdept) {
 								$gkdept = trim($gkdept);
 								//	$school_list[$gkschl] = $gkschl;
-								$acad[$gkschl.'-'.$gkdept] = "<span class=\"fly-box ".$campLoc."\" data-recordid=\"".$record['id']."\" data-floorid=\"".$record['gk_floor_id']."\" data-bldg=\"".$record['bldg_abbre']."\" data-cat=\"dept\" data-schl=\"".$gkschl."\" data-dept=\"".$gkdept."\"  data-roomno=\"$room_number\">".$gkdept."</span>";
+
+								if ($gkdept == "Center for Art Design and Community Engagement K-12") {
+									continue;
+								}
+
+								if (stripos('_'.$gkdept, 'center') !== false) {
+									continue;
+								}
+
+								if (stripos('_'.$gkdept, '(M.') !== false) {
+									continue;
+								}
+
+								$acad[$gkdept] = "<span
+									class=\"fly-box ".$campLoc."\"
+									data-recordid=\"".$record['id']."\"
+									data-floorid=\"".$record['gk_floor_id']."\"
+									data-bldg=\"".$record['bldg_abbre']."\"
+									data-cat=\"dept\"
+									data-schl=\"".$gkschl."\"
+									data-dept=\"".$gkdept."\"
+									data-roomno=\"$room_number\">".$gkdept."</span>";
 							}
 						}
 					}
@@ -562,7 +693,7 @@ class DbTools {
 				$out['acad_menu']		= implode('',$acad);
 				$out['bldg_menu']		= implode('',$bldgMnu);
 				$out['bldg_options']	= implode('',$bldgOpt);
-				$out['room_list']		= implode('',$rooms);
+				//$out['room_list']		= implode('',$rooms);
 				//$out['off_menu']		= implode('',$offs);
 				return $out;
 			}
