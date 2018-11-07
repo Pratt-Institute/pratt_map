@@ -163,7 +163,7 @@
 		<table class="nav-menu-new">
 			<tr class="row-btn">
 				<td style="background-color:#fff" class="menu-category">
-					<span class="nav-icon"><img class="reset-map-vert"src="images/back-arrow2.png"></span>
+					<span class="nav-icon"><img class="reset-map-vert disabled" src="images/back-arrow2.png"></span>
 				</td>
 			</tr>
 			<tr class="row-menu">

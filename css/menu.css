@@ -135,7 +135,7 @@ table.nav-menu-new span.nav-icon {
 	margin: 15px auto;
 }
 
-table.nav-menu-new span.nav-icon img{
+table.nav-menu-new span.nav-icon img {
 	height: 45px;
 }
 
@@ -590,7 +590,9 @@ div.track {
 	color: #000;
 }
 
-
+.disabled {
+	opacity: 0.2;
+}
 
 
 

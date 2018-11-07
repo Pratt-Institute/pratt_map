@@ -540,7 +540,6 @@
 			});
 
 			$(document).on('click', '.reset-map-vert', function() {
-				$(this).attr('disabled','disabled');
 				$('.click-capture').remove();
 				resetMap();
 			});

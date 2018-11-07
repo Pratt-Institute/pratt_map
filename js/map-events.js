@@ -59,10 +59,10 @@ var onRightMouseDown = function(event) {
 	//$(poiMenuSelector).css('top', $(window).height() - event.detail.pixelY + "px");
 	//$(poiMenuSelector).css('left', event.detail.pixelX + "px");
 
-    if (currentLabelId){
-        repositionLabel(currentLabelId);
-        return;
-    }
+//     if (currentLabelId){
+//         repositionLabel(currentLabelId);
+//         return;
+//     }
 
     //$('#bootstrap').trigger('contextmenu');
     //console.log("Ambiarc received a RightMouseDown event");
@@ -158,6 +158,9 @@ var mapFinishedLoading = function() {
 
 var BuildingExitCompleted = function(event) {
 
+	allowFullView = true;
+	//unDisableReset();
+
 	clearMapLegend();
 
 	//alert('BuildingExitCompleted'); // auto
@@ -172,8 +175,7 @@ var BuildingExitCompleted = function(event) {
 
 var onFloorSelected = function(event) {
 
-	$('#back-button').show();
-	$('.reset-map').addClass('reset-show');
+	$('.reset-map-vert').removeClass('disabled');
 
 	doPauseTour();
 
@@ -201,8 +203,7 @@ var onFloorSelected = function(event) {
 
 var onEnteredFloorSelector = function(event) {
 
-	$('#back-button').show();
-	$('.reset-map').addClass('reset-show');
+	$('.reset-map-vert').removeClass('disabled');
 
 	doPauseTour();
 
@@ -256,6 +257,10 @@ var onFloorSelectorFocusChanged = function(event) {
 
 var cameraStartedHandler = function(event){
 
+	mapIsParked = false;
+	allowFullView = false;
+	//unDisableReset();
+
 	collapseMenus();
 
 	console.log('cameraStartedHandler'); // auto
@@ -277,6 +282,7 @@ var cameraStartedHandler = function(event){
 var cameraCompletedHandler = function(event){
 
 	//console.log('cameraCompletedHandler'); // auto
+	//unDisableReset();
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 

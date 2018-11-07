@@ -12,38 +12,55 @@
  window.poiMap			= {};
  window.prattCopy		= [];
  window.legendDelay		= 2000;
- window.rangePoi = range(-1000,1000);
- window.trackPoi = [];
+ window.rangePoi		= range(-1000,1000);
+ window.trackPoi		= [];
+ window.mapIsParked		= true;
+ window.allowFullView	= false;
+
 
  /// icampb15@pratt.edu
  /// 718.687.5762
  /// 347.904.6743
 
- 	function range(start, edge, step=1) {
-		// If only 1 number passed make it the edge and 0 the start
-		if (arguments.length === 1) {
-			edge = start;
-			start = 0;
-		}
-
-		// Validate edge/start
-		edge = edge || 0;
-		step = step || 1;
-
-		// Create array of numbers, stopping before the edge
-		let arr = [];
-		for (arr; (edge - start) * step > 0; start += step) {
-			arr.push(start);
-		}
-		return arr;
+function range(start, edge, step=1) {
+	// If only 1 number passed make it the edge and 0 the start
+	if (arguments.length === 1) {
+		edge = start;
+		start = 0;
 	}
+
+	// Validate edge/start
+	edge = edge || 0;
+	step = step || 1;
+
+	// Create array of numbers, stopping before the edge
+	let arr = [];
+	for (arr; (edge - start) * step > 0; start += step) {
+		arr.push(start);
+	}
+	return arr;
+}
 
 //User clicked the floor selector
 var resetMap = function() {
 
-	console.log('resetMap');
-
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+	var zoom = ambiarc.getCurrentNormalizedZoomLevel(function(ret){
+		console.log(ret);
+	});
+	//var world = ambiarc.getCanvasPositionAtWorldPosition();
+
+	if (mapIsParked == true) {
+		return true;
+	}
+
+	if ($('.reset-map-vert').hasClass('disabled')) {
+		//unDisableReset();
+		return true;
+	}
+	$('.reset-map-vert').addClass('disabled');
+
+	console.log('resetMap');
 
 	//ambiarc.ExitOverheadCamera();
 
@@ -61,11 +78,6 @@ var resetMap = function() {
 	clearMapLegend();
 	ambiarc.menuAction = 'no';
 
-	// reactivate reset button after a pause
-	// 	setTimeout(function(){
-	// 		$('.reset-map').removeAttr('disabled');
-	// 		return true;
-	// 	}, 1500);
 };
 
 var fullMapView = function() {
@@ -83,6 +95,8 @@ var fullMapView = function() {
 		}
 		rotationOld = '0';
 	}
+	mapIsParked = true;
+	$('.reset-map-vert').addClass('disabled');
 }
 
 var justZoomOut = function() {
@@ -878,25 +892,25 @@ var createTextIcon = function (mapLabelInfo) {
 
 };
 
-var repositionLabel = function(currentLabelId){
-
-	currentLabelId = poiMap[ambiarc.recordIdKeep];
-
-	alert(currentLabelId);
-
-    ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps, (latlon) => {
-
-    	console.log('getMapPositionAtCursor');
-    	console.log(latlon);
-
-    	var send = {};
-		send.id = ambiarc.recordIdKeep;
-		send.latitude = parseFloat(latlon.lat);
-		send.longitude = parseFloat(latlon.lon);
-
-		postJsonToApi(send);
-    });
-};
+// var repositionLabel = function(currentLabelId){
+//
+// 	currentLabelId = poiMap[ambiarc.recordIdKeep];
+//
+// 	alert(currentLabelId);
+//
+//     ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps, (latlon) => {
+//
+//     	console.log('getMapPositionAtCursor');
+//     	console.log(latlon);
+//
+//     	var send = {};
+// 		send.id = ambiarc.recordIdKeep;
+// 		send.latitude = parseFloat(latlon.lat);
+// 		send.longitude = parseFloat(latlon.lon);
+//
+// 		postJsonToApi(send);
+//     });
+// };
 
 var postJsonToApi = function(send) {
 
