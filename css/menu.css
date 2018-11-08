@@ -119,6 +119,7 @@ table.nav-menu-new td {
 table.nav-menu-new span {
 	writing-mode: vertical-rl;
 	transform: rotate(180deg);
+	white-space: nowrap;
 	/*text-orientation: upright;*/
 }
 

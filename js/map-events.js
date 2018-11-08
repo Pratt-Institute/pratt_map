@@ -289,7 +289,7 @@ var cameraCompletedHandler = function(event){
 	if (event.detail == 'UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor') {
 
 		if (typeof ambiarc.legendType == 'undefined' || ambiarc.legendType == '') {
-			if (isFloorSelectorEnabled == false && mainBldgID > 0 ) {
+			if (isFloorSelectorEnabled == false && mainBldgID > 0 && ambiarc.recordId == '') {
 
 				params = {};
 				//params.bldg = floorInfo.buildingId;

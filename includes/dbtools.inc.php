@@ -129,16 +129,21 @@ class DbTools {
 
 	public function makeFacilitiesArray() {
 
-		$arr[] = 'Brooklyn Campus Library';/// -----
-		$arr[] = 'Activity Resource Center';/// -----
+		//$arr[] = 'Brooklyn Campus Library';/// -----
+		//$arr[] = 'Activity Resource Center';/// -----
 
-		$arr[] = 'Computer Labs -- Activity Res Ctr';/// ARC d-03 -----
-		$arr[] = 'Computer Labs -- DeKalb Hall';/// ARC d-03 -----
-		$arr[] = 'Computer Labs -- East Hall';/// EAST 301 -----
-		$arr[] = 'Computer Labs -- Engineering';/// Engineering Building, 2nd Floor -----
-		$arr[] = 'Computer Labs -- Higgins Hall';/// Higgins Hall North, 2nd and 3rd Floors -----
-		$arr[] = 'Computer Labs -- Machinery';/// Machinery Building, 1st Floor 115 -----
-		$arr[] = 'Computer Labs -- Main Bldg';/// Main 330 -----
+		//$arr[] = 'Computer Labs -- Activity Res Ctr';/// ARC d-03 -----
+		//$arr[] = 'Computer Labs -- DeKalb Hall';/// ARC d-03 -----
+		//$arr[] = 'Computer Labs -- East Hall';/// EAST 301 -----
+		//$arr[] = 'Computer Labs -- Engineering';/// Engineering Building, 2nd Floor -----
+		//$arr[] = 'Computer Labs -- Higgins Hall';/// Higgins Hall North, 2nd and 3rd Floors -----
+		//$arr[] = 'Computer Labs -- Machinery';/// Machinery Building, 1st Floor 115 -----
+		//$arr[] = 'Computer Labs -- Main Bldg';/// Main 330 -----
+
+		$arr[] = 'Higgins Hall Lab';/// Higgins Hall North, 2nd and 3rd Floors -----
+		$arr[] = 'Machinery Computer Labs (MCC)';/// Machinery Building, 1st Floor 115 -----
+		$arr[] = 'Engineering Computer Lab (EDS)';/// Engineering Building, 2nd Floor -----
+		$arr[] = 'Foundation Media Lab';/// Main 330 -----
 
 		$arr[] = 'Digital Output Center';/// Engineering Building, 2nd Floor -----
 		$arr[] = '3D Printing Center';/// Engineering Building, 2nd Floor, Room 211 ----- Steuben Room 315
@@ -183,7 +188,8 @@ class DbTools {
 					on_off_campus
 
 					from facilities
-					where gk_department != ''
+					where gk_display != 'N'
+					and gk_department != ''
 					and ( ";
 				foreach($arr as $facility) {
 					$like[] = " gk_department not like '%$facility%' ";
@@ -398,7 +404,9 @@ class DbTools {
 					room_no,
 					new_room_no,
 					on_off_campus
-					from facilities where gk_department != '' and ( ";
+					from facilities
+					where gk_display != 'N'
+					and gk_department != '' and ( ";
 		foreach($arr as $facility) {
 			$like[] = " gk_department like '%$facility%' ";
 		}
@@ -655,6 +663,14 @@ class DbTools {
 					$bldg_name = strtolower($bldg_name);
 					$bldg_name = ucwords($bldg_name);
 
+					if ($bldg_stuff['gk_bldg_id'] == '0001') {
+						$bldg_name = 'ISC';
+					}
+
+					if ($bldg_stuff['gk_bldg_id'] == '0021') {
+						$bldg_name = 'ARC';
+					}
+
 					if ($bldg_stuff['on_off_campus'] == 'ON') {
 						$bldgOpt[] = '<option value="'.$bldg_stuff['bldg_abbre'].'" data-floorid="'.$bldg_stuff['gk_floor_id'].'">'.$bldg_name.'</option>';
 					}
@@ -844,9 +860,18 @@ class DbTools {
 					$record['room_name']	= ucwords(strtolower(trim($record['room_name'])));
 					$record['floor']		= strtolower(trim($record['floor']));
 
+					if (trim($record['gk_bldg_id']) == '0001') {
+						$record['bldg_name'] = 'ISC';
+					}
+
 					if (trim($record['gk_bldg_id']) == '0018') {
 						$record['bldg_name'] = 'Steuben Hall/Pratt Studios';
 					}
+
+					if (trim($record['gk_bldg_id']) == '0021') {
+						$record['bldg_name'] = 'ARC';
+					}
+
 
 					$map[$record['gk_floor_id']]['recordId']	= $record['id'];
 					$map[$record['gk_floor_id']]['buildingId']	= $record['gk_bldg_id'];

@@ -342,6 +342,8 @@
 				var cat = $(this).attr('data-cat');
 				var type = $(this).attr('data-'+cat);
 
+				//ambiarc.legendType = 'menuOther';
+
 				if (cat == 'school') {
 
 					$("[data-type='"+type+"']").css({left:left});

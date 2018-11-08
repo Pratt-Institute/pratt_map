@@ -183,7 +183,7 @@
 			</tr>
 			<tr class="row-menu">
 				<td style="background-color:#52869f" class="menu-category">
-					<span class="cat-box" data-type="facilities">facilities</span>
+					<span class="cat-box" data-type="facilities">make/do</span>
 				</td>
 			</tr>
 			<tr class="row-menu">
