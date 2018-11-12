@@ -544,6 +544,8 @@ var clearMapLegend = function() {
 			$('.bldgName').html('');
 			$('.floorNo').html('');
 			$('.roomName').html('');
+			$('.roomNo').html('');
+			$('.history').html('');
 		},1);
 	});
 }
@@ -772,8 +774,18 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				$('.roomName').html(ambiarc.poiStuff[ambiarcId].roomName);
 			} catch(err) { console.log(err) }
 
+
 			try {
-				$('.roomName').html(ambiarc.poiStuff[ambiarcId].roomName);
+				if (roomName.length > '1') {
+					$('.roomName').html(roomName);
+				}
+			} catch(err) { console.log(err) }
+
+
+			try {
+				if (roomName.roomNo > '1') {
+					$('.roomNo').html('Room '+ambiarc.poiStuff[ambiarcId].roomNo);
+				}
 			} catch(err) { console.log(err) }
 
 			try {

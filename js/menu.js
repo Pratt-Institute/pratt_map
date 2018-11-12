@@ -90,7 +90,7 @@
 				ambiarc.hasImage = $(this).attr('data-hasimage');
 				ambiarc.floorId = $(this).attr('data-floorid');
 
-				if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS') {
+				if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS' || $(this).attr('data-building') == 'GATE') {
 
 					var lat		= $(this).attr('data-lat');
 					var lon		= $(this).attr('data-long');
@@ -903,9 +903,13 @@
 
 		var filter = $("input.filter").val();
 
-		$(".list-group-point").not(":containsi('" + filter + "')").closest('li').addClass("hidden");
+		//$(".list-group-point").not(":containsi('" + filter + "')").closest('li').addClass("hidden");
 
-		$(".list-group-point:containsi('" + filter + "')").closest('li').removeClass("hidden");
+		$(".list-group-item").not(":containsi('" + filter + "')").closest('li').addClass("hidden");
+
+		//$(".list-group-point:containsi('" + filter + "')").closest('li').removeClass("hidden");
+
+		$(".list-group-item:containsi('" + filter + "')").closest('li').removeClass("hidden");
 
 		// 	var building = $("select.menu-buildings").val();
 		// 	if(building != "") {

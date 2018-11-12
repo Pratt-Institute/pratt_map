@@ -190,6 +190,7 @@ class DbTools {
 					from facilities
 					where gk_display != 'N'
 					and gk_department != ''
+					and bldg_abbre != 'GATE'
 					and ( ";
 				foreach($arr as $facility) {
 					$like[] = " gk_department not like '%$facility%' ";
@@ -284,6 +285,10 @@ class DbTools {
 								continue;
 							}
 
+							if ($record['bldg_abbre'] == 'PPS' || $record['bldg_abbre'] == 'GATE') {
+								$point = $record['room_name'];
+							}
+
 							$line = array();
 
 							$line[] = '<li id="'.$record['id'].'"
@@ -294,6 +299,7 @@ class DbTools {
 								data-lat="'.$record['latitude'].'"
 								data-long="'.$record['longitude'].'"
 								data-hasimage="'.$imgAttr.'"
+								data-keywords="'.$point.' '.$record['bldg_name'].'"
 								class="hidden list-group-item '.$imgUrl.' '.$has_image.'">';
 
 							if ($record['bldg_abbre'] == 'SG') {
