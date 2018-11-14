@@ -122,6 +122,23 @@ class DbTools {
 
 	}
 
+	private function provisionsQuery() {
+
+		$sql = "
+			select
+				*,
+				gk_space_provisions AS provisions
+			from facilities
+			where gk_space_provisions != '' ";
+
+		//$sql .= " group by bldg_abbre, floor, gk_department, department, room_name, gk_sculpture_name ";
+		//$sql .= " group by bldg_abbre, floor, room_name ";
+		$sql .= " order by bldg_name asc, room_name asc, floor asc, new_room_no asc, department asc ";
+
+		return $sql;
+
+	}
+
 	// 	public function fetchAcademicsArray() {
 	// 		include_once('includes/academics.inc.php');
 	// 		echo json_encode($arr);
@@ -253,13 +270,24 @@ class DbTools {
 
 		try {
 
-			$stmt = $this->dbh->prepare($this->runQuery());
-			$stmt->execute();
-			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$st1 = $this->dbh->prepare($this->runQuery());
+			$st1->execute();
+			$rows1 = $st1->fetchAll(PDO::FETCH_ASSOC);
+
+			$st2 = $this->dbh->prepare($this->provisionsQuery());
+			$st2->execute();
+			$rows2 = $st2->fetchAll(PDO::FETCH_ASSOC);
+
+			//print_r($rows);
+			//die();
+
+			$rows = $rows2 + $rows1;
 
 			if ($rows[0]['id']) {
 
 				foreach($rows as $record) {
+
+					//print_r($record);
 
 					if ($record['on_off_campus'] == 'ON' && strlen(trim($record['latitude'])) > '8') {
 
@@ -279,7 +307,14 @@ class DbTools {
 							$pointArr[] = $record['room_name'];
 						}
 
+						if ($record['gk_space_provisions'] != '') {
+							$pointArr[] = $record['gk_space_provisions'];
+						}
+
 						foreach($pointArr as $point) {
+
+							//echo '<p>'.$point;
+							//print_r($record);
 
 							if (stripos('_'.$point, 'entr') !== false) {
 								continue;
@@ -288,6 +323,11 @@ class DbTools {
 							if ($record['bldg_abbre'] == 'PPS' || $record['bldg_abbre'] == 'GATE') {
 								$point = $record['room_name'];
 							}
+
+							if ($record['provisions'] != '') {
+								$point = $record['provisions'];
+							}
+
 
 							$line = array();
 

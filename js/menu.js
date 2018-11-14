@@ -90,6 +90,7 @@
 				ambiarc.hasImage = $(this).attr('data-hasimage');
 				ambiarc.floorId = $(this).attr('data-floorid');
 
+				/* TODO find better way to id outdoor points */
 				if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS' || $(this).attr('data-building') == 'GATE') {
 
 					var lat		= $(this).attr('data-lat');
@@ -819,11 +820,16 @@
 			// 		$('div.mapouter').find('iframe').attr('src',bmap);
 			// 	}
 
+			ambiarc.legendType = 'offCampusPoint';
+
 			if (bldg=='W14') {
 				//window.bmap = 'https://maps.google.com/maps?q=144%20West%2014th%20Street&t=&z=15&ie=UTF8&iwloc=&output=embed';
 				//$('div.mapouter').find('iframe').attr('src',bmap);
 				$('div.mapouter').css({'background-image':'url("images/w14.png")'});
 				$('div.mapouter').addClass('showpopmap');
+				ambiarc.buildingId = 'Pratt Manhattan';
+				ambiarc.floorId = 'W14';
+				ambiarc.roomName = '144 W 14th St<br>New York, NY 10011';
 			}
 
 			if (bldg=='FLSH') {
@@ -831,6 +837,9 @@
 				//$('div.mapouter').find('iframe').attr('src',bmap);
 				$('div.mapouter').css({'background-image':'url("images/flsh.png")'});
 				$('div.mapouter').addClass('showpopmap');
+				ambiarc.buildingId = 'Brooklyn Fashion<br>Design Accelerator';
+				ambiarc.floorId = 'BFDA';
+				ambiarc.roomName = '630 Flushing Ave #704<br>Brooklyn, NY 11206';
 			}
 
 			if (bldg=='CRR') {
@@ -838,7 +847,12 @@
 				//$('div.mapouter').find('iframe').attr('src',bmap);
 				$('div.mapouter').css({'background-image':'url("images/crr.png")'});
 				$('div.mapouter').addClass('showpopmap');
+				ambiarc.buildingId = 'The Consortium for Research & Robotics';
+				ambiarc.floorId = 'CRR';
+				ambiarc.roomName = '63 Flushing Ave<br>bldg. 280 ste. 515<br>Brooklyn, NY 11205';
 			}
+
+			popMapLegend();
 
 			$('div.map-'+bldg).addClass('showpopmap');
 		});

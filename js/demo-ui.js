@@ -810,6 +810,14 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				}
 			} catch(err) { console.log(err) }
 
+			//if ($('.bldgName').html() == '' && buildingId != '') {
+			if (legendType == 'offCampusPoint') {
+				var imgBldg = '<img src="images/buildings/'+floorId+'.jpg">'
+				//var imgAccs = '<img class="access" src="images/buildings/'+bldgMap[floorId].buildingId+'.png">'
+				$('.legend-building').html(imgBldg);
+				//$('.legend-copy').prepend(imgAccs);
+				$('.bldgName').html(buildingId);
+			}
 
 			setTimeout(function(){
 				var isLegendFilled = $('.bldgName').html();

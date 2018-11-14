@@ -408,6 +408,7 @@ div.legend {
     transition: all 0.25s ease;
     line-height: 150%;
     /*background-image: url(images/lines.png);*/
+    z-index: 999;
 }
 
 div.showlegend {
