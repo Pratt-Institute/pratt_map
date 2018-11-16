@@ -93,6 +93,18 @@
 				/* TODO find better way to id outdoor points */
 				if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS' || $(this).attr('data-building') == 'GATE') {
 
+					//ambiarc.buildingId = $(this).attr('data-building');
+					ambiarc.pointLable = $(this).attr('data-building');
+					ambiarc.roomName = $(this).attr('data-keywords');
+
+					if ($(this).attr('data-building') == 'PPS') {
+						ambiarc.sculptureName = 'Pratt Public Safety';
+					}
+
+					if ($(this).attr('data-building') == 'GATE') {
+						ambiarc.sculptureName = 'Campus Gate';
+					}
+
 					var lat		= $(this).attr('data-lat');
 					var lon		= $(this).attr('data-long');
 					var heightAboveFloor = '50';
@@ -529,8 +541,53 @@
 					ambiarc.floorId = $(this).attr('data-floorid');
 					ambiarc.roomName = $(this).html();
 					ambiarc.roomNo = $(this).attr('data-roomno');
-					ambiarc.lat = '';
-					ambiarc.lon = '';
+					ambiarc.lat = $(this).attr('data-lat');
+					ambiarc.lon = $(this).attr('data-long');
+
+					//alert('one');
+
+					if ( $(this).attr('data-bldg') == 'PPS' || $(this).attr('data-bldg') == 'GATE' ) {
+
+						//alert('two');
+
+						//ambiarc.buildingId = $(this).attr('data-building');
+						ambiarc.pointLable = $(this).attr('data-bldg');
+
+						// 	if ($(this).attr('data-building') == 'PPS') {
+						// 		ambiarc.sculptureName = 'Public Safety Booth';
+						// 		ambiarc.sculptureArtist = '';
+						// 		ambiarc.floorId = '';
+						// 	}
+						//
+						// 	if ($(this).attr('data-building') == 'GATE') {
+						// 		ambiarc.sculptureName = 'Gate';
+						// 		ambiarc.sculptureArtist = '';
+						// 		ambiarc.floorId = '';
+						// 	}
+
+						//ambiarc.buildingId = $(this).attr('data-building');
+						ambiarc.pointLable = $(this).attr('data-bldg');
+						ambiarc.roomName = $(this).attr('data-keywords');
+						ambiarc.floorId = '';
+
+						if ($(this).attr('data-bldg') == 'PPS') {
+							ambiarc.sculptureName = 'Pratt Public Safety';
+						}
+
+						if ($(this).attr('data-bldg') == 'GATE') {
+							ambiarc.sculptureName = 'Campus Gate';
+						}
+
+						window.lat = ambiarc.lat;
+						window.lon = ambiarc.lon;
+
+						ambiarc.focusOnLatLonAndZoomToHeight('', '', ambiarc.lat, ambiarc.lon, '50');
+
+					}
+
+
+
+
 
 					fetchPoisFromApi(params);
 				}

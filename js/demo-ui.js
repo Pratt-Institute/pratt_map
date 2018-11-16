@@ -400,7 +400,7 @@ var processAndRun = function() {
 	// 		}
 	// 	}
 
-	var itemId = poiMap[params.recordId]
+	var itemId = poiMap[params.recordId];
 
 	if (params.action == 'focusAfterDataLoad') {
 
@@ -411,6 +411,17 @@ var processAndRun = function() {
 		var roomName	= ambiarc.roomName;
 		var lat = ambiarc.lat;
 		var lon = ambiarc.lon;
+
+
+		/// testing heatmap stuff
+		if (lat == '') {
+			lat = ambiarc.poiStuff[itemId].latitude;
+			lon = ambiarc.poiStuff[itemId].longitude;
+		}
+		var arr = [lat,lon,0.5,1];
+		ambiarc.createHeatmap(arr);
+		/// testing heatmap stuff
+
 
 		setTimeout(function(){
 
@@ -560,6 +571,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 
 		var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
+		var pointLable	= ambiarc.pointLable;
 		var legendType	= ambiarc.legendType;
 		var ambiarcId	= ambiarc.ambiarcId;
 		var buildingId	= ambiarc.buildingId;
@@ -594,6 +606,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 			var now = Date.now();
 
 			console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+			console.log('pointLable ' + pointLable);
 			console.log('ambiarcId ' + ambiarcId);
 			console.log('buildingId ' + buildingId);
 			console.log('floorId ' + floorId);
@@ -810,6 +823,16 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				}
 			} catch(err) { console.log(err) }
 
+			if (pointLable == 'PPS' || pointLable == 'GATE') {
+				var imgBldg = '<img src="images/buildings/'+pointLable+'.png">'
+				//var imgAccs = '<img class="access" src="images/buildings/'+bldgMap[floorId].buildingId+'.png">'
+				$('.legend-building').html(imgBldg);
+				//$('.legend-copy').prepend(imgAccs);
+				$('.bldgName').html(sculptureName);
+				$('.roomName').html(roomName);
+				$('.floorNo').html('');
+			}
+
 			//if ($('.bldgName').html() == '' && buildingId != '') {
 			if (legendType == 'offCampusPoint') {
 				var imgBldg = '<img src="images/buildings/'+floorId+'.jpg">'
@@ -830,6 +853,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 			},125);
 
 			setTimeout(function(){
+				ambiarc.pointLable	= '';
 				ambiarc.legendType	= '';
 				ambiarc.ambiarcId	= '';
 				ambiarc.buildingId	= '';

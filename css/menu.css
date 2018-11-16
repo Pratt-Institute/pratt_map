@@ -90,7 +90,7 @@ table.nav-menu-new {
 	bottom: 0px;
 	left: 0px;
 	/*font-size: 28px;*/
-	font-size: 2.75vh;
+	font-size: 2.5vh;
 	line-height: .75;
 	font-weight: bold;
 	font-color: #ccc;
@@ -334,6 +334,9 @@ div.sculptures span {
 	background-color: #f4581e;
 }
 div.accessibility span {
+	background-color: #fff;
+}
+div.firstaid span {
 	background-color: #fff;
 }
 div.flyout span:hover, div.subfly span:hover {

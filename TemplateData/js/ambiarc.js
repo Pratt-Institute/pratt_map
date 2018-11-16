@@ -249,6 +249,7 @@
 
     this.createHeatmap = function(heatmapPoints) {
       var json = JSON.stringify(heatmapPoints);
+      console.log(json);
       gameInstance.SendMessage('Ambiarc', 'CreateHeatmap', json);
     };
 

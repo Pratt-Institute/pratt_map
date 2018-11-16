@@ -308,6 +308,8 @@ class DbTools {
 						}
 
 						if ($record['gk_space_provisions'] != '') {
+							$record['gk_space_provisions'] = str_replace(',',', ',$record['gk_space_provisions']);
+							$record['gk_space_provisions'] = ucwords($record['gk_space_provisions']);
 							$pointArr[] = $record['gk_space_provisions'];
 						}
 
@@ -324,10 +326,9 @@ class DbTools {
 								$point = $record['room_name'];
 							}
 
-							if ($record['provisions'] != '') {
-								$point = $record['provisions'];
-							}
-
+							// 	if ($record['provisions'] != '') {
+							// 		$point = $record['provisions'];
+							// 	}
 
 							$line = array();
 
@@ -339,7 +340,7 @@ class DbTools {
 								data-lat="'.$record['latitude'].'"
 								data-long="'.$record['longitude'].'"
 								data-hasimage="'.$imgAttr.'"
-								data-keywords="'.$point.' '.$record['bldg_name'].'"
+								data-keywords="'.$point.'"
 								class="hidden list-group-item '.$imgUrl.' '.$has_image.'">';
 
 							if ($record['bldg_abbre'] == 'SG') {
@@ -431,6 +432,103 @@ class DbTools {
 			echo $sql . "<br>" . $e->getMessage();
 		}
 	}
+
+	public function firstAidMenu() {
+
+		$sql = " select
+					id,
+					bldg_abbre,
+					bldg_name,
+					gk_bldg_id,
+					gk_floor_id,
+					gk_space_provisions,
+					gk_department,
+					latitude,
+					longitude,
+					room_no,
+					new_room_no,
+					room_name,
+					on_off_campus
+
+				from facilities
+				where gk_display != 'N'
+				and (gk_space_provisions != '' OR bldg_abbre = 'PPS')
+				";
+
+		//echo '<p>'.$sql;
+
+		$stmt = $this->dbh->prepare($sql);
+		$stmt->execute();
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		// 	echo '<pre>';
+		// 	print_r($rows);
+		// 	echo '</pre>';
+
+		if ($rows[0]['id']) {
+			foreach($rows as $field=>$record) {
+
+				if ($record['gk_space_provisions'] != '') {
+					$exp = explode(',',$record['gk_space_provisions']);
+				} else {
+					$exp = explode('-',$record['room_name']);
+					//$exp = $exp[1];
+					unset($exp[0]);
+				}
+
+				if (trim($record['new_room_no']) != '') {
+					$room_number = trim($record['new_room_no']);
+				} else {
+					$room_number = trim($record['room_no']);
+				}
+
+				//$record['bldg_name'] = ucwords($record['bldg_name']);
+
+				if (trim($record['gk_bldg_id']) == '0001') {
+					$record['bldg_name'] = 'ISC';
+				}
+
+				if (trim($record['gk_bldg_id']) == '0018') {
+					$record['bldg_name'] = 'Steuben Hall/Pratt Studios';
+				}
+
+				if (trim($record['gk_bldg_id']) == '0021') {
+					$record['bldg_name'] = 'ARC';
+				}
+
+				foreach($exp as $point) {
+					$point = trim($point);
+
+					$camploc = strtolower($record['on_off_campus']).'camp';
+
+					//$point = ucwords($point);
+
+					$name = trim($record['bldg_name']).' - '.$point;
+
+					$name = strtolower($name);
+					$name = ucwords($name);
+
+					$out[$name] = "<span
+						class=\"fly-box ".$camploc."\"
+						data-recordid=\"".$record['id']."\"
+						data-bldg=\"".$record['bldg_abbre']."\"
+						data-floorid=\"".$record['gk_floor_id']."\"
+						data-cat=\"facility\"
+						data-dept=\"$point\"
+						data-facility=\"$point\"
+						data-roomno=\"$room_number\"
+						data-lat=\"".$record['latitude']."\"
+						data-long=\"".$record['longitude']."\"
+						>$name</span>";
+				}
+			}
+		}
+
+		ksort($out);
+		echo implode('',$out);
+		//return $out;
+	}
+
 
 	public function fetchFacilitiesMenu() {
 		//include_once('includes/facilities.inc.php');

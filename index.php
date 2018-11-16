@@ -43,8 +43,8 @@
 	}
 	//die();
 
-	//	echo $obj->fetchAcademicsArray();
-	//	die();
+	// echo $obj->firstAidMenu();
+	// die();
 
 	$slists = $obj->buildSearchList();
 
@@ -192,6 +192,12 @@
 				</td>
 			</tr>
 			<tr class="row-menu">
+				<td style="background-color:#fff" class="menu-category">
+					<!--<span class="cat-box" data-type="accessibility">accessibility</span>-->
+					<span class="cat-box nav-icon" data-type="firstaid"><img src="images/firstaid.png"></span>
+				</td>
+			</tr>
+			<tr class="row-menu">
 				<td style="background-color:#3cf" class="menu-category">
 					<!--<span class="cat-box" data-type="accessibility">accessibility</span>-->
 					<span class="cat-box nav-icon" data-type="accessibility"><img src="images/accessible.png"></span>
@@ -221,6 +227,7 @@
 	<div class="flyout webkit-scroll offices"><?php $obj->fetchOfficesMenu(); ?></div>
 	<div class="flyout webkit-scroll facilities"><?php $obj->fetchFacilitiesMenu(); ?></div>
 	<div class="flyout webkit-scroll sculptures"><?php $obj->fetchSculptureMenu(); ?></div>
+	<div class="flyout webkit-scroll firstaid"><?php $obj->firstAidMenu(); ?></div>
 	<div class="flyout webkit-scroll accessibility"><?php echo $slists['bldg_menu']; ?></div>
 
 	<div class="flyout search-box reveal-keeps">
