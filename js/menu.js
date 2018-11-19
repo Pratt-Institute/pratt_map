@@ -65,6 +65,37 @@
 
 				window.doFloorSelected = false;
 
+				ambiarc.person = $(this).attr('data-person');
+
+				if (ambiarc.person != '') {
+
+					// 	data-building="'.$buildingId.'"
+					// 	data-dept="'.$dept.'"
+					// 	data-title="'.$title.'"
+					// 	data-phone="'.$fone.'"
+					// 	data-office="'.$office.'"
+					// 	data-person="'.$fname.' '.$lname.'"
+					// 	data-email="'.$mail.'"
+
+					ambiarc.building = $(this).attr('data-building');
+					ambiarc.dept = $(this).attr('data-dept');
+					ambiarc.title = $(this).attr('data-title');
+					ambiarc.phone = $(this).attr('data-phone');
+					ambiarc.office = $(this).attr('data-office');
+					ambiarc.email = $(this).attr('data-email');
+					ambiarc.lat = $(this).attr('data-lat');
+					ambiarc.lon = $(this).attr('data-long');
+
+					window.lat = lat;
+					window.lon = lon;
+					ambiarc.focusOnLatLonAndZoomToHeight(ambiarc.building, '', ambiarc.lat, ambiarc.lon, '75');
+
+					popMapLegend(2500);
+
+					return true;
+
+				}
+
 				params = {};
 				params.bldg = $(this).attr('data-building');
 				params.floor = $(this).attr('data-floorid');
@@ -970,6 +1001,8 @@
 
 	function searchFunction() {
 
+		$('li.ldap-item').remove();
+
 		console.log('searchFunction');
 
 		var filter = $("input.filter").val();
@@ -996,6 +1029,46 @@
 		$('div.search-list').css({
 			'max-height':parseInt($(window).height()-80),
 		});
+
+		if (filter.length > '2') {
+			appendFromApi(filter);
+		}
+
+	}
+
+	function appendFromApi(filter) {
+
+		//var host = 'http://localhost/~iancampbell/PrattSDK-keep/localhost/includes/lookup.php
+		//var host = 'http://localhost/~iancampbell/PrattSDK-keep/';
+		var host = window.location.hostname;
+
+		console.log(host);
+
+		if (host == 'localhost') {
+			host = 'http://localhost/~iancampbell/PrattSDK-keep';
+		} else {
+			host = 'https://map.pratt.edu/demo1';
+		}
+
+		$.ajax({
+			url: host+"/includes/lookup.php",
+			data: {
+				filter: filter,
+			},
+			type: "POST",
+			//beforeSend: function(xhr){xhr.setRequestHeader('X-Test-Header', 'test-value');},
+			success: function(ret) {
+				try {
+					//console.log(ret);
+					$('ul.list-group').append(ret);
+				} catch(e) {
+					console.log(e);
+					alert('ldap search failed');
+					return;
+				}
+			}
+		});
+
 
 	}
 

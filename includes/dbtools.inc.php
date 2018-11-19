@@ -1,6 +1,6 @@
 <?php
 
-include_once('includes/sitevars.inc.php');
+include_once('sitevars.inc.php');
 
 	ini_set('error_reporting', E_ERROR);
 	ini_set('display_errors', true);
@@ -838,7 +838,7 @@ class DbTools {
 						data-cat="buildings"
 						data-bldg="'.$bldg_stuff['bldg_abbre'].'"
 						data-bldgid="'.$bldg_stuff['gk_bldg_id'].'"
-						data-bldgname="'.$bldg_stuff['bldg_name'].'"
+						data-bldgname="'.@$bldg_stuff['bldg_name'].'"
 						data-floorid="'.$bldg_stuff['gk_floor_id'].'"
 						data-lat="'.$bldg_stuff['latitude'].'"
 						data-long="'.$bldg_stuff['longitude'].'"

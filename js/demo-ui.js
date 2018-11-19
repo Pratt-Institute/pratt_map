@@ -581,6 +581,14 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 		var lat			= ambiarc.lat;
 		var lon			= ambiarc.lon;
 
+		var person		= ambiarc.person;
+		var building	= ambiarc.building;
+		var dept		= ambiarc.dept;
+		var title		= ambiarc.title;
+		var phone		= ambiarc.phone;
+		var office		= ambiarc.office;
+		var email		= ambiarc.email;
+
 		var recordId		= ambiarc.recordId;
 		var sculptureName	= ambiarc.sculptureName;
 		var sculptureArtist	= ambiarc.sculptureArtist;
@@ -833,6 +841,28 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				$('.floorNo').html('');
 			}
 
+
+
+			try {
+				if (person != '') {
+
+					// 	ambiarc.building = $(this).attr('data-building');
+					// 	ambiarc.dept = $(this).attr('data-dept');
+					// 	ambiarc.title = $(this).attr('data-title');
+					// 	ambiarc.phone = $(this).attr('data-phone');
+					// 	ambiarc.office = $(this).attr('data-office');
+					// 	ambiarc.email = $(this).attr('data-email');
+					var imgBldg = '<img src="images/buildings/'+building+'.png">'
+
+
+					$('.bldgName').html(building);
+					$('.roomName').html(person + '<br>' + title + '<br>' + dept + '<br>' + office);
+
+				}
+			} catch(err) { console.log(err) }
+
+
+
 			//if ($('.bldgName').html() == '' && buildingId != '') {
 			if (legendType == 'offCampusPoint') {
 				var imgBldg = '<img src="images/buildings/'+floorId+'.jpg">'
@@ -865,6 +895,15 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				ambiarc.recordId	= '';
 				ambiarc.sculptureName	= '';
 				ambiarc.sculptureArtist	= '';
+
+				ambiarc.person		= '';
+				ambiarc.building	= '';
+				ambiarc.dept		= '';
+				ambiarc.title		= '';
+				ambiarc.phone		= '';
+				ambiarc.office		= '';
+				ambiarc.email		= '';
+
 			},1000);
 
 		},legendDelay);
