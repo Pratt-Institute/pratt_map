@@ -837,7 +837,7 @@ class DbTools {
 						class="fly-box dbtools '.$bldg_stuff['camploc'].' buildings '.$class_accessible.' '.$hide_this.' "
 						data-cat="buildings"
 						data-bldg="'.$bldg_stuff['bldg_abbre'].'"
-						data-bldgid="'.$bldg_stuff['gk_bldg_id'].'"
+						data-buildingid="'.$bldg_stuff['gk_bldg_id'].'"
 						data-bldgname="'.@$bldg_stuff['bldg_name'].'"
 						data-floorid="'.$bldg_stuff['gk_floor_id'].'"
 						data-lat="'.$bldg_stuff['latitude'].'"
@@ -957,6 +957,7 @@ class DbTools {
 					$map[$record['gk_bldg_id']]['recordId']		= $record['id'];
 					$map[$record['gk_bldg_id']]['bldg_name']	= $record['bldg_name'];
 					$map[$record['gk_bldg_id']]['floor']		= $record['floor'];
+					$map[$record['gk_bldg_id']]['floorId']		= $record['gk_floor_id'];
 					$map[$record['gk_bldg_id']]['bldgAbbr']		= $record['bldg_abbre'];
 
 				}

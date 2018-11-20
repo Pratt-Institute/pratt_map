@@ -188,6 +188,8 @@ var onFloorSelected = function(event) {
 
 	if (event.type == 'FloorSelected') {
 
+		//alert('onFloorSelected');
+
 		ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 		ambiarc.buildingId = event.detail.buildingId;
 		ambiarc.floorId = event.detail.floorId;
@@ -247,6 +249,8 @@ var onFloorSelectorFocusChanged = function(event) {
 
 		console.log('do pop legend from focus change ---------------------------------------');
 
+		//alert('onFloorSelectorFocusChanged');
+
 		ambiarc.floorId = event.detail.newFloodId;
 
 		popMapLegend(125);
@@ -290,6 +294,8 @@ var cameraCompletedHandler = function(event){
 
 		if (typeof ambiarc.legendType == 'undefined' || ambiarc.legendType == '') {
 			if (isFloorSelectorEnabled == false && mainBldgID > 0 && ambiarc.recordId == '') {
+
+				//alert(event.detail);
 
 				params = {};
 				//params.bldg = floorInfo.buildingId;

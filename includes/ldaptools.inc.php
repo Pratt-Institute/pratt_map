@@ -24,11 +24,11 @@ class LdapTools {
 
 		$bind = ldap_bind($this->conn, LDAP_USER, LDAP_PASS);
 
-		$this->justthese = array('ou', 'title', 'telephoneNumber', 'roomNumber', 'sn', 'givenName', 'mail', 'employeeType');
+		$this->justthese = array('ou', 'title', 'telephoneNumber', 'roomNumber', 'sn', 'givenName', 'mail', 'employeeType', 'audio');
 
 	}
 
-	private function alignBuildings() {
+	private function fetchBuildings() {
 
 		$arr['Information Science']			=  '0001';
 		$arr['Pratt Library']				=  '0002';
@@ -58,7 +58,7 @@ class LdapTools {
 
 	}
 
-	private function findCoords() {
+	private function fetchCoords() {
 
 		$arr['0021'] = '40.690893,-73.962043';						///'ARC'
 		$arr['0023'] = '40.6910285949707,-73.96123504638672';		///'CC'
@@ -98,7 +98,7 @@ class LdapTools {
 
 			$dn = 'o=My Company, c=US';
 			//$filter='(&(|(cn='.$this->lookfor.'*)(mail='.$this->lookfor.'*)) (!(employeeType=Student))(!(employeeType=CEStudent))(!(employeeType=Alumni)) )';
-			$filter='( & (|(cn='.$this->lookfor.'*)(mail='.$this->lookfor.'*)(givenname='.$this->lookfor.'*)(sn='.$this->lookfor.'*)) (|(employeeType=Staff)(employeeType=Faculty)) )';
+			$filter='( & (|(cn='.$this->lookfor.'*)(mail='.$this->lookfor.'*)(givenname='.$this->lookfor.'*)(sn='.$this->lookfor.'*)(displayName='.$this->lookfor.'*)) (|(employeeType=Staff)(employeeType=Faculty)) )';
 
 			$sr = ldap_search($this->conn, LDAP_BASE, $filter, $this->justthese);
 
@@ -106,9 +106,19 @@ class LdapTools {
 
 			//echo $info['count'].' entries returned';
 
+			$line = array();
+
 			if ($info['count'] > '0') {
 
 				foreach($info as $key=>$val) {
+
+					// 	echo '<pre>';
+					// 	print_r($val);
+					// 	echo '</pre>';
+
+					if (@$val['audio'][0] > '0') {
+						continue;
+					}
 
 					if ($val['roomnumber'][0] == '') {
 						continue;
@@ -128,18 +138,16 @@ class LdapTools {
 					$exp2 = explode(' ',$hall);
 
 					$this->hall = $exp2[0].' '.$exp2[1];
-					$this->buildingId = $this->alignBuildings();
+					$this->buildingId = $this->fetchBuildings();
 
 					if ($this->buildingId == '') {
 						continue;
 					}
 
-					$coords = $this->findCoords();
+					$coords = $this->fetchCoords();
 					$coordsExp = explode(',',$coords);
 
-
 					error_log(__FILE__.' -- '.__LINE__.' coords '.$coords);
-
 
 					$dept	= $val['ou'][0];
 					$title	= $val['title'][0];
@@ -149,7 +157,7 @@ class LdapTools {
 					$fname	= $val['givenname'][0];
 					$mail	= $val['mail'][0];
 
-					$line[] = '<li id=""
+					$line[$mail] = '<li id=""
 						data-id=""
 						data-building="'.$this->buildingId.'"
 						data-floorid=""
@@ -164,11 +172,10 @@ class LdapTools {
 						data-office="'.$office.'"
 						data-person="'.$fname.' '.$lname.'"
 						data-email="'.$mail.'"
-						class=" list-group-item ldap-item ">';
-
-					$line[] = '<div class="li-col li-label "><span class="list-group-point">'.$fname.' '.$lname.'</span></div>';
-					$line[] = '<div class="li-col li-bldg "><span>'.$exp1[1].'</span></div>';
-					$line[] = '</li>';
+						class=" list-group-item ldap-item ">
+					<div class="li-col li-label "><span class="list-group-point">'.$fname.' '.$lname.'</span></div>
+					<div class="li-col li-bldg "><span>'.$exp1[1].'</span></div>
+					</li>';
 
 				}
 

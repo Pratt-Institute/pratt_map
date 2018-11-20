@@ -57,26 +57,16 @@
 			$(document).on("click", "li.list-group-item, span.fly-sculp", function(e){
 
 				clearMapLegend();
-
-				//resetMap();
 				ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'yes';
-				//alert('list-item');
 
 				window.doFloorSelected = false;
 
-				ambiarc.person = $(this).attr('data-person');
+				var personAttr = $(this).attr('data-person');
 
-				if (ambiarc.person != '') {
+				if (typeof personAttr != 'undefined') {
 
-					// 	data-building="'.$buildingId.'"
-					// 	data-dept="'.$dept.'"
-					// 	data-title="'.$title.'"
-					// 	data-phone="'.$fone.'"
-					// 	data-office="'.$office.'"
-					// 	data-person="'.$fname.' '.$lname.'"
-					// 	data-email="'.$mail.'"
-
+					ambiarc.person = $(this).attr('data-person');
 					ambiarc.building = $(this).attr('data-building');
 					ambiarc.dept = $(this).attr('data-dept');
 					ambiarc.title = $(this).attr('data-title');
@@ -86,8 +76,8 @@
 					ambiarc.lat = $(this).attr('data-lat');
 					ambiarc.lon = $(this).attr('data-long');
 
-					window.lat = lat;
-					window.lon = lon;
+					window.lat = $(this).attr('data-lat');
+					window.lon = $(this).attr('data-long');
 					ambiarc.focusOnLatLonAndZoomToHeight(ambiarc.building, '', ambiarc.lat, ambiarc.lon, '75');
 
 					popMapLegend(2500);
@@ -97,24 +87,10 @@
 				}
 
 				params = {};
-				params.bldg = $(this).attr('data-building');
-				params.floor = $(this).attr('data-floorid');
-				params.recordId = $(this).attr('data-recordid');
-				params.action = 'focusAfterDataLoad';
-
-				//window.legendInfo.recordId = $(this).attr('data-recordid');
-				//window.legendInfo.buildingId = $(this).attr('data-building');
-				//window.legendInfo.floorId = $(this).attr('data-floor');
-				//window.legendInfo.roomName = '';
-
-				// 	if ($(this).hasClass('hasImg')) {
-				// 		doPoiImage(params.recordId);
-				// 	} else {
-				// 		$('.poi-box').remove();
-				// 	}
-
-				//ambiarc.EnterOverheadCamera();
-				//ambiarc.ExitOverheadCamera();
+				params.bldg		= $(this).attr('data-building');
+				params.floor	= $(this).attr('data-floorid');
+				params.recordId	= $(this).attr('data-recordid');
+				params.action	= 'focusAfterDataLoad';
 
 				ambiarc.recordId = $(this).attr('data-recordid');
 				ambiarc.recordIdKeep = $(this).attr('data-recordid');
@@ -123,6 +99,8 @@
 
 				/* TODO find better way to id outdoor points */
 				if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS' || $(this).attr('data-building') == 'GATE') {
+
+					//alert($(this).attr('data-building'));
 
 					//ambiarc.buildingId = $(this).attr('data-building');
 					ambiarc.pointLable = $(this).attr('data-building');
@@ -140,33 +118,22 @@
 					var lon		= $(this).attr('data-long');
 					var heightAboveFloor = '50';
 
-					//alert(lat + ' ' + lon);
-
 					ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, heightAboveFloor);
-
-					//window.legendInfo.ambiarcId = '';
-					//window.legendInfo.buildingId = '';
-					//window.legendInfo.floorId = '';
-					//window.legendInfo.roomName = '';
-
-					//window.doFloorSelected = true;
 
 					params.action = 'focusOutdoorPoint';
 
 					if ($(this).attr('data-building') == 'SG') {
 
-						//var sculpture = $(this).find('span').html();
 						var sculpture = $(this).attr('data-value');
 						var split = sculpture.split(' :: ');
 
-						ambiarc.sculptureName = split[0];
-						ambiarc.sculptureArtist = split[1];
+						ambiarc.legendType		= 'menuBuilding';
+						ambiarc.sculptureName	= split[0];
+						ambiarc.sculptureArtist	= split[1];
 
-						//alert(ambiarc.sculptureName);
 					}
-					//return true;
 				}
-				//popMapLegend();
+
 				fetchPoisFromApi(params);
 
 			});
@@ -245,6 +212,11 @@
 					style.innerHTML = '.'+type+'{max-height:'+maxHei+';}';
 					document.getElementsByTagName('head')[0].appendChild(style);
 				}
+
+				if (type == 'search-box') {
+					$('input.filter').focus();
+				}
+
 			});
 
 			$(document).on('click touch touchstart touchend', '.click-capture', function() {
@@ -436,55 +408,16 @@
 
 					if ($(this).attr('data-cat') == 'buildings') {
 
-						var buildingId	= $(this).attr('data-bldgid');
-						var floorId	= $(this).attr('data-floorid');
-						var lat		= $(this).attr('data-lat');
-						var lon		= $(this).attr('data-long');
-						var heightAboveFloor = '125';
-
-						// 	if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS') {
-						//
-						// 		var lat		= $(this).attr('data-lat');
-						// 		var lon		= $(this).attr('data-long');
-						// 		var heightAboveFloor = '50';
-						//
-						// 		ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, heightAboveFloor);
-						//
-						// 		params.action = 'focusOutdoorPoint';
-						//
-						// 		if (fetchPoisFromApi(params)) {
-						// 			alert('focus failed');
-						// 		}
-						//
-						// 		return true;
-						// 	}
-
-						ambiarc.legendType = 'menuBuilding';
-						ambiarc.ambiarcId = '';
-						ambiarc.buildingId = buildingId;
-						ambiarc.floorId = floorId;
-						ambiarc.roomName = '';
-						ambiarc.roomNo = '';
-						ambiarc.lat = lat;
-						ambiarc.lon = lon;
+						ambiarc.legendType		= 'menuBuilding';
+						ambiarc.ambiarcId		= '';
+						ambiarc.buildingId		= $(this).attr('data-buildingid');
+						ambiarc.floorId			= $(this).attr('data-floorid');
+						ambiarc.roomName		= '';
+						ambiarc.roomNo			= '';
+						ambiarc.lat				= $(this).attr('data-lat');
+						ambiarc.lon				= $(this).attr('data-long');
 
 						if ($(this).closest('div').hasClass('accessibility')) {
-
-							// 	ACTIVITY RES CTR	21	Y	Y
-							// 	DEKALB HALL			3	Y	Y
-							// 	EAST HALL			9	Y	Y
-							// 	FILM VIDEO			19	Y	Y
-							// 	HIGGINS HALL		4	Y	Y
-							// 	INFORMATION SCIENCE CENTER	1	Y	Y
-							// 	LIBRARY				2	Y	Y
-							// 	MACHINERY			16	Y	Y
-							// 	MYRTLE HALL			24	Y	Y
-							// 	PANTAS HALL			13	Y	Y
-							// 	PRATT STUDIOS		18	Y	Y
-							// 	STABILE HALL		22	Y	Y
-							// 	STUDENT UNION		7	Y	Y
-							// 	THRIFT HALL			12	Y	Y
-							// 	WILLOUGHBY HALL		14	Y	Y
 
 							rotation = [];
 							rotation['0021'] = '45'; // Activity Res Ctr
@@ -504,7 +437,7 @@
 							rotation['0007'] = '270'; // Student Union
 							rotation['0012'] = '45'; // Thrift Hall
 							rotation['0014'] = '270'; // Willoughby Hall
-							rotation = rotation[buildingId];
+							rotation = rotation[ambiarc.buildingId];
 
 							zoom = [];
 							zoom['0021'] = '50'; // Activity Res Ctr
@@ -524,15 +457,15 @@
 							zoom['0007'] = '50'; // Student Union
 							zoom['0012'] = '15'; // Thrift Hall
 							zoom['0014'] = '50'; // Willoughby Hall
-							zoom = zoom[buildingId];
+							zoom = zoom[ambiarc.buildingId];
 
 							//ambiarc.rotateCamera(rot, 0.2);
 
 							params.accessible	= 'Y';
-							params.bldg			= buildingId;
+							params.bldg			= ambiarc.buildingId;
 							params.action		= 'doAccessibilityThing';
-							params.lat			= lat;
-							params.lon			= lon;
+							params.lat			= ambiarc.lat;
+							params.lon			= ambiarc.lon
 							params.heightAboveFloor = zoom;
 							params.rotation		= rotation;
 							delete params.floor	;
@@ -541,12 +474,12 @@
 
 						} else {
 
-							window.lat = lat;
-							window.lon = lon;
+							window.lat = ambiarc.lat;
+							window.lon = ambiarc.lon;
 
-							ambiarc.focusOnLatLonAndZoomToHeight(buildingId, '', lat, lon, heightAboveFloor);
+							ambiarc.focusOnLatLonAndZoomToHeight(ambiarc.buildingId, '', ambiarc.lat, ambiarc.lon, '125');
 
-							popMapLegend(2500);
+							popMapLegend(2000);
 
 						}
 
@@ -561,11 +494,6 @@
 						return true;
 					}
 
-					//console.log(params);
-					//console.log(document.deptMap);
-					//console.log(document.deptMap[params.office]);
-					//alert(params.facility);
-
 					ambiarc.legendType = 'menuOther';
 					ambiarc.ambiarcId = '';
 					ambiarc.buildingId = '';
@@ -575,28 +503,8 @@
 					ambiarc.lat = $(this).attr('data-lat');
 					ambiarc.lon = $(this).attr('data-long');
 
-					//alert('one');
-
 					if ( $(this).attr('data-bldg') == 'PPS' || $(this).attr('data-bldg') == 'GATE' ) {
 
-						//alert('two');
-
-						//ambiarc.buildingId = $(this).attr('data-building');
-						ambiarc.pointLable = $(this).attr('data-bldg');
-
-						// 	if ($(this).attr('data-building') == 'PPS') {
-						// 		ambiarc.sculptureName = 'Public Safety Booth';
-						// 		ambiarc.sculptureArtist = '';
-						// 		ambiarc.floorId = '';
-						// 	}
-						//
-						// 	if ($(this).attr('data-building') == 'GATE') {
-						// 		ambiarc.sculptureName = 'Gate';
-						// 		ambiarc.sculptureArtist = '';
-						// 		ambiarc.floorId = '';
-						// 	}
-
-						//ambiarc.buildingId = $(this).attr('data-building');
 						ambiarc.pointLable = $(this).attr('data-bldg');
 						ambiarc.roomName = $(this).attr('data-keywords');
 						ambiarc.floorId = '';
@@ -613,12 +521,7 @@
 						window.lon = ambiarc.lon;
 
 						ambiarc.focusOnLatLonAndZoomToHeight('', '', ambiarc.lat, ambiarc.lon, '50');
-
 					}
-
-
-
-
 
 					fetchPoisFromApi(params);
 				}
@@ -736,7 +639,6 @@
 			//});
 
 		});
-
 
 		prattCopy['0001'] = '<span class="copy-bold">Information Science Center <br>(ISC Building)</span> <br>1954-55. Renovated 1973 <br>Architects: Firm of McKim, Mead and White <br><br>Built as a dormitory for women at the same time DeKalb Hall was built for men. By the 1960s after the acquisition of Willoughby Hall, both buildings were being used for offices and classrooms. They had been built during the extensive PrattArea Urban Renewal under the direction of Robert Moses. The renovation made extensive changes for the Graduate School of Information and Library Science as well as for a large computer laboratory.';
 
@@ -1038,6 +940,8 @@
 
 	function appendFromApi(filter) {
 
+		$('li.ldap-item').remove();
+
 		//var host = 'http://localhost/~iancampbell/PrattSDK-keep/localhost/includes/lookup.php
 		//var host = 'http://localhost/~iancampbell/PrattSDK-keep/';
 		var host = window.location.hostname;
@@ -1060,6 +964,7 @@
 			success: function(ret) {
 				try {
 					//console.log(ret);
+					$('li.ldap-item').remove();
 					$('ul.list-group').append(ret);
 				} catch(e) {
 					console.log(e);
@@ -1068,7 +973,6 @@
 				}
 			}
 		});
-
 
 	}
 
@@ -1194,7 +1098,4 @@
 		}
 
 	}
-
-
-
 
