@@ -9,14 +9,16 @@
  window.rotationOld		= '0';
  window.rotationNeutral	= '0';
  window.currentLabelId	= '0';
- window.poiMap			= {};
+ window.poiMap			= [];
  window.prattCopy		= [];
  window.legendDelay		= 2000;
  window.rangePoi		= range(-1000,1000);
  window.trackPoi		= [];
  window.mapIsParked		= true;
  window.allowFullView	= false;
-
+ window.currentMapStatus = 'start';
+ window.labelLoop		= 'Y';
+ window.processProceed	= 'Y';
 
  /// icampb15@pratt.edu
  /// 718.687.5762
@@ -46,7 +48,7 @@ var resetMap = function() {
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 	var zoom = ambiarc.getCurrentNormalizedZoomLevel(function(ret){
-		console.log(ret);
+		//console.log(ret);
 	});
 	//var world = ambiarc.getCanvasPositionAtWorldPosition();
 
@@ -60,11 +62,9 @@ var resetMap = function() {
 	}
 	$('.reset-map-vert').addClass('disabled');
 
-	console.log('resetMap');
-
 	//ambiarc.ExitOverheadCamera();
 
-	console.log('isFloorSelectorEnabled ' + isFloorSelectorEnabled);
+	//console.log('isFloorSelectorEnabled ' + isFloorSelectorEnabled);
 
 	if (isFloorSelectorEnabled) {
 		ambiarc.exitBuilding();
@@ -81,29 +81,28 @@ var resetMap = function() {
 };
 
 var fullMapView = function() {
-	console.log('fullMapView');
+	//console.log('fullMapView');
 	//ambiarc.ExitOverheadCamera();
 	//$('.reset-map').removeAttr('disabled');
-	var lat = 40.689666;
-	var lon = -73.963883;
-	ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, '400');
-	if (rotationOld != '0') {
-		if (rotationOld != rotation) {
-			var rotationNeutral = -1 * Number(rotationOld);
-			ambiarc.rotateCamera(rotationNeutral, 0);
-			var delay = 1500;
-		}
-		rotationOld = '0';
-	}
+	ambiarc.focusOnLatLonAndZoomToHeight('', '', '40.689666', '-73.963883', '400');
+	// 	if (rotationOld != '0') {
+	// 		if (rotationOld != rotation) {
+	// 			var rotationNeutral = -1 * Number(rotationOld);
+	// 			ambiarc.rotateCamera(rotationNeutral, 0);
+	// 			var delay = 1500;
+	// 		}
+	// 		rotationOld = '0';
+	// 	}
+	ambiarc.setCameraRotation(45, 0);
 	mapIsParked = true;
 	$('.reset-map-vert').addClass('disabled');
 }
 
 var justZoomOut = function() {
-	console.log('justZoomOut');
+	//console.log('justZoomOut');
 	//ambiarc.ExitOverheadCamera();
 	$('.reset-map').removeAttr('disabled');
-	ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, '400');
+	ambiarc.focusOnLatLonAndZoomToHeight('', '', winLat, winLat, '400');
 }
 
 //This method is called when the iframe loads, it subscribes onAmbiarcLoaded so we know when the map loads
@@ -111,6 +110,50 @@ var iframeLoaded = function() {
 	$("#ambiarcIframe")[0].contentWindow.document.addEventListener('AmbiarcAppInitialized', function() {
 		onAmbiarcLoaded();
 	});
+
+	var startLat;
+	var startLon;
+	var startFloor;
+	var startBLG;
+
+	var endLat;
+	var endLon;
+	var endFloor;
+	var endBLG;
+
+	$("#ambiarcIframe")[0].contentWindow.addEventListener("keypress", function(event) {
+		// s key
+		if (event.keyCode == 115) {
+			ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps, (latlon) => {
+				startFloor	= currentFloorId;
+				startBLG	= currentBldgID;
+				startLat	= latlon.lat
+				startLon	= latlon.lon
+			});
+		}
+		// e key
+		if (event.keyCode == 101) {
+
+			ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps, (latlon) => {
+				endFloor	= currentFloorId;
+				endBLG		= currentBldgID;
+				endLat		= latlon.lat
+				endLon		= latlon.lon;
+			});
+
+		}
+		// d key
+		if (event.keyCode == 100) {
+			ambiarc.getDirections(startBLG, startFloor, startLat, startLon, endBLG, endFloor, endLat, endLon, (directions) => {})
+		}
+
+		// c key
+		if (event.keyCode == 99) {
+			ambiarc.clearDirections()
+		}
+
+	});
+
 }
 
 var doTourLoop = function() {
@@ -143,18 +186,18 @@ var createCampusLabels = function() {
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 	ambiarc.hideLoadingScreen();
 	ambiarc.getAllBuildings(function(buildingsArray){
-		console.log('=========================================================================================');
 
-		console.log(buildingsArray);
+		//console.log(buildingsArray);
 
 		ambiarc.bldgIdsList = [];
 		buildingsArray.forEach(function(bldgID, i){
 
-			console.log(i);
+			//console.log(i);
 
 			ambiarc.getBuildingLabelID(bldgID, function(id){
-				console.log(bldgID + ' -- ' + id);
-				console.log('=========================================================================================');
+
+				//console.log(bldgID + ' -- ' + id);
+
 				ambiarc.bldgIdsList[bldgID] = id;
 				try {
 					var str = id.toString();
@@ -186,6 +229,9 @@ var buildingLableLoop = function() {
 }
 
 var buildingLabelUpdate = function(bldgId, labelId) {
+
+	//alert('buildingLabelUpdate ' + bldgId + ' ' + labelId)
+
 	var poiObject = {};
 	//poiObject.label = "Building Name Here";
 	//poiObject.label = hallMap[bldgId].bldg_name;
@@ -203,6 +249,8 @@ var buildingLabelUpdate = function(bldgId, labelId) {
 var fetchPoisFromApi = function(params) {
 
 	clearMapLegend();
+	hideAllLabels();
+	deleteAllLabels();
 
 	// 	if (params.action == 'doAccessibilityThing') {
 	// 		ambiarc.EnterOverheadCamera();
@@ -211,41 +259,10 @@ var fetchPoisFromApi = function(params) {
 	// 	}
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-
-	if (typeof ambiarc.recordId != 'undefined') {
-		if (ambiarc.recordId > '1') {
-			params.recordId = ambiarc.recordId;
-			ambiarc.legendType = 'menuOther';
-		}
-	}
-
-	/// destroy old labels
-	if (typeof ambiarc.poiStuff != 'undefined') {
-		$.each(ambiarc.poiStuff, function(k, v) {
-			if (typeof v != 'undefined') {
-				var aId = v['ambiarcId'];
-				ambiarc.destroyMapLabel(aId);
-			}
-			delete ambiarc.poiStuff[k];
-		});
-	}
-
-	/// hide any that haven't been destoyed
-	if (typeof poiMap != 'undefined') {
-		//ambiarc.hideMapLabelGroup(poiMap, true);
-		$.each(poiMap, function(k, v) {
-			if (typeof v != 'undefined') {
-				//ambiarc.hideMapLabel(v, true);
-				ambiarc.destroyMapLabel(v);
-			}
-		});
-	}
-
-	console.log('fetchPoisFromApi');
-
 	if (typeof ambiarc.poiStuff == 'undefined') {
-		ambiarc.poiStuff = {};
+		ambiarc.poiStuff = [];
 	}
+
 	var token = $.cookie('token');
 	var hash = Math.random().toString(36).substr(2, 5);
 	if (typeof params == 'undefined') {
@@ -272,20 +289,14 @@ var fetchPoisFromApi = function(params) {
 		alert('stop');
 	}
 
-	console.log('==========================================');
-	try { console.log('params');console.log(params); } catch(err) { console.log(err) }
-	try { console.log('poiMap');console.log(poiMap); } catch(err) { console.log(err) }
-	//try { console.log(deptMap) } catch(err) { console.log(err) }
-	try { console.log('bldgMap');console.log(bldgMap); } catch(err) { console.log(err) }
-	try { console.log('hallMap');console.log(hallMap); } catch(err) { console.log(err) }
-	try { console.log('ambiarc.poiStuff');console.log(ambiarc.poiStuff); } catch(err) { console.log(err) }
-	console.log('==========================================');
-	//alert(itemId);
-
 	ambiarc.loadRemoteMapLabels(url).then((out) => {
 
 		/// show labels if building exploded
 		//ambiarc.EnableAutoShowPOIsOnFloorEnter();
+
+		//console.log(' out out out out out out out out ');
+		//console.log(out);
+		//console.log(' out out out out out out out out ');
 
 		if (params.fetch == 'all') {
 			return true;
@@ -296,67 +307,116 @@ var fetchPoisFromApi = function(params) {
 			return true;
 		}
 
-		// 	if (typeof poiMap != 'undefined') {
-		// 		$.each(poiMap, function(k, v){
-		// 			delete poiMap[k];
-		// 		});
-		// 	}
-
-		if (typeof poiMap == 'undefined') {
-
-		}
-
-		ambiarc.poiStuff = [];
-		ambiarc.labelObj = {};
-		//window.deptMap = {};
-
 		window.keepId = '';
 
-		$.each(out, function(k,v){
-			if (typeof v.user_properties.ambiarcId == 'undefined') {
-				///
-			} else {
-				if (typeof v.user_properties.recordId != 'undefined') {
-					poiMap[v.user_properties.recordId] = v.user_properties.ambiarcId;
-					var s = {};
-					s['ambiarcId']		= v.user_properties.ambiarcId;
-					s['recordId']		= v.user_properties.recordId;
-					s['accessible']		= v.user_properties.accessible;
-					s['bldgName']		= v.user_properties.bldgName;
-					s['bldgAbbr']		= v.user_properties.bldgAbbr;
-					s['floorNo']		= v.user_properties.floorNo;
-					s['roomNo']			= v.user_properties.roomNo;
-					s['gkDisplay']		= v.user_properties.gkDisplay;
-					s['gkDepartment']	= v.user_properties.gkDepartment;
-					s['roomName']		= v.properties.label;
-					s['latitude']		= v.geometry.coordinates[1];
-					s['longitude']		= v.geometry.coordinates[0];
-					//ambiarc.poiStuff.push(s);
-					ambiarc.poiStuff[v.user_properties.ambiarcId] = s;
+		labelLoop = 'N';
+		var processDelay = 125;
+		for (i = 0; i < 50; i++) {
+			$.each(out, function(k,v){
+				if (typeof v.user_properties.ambiarcId == 'undefined') {
+					/// if createMapLabel failed we'll try again.
+					console.log('delayMapLabel delayMapLabel delayMapLabel delayMapLabel delayMapLabel ' + i);
+					//console.log(v);
+					ambiarc.createMapLabel('IconWithText', v.properties, (labelId) => {
+						out[k].user_properties.ambiarcId = labelId;
+					});
+					labelLoop = 'Y';
+				}
+			});
+			if (labelLoop == 'N') {
+				processDelay = parseInt(i * 125);
+				break;
+			}
+		}
 
-					if (keepId == '') {
-						keepId = v.user_properties.ambiarcId;
+		processProceed = 'Y';
+
+		//setTimeout(function(){
+
+			$.each(out, function(k,v){
+				if (typeof v.user_properties.ambiarcId == 'undefined') {
+					/// createMapLabel failed
+					alert('createMapLabel failed');
+					console.log(v);
+					processProceed = 'N';
+				} else {
+					if (typeof v.user_properties.recordId != 'undefined') {
+						poiMap[v.user_properties.recordId] = v.user_properties.ambiarcId;
+						var s = {};
+						s['ambiarcId']		= v.user_properties.ambiarcId;
+						s['recordId']		= v.user_properties.recordId;
+						s['accessible']		= v.user_properties.accessible;
+						s['bldgName']		= v.user_properties.bldgName;
+						s['bldgAbbr']		= v.user_properties.bldgAbbr;
+						s['floorNo']		= v.user_properties.floorNo;
+						s['roomNo']			= v.user_properties.roomNo;
+						s['gkDisplay']		= v.user_properties.gkDisplay;
+						s['gkDepartment']	= v.user_properties.gkDepartment;
+						s['roomName']		= v.properties.label;
+						s['latitude']		= v.geometry.coordinates[1];
+						s['longitude']		= v.geometry.coordinates[0];
+						//ambiarc.poiStuff.push(s);
+
+						//console.log(' s s s s s s s s begin');
+						//console.log(s);
+						//console.log(' s s s s s s s s end');
+
+						ambiarc.poiStuff[v.user_properties.ambiarcId] = s;
+
+						if (keepId == '') {
+							keepId = v.user_properties.ambiarcId;
+						}
 					}
 				}
+			});
+
+			if (processProceed == 'Y') {
+				processAndRun(params);
 			}
-		});
 
-		//var poiArr = Object.values(poiMap);
-		//$('.track').html('POIs '+poiArr.join(','));
-
-		processAndRun();
+		//},125);
 
 	});
 	return false;
 }
 
-var processAndRun = function() {
+var hideAllLabels = function() {
 
-	console.log('processAndRun');
-	console.log(poiMap);
-	console.log(ambiarc.poiStuff);
-	console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-	//return true;
+	if (typeof poiMap != 'undefined') {
+		$.each(poiMap, function(k, v) {
+			if (typeof v != 'undefined') {
+				//ambiarc.destroyMapLabel(v);
+				ambiarc.hideMapLabel(v,true);
+			}
+		});
+	}
+
+}
+
+var deleteAllLabels = function() {
+
+	if (typeof poiMap != 'undefined') {
+		$.each(poiMap, function(k, v) {
+			if (typeof v != 'undefined') {
+				ambiarc.destroyMapLabel(v);
+				//ambiarc.hideMapLabel(v,true);
+			}
+		});
+	}
+
+}
+
+var processAndRun = function(params) {
+
+	//hideAllLabels();
+
+ 	console.log('========================================== begin');
+ 	try { console.log('params');console.log(params); } catch(err) { console.log(err) }
+ 	try { console.log('poiMap');console.log(poiMap); } catch(err) { console.log(err) }
+// 	try { console.log('bldgMap');console.log(bldgMap); } catch(err) { console.log(err) }
+// 	try { console.log('hallMap');console.log(hallMap); } catch(err) { console.log(err) }
+ 	try { console.log('ambiarc.poiStuff');console.log(ambiarc.poiStuff); } catch(err) { console.log(err) }
+ 	console.log('========================================== end');
 
 	if (params.fetch == 'first') {
 		//setupMenuAcademics();
@@ -366,49 +426,54 @@ var processAndRun = function() {
 		//console.log('set currentBuilding here: ' + ambiarc.currentBuilding);
 	}
 
+	//alert(params.recordId);
+
 	var itemId = poiMap[params.recordId];
 
 	if (params.action == 'focusAfterDataLoad') {
+
+		console.log(' itemId itemId itemId itemId itemId itemId itemId itemId itemId itemId ' + itemId);
+
+		if (typeof itemId == 'undefined' || itemId == '') {
+			//itemId = poiMap[ambiarc.recordId];
+			console.log('processAndRun ' + itemId);
+		}
 
 		var legendType	= ambiarc.legendType;
 		var ambiarcId	= ambiarc.ambiarcId;
 		var buildingId	= ambiarc.buildingId;
 		var floorId		= ambiarc.floorId;
 		var roomName	= ambiarc.roomName;
-		var lat = ambiarc.lat;
-		var lon = ambiarc.lon;
-
+		//var winLat = ambiarc.lat;
+		//var winLon = ambiarc.lon;
 
 		/// testing heatmap stuff
-		if (lat == '') {
-			lat = ambiarc.poiStuff[itemId].latitude;
-			lon = ambiarc.poiStuff[itemId].longitude;
-		}
-		var arr = [lat,lon,0.5,1];
-		ambiarc.createHeatmap(arr);
+// 		if (lat == '') {
+// 			lat = ambiarc.poiStuff[itemId].latitude;
+// 			lon = ambiarc.poiStuff[itemId].longitude;
+// 		}
+// 		var arr = [lat,lon,0.5,1];
+// 		ambiarc.createHeatmap(arr);
 		/// testing heatmap stuff
 
-
-		setTimeout(function(){
-
+		//setTimeout(function(){
 			try {
-				//alert(roomName);
 				if (itemId != '' && roomName != '') {
 					var obj = {};
 					obj.label = roomName;
 					//obj.showOnCreation = true;
-					//alert('1');
+					//alert('1 '+itemId);
 					try {
 						ambiarc.updateMapLabel(itemId, 'IconWithText', obj);
 					} catch(err) { console.log(err) }
 				}
 				if (itemId != '') {
-					//alert('2');
+					//alert('2 '+itemId);
+					//alert(' - - - - - ' + params.recordId + ' - - - - - ' + itemId + ' - ' + roomName + ' - - - - - ');
 					focusAfterDataLoad(itemId);
 				}
 			} catch(err) { console.log(err) }
-
-		},125);
+		//},125);
 	}
 
 	// 	if (params.action == 'focusAfterDataLoad') {
@@ -419,7 +484,7 @@ var processAndRun = function() {
 
 	if (params.action == 'focusOutdoorPoint') {
 		ambiarc.showMapLabel(itemId, true);
-		popMapLegend(2000,'demo.js 445');
+		popMapLegend(2000,'demo.js 434');
 	}
 
 	if (params.action == 'showFloorInfo') {
@@ -436,23 +501,22 @@ var processAndRun = function() {
 
 		var delay = 500;
 
-		if (rotationOld != '0') {
-			if (rotationOld != rotation) {
-				var rotationNeutral = -1 * Number(rotationOld);
-				ambiarc.rotateCamera(rotationNeutral, 0);
-				var delay = 1500;
-			}
-			//rotationOld = '0';
-		}
+// 		if (rotationOld != '0') {
+// 			if (rotationOld != rotation) {
+// 				var rotationNeutral = -1 * Number(rotationOld);
+// 				ambiarc.rotateCamera(rotationNeutral, 0);
+// 				var delay = 1500;
+// 			}
+// 			//rotationOld = '0';
+// 		}
 
-		console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-		console.log('rotation ' + rotation);
-		console.log('rotationOld ' + rotationOld);
-		console.log('rotationNeutral ' + rotationNeutral);
-		//console.log('rotationNew ' + rotationNew);
-		console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+		// 	console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+		// 	console.log('rotation ' + rotation);
+		// 	console.log('rotationOld ' + rotationOld);
+		// 	console.log('rotationNeutral ' + rotationNeutral);
+		// 	console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
 
-		setTimeout(function(){
+		//setTimeout(function(){
 
 			//resetMap();
 			try {
@@ -462,9 +526,9 @@ var processAndRun = function() {
 				}
 			} catch(err) { console.log(err) }
 
-			console.log(ambiarc.poiStuff[keepId]);
-			console.log(params);
-			console.log('accessibility ' + keepId);
+			// 	console.log(ambiarc.poiStuff[keepId]);
+			// 	console.log(params);
+			// 	console.log('accessibility ' + keepId);
 
 			//ambiarc.focusOnLatLonAndZoomToHeight(params.bldg, '', params.lat, params.lon, params.heightAboveFloor);
 			ambiarc.focusOnLatLonAndZoomToHeight('', '', params.lat, params.lon, params.heightAboveFloor);
@@ -477,18 +541,19 @@ var processAndRun = function() {
 
 			setTimeout(function(){
 				ambiarc.showMapLabel(keepId, true);
-				popMapLegend(2000,'demo.js 503');
+				popMapLegend(2000,'demo.js 491');
 
 				setTimeout(function(){
 					if (rotationOld != rotation) {
-						ambiarc.rotateCamera(rotation, 0);
+						//ambiarc.rotateCamera(rotation, 0);
+						ambiarc.setCameraRotation(rotation, 0);
 						rotationOld = rotation;
 					}
 				},1000);
 
 			},125);
 
-		},delay);
+		//},delay);
 	}
 }
 
@@ -527,9 +592,11 @@ var clearMapLegend = function() {
 	});
 }
 
-
-
 var createPointLabel = function(buildingId,floorId) {
+
+	//hideAllLabels();
+
+	console.log('createPointLabel ' + buildingId + floorId);
 
 	currentBuildingId = buildingId;
 
@@ -551,13 +618,13 @@ var createPointLabel = function(buildingId,floorId) {
 
 	var bldg_name = bldgMap[floorId].bldg_name;
 
-	console.log(bldgMap);
+	//console.log(bldgMap);
 
 	var poiObject = {
 		//buildingId: currentBuildingId,
 		//floorId: floorId,
-		latitude: lat,
-		longitude: lon,
+		latitude: winLat,
+		longitude: winLon,
 		label: bldg_name,
 		//fontSize: 26,
 		//category: 'Label',
@@ -582,7 +649,7 @@ var createPointLabel = function(buildingId,floorId) {
 
 // Callback thats updates the UI after a POI is created
 var mapLabelCreatedCallback = function(labelId, labelName, mapLabelInfo) {
-	console.log('mapLabelCreatedCallback');
+	//console.log('mapLabelCreatedCallback');
     // push reference of POI to list
     poisInScene.push(labelId);
     mapLabelInfo.mapLabelId = labelId;
@@ -592,45 +659,44 @@ var mapLabelCreatedCallback = function(labelId, labelName, mapLabelInfo) {
 
 var focusAfterDataLoad = function(itemId) {
 
-	if (typeof itemId != 'undefined') {
+	if (typeof itemId != 'undefined' && itemId != '') {
 
-		console.log('focusAfterDataLoad '+itemId);
-
+		//console.log('focusAfterDataLoad '+itemId);
 		//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 		//ambiarc.hideMapLabelGroup(poiMap, true);
 
-		if (itemId) {
-
-			try {
-				ambiarc.selectedPoiId = itemId;
-				ambiarc.focusOnMapLabel(itemId, 200);
-			} catch(err) {
-				console.log(err);
-			}
-
-			try {
-				//setTimeout(function(){
-					ambiarc.legendType = 'menuOther';
-					ambiarc.ambiarcId = itemId;
-					//ambiarc.buildingId = '';
-					//ambiarc.floorId = '';
-					//ambiarc.roomName = '';
-					//alert('this one');
-					popMapLegend(2000,'demo.js 861');
-				//},125);
-			} catch(err) {
-				console.log(err);
-			}
-
-			try {
-				setTimeout(function(){
-					window.doFloorSelected = true;
-				}, 3000);
-			} catch(err) {
-				console.log(err);
-			}
+		try {
+			ambiarc.selectedPoiId = itemId;
+			ambiarc.focusOnMapLabel(itemId, 200);
+		} catch(err) {
+			console.log(err);
 		}
+
+		try {
+			ambiarc.legendType = 'menuOther';
+			ambiarc.ambiarcId = itemId;
+			//ambiarc.buildingId = '';
+			//ambiarc.floorId = '';
+			//ambiarc.roomName = '';
+			//alert('this one');
+			popMapLegend(2000,'demo.js 634');
+		} catch(err) {
+			console.log(err);
+		}
+
+		try {
+			setTimeout(function(){
+				window.doFloorSelected = true;
+			}, 3000);
+		} catch(err) {
+			console.log(err);
+		}
+
+	} else {
+
+		console.log('focusAfterDataLoad ' + itemId);
 	}
+
 }
 
 // Creates an Text + Icon on the map where the current mouse position is
@@ -638,8 +704,8 @@ var createTextIcon = function (mapLabelInfo) {
 
 	//alert('createTextIcon');
 
-	console.log(mapLabelInfo);
-	console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+	//console.log(mapLabelInfo);
+	//console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
 
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
@@ -649,7 +715,7 @@ var createTextIcon = function (mapLabelInfo) {
 
 	ambiarc.createMapLabel('IconWithText', mapLabelInfo, (labelId) => {
 
-		console.log("**** "+labelId);
+		//console.log("**** "+labelId);
 
 		poiMap.push(labelId);
 
@@ -679,6 +745,8 @@ var createTextIcon = function (mapLabelInfo) {
 // };
 
 var postJsonToApi = function(send) {
+
+	return true;
 
 	console.log('postJsonToApi');
 	console.log(send);
@@ -713,7 +781,4 @@ var postJsonToApi = function(send) {
     });
 
 };
-
-
-
 

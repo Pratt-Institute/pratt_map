@@ -24,6 +24,13 @@
 			window.overhead			= false;
 			window.keypadVisible	= false;
 
+			window.winLat = '';
+			window.winLon = '';
+
+			var pollMapStatus = setInterval(function(){
+				$('div.debug').html(currentMapStatus);
+			},125);
+
 			new materialTouch('.md-ripple', {
 				classes: {
 				  rippleContainer: 'md-ripple-wrapper',
@@ -76,8 +83,8 @@
 					ambiarc.lat = $(this).attr('data-lat');
 					ambiarc.lon = $(this).attr('data-long');
 
-					window.lat = $(this).attr('data-lat');
-					window.lon = $(this).attr('data-long');
+					window.winLat = $(this).attr('data-lat');
+					window.winLon = $(this).attr('data-long');
 					ambiarc.focusOnLatLonAndZoomToHeight(ambiarc.building, '', ambiarc.lat, ambiarc.lon, '75');
 
 					popMapLegend(2500);
@@ -93,7 +100,7 @@
 				params.action	= 'focusAfterDataLoad';
 
 				ambiarc.recordId = $(this).attr('data-recordid');
-				ambiarc.recordIdKeep = $(this).attr('data-recordid');
+				//ambiarc.recordIdKeep = $(this).attr('data-recordid');
 				ambiarc.hasImage = $(this).attr('data-hasimage');
 				ambiarc.floorId = $(this).attr('data-floorid');
 
@@ -114,11 +121,11 @@
 						ambiarc.sculptureName = 'Campus Gate';
 					}
 
-					var lat		= $(this).attr('data-lat');
-					var lon		= $(this).attr('data-long');
+					var winLat		= $(this).attr('data-lat');
+					var winLon		= $(this).attr('data-long');
 					var heightAboveFloor = '50';
 
-					ambiarc.focusOnLatLonAndZoomToHeight('', '', lat, lon, heightAboveFloor);
+					ambiarc.focusOnLatLonAndZoomToHeight('', '', winLat, winLon, heightAboveFloor);
 
 					params.action = 'focusOutdoorPoint';
 
@@ -184,6 +191,9 @@
 			});
 
 			$(document).on('click', '.cat-box', function() {
+
+				//resetMap();
+				deleteAllLabels();
 
 				//if ($(this).html() == 'accessibility') {
 				//	resetMap();
@@ -331,6 +341,8 @@
 
 			$(document).on('click', '.fly-box', function(e) {
 
+				params = {};
+
 				$('<div class="click-capture"></div>').insertBefore('div.veil-box');
 
 				if ($(this).attr('data-cat') == 'sculptures') {
@@ -345,6 +357,12 @@
 
 				var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'yes';
+
+				if ($(this).attr('data-lat')) {
+					winLat = $(this).attr('data-lat');
+					winLon = $(this).attr('data-long');
+				}
+
 				//alert('fly-box');
 
 				window.doFloorSelected = false;
@@ -367,7 +385,6 @@
 
 				} else {
 
-					params = {};
 					params.currentTarget = e.currentTarget;
 					params.type = type;
 					params.bldg = $(this).attr('data-bldg');
@@ -399,9 +416,11 @@
 
 					if ($(this).attr('data-cat') == 'office' || $(this).attr('data-cat') == 'facility' || $(this).attr('data-cat') == 'dept') {
 
+						ambiarc.recordId = $(this).attr('data-recordid');
+
+						params.recordId = $(this).attr('data-recordid');
 						params.label = $(this).attr('data-dept');
 						params.bldg = $(this).attr('data-bldg');
-						params.recordId = $(this).attr('data-recordid');
 						params.action = 'focusAfterDataLoad';
 
 					}
@@ -434,7 +453,9 @@
 							rotation['0013'] = '135'; // Pantas Hall
 							rotation['0018'] = '135'; // Pratt Studios
 							rotation['0022'] = '0'; // Stabile Hall
+							rotation['0006'] = '270'; // Memorial Hall through SU
 							rotation['0007'] = '270'; // Student Union
+							rotation['0008'] = '270'; // Main Bldg through SU
 							rotation['0012'] = '45'; // Thrift Hall
 							rotation['0014'] = '270'; // Willoughby Hall
 							rotation = rotation[ambiarc.buildingId];
@@ -454,7 +475,9 @@
 							zoom['0013'] = '50'; // Pantas Hall
 							zoom['0018'] = '50'; // Pratt Studios
 							zoom['0022'] = '50'; // Stabile Hall
+							zoom['0006'] = '50'; // Memorial Hall through SU
 							zoom['0007'] = '50'; // Student Union
+							zoom['0008'] = '50'; // Main Bldg through SU
 							zoom['0012'] = '15'; // Thrift Hall
 							zoom['0014'] = '50'; // Willoughby Hall
 							zoom = zoom[ambiarc.buildingId];
@@ -472,12 +495,11 @@
 
 							fetchPoisFromApi(params);
 
+							return true;
+
 						} else {
 
-							window.lat = ambiarc.lat;
-							window.lon = ambiarc.lon;
-
-							ambiarc.focusOnLatLonAndZoomToHeight(ambiarc.buildingId, '', ambiarc.lat, ambiarc.lon, '125');
+							ambiarc.focusOnLatLonAndZoomToHeight(ambiarc.buildingId, '', winLat, winLon, '125');
 
 							popMapLegend(2000);
 
@@ -490,6 +512,8 @@
 						//	console.log(res);
 						//	alert('Sorry, menu not active yet.');
 						//});
+
+						createPointLabel(ambiarc.buildingId,ambiarc.floorId);
 
 						return true;
 					}
@@ -517,11 +541,13 @@
 							ambiarc.sculptureName = 'Campus Gate';
 						}
 
-						window.lat = ambiarc.lat;
-						window.lon = ambiarc.lon;
+						window.winLat = ambiarc.lat;
+						window.winLon = ambiarc.lon;
 
 						ambiarc.focusOnLatLonAndZoomToHeight('', '', ambiarc.lat, ambiarc.lon, '50');
 					}
+
+					console.log(' menu menu menu menu menu menu menu menu menu menu menu menu ' + params.recordId);
 
 					fetchPoisFromApi(params);
 				}
@@ -703,6 +729,9 @@
 	}
 
 	function doPauseTour() {
+
+		return true;
+
 		try {
 			clearTimeout(unsetPause);
 		} catch(err) { console.log(err) }
@@ -949,9 +978,9 @@
 		console.log(host);
 
 		if (host == 'localhost') {
-			host = 'http://localhost/~iancampbell/PrattSDK-keep';
+			host = 'http://localhost/~iancampbell/PrattSDK-demo';
 		} else {
-			host = 'https://map.pratt.edu/demo1';
+			host = 'https://map.pratt.edu/demo';
 		}
 
 		$.ajax({

@@ -599,5 +599,12 @@ div.track {
 	opacity: 0.2;
 }
 
-
+.debug {
+	background-color: white;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	z-index: 1003;
+	color: #000;
+}
 

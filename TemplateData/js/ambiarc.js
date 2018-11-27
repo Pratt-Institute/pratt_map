@@ -55,6 +55,14 @@
         mapLabelType: mapLabelType,
         mapLabelInfo: maplLabelInfo
       });
+
+		//   console.log(' ');
+		//   console.log('createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel BEGIN');
+		// 	console.log(idCallback);
+		// 	console.log(json);
+		//   console.log('createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel END');
+		//   console.log(' ');
+
       gameInstance.SendMessage('Ambiarc', 'CreateMapLabel', json);
     };
 
@@ -68,6 +76,17 @@
       var json = JSON.stringify({
         latitude: latitude,
         longitude: longitude
+      });
+      gameInstance.SendMessage('Ambiarc', 'GetScreenPositionAtPoint', json);
+    };
+
+    this.getCanvasPositionAtWorldPositionIndoor = function(latitude, longitude, buildingID, floorID, callback) {
+      this.messageQueue.push(callback);
+      var json = JSON.stringify({
+        latitude: latitude,
+        longitude: longitude,
+        floorId: floorID,
+        buildingId: buildingID
       });
       gameInstance.SendMessage('Ambiarc', 'GetScreenPositionAtPoint', json);
     };
@@ -96,7 +115,7 @@
         endingBuildingId: endingBuilding,
         endingLevelId: endingLevel,
         endingLat: endingLatitude,
-        endingLon: endingLongitude,
+        endingLon: endingLongitude
       });
       gameInstance.SendMessage('Ambiarc', 'GetDirections', json);
     };
@@ -249,7 +268,6 @@
 
     this.createHeatmap = function(heatmapPoints) {
       var json = JSON.stringify(heatmapPoints);
-      console.log(json);
       gameInstance.SendMessage('Ambiarc', 'CreateHeatmap', json);
     };
 
@@ -320,6 +338,19 @@
 		  gameInstance.SendMessage('Ambiarc', 'FocusOnLatLonAndZoomToHeight', json);
 	  };
 
+    this.setCameraRotation = function (degrees, duration) {
+      var json = JSON.stringify({
+        degrees: degrees,
+        duration: duration
+      });
+      gameInstance.SendMessage('Ambiarc', 'SetCameraRotation', json);
+    };
+
+    this.getCameraRotation = function (callback) {
+      this.messageQueue.push(callback);
+      gameInstance.SendMessage('Ambiarc', 'GetCameraRotation');
+    };
+
 	this.hideMapLabelGroup = function(mapLabelIds, immediate) {
 
 		console.log('ambiarc :: hideMapLabelGroup');
@@ -370,16 +401,20 @@
         .then((out) => {
           return new Promise(function(resolve, reject) {
 
-			  try {
-					out.features.forEach(function(element) {
-					  element.properties.latitude = element.geometry.coordinates[1];
-					  element.properties.longitude = element.geometry.coordinates[0];
-					  window.Ambiarc.createMapLabel(element.properties.type, element.properties, function(id) {
+				out.features.forEach(function(element) {
 
-						// 	console.log('~~~loadRemoteMapLabels~~~begin~~~');
-						// 	console.log(id);
-						// 	console.log(element);
-						// 	console.log('~~~loadRemoteMapLabels~~~end~~~');
+					// 	if (typeof poiMap != 'undefined') {
+					// 		var testId = element.user_properties.recordId;
+					// 		if (typeof poiMap[testId] != 'undefined') {
+					// 			return true;
+					// 		}
+					// 	}
+
+					element.properties.latitude = element.geometry.coordinates[1];
+					element.properties.longitude = element.geometry.coordinates[0];
+					window.Ambiarc.createMapLabel(element.properties.type, element.properties, function(id) {
+
+						//alert(id);
 
 						element.properties.mapLabelId = id;
 
@@ -393,12 +428,13 @@
 							alert(element.user_properties.recordId);
 						}
 
-					  })
-					});
+						// 	console.log('~~~loadRemoteMapLabels~~~begin~~~');
+						// 	console.log(id);
+						// 	console.log(element);
+						// 	console.log('~~~loadRemoteMapLabels~~~end~~~');
 
-				} catch(err) {
-					console.log();
-				}
+					})
+				});
 
            resolve(out.features)
           });

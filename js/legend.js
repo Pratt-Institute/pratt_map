@@ -2,7 +2,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 
 	setTimeout(function(){
 
-		clearTimeout(document.scheduleLegend);
+		//clearTimeout(document.scheduleLegend);
 
 		console.log('popMapLegend ' + legendDelay + ' ' + src);
 
@@ -15,8 +15,8 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 		var floorId		= ambiarc.floorId;
 		var roomName	= ambiarc.roomName;
 		var hasImage	= ambiarc.hasImage;
-		var lat			= ambiarc.lat;
-		var lon			= ambiarc.lon;
+		//var lat			= ambiarc.lat;
+		//var lon			= ambiarc.lon;
 
 		var person		= ambiarc.person;
 		var building	= ambiarc.building;
@@ -57,16 +57,16 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 			// 		floorId = ambiarc.floorIdExtra;
 			// 	}
 
-			console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-			console.log('pointLable ' + pointLable);
-			console.log('ambiarcId ' + ambiarcId);
-			console.log('buildingId ' + buildingId);
-			console.log('floorId ' + floorId);
-			console.log('doFloorSelected ' + doFloorSelected);
-			console.log('legendType ' + legendType);
-			console.log('isFloorSelectorEnabled ' + isFloorSelectorEnabled);
-			console.log(bldgMap);
-			console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+			// 	console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+			// 	console.log('pointLable ' + pointLable);
+			// 	console.log('ambiarcId ' + ambiarcId);
+			// 	console.log('buildingId ' + buildingId);
+			// 	console.log('floorId ' + floorId);
+			// 	console.log('doFloorSelected ' + doFloorSelected);
+			// 	console.log('legendType ' + legendType);
+			// 	console.log('isFloorSelectorEnabled ' + isFloorSelectorEnabled);
+			// 	console.log(bldgMap);
+			// 	console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
 
 			//alert('hello');
 
@@ -174,7 +174,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 					$('.floorNo').html(bldgMap[floorId].floor + ' floor');
 				} else {
 
-					alert(buildingId + ' - ' + floorId);
+					//alert(buildingId + ' - ' + floorId);
 
 					createPointLabel(buildingId,floorId);
 
@@ -185,7 +185,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				$('.floorNo').html(ambiarc.poiStuff[ambiarcId].floorNo + ' floor');
 			} catch(err) { console.log(err) }
 
-			console.log('floorId '+floorId + ' -- ambiarcId ' + ambiarcId + ' -- recordId ' + recordId);
+			//console.log('floorId '+floorId + ' -- ambiarcId ' + ambiarcId + ' -- recordId ' + recordId);
 
 			try {
 				if (legendType != 'menuBuilding') {
@@ -215,7 +215,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				var bId = bldgMap[floorId].buildingId;
 
 				var copyArr = prattCopy[bId].split(' ');
-				console.log(copyArr);
+				//console.log(copyArr);
 				$.each(copyArr, function(k, v) {
 					if (v.indexOf(':') != -1) {
 						copyArr[k] = '<br><span class="copy-bold">'+v+'</span>';
@@ -249,7 +249,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 					var floorIdPerson = hallMap[building].floorId
 					//alert('three '+floorId);
 
-					console.log(hallMap[building]);
+					//console.log(hallMap[building]);
 
 					//alert(hallMap[building].floor);
 
@@ -281,9 +281,12 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				$('.bldgName').html(buildingId);
 			}
 
+			//alert('popMapLegend ' + recordId);
+
+
 			setTimeout(function(){
 				var isLegendFilled = $('.bldgName').html();
-				console.log(isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' )
+				//console.log(isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' )
 				if (isLegendFilled.length > '1') {
 					$('.legend').addClass('showlegend');
 				} else {
@@ -317,7 +320,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				ambiarc.office		= '';
 				ambiarc.email		= '';
 
-			},1000);
+			},2500);
 
 		},legendDelay);
 

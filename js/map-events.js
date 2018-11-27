@@ -73,11 +73,11 @@ var runMapLoad = function() {
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
-    var full = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+(window.location.pathname ? window.location.pathname.substring(0,window.location.pathname.lastIndexOf("/")) : '');
-    ambiarc.setMapAssetBundleURL(full+'/ambiarc/');
+    //var full = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+(window.location.pathname ? window.location.pathname.substring(0,window.location.pathname.lastIndexOf("/")) : '');
+    //ambiarc.setMapAssetBundleURL(full+'/ambiarc/');
     //ambiarc.loadMap("pratt");
     //var mapFolder = getMapName('map');
-//    ambiarc.setMapAssetBundleURL('https://s3-us-west-1.amazonaws.com/gk-web-demo/ambiarc/');
+    ambiarc.setMapAssetBundleURL('https://s3-us-west-1.amazonaws.com/gk-web-demo/ambiarc/');
     //ambiarc.loadMap(mapFolder);
     ambiarc.loadMap("pratt");
 
@@ -109,6 +109,8 @@ var mapStartedLoading = function() {
 }
 
 var mapFinishedLoading = function() {
+
+	//currentMapStatus = 'mapFinishedLoading';
 
 	loadUiFunctions();
 
@@ -158,6 +160,8 @@ var mapFinishedLoading = function() {
 
 var BuildingExitCompleted = function(event) {
 
+	//currentMapStatus = 'BuildingExitCompleted';
+
 	allowFullView = true;
 	//unDisableReset();
 
@@ -168,12 +172,17 @@ var BuildingExitCompleted = function(event) {
 	//console.log('BuildingExitCompleted');
 	//console.log(event);
 
+	currentFloorId = undefined;
+	currentBldgID = undefined;
+
 	$('#back-button').hide();
 	$('.reset-map').removeClass('reset-show');
 
 }
 
 var onFloorSelected = function(event) {
+
+	//currentMapStatus = 'onFloorSelected';
 
 	$('.reset-map-vert').removeClass('disabled');
 
@@ -185,6 +194,7 @@ var onFloorSelected = function(event) {
 	console.log(event);
 	var floorInfo = event.detail;
 	currentFloorId = floorInfo.floorId;
+	currentBldgID = floorInfo.buildingId;
 
 	if (event.type == 'FloorSelected') {
 
@@ -199,11 +209,16 @@ var onFloorSelected = function(event) {
 	}
 
 	isFloorSelectorEnabled = false;
+
+	currentMapStatus = 'isFloorSelectorEnabled = false';
+
 	mainBldgID = floorInfo.buildingId;
 
 }
 
 var onEnteredFloorSelector = function(event) {
+
+	//currentMapStatus = 'onEnteredFloorSelector';
 
 	$('.reset-map-vert').removeClass('disabled');
 
@@ -216,12 +231,17 @@ var onEnteredFloorSelector = function(event) {
 	console.log(event);
 	var buildingId = event.detail;
 	currentFloorId = undefined;
+	currentBldgID = buildingId;
 	//$('#back-button').show();
 	isFloorSelectorEnabled = true;
-	//alert('true');
+
+	currentMapStatus = 'isFloorSelectorEnabled = true';
+
 }
 
 var onExitedFloorSelector = function(event) {
+
+	//currentMapStatus = 'onExitedFloorSelector';
 
 	doPauseTour();
 
@@ -231,10 +251,16 @@ var onExitedFloorSelector = function(event) {
 	console.log(event.detail);
 	var buildingId = event.detail;
 	currentFloorId = undefined;
+	buildingId = undefined; /// from the new SDK looks wrong but we'll try it
 	isFloorSelectorEnabled = false;
+
+	currentMapStatus = 'isFloorSelectorEnabled = false';
+
 }
 
 var onFloorSelectorFocusChanged = function(event) {
+
+	//currentMapStatus = 'onFloorSelectorFocusChanged';
 
 	doPauseTour();
 
@@ -245,7 +271,9 @@ var onFloorSelectorFocusChanged = function(event) {
 
 	//clearTimeout(document.scheduleLegend);
 
-	if (event.detail.newFloodId > '0000' && ambiarc.floorId == '' && ambiarc.recordId == '' && ambiarc.legendType == '' && ambiarc.ambiarcId == '') {
+	if (event.detail.newFloodId > '0000' && ambiarc.floorId == '' && ambiarc.recordId == '' && ambiarc.legendType == '' && ambiarc.ambiarcId == '' && doFloorSelected) {
+
+		console.log('onFloorSelectorFocusChanged '+ ambiarc.recordId);
 
 		console.log('do pop legend from focus change ---------------------------------------');
 
@@ -261,6 +289,8 @@ var onFloorSelectorFocusChanged = function(event) {
 
 var cameraStartedHandler = function(event){
 
+	//currentMapStatus = 'cameraStartedHandler';
+
 	mapIsParked = false;
 	allowFullView = false;
 	//unDisableReset();
@@ -269,7 +299,7 @@ var cameraStartedHandler = function(event){
 
 	console.log('cameraStartedHandler'); // auto
 
-	clearTimeout(document.launchDestroyer);
+	//clearTimeout(document.launchDestroyer);
 
 	//clearTimeout(document.scheduleLegend);
 
@@ -277,13 +307,15 @@ var cameraStartedHandler = function(event){
 		return false;
 	}
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-	if (typeof ambiarc.labelObj != 'undefined' && typeof ambiarc.selectedPoiId != 'undefined') {
+	if (typeof ambiarc.selectedPoiId != 'undefined') {
 		console.log('cameraStartedHandler');
 		console.log(event);
 	}
 };
 
 var cameraCompletedHandler = function(event){
+
+	//currentMapStatus = 'cameraCompletedHandler';
 
 	//console.log('cameraCompletedHandler'); // auto
 	//unDisableReset();
