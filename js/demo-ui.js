@@ -19,6 +19,7 @@
  window.currentMapStatus = 'start';
  window.labelLoop		= 'Y';
  window.processProceed	= 'Y';
+ window.allowFloorEvent = true;
 
  /// icampb15@pratt.edu
  /// 718.687.5762
@@ -444,8 +445,6 @@ var processAndRun = function(params) {
 		var buildingId	= ambiarc.buildingId;
 		var floorId		= ambiarc.floorId;
 		var roomName	= ambiarc.roomName;
-		//var winLat = ambiarc.lat;
-		//var winLon = ambiarc.lon;
 
 		/// testing heatmap stuff
 // 		if (lat == '') {
@@ -475,12 +474,6 @@ var processAndRun = function(params) {
 			} catch(err) { console.log(err) }
 		//},125);
 	}
-
-	// 	if (params.action == 'focusAfterDataLoad') {
-	// 		if (focusAfterDataLoad(itemId)) {
-	// 			return true;
-	// 		}
-	// 	}
 
 	if (params.action == 'focusOutdoorPoint') {
 		ambiarc.showMapLabel(itemId, true);
@@ -665,6 +658,8 @@ var focusAfterDataLoad = function(itemId) {
 		//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 		//ambiarc.hideMapLabelGroup(poiMap, true);
 
+		allowFloorEvent = false;
+
 		try {
 			ambiarc.selectedPoiId = itemId;
 			ambiarc.focusOnMapLabel(itemId, 200);
@@ -679,7 +674,7 @@ var focusAfterDataLoad = function(itemId) {
 			//ambiarc.floorId = '';
 			//ambiarc.roomName = '';
 			//alert('this one');
-			popMapLegend(2000,'demo.js 634');
+			popMapLegend(2500,'demo.js 634');
 		} catch(err) {
 			console.log(err);
 		}

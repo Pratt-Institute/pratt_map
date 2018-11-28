@@ -2,7 +2,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 
 	setTimeout(function(){
 
-		//clearTimeout(document.scheduleLegend);
+		clearTimeout(document.scheduleLegend);
 
 		console.log('popMapLegend ' + legendDelay + ' ' + src);
 
@@ -320,7 +320,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				ambiarc.office		= '';
 				ambiarc.email		= '';
 
-			},2500);
+			},750);
 
 		},legendDelay);
 

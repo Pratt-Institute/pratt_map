@@ -322,7 +322,7 @@ var cameraCompletedHandler = function(event){
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
-	if (event.detail == 'UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor') {
+	if (event.detail == 'UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor' && allowFloorEvent) {
 
 		if (typeof ambiarc.legendType == 'undefined' || ambiarc.legendType == '') {
 			if (isFloorSelectorEnabled == false && mainBldgID > 0 && ambiarc.recordId == '') {
@@ -351,5 +351,7 @@ var cameraCompletedHandler = function(event){
 			}
 		}
 	}
+
+	allowFloorEvent = true;
 
 };
