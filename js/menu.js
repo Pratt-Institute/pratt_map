@@ -145,40 +145,6 @@
 
 			});
 
-			// 	$(document).on('click', '.search-btn', function() {
-			// 		//resetMap();
-			// 		///ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			// 		///ambiarc.menuAction = 'yes';
-			// 		///alert('search-btn');
-			// 		//$('.nav-menu').fadeOut();
-			// 		$('.showpopmap').removeClass('showpopmap');
-			// 		//$('.points').addClass('reveal-vert');
-			// 		//$('.menu-open').addClass('fade-out');
-			// 		$('.reveal-horz').removeClass('reveal-horz');
-			// 		//$('body').append('<div class="click-capture"></div>');
-			// 		$('<div class="click-capture"></div>').insertBefore('div.veil-box');
-			// 	});
-
-			// 	$(document).on('click', '.menu-open', function() {
-			//
-			// 		//ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			// 		//ambiarc.menuAction = 'yes';
-			// 		//alert('menu-open');
-			//
-			// 		$('.showpopmap').removeClass('showpopmap');
-			// 		$('.menu-open').addClass('fade-out');
-			// 		$('.cat-wrap').removeClass('fade-out');
-			// 		//$('body').append('<div class="click-capture"></div>');
-			// 		$('<div class="click-capture"></div>').insertBefore('div.veil-box');
-			// 		//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-			// 		//ambiarc.loadMap("pratt");
-			//
-			// 		// 	ambiarc.viewFloorSelector('0001');
-			// 		// 	setTimeout(function(){
-			// 		// 		ambiarc.viewFloorSelector('0001');
-			// 		// 	}, 750);
-			// 	});
-
 			$(document).on('click', '.pratt-logo', function() {
 				//collapseMenus();
 				//$('.showpopmap').removeClass('showpopmap');
@@ -192,23 +158,16 @@
 
 			$(document).on('click', '.cat-box', function() {
 
-				//resetMap();
-				deleteAllLabels();
+				var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				ambiarc.clearDirections();
 
-				//if ($(this).html() == 'accessibility') {
-				//	resetMap();
-				//}
+				deleteAllLabels();
 
 				$('.reveal-horz').removeClass('reveal-horz');
 				var pos = $(this).closest('div').position();
-				//var maxHei = parseInt($(window).height()-90);
 				var maxHei = parseInt($(window).height());
 				var type = $(this).attr('data-type');
 
-				//console.log(this);
-				//alert(this);
-
-				//$('div.'+type).css({'left':pos.left,'maxHeight':maxHei});
 				$('div.'+type).css({'maxHeight':maxHei});
 				$('div.'+type).addClass('reveal-horz');
 				$("style:not('#position')").remove();
@@ -230,17 +189,11 @@
 			});
 
 			$(document).on('click touch touchstart touchend', '.click-capture', function() {
-				//alert('click-capture');
-				//collapseMenus();
-				///ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'no';
 				$('.showpopmap').removeClass('showpopmap');
 				collapseMenus();
 			});
 
-			//document.styleSheets[0].addRule('.flyout::-webkit-scrollbar','content: "hello";');
-
-			//$('.flyout').mouseleave(function() {
 			$('.flyout').on('mouseleave touchend', function(e){
 				//alert(e.offsetX + ' -- ' + e.offsetY);
 				if (typeof e.offsetX == 'undefined') {
@@ -312,33 +265,6 @@
 				searchFunction();
 			});
 
-			$(document).on("change", "select.menu-buildings", function(e){
-
-				clearMapLegend();
-
-				//resetMap();
-				///ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-				ambiarc.menuAction = 'yes';
-				//alert('select.menu-buildings');
-
-				//ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-				//ambiarc.exitBuilding();
-				//alert(this.value);
-				searchFunction();
-
-				// TODO building focus trigger here
-
-				// 	params = {};
-				// 	params.bldg = $(this).val();
-				// 	params.floor = $(this).attr('data-floor');
-				// 	//params.recordId = $(this).attr('data-recordid');
-				// 	//params.action = 'focusAfterDataLoad';
-				// 	if (fetchPoisFromApi(params)) {
-				// 		alert('focus failed');
-				// 	}
-
-			});
-
 			$(document).on('click', '.fly-box', function(e) {
 
 				params = {};
@@ -349,10 +275,6 @@
 					return false;
 				}
 
-				//ambiarc.exitBuilding();
-
-				/// clear old points here
-
 				clearMapLegend();
 
 				var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
@@ -362,8 +284,6 @@
 					winLat = $(this).attr('data-lat');
 					winLon = $(this).attr('data-long');
 				}
-
-				//alert('fly-box');
 
 				window.doFloorSelected = false;
 
@@ -438,17 +358,19 @@
 
 						if ($(this).closest('div').hasClass('accessibility')) {
 
+							ambiarc.legendType = 'menuBuildingAccessibility';
+
 							rotation = [];
 							rotation['0021'] = '45'; // Activity Res Ctr
-							rotation['0003'] = '180'; // Dekalb Hall
-							rotation['0009'] = '270'; // East Hall
+							rotation['0003'] = '145'; // Dekalb Hall
+							rotation['0009'] = '290'; // East Hall
 							rotation['0019'] = '45'; // Film Video
 							rotation['0004'] = '45'; // Higgins Hall
 							rotation['0001'] = '0'; // Information Science Center
 							rotation['0002'] = '0'; // Library
-							rotation['0016'] = '90'; // Machinery
-							rotation['0015'] = '90'; // Chemistry
-							rotation['0017'] = '90'; // Engineering
+							rotation['0016'] = '130'; // Machinery
+							rotation['0015'] = '130'; // Chemistry
+							rotation['0017'] = '130'; // Engineering
 							rotation['0024'] = '0'; // Myrtle Hall
 							rotation['0013'] = '135'; // Pantas Hall
 							rotation['0018'] = '135'; // Pratt Studios
@@ -461,37 +383,40 @@
 							rotation = rotation[ambiarc.buildingId];
 
 							zoom = [];
-							zoom['0021'] = '50'; // Activity Res Ctr
-							zoom['0003'] = '50'; // Dekalb Hall
-							zoom['0009'] = '25'; // East Hall
-							zoom['0019'] = '50'; // Film Video
-							zoom['0004'] = '50'; // Higgins Hall
-							zoom['0001'] = '50'; // Information Science Center
-							zoom['0002'] = '50'; // Library
-							zoom['0016'] = '25'; // Machinery
-							zoom['0015'] = '25'; // Chemistry
-							zoom['0017'] = '25'; // Engineering
-							zoom['0024'] = '50'; // Myrtle Hall
-							zoom['0013'] = '50'; // Pantas Hall
-							zoom['0018'] = '50'; // Pratt Studios
-							zoom['0022'] = '50'; // Stabile Hall
-							zoom['0006'] = '50'; // Memorial Hall through SU
-							zoom['0007'] = '50'; // Student Union
-							zoom['0008'] = '50'; // Main Bldg through SU
-							zoom['0012'] = '15'; // Thrift Hall
-							zoom['0014'] = '50'; // Willoughby Hall
+							zoom['0021'] = '100'; // Activity Res Ctr
+							zoom['0003'] = '100'; // Dekalb Hall
+							zoom['0009'] = '100'; // East Hall
+							zoom['0019'] = '100'; // Film Video
+							zoom['0004'] = '100'; // Higgins Hall
+							zoom['0001'] = '100'; // Information Science Center
+							zoom['0002'] = '100'; // Library
+							zoom['0016'] = '100'; // Machinery
+							zoom['0015'] = '100'; // Chemistry
+							zoom['0017'] = '100'; // Engineering
+							zoom['0024'] = '100'; // Myrtle Hall
+							zoom['0013'] = '100'; // Pantas Hall
+							zoom['0018'] = '100'; // Pratt Studios
+							zoom['0022'] = '100'; // Stabile Hall
+							zoom['0006'] = '100'; // Memorial Hall through SU
+							zoom['0007'] = '100'; // Student Union
+							zoom['0008'] = '100'; // Main Bldg through SU
+							zoom['0012'] = '100'; // Thrift Hall
+							zoom['0014'] = '100'; // Willoughby Hall
 							zoom = zoom[ambiarc.buildingId];
 
 							//ambiarc.rotateCamera(rot, 0.2);
 
 							params.accessible	= 'Y';
 							params.bldg			= ambiarc.buildingId;
+							params.floor		= $(this).attr('data-floorid');
 							params.action		= 'doAccessibilityThing';
-							params.lat			= ambiarc.lat;
-							params.lon			= ambiarc.lon
+							params.lat			= $(this).attr('data-lat');
+							params.lon			= $(this).attr('data-long');
+							params.accessLat			= $(this).attr('data-lat');
+							params.accessLon			= $(this).attr('data-long');
 							params.heightAboveFloor = zoom;
 							params.rotation		= rotation;
-							delete params.floor	;
+							//delete params.floor	;
 
 							fetchPoisFromApi(params);
 
@@ -507,11 +432,11 @@
 
 						//window.doFloorSelected = true;
 
-						//ambiarc.getDirections('0024', '0093', '40.693454', '-73.963549', '0002', '0006', '40.690872', '-73.964982', function(res){
-						//ambiarc.getDirections(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, function(res){
-						//	console.log(res);
-						//	alert('Sorry, menu not active yet.');
-						//});
+						// 	ambiarc.getDirections('0024', '0093', '40.693321228027344', '-73.96354675292969', ambiarc.buildingId, ambiarc.floorId, ambiarc.lat, ambiarc.lon, function(res){
+						// 	//ambiarc.getDirections(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, function(res){
+						// 		console.log(res);
+						// 		alert('getDirections');
+						// 	});
 
 						createPointLabel(ambiarc.buildingId,ambiarc.floorId);
 

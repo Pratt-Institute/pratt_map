@@ -266,6 +266,72 @@ class DbTools {
 		}
 	}
 
+
+	public function fetchAccessibleMenu() {
+
+		try {
+
+			$sql = "
+				select *
+				from facilities
+				where `accessible` = 'Y'
+				and gk_display != 'N'
+				order by bldg_name asc, room_name asc ";
+
+			$stmt = $this->dbh->prepare($sql);
+			$stmt->execute();
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			if ($rows[0]['id']) {
+
+				foreach($rows as $field=>$record) {
+
+					extract($record, EXTR_OVERWRITE);
+
+					$exp = explode(' - ',$room_name);
+
+					if ($exp[1] != '') {
+						$level = ' - '.$exp[1];
+					} else {
+						$level = '';
+					}
+
+					if (strlen($exp[0])>3) {
+						$record['bldg_name'] = ucwords(strtolower($record['bldg_name']));
+					}
+
+					$out[] = "<span
+						class=\"fly-box buildings accessible\"
+						data-recordid=\"".$record['id']."\"
+						data-bldg=\"".$record['bldg_abbre']."\"
+						data-buildingid=\"".$record['gk_bldg_id']."\"
+						data-floorid=\"".$record['gk_floor_id']."\"
+						data-cat=\"buildings\"
+						data-accessible=\"Y\"
+						data-lat=\"".$record['latitude']."\"
+						data-long=\"".$record['longitude']."\"
+						>".$record['bldg_name'].$level."</span>";
+
+				}
+
+				ksort($out);
+
+				// 	echo '<pre>';
+				// 	print_r($out);
+				// 	echo '</pre>';
+				// 	die();
+
+				echo implode('',$out);
+
+				//return true;
+			}
+			return false;
+		} catch(PDOException $e) {
+			echo $sql . "<br>" . $e->getMessage();
+		}
+	}
+
+
 	public function makeSearchMenu() {
 
 		try {

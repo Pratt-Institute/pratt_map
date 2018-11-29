@@ -233,7 +233,7 @@
 	<div class="flyout webkit-scroll facilities"><?php $obj->fetchFacilitiesMenu(); ?></div>
 	<div class="flyout webkit-scroll sculptures"><?php $obj->fetchSculptureMenu(); ?></div>
 	<div class="flyout webkit-scroll firstaid"><?php $obj->firstAidMenu(); ?></div>
-	<div class="flyout webkit-scroll accessibility"><?php echo $slists['bldg_menu']; ?></div>
+	<div class="flyout webkit-scroll accessibility"><?php $obj->fetchAccessibleMenu(); ?></div>
 
 	<div class="flyout search-box reveal-keeps">
 		<table class="tbl-search">

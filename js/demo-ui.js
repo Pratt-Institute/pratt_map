@@ -488,65 +488,80 @@ var processAndRun = function(params) {
 
 	if (params.action == 'doAccessibilityThing') {
 
-		//alert('doAccessibilityThing');
+		try {
+			if (keepId) {
+				var buildLat = ambiarc.poiStuff[keepId].latitude;
+				var buildLon = ambiarc.poiStuff[keepId].longitude;
+			}
+		} catch(err) { console.log(err) }
 
-		//ambiarc.hideMapLabelGroup(poiMap, true);
+		ambiarc.focusOnLatLonAndZoomToHeight('', '', params.lat, params.lon, params.heightAboveFloor);
 
-		var delay = 500;
+		var obj = {};
+		obj.label = 'Accessible Entrance';
+		obj.showOnCreation = true;
+		obj.ignoreCollision = true;
+		ambiarc.updateMapLabel(keepId, 'IconWithText', obj);
 
-// 		if (rotationOld != '0') {
-// 			if (rotationOld != rotation) {
-// 				var rotationNeutral = -1 * Number(rotationOld);
-// 				ambiarc.rotateCamera(rotationNeutral, 0);
-// 				var delay = 1500;
-// 			}
-// 			//rotationOld = '0';
-// 		}
+		setTimeout(function(){
 
-		// 	console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-		// 	console.log('rotation ' + rotation);
-		// 	console.log('rotationOld ' + rotationOld);
-		// 	console.log('rotationNeutral ' + rotationNeutral);
-		// 	console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-
-		//setTimeout(function(){
-
-			//resetMap();
-			try {
-				if (keepId) {
-					params.lat = ambiarc.poiStuff[keepId].latitude;
-					params.lon = ambiarc.poiStuff[keepId].longitude;
-				}
-			} catch(err) { console.log(err) }
-
-			// 	console.log(ambiarc.poiStuff[keepId]);
-			// 	console.log(params);
-			// 	console.log('accessibility ' + keepId);
-
-			//ambiarc.focusOnLatLonAndZoomToHeight(params.bldg, '', params.lat, params.lon, params.heightAboveFloor);
-			ambiarc.focusOnLatLonAndZoomToHeight('', '', params.lat, params.lon, params.heightAboveFloor);
-
-			var obj = {};
-			obj.label = 'Accessible Entrance';
-			obj.showOnCreation = true;
-			obj.ignoreCollision = true;
-			ambiarc.updateMapLabel(keepId, 'IconWithText', obj);
+			ambiarc.showMapLabel(keepId, true);
+			popMapLegend(2000,'demo.js 491');
 
 			setTimeout(function(){
-				ambiarc.showMapLabel(keepId, true);
-				popMapLegend(2000,'demo.js 491');
 
-				setTimeout(function(){
-					if (rotationOld != rotation) {
-						//ambiarc.rotateCamera(rotation, 0);
-						ambiarc.setCameraRotation(rotation, 0);
-						rotationOld = rotation;
-					}
-				},1000);
+				ambiarc.setCameraRotation(rotation, 0);
 
-			},125);
+				ambiarc.UpdateHandicapLevel('None');
 
-		//},delay);
+				/// skip some buildings for now Myrtle and Higgins
+				if (ambiarc.buildingId != '0004z' && ambiarc.buildingId != '0024z') {
+
+					setTimeout(function(){
+
+						allowFloorEvent = false;
+
+						ambiarc.getDirections('', '', 40.691163, -73.963597, '', '', params.accessLat, params.accessLon, function(res){
+							console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
+							console.log(res);
+							console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
+						});
+
+						// 	setTimeout(function(){
+						//
+						// 		allowFloorEvent = false;
+						//
+						// 		ambiarc.focusOnMapLabel(keepId, 200);
+						//
+						// 		setTimeout(function(){
+						//
+						// 			allowFloorEvent = false;
+						//
+						// 			//ambiarc.focusOnFloor(ambiarc.buildingId, ambiarc.floorId, 400, 1, 1);
+						//
+						// 			setTimeout(function(){
+						//
+						// 				allowFloorEvent = false;
+						//
+						// 				ambiarc.getDirections('', '', params.lat, params.lon, '', '', winLat, winLon, function(res){
+						// 					console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
+						// 					console.log(res);
+						// 					console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
+						// 				});
+						//
+						// 			},2000);
+						//
+						// 		},2000);
+						//
+						// 	},2000);
+
+					},2000);
+
+				}
+
+			},1000);
+
+		},1000);
 	}
 }
 

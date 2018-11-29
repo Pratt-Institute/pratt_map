@@ -352,6 +352,8 @@ var cameraCompletedHandler = function(event){
 		}
 	}
 
-	allowFloorEvent = true;
+	setTimeout(function(){
+		allowFloorEvent = true;
+	},5000);
 
 };

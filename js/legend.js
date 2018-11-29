@@ -174,8 +174,8 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 					$('.floorNo').html(bldgMap[floorId].floor + ' floor');
 				} else {
 
-					//alert(buildingId + ' - ' + floorId);
-
+					//alert(legendType);
+					//console.log(ambiarc);
 					createPointLabel(buildingId,floorId);
 
 				}
