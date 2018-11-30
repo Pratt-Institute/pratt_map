@@ -272,8 +272,23 @@ class DbTools {
 		try {
 
 			$sql = "
-				select *
-				from facilities
+				select
+					F.id,
+					F.bldg_abbre,
+					F.gk_bldg_id,
+					F.gk_floor_id,
+					F.latitude,
+					F.longitude,
+					F.bldg_name,
+					F.room_name,
+					A.latitude as accessLat,
+					A.longitude as accessLong,
+					A.type,
+					B.latitude as bldgLat,
+					B.longitude as bldgLong
+				from facilities F
+				left join access A on A.gk_floor_id = F.gk_floor_id
+				join buildings B on B.gk_bldg_id = F.gk_bldg_id
 				where `accessible` = 'Y'
 				and gk_display != 'N'
 				order by bldg_name asc, room_name asc ";
@@ -288,7 +303,9 @@ class DbTools {
 
 					extract($record, EXTR_OVERWRITE);
 
-					$exp = explode(' - ',$room_name);
+					$exp = array();
+
+					$exp = explode(' - ',$record['room_name']);
 
 					if ($exp[1] != '') {
 						$level = ' - '.$exp[1];
@@ -296,9 +313,11 @@ class DbTools {
 						$level = '';
 					}
 
-					if (strlen($exp[0])>3) {
+					if (strlen($record['bldg_name'])>4) {
 						$record['bldg_name'] = ucwords(strtolower($record['bldg_name']));
 					}
+
+					$type = ucwords($type);
 
 					$out[] = "<span
 						class=\"fly-box buildings accessible\"
@@ -310,7 +329,11 @@ class DbTools {
 						data-accessible=\"Y\"
 						data-lat=\"".$record['latitude']."\"
 						data-long=\"".$record['longitude']."\"
-						>".$record['bldg_name'].$level."</span>";
+						data-acclat=\"".$record['accessLat']."\"
+						data-acclong=\"".$record['accessLong']."\"
+						data-bldglat=\"".$record['bldgLat']."\"
+						data-bldglong=\"".$record['bldgLong']."\"
+						>".$record['bldg_name'].$level.' - '.$type."</span>";
 
 				}
 
@@ -1011,8 +1034,12 @@ class DbTools {
 						$record['bldg_name'] = 'Higgins Hall';
 					}
 
-					$record['bldg_name']	= ucwords(strtolower(trim($record['bldg_name'])));
+					if (strlen(trim($record['bldg_name'])) > 3) {
+						$record['bldg_name']	= ucwords(strtolower(trim($record['bldg_name'])));
+					}
+
 					$record['room_name']	= ucwords(strtolower(trim($record['room_name'])));
+
 					$record['floor']		= strtolower(trim($record['floor']));
 
 					//if (trim($record['bldg_name']) == 'STEUBEN') {

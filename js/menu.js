@@ -406,17 +406,21 @@
 
 							//ambiarc.rotateCamera(rot, 0.2);
 
-							params.accessible	= 'Y';
-							params.bldg			= ambiarc.buildingId;
-							params.floor		= $(this).attr('data-floorid');
-							params.action		= 'doAccessibilityThing';
-							params.lat			= $(this).attr('data-lat');
-							params.lon			= $(this).attr('data-long');
-							params.accessLat			= $(this).attr('data-lat');
-							params.accessLon			= $(this).attr('data-long');
+							params.accessible		= 'Y';
+							params.bldg				= ambiarc.buildingId;
+							params.floor			= $(this).attr('data-floorid');
+							params.action			= 'doAccessibilityThing';
+							params.lat					= $(this).attr('data-lat');
+							params.lon					= $(this).attr('data-long');
+
+							params.accessLat			= $(this).attr('data-acclat');
+							params.accessLon			= $(this).attr('data-acclong');
+
+							params.bldgLat			= $(this).attr('data-bldglat');
+							params.bldgLon			= $(this).attr('data-bldglong');
+
 							params.heightAboveFloor = zoom;
-							params.rotation		= rotation;
-							//delete params.floor	;
+							params.rotation			= rotation;
 
 							fetchPoisFromApi(params);
 

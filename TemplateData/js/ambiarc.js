@@ -56,13 +56,6 @@
         mapLabelInfo: maplLabelInfo
       });
 
-		//   console.log(' ');
-		//   console.log('createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel BEGIN');
-		// 	console.log(idCallback);
-		// 	console.log(json);
-		//   console.log('createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel createMapLabel END');
-		//   console.log(' ');
-
       gameInstance.SendMessage('Ambiarc', 'CreateMapLabel', json);
     };
 

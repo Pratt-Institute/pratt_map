@@ -176,7 +176,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 
 					//alert(legendType);
 					//console.log(ambiarc);
-					createPointLabel(buildingId,floorId);
+					//createPointLabel(buildingId,floorId);
 
 				}
 			} catch(err) { console.log(err) }
@@ -212,7 +212,12 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 			} catch(err) { console.log(err) }
 
 			try {
-				var bId = bldgMap[floorId].buildingId;
+
+				if (floorId != '') {
+					var bId = bldgMap[floorId].buildingId;
+				} else {
+					var bId = buildingId;
+				}
 
 				var copyArr = prattCopy[bId].split(' ');
 				//console.log(copyArr);
@@ -283,6 +288,34 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 
 			//alert('popMapLegend ' + recordId);
 
+			/// last chance fill the legend with generic building info
+			setTimeout(function(){
+				var isLegendFilled = $('.bldgName').html();
+
+				if (isLegendFilled.length < '1') {
+
+					try {
+						var bldgName = hallMap[buildingId].bldg_name;
+
+						if (bldgName == 'Steuben Hall/Pratt Studios') {
+							bldgName = 'Steuben Hall &<br>Pratt Studios';
+						}
+
+						if (bldgName.length > '1') {
+							$('.bldgName').html(bldgName);
+
+							var imgBldg = '<img src="images/buildings/'+buildingId+'.jpg">'
+							var imgAccs = '<img class="access" src="images/buildings/'+buildingId+'.png">'
+							$('.legend-building').html(imgBldg);
+							//$('.legend-access').html(imgAccs);
+							$('.legend-copy').prepend(imgAccs);
+
+						}
+					} catch(err) { console.log(err) }
+
+				}
+
+			},100);
 
 			setTimeout(function(){
 				var isLegendFilled = $('.bldgName').html();
@@ -292,7 +325,9 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				} else {
 					$('.legend').removeClass('showlegend');
 				}
-			},125);
+			},200);
+
+			//ambiarc.keepFloorId = ambiarc.floorId;
 
 			setTimeout(function(){
 

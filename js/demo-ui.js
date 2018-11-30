@@ -415,7 +415,7 @@ var processAndRun = function(params) {
  	try { console.log('params');console.log(params); } catch(err) { console.log(err) }
  	try { console.log('poiMap');console.log(poiMap); } catch(err) { console.log(err) }
 // 	try { console.log('bldgMap');console.log(bldgMap); } catch(err) { console.log(err) }
-// 	try { console.log('hallMap');console.log(hallMap); } catch(err) { console.log(err) }
+ 	try { console.log('hallMap');console.log(hallMap); } catch(err) { console.log(err) }
  	try { console.log('ambiarc.poiStuff');console.log(ambiarc.poiStuff); } catch(err) { console.log(err) }
  	console.log('========================================== end');
 
@@ -492,16 +492,51 @@ var processAndRun = function(params) {
 			if (keepId) {
 				var buildLat = ambiarc.poiStuff[keepId].latitude;
 				var buildLon = ambiarc.poiStuff[keepId].longitude;
+				var bldg_name = ambiarc.poiStuff[keepId].bldgName;
 			}
 		} catch(err) { console.log(err) }
 
-		ambiarc.focusOnLatLonAndZoomToHeight('', '', params.lat, params.lon, params.heightAboveFloor);
+
+
+
+// 		var createObj = {};
+// 		createObj.latitude =					buildLat
+// 		createObj.longitude =					buildLon
+// 		createObj.label =						bldg_name
+// 		createObj.showOnCreation =				true
+// 		createObj.type =						'IconWithText'
+// 		createObj.location =					'URL'
+// 		createObj.partialPath =					'images/icons/ic_building.png'
+// 		createObj.collapsedIconLocation =		'URL'
+// 		createObj.collapsedIconPartialPath =	'images/icons/ic_building.png'
+// 		createObj.ignoreCollision =				true
+//
+// 		createTextIcon(createObj);
+
+		var createObj = {};
+		createObj.latitude =					params.bldgLat
+		createObj.longitude =					params.bldgLon
+		createObj.label =						bldg_name
+		createObj.showOnCreation =				true
+		createObj.type =						'IconWithText'
+		createObj.location =					'URL'
+		createObj.partialPath =					'images/icons/ic_building.png'
+		createObj.collapsedIconLocation =		'URL'
+		createObj.collapsedIconPartialPath =	'images/icons/ic_building.png'
+		createObj.ignoreCollision =				true
+
+		createTextIcon(createObj);
+
+
+
+		ambiarc.focusOnLatLonAndZoomToHeight('', '', params.accessLat, params.accessLon, params.heightAboveFloor);
 
 		var obj = {};
 		obj.label = 'Accessible Entrance';
 		obj.showOnCreation = true;
 		obj.ignoreCollision = true;
 		ambiarc.updateMapLabel(keepId, 'IconWithText', obj);
+
 
 		setTimeout(function(){
 
@@ -514,54 +549,29 @@ var processAndRun = function(params) {
 
 				ambiarc.UpdateHandicapLevel('None');
 
-				/// skip some buildings for now Myrtle and Higgins
-				if (ambiarc.buildingId != '0004z' && ambiarc.buildingId != '0024z') {
+				if (ambiarc.buildingId == '0024') {
+					// don't do the path
+				} else {
 
 					setTimeout(function(){
 
 						allowFloorEvent = false;
-
-						ambiarc.getDirections('', '', 40.691163, -73.963597, '', '', params.accessLat, params.accessLon, function(res){
-							console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
+						console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
+						console.log(keepId + ' - ' + params.bldg + ' - ' + params.floor);
+						ambiarc.getDirections('', '', 40.690354, -73.964872, '', '', params.accessLat, params.accessLon, function(res){
+						//ambiarc.getDirections('', '', 40.691163, -73.963597, params.bldg, params.floor, '', '', function(res){
+						//ambiarc.getDirections('0007', '0033', '', '', params.bldg, params.floor, '', '', function(res){
 							console.log(res);
-							console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
 						});
+						console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
 
-						// 	setTimeout(function(){
-						//
-						// 		allowFloorEvent = false;
-						//
-						// 		ambiarc.focusOnMapLabel(keepId, 200);
-						//
-						// 		setTimeout(function(){
-						//
-						// 			allowFloorEvent = false;
-						//
-						// 			//ambiarc.focusOnFloor(ambiarc.buildingId, ambiarc.floorId, 400, 1, 1);
-						//
-						// 			setTimeout(function(){
-						//
-						// 				allowFloorEvent = false;
-						//
-						// 				ambiarc.getDirections('', '', params.lat, params.lon, '', '', winLat, winLon, function(res){
-						// 					console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
-						// 					console.log(res);
-						// 					console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
-						// 				});
-						//
-						// 			},2000);
-						//
-						// 		},2000);
-						//
-						// 	},2000);
-
-					},2000);
-
+					},1000);
 				}
 
 			},1000);
 
 		},1000);
+
 	}
 }
 
@@ -712,26 +722,16 @@ var focusAfterDataLoad = function(itemId) {
 // Creates an Text + Icon on the map where the current mouse position is
 var createTextIcon = function (mapLabelInfo) {
 
-	//alert('createTextIcon');
-
-	//console.log(mapLabelInfo);
-	//console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
-	if(currentBuildingId == undefined){
+	if (typeof currentBuildingId == undefined){
 		mapLabelInfo.outside = true;
 	}
 
 	ambiarc.createMapLabel('IconWithText', mapLabelInfo, (labelId) => {
-
-		//console.log("**** "+labelId);
-
 		poiMap.push(labelId);
-
 		//mapLabelCreatedCallback(labelId, mapLabelInfo.label, mapLabelInfo);
 	});
-
 };
 
 // var repositionLabel = function(currentLabelId){

@@ -178,6 +178,8 @@ var BuildingExitCompleted = function(event) {
 	$('#back-button').hide();
 	$('.reset-map').removeClass('reset-show');
 
+	//allowFloorEvent = true
+
 }
 
 var onFloorSelected = function(event) {
@@ -188,7 +190,7 @@ var onFloorSelected = function(event) {
 
 	doPauseTour();
 
-	//alert('onFloorSelected');
+	console.log('onFloorSelected');
 
 	console.log('onFloorSelected');
 	console.log(event);
@@ -224,7 +226,7 @@ var onEnteredFloorSelector = function(event) {
 
 	doPauseTour();
 
-	//alert('onEnteredFloorSelector');
+	console.log('onEnteredFloorSelector');
 
 	//alert('onEnteredFloorSelector');
 	console.log('onEnteredFloorSelector');
@@ -237,6 +239,10 @@ var onEnteredFloorSelector = function(event) {
 
 	currentMapStatus = 'isFloorSelectorEnabled = true';
 
+	ambiarc.buildingId = buildingId;
+	ambiarc.floorId = '';
+	popMapLegend(250);
+
 }
 
 var onExitedFloorSelector = function(event) {
@@ -245,13 +251,14 @@ var onExitedFloorSelector = function(event) {
 
 	doPauseTour();
 
-	//alert('onExitedFloorSelector');
+	console.log('onExitedFloorSelector');
 
 	console.log('onExitedFloorSelector');
 	console.log(event.detail);
 	var buildingId = event.detail;
 	currentFloorId = undefined;
 	buildingId = undefined; /// from the new SDK looks wrong but we'll try it
+
 	isFloorSelectorEnabled = false;
 
 	currentMapStatus = 'isFloorSelectorEnabled = false';
@@ -284,6 +291,8 @@ var onFloorSelectorFocusChanged = function(event) {
 		popMapLegend(125);
 
 	}
+
+	//allowFloorEvent = true;
 
 }
 
