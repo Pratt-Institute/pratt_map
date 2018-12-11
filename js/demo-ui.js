@@ -76,7 +76,7 @@ var resetMap = function() {
 		ambiarc.viewFloorSelector(mainBldgID,0);
 	}
 
-	clearMapLegend();
+	clearMapLegend('demo 79');
 	ambiarc.menuAction = 'no';
 
 };
@@ -158,7 +158,7 @@ var iframeLoaded = function() {
 }
 
 var doTourLoop = function() {
-	return;
+	//return;
 	var i = 1;
 	$('.buildings.oncamp').each(function(){
 		if ( $(this).closest('div').hasClass('accessibility') ) {
@@ -249,7 +249,7 @@ var buildingLabelUpdate = function(bldgId, labelId) {
 
 var fetchPoisFromApi = function(params) {
 
-	clearMapLegend();
+	clearMapLegend('demo 252');
 	hideAllLabels();
 	deleteAllLabels();
 
@@ -353,6 +353,7 @@ var fetchPoisFromApi = function(params) {
 						s['roomNo']			= v.user_properties.roomNo;
 						s['gkDisplay']		= v.user_properties.gkDisplay;
 						s['gkDepartment']	= v.user_properties.gkDepartment;
+						s['floorId']		= v.properties.floorId;
 						s['roomName']		= v.properties.label;
 						s['latitude']		= v.geometry.coordinates[1];
 						s['longitude']		= v.geometry.coordinates[0];
@@ -477,12 +478,12 @@ var processAndRun = function(params) {
 
 	if (params.action == 'focusOutdoorPoint') {
 		ambiarc.showMapLabel(itemId, true);
-		popMapLegend(2000,'demo.js 434');
+		popMapLegend(2000,'demo.js 480');
 	}
 
 	if (params.action == 'showFloorInfo') {
 		setTimeout(function(){
-			popMapLegend();
+			popMapLegend('','demo.js 485');
 		},1);
 	}
 
@@ -495,9 +496,6 @@ var processAndRun = function(params) {
 				var bldg_name = ambiarc.poiStuff[keepId].bldgName;
 			}
 		} catch(err) { console.log(err) }
-
-
-
 
 // 		var createObj = {};
 // 		createObj.latitude =					buildLat
@@ -527,8 +525,6 @@ var processAndRun = function(params) {
 
 		createTextIcon(createObj);
 
-
-
 		ambiarc.focusOnLatLonAndZoomToHeight('', '', params.accessLat, params.accessLon, params.heightAboveFloor);
 
 		var obj = {};
@@ -537,36 +533,40 @@ var processAndRun = function(params) {
 		obj.ignoreCollision = true;
 		ambiarc.updateMapLabel(keepId, 'IconWithText', obj);
 
-
 		setTimeout(function(){
 
 			ambiarc.showMapLabel(keepId, true);
-			popMapLegend(2000,'demo.js 491');
 
 			setTimeout(function(){
 
 				ambiarc.setCameraRotation(rotation, 0);
 
-				ambiarc.UpdateHandicapLevel('None');
+				popMapLegend(1000,'demo.js 543');
 
-				if (ambiarc.buildingId == '0024') {
+				//ambiarc.UpdateHandicapLevel('None');
+
+				//	if (ambiarc.buildingId == '0024') {
 					// don't do the path
-				} else {
+				//	} else {
 
-					setTimeout(function(){
+					//	setTimeout(function(){
 
-						allowFloorEvent = false;
-						console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
-						console.log(keepId + ' - ' + params.bldg + ' - ' + params.floor);
-						ambiarc.getDirections('', '', 40.690354, -73.964872, '', '', params.accessLat, params.accessLon, function(res){
-						//ambiarc.getDirections('', '', 40.691163, -73.963597, params.bldg, params.floor, '', '', function(res){
-						//ambiarc.getDirections('0007', '0033', '', '', params.bldg, params.floor, '', '', function(res){
-							console.log(res);
-						});
-						console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
+						//	ambiarc.setCameraRotation(rotation, 0);
 
-					},1000);
-				}
+						//	ambiarc.focusOnLatLonAndZoomToHeight('', '', params.accessLat, params.accessLon, 30);
+
+						//	allowFloorEvent = false;
+						// 	console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
+						// 	console.log(keepId + ' - ' + params.bldg + ' - ' + params.floor);
+						// 	ambiarc.getDirections('', '', 40.690354, -73.964872, '', '', params.accessLat, params.accessLon, function(res){
+						// 	//ambiarc.getDirections('', '', 40.691163, -73.963597, params.bldg, params.floor, '', '', function(res){
+						// 	//ambiarc.getDirections('0007', '0033', '', '', params.bldg, params.floor, '', '', function(res){
+						// 		console.log(res);
+						// 	});
+						// 	console.log(' getDirections getDirections getDirections getDirections getDirections getDirections getDirections ');
+
+					//	},1000);
+				//	}
 
 			},1000);
 
@@ -597,8 +597,8 @@ var zoomInHandler = function(){
 	ambiarc.zoomCamera(0.5, 0.3);
 };
 /// added functions /////////////////////////////////////////////////////////////////////
-var clearMapLegend = function() {
-	console.log('clearMapLegend');
+var clearMapLegend = function(src) {
+	console.log('clearMapLegend ' + src);
 	$('.showlegend').removeClass('showlegend').promise().then(function(){
 		setTimeout(function(){
 			$('.bldgName').html('');
@@ -699,18 +699,18 @@ var focusAfterDataLoad = function(itemId) {
 			//ambiarc.floorId = '';
 			//ambiarc.roomName = '';
 			//alert('this one');
-			popMapLegend(2500,'demo.js 634');
+			popMapLegend(2500,'demo.js 701');
 		} catch(err) {
 			console.log(err);
 		}
 
-		try {
-			setTimeout(function(){
-				window.doFloorSelected = true;
-			}, 3000);
-		} catch(err) {
-			console.log(err);
-		}
+		// 	try {
+		// 		setTimeout(function(){
+		// 			window.doFloorSelected = true;
+		// 		}, 3000);
+		// 	} catch(err) {
+		// 		console.log(err);
+		// 	}
 
 	} else {
 

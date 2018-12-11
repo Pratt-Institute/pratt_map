@@ -313,9 +313,9 @@ class DbTools {
 						$level = '';
 					}
 
-					if (strlen($record['bldg_name'])>4) {
-						$record['bldg_name'] = ucwords(strtolower($record['bldg_name']));
-					}
+					//if (strlen($record['bldg_name'])>4) {
+					//	$record['bldg_name'] = ucwords(strtolower($record['bldg_name']));
+					//}
 
 					$type = ucwords($type);
 
@@ -594,8 +594,8 @@ class DbTools {
 
 					$name = trim($record['bldg_name']).' - '.$point;
 
-					$name = strtolower($name);
-					$name = ucwords($name);
+					//$name = strtolower($name);
+					//$name = ucwords($name);
 
 					$out[$name] = "<span
 						class=\"fly-box ".$camploc."\"
@@ -760,45 +760,7 @@ class DbTools {
 						$record['bldg_name'] = 'Pratt Manhattan';
 					}
 
-					$record['bldg_name'] = strtoupper(trim($record['bldg_name']));
-
-					//if ($record['on_off_campus'] == 'ON' && ( strlen(trim($record['latitude'])) > '11' || $value['gk_department'] != '') ) {
-					// 	if ($record['on_off_campus'] == 'ON' && strlen(trim($record['latitude'])) > '11') {
-					//
-					// 		$pointArr = array();
-					//
-					// 		if ($value['gk_department'] != '') {
-					// 			$pointArr = explode(',',$value['gk_department']);
-					// 		} else {
-					// 			$pointArr[] = $record['room_name'];
-					// 		}
-					//
-					// 		foreach($pointArr as $point) {
-					//
-					// 			//$i = $record['bldg_abbre'].$point;
-					//
-					// 			$rooms[] = '<li id="'.$record['id'].'"
-					// 				data-id="'.$record['id'].'"
-					// 				data-building="'.$record['bldg_abbre'].'"
-					// 				data-floorid="'.$record['gk_floor_id'].'"
-					// 				data-recordId="'.$record['id'].'"
-					// 				data-lat="'.$record['latitude'].'"
-					// 				data-long="'.$record['longitude'].'"
-					// 				data-hasimage="'.$imgAttr.'"
-					// 				class="hidden list-group-item '.$imgUrl.' '.$has_image.'">';
-					//
-					// 			if ($record['bldg_abbre'] == 'SG') {
-					// 				//$rooms[] = '<div class="li-col li-sculpture '.$camploc.'"><span>'.$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist'].'</span></div>';
-					// 			} else {
-					// 				$rooms[] = '<div class="li-col li-label '.$camploc.'"><span class="list-group-point">'.$point.'</span></div>';
-					// 				$rooms[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_name'].'</span></div>';
-					// 				//$rooms[$i] = '<div class="li-col li-floor '.$camploc.'"><span>'.$record['floor'].'</span></div>';
-					// 				//$rooms[$i] = '<div class="li-col li-room '.$camploc.'"><span>'.$room_number.'</span></div>';
-					// 				$rooms[] = '</li>';
-					// 			}
-					// 		}
-					// 	}
-
+					//$record['bldg_name'] = strtoupper(trim($record['bldg_name']));
 
 					# assemble building menu info here
 					$bldgs[$record['bldg_name']]['name'] = $record['bldg_name'];
@@ -812,17 +774,6 @@ class DbTools {
 					$bldgs[$record['bldg_name']]['on_off_campus'] = $record['on_off_campus'];
 
 					@$bldg_map[$record['bldg_abbre']] = $record['gk_bldg_id'];
-
-					// 	if (trim($record['gk_department'])!='') {
-					// 		$dept_exp = explode(',',$record['gk_department']);
-					// 		foreach($dept_exp as $dept) {
-					// 			$dept = trim($dept);
-					// 			if ($dept != '') {
-					// 				$office_list[$dept] = $dept;
-					// 				$offs[$dept] = "<span  class=\"fly-box $camploc\"  data-recordid=\"".$record['id']."\"  data-bldg=\"".$record['bldg_abbre']."\"  data-floorid=\"".$record['gk_floor_id']."\"  data-cat=\"office\"  data-dept=\"$dept\"  data-office=\"$dept\"  data-roomno=\"$room_number\">$dept</span>";
-					// 			}
-					// 		}
-					// 	}
 
 					$record['gk_school']		= trim($record['gk_school']);
 					$record['gk_department']	= trim($record['gk_department']);
@@ -841,9 +792,6 @@ class DbTools {
 
 						foreach($schl_exp as $gkschl) {
 
-							//$gkschl = trim($gkschl);
-
-							//if ($gkschl == 'research and centers' || $gkschl == 'continuing and professional studies' || $gkschl == 'information') {
 							if ($gkschl == 'research and centers') {
 								continue;
 							}
@@ -893,8 +841,8 @@ class DbTools {
 				@ksort($bldgs);
 				foreach($bldgs as $bldg_name=>$bldg_stuff){
 
-					$bldg_name = strtolower($bldg_name);
-					$bldg_name = ucwords($bldg_name);
+					//$bldg_name = strtolower($bldg_name);
+					//$bldg_name = ucwords($bldg_name);
 
 					if ($bldg_stuff['gk_bldg_id'] == '0001') {
 						$bldg_name = 'ISC';
@@ -1034,9 +982,9 @@ class DbTools {
 						$record['bldg_name'] = 'Higgins Hall';
 					}
 
-					if (strlen(trim($record['bldg_name'])) > 3) {
-						$record['bldg_name']	= ucwords(strtolower(trim($record['bldg_name'])));
-					}
+					//if (strlen(trim($record['bldg_name'])) > 3) {
+					//	$record['bldg_name']	= ucwords(strtolower(trim($record['bldg_name'])));
+					//}
 
 					$record['room_name']	= ucwords(strtolower(trim($record['room_name'])));
 
@@ -1090,11 +1038,11 @@ class DbTools {
 						continue;
 					}
 
-					if (trim($record['bldg_name']) == 'HIGGINS') {
-						$record['bldg_name'] = 'Higgins Hall';
-					}
+					//if (trim($record['bldg_name']) == 'HIGGINS') {
+					//	$record['bldg_name'] = 'Higgins Hall';
+					//}
 
-					$record['bldg_name']	= ucwords(strtolower(trim($record['bldg_name'])));
+					//$record['bldg_name']	= ucwords(strtolower(trim($record['bldg_name'])));
 					$record['room_name']	= ucwords(strtolower(trim($record['room_name'])));
 					$record['floor']		= strtolower(trim($record['floor']));
 

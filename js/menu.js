@@ -18,7 +18,7 @@
 
 			console.log('loadUiFunctions');
 
-			window.doFloorSelected	= true;
+			//window.doFloorSelected	= true;
 			window.tourIsRunning	= false;
 			window.pauseTour		= false;
 			window.overhead			= false;
@@ -63,11 +63,11 @@
 
 			$(document).on("click", "li.list-group-item, span.fly-sculp", function(e){
 
-				clearMapLegend();
+				clearMapLegend('menu 66');
 				ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'yes';
 
-				window.doFloorSelected = false;
+				//window.doFloorSelected = false;
 
 				var personAttr = $(this).attr('data-person');
 
@@ -87,7 +87,7 @@
 					window.winLon = $(this).attr('data-long');
 					ambiarc.focusOnLatLonAndZoomToHeight(ambiarc.building, '', ambiarc.lat, ambiarc.lon, '75');
 
-					popMapLegend(2500);
+					popMapLegend(2500,'menu.js 90');
 
 					return true;
 
@@ -165,7 +165,8 @@
 
 				$('.reveal-horz').removeClass('reveal-horz');
 				var pos = $(this).closest('div').position();
-				var maxHei = parseInt($(window).height());
+				//var maxHei = parseInt($(window).height());
+				var maxHei = parseInt($(document).height());
 				var type = $(this).attr('data-type');
 
 				$('div.'+type).css({'maxHeight':maxHei});
@@ -191,6 +192,7 @@
 			$(document).on('click touch touchstart touchend', '.click-capture', function() {
 				ambiarc.menuAction = 'no';
 				$('.showpopmap').removeClass('showpopmap');
+				console.log('~~collapseMenus~~');
 				collapseMenus();
 			});
 
@@ -275,7 +277,7 @@
 					return false;
 				}
 
-				clearMapLegend();
+				clearMapLegend('menu 280');
 
 				var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'yes';
@@ -285,7 +287,7 @@
 					winLon = $(this).attr('data-long');
 				}
 
-				window.doFloorSelected = false;
+				//window.doFloorSelected = false;
 
 				$('.subfly').removeClass('reveal-horz');
 				var pos = $(this).closest('div').position();
@@ -430,7 +432,7 @@
 
 							ambiarc.focusOnLatLonAndZoomToHeight(ambiarc.buildingId, '', winLat, winLon, '125');
 
-							popMapLegend(2000);
+							popMapLegend(2000,'menu.js 433');
 
 						}
 
@@ -659,7 +661,7 @@
 
 	function doPauseTour() {
 
-		return true;
+		//return true;
 
 		try {
 			clearTimeout(unsetPause);
@@ -800,10 +802,11 @@
 				ambiarc.roomName = '63 Flushing Ave<br>bldg. 280 ste. 515<br>Brooklyn, NY 11205';
 			}
 
-			popMapLegend();
+			popMapLegend('','menu.js 803');
 
 			$('div.map-'+bldg).addClass('showpopmap');
 		});
+		console.log('~~collapseMenus~~');
 		collapseMenus();
 	}
 
@@ -836,11 +839,12 @@
 		$("input.filter").val('');
 		$(".list-group-item").addClass("hidden");
 
-		console.log('collapseMenus');
+		console.log('::collapseMenus::');
+
 		setTimeout(function(){
-			$('.subfly').animate({width: '0px', opacity: 0}).promise().then(function(){
-				$('.subfly').removeClass('reveal-horz').promise().then(function(){
-					setTimeout(function(){ $('.subfly').removeAttr('style'); }, 1);
+			//$('.subfly').animate({width: '0px', opacity: 0}).promise().then(function(){
+				//$('.subfly').removeClass('reveal-horz').promise().then(function(){
+					//setTimeout(function(){ $('.subfly').removeAttr('style'); }, 1);
 					$('.flyout').animate({width: '0px', opacity: 0}).promise().then(function(){
 						setTimeout(function(){
 							$('.flyout').removeAttr('style');
@@ -854,8 +858,8 @@
 							}, 125);
 						});
 					});
-				});
-			});
+				//});
+			//});
 		}, 125);
 	}
 
@@ -867,24 +871,13 @@
 
 		var filter = $("input.filter").val();
 
-		//$(".list-group-point").not(":containsi('" + filter + "')").closest('li').addClass("hidden");
-
 		$(".list-group-item").not(":containsi('" + filter + "')").closest('li').addClass("hidden");
 
-		//$(".list-group-point:containsi('" + filter + "')").closest('li').removeClass("hidden");
-
 		$(".list-group-item:containsi('" + filter + "')").closest('li').removeClass("hidden");
-
-		// 	var building = $("select.menu-buildings").val();
-		// 	if(building != "") {
-		// 		$(".list-group-item[data-building!='"+building+"']").addClass("hidden");
-		// 	}
 
 		if (filter.length == '0') {
 			$(".list-group-item").addClass("hidden");
 		}
-
-		//var maxHei = parseInt($(window).height()-90);
 
 		$('div.search-list').css({
 			'max-height':parseInt($(window).height()-80),

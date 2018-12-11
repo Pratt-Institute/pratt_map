@@ -30,101 +30,22 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 		var sculptureName	= ambiarc.sculptureName;
 		var sculptureArtist	= ambiarc.sculptureArtist;
 
-		// 	var bldgName1 = '';
-		// 	var bldgName2 = '';
-		//
-		// 	try {
-		// 		bldgName1 = bldgMap[floorId].bldg_name;
-		// 	} catch(err) { console.log(err) }
-		// 	try {
-		// 		bldgName2 = ambiarc.poiStuff[ambiarcId].bldgName;
-		// 	} catch(err) { console.log(err) }
-		//
-		// 	if (bldgName1 == '' && bldgName2 == '' && sculptureName == '') {
-		// 		return true;
-		// 	}
-
-		//alert('one ' + floorId);
+		//alert(floorId + '  ' + src);
 
 		document.scheduleLegend = setTimeout(function(){
 
-			//alert('two ' + floorId);
-
 			var now = Date.now();
-
-			/* TODO floorId getting unset somewhere */
-			// 	if (typeof floorId == 'undefined' && typeof ambiarc.floorIdExtra != 'undefined') {
-			// 		floorId = ambiarc.floorIdExtra;
-			// 	}
-
-			// 	console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-			// 	console.log('pointLable ' + pointLable);
-			// 	console.log('ambiarcId ' + ambiarcId);
-			// 	console.log('buildingId ' + buildingId);
-			// 	console.log('floorId ' + floorId);
-			// 	console.log('doFloorSelected ' + doFloorSelected);
-			// 	console.log('legendType ' + legendType);
-			// 	console.log('isFloorSelectorEnabled ' + isFloorSelectorEnabled);
-			// 	console.log(bldgMap);
-			// 	console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-
-			//alert('hello');
 
 			try {
 				$('img.access').remove();
-				//var imgBldg = '<img src="images/buildings/'+bldgMap[floorId].buildingId+'.jpg?time='+now+'">'
-				//var imgAccs = '<img class="access" src="images/buildings/'+bldgMap[floorId].buildingId+'.png?time='+now+'">'
 				var imgBldg = '<img src="images/buildings/'+bldgMap[floorId].buildingId+'.jpg">'
 				var imgAccs = '<img class="access" src="images/buildings/'+bldgMap[floorId].buildingId+'.png">'
 				$('.legend-building').html(imgBldg);
-				//$('.legend-access').html(imgAccs);
 				$('.legend-copy').prepend(imgAccs);
 			} catch(err) {
 				console.log(err)
 				$('div.legend-img-building').html('');
 			}
-
-			// 	try {
-			// 		var bldgId = '';
-			// 		if (typeof buildingId != 'undefined' && buildingId > '0') {
-			// 			var bldgId = buildingId;
-			// 		}
-			// 		if (typeof floorId != 'undefined' && floorId > '0') {
-			// 			var bldgId = bldgMap[floorId].buildingId;
-			// 		}
-			// 		sprt = [];
-			// 		sprt['0001'] = '-200px -1106px';
-			// 		sprt['0002'] = '-165px -1476px';
-			// 		sprt['0003'] = '-191px -1848px';
-			// 		sprt['0004'] = '-189px -2236px';
-			// 		sprt['0005'] = '-511px -1086px';
-			// 		sprt['0006'] = '-520px -1274px';
-			// 		sprt['0007'] = '-520px -1274px';
-			// 		sprt['0008'] = '-520px -1274px';
-			// 		sprt['0009'] = '-573px -1362px';
-			// 		sprt['0010'] = '-451px -1420px';
-			// 		sprt['0011'] = '-441px -1756px';
-			// 		sprt['0012'] = '-411px -1850px';
-			// 		sprt['0013'] = '-511px -1858px';
-			// 		sprt['0014'] = '-849px -738px';
-			// 		sprt['0015'] = '-851px -1278px';
-			// 		sprt['0016'] = '-851px -1278px';
-			// 		sprt['0017'] = '-851px -1278px';
-			// 		sprt['0018'] = '-871px -1788px';
-			// 		sprt['0019'] = '-1245px -432px';
-			// 		sprt['0021'] = '-1171px -1528px';
-			// 		sprt['0022'] = '-1467px -1292px';
-			// 		sprt['0023'] = '-1477px -1588px';
-			// 		sprt['0024'] = '-853px -384px';
-			// 		if (sprt[bldgId] == '') {
-			// 			$('div.legend-img-accessibility').hide();
-			// 		} else {
-			// 			$('div.legend-img-accessibility').show();
-			// 			$('div.legend-img-accessibility').css({'background-position': sprt[bldgId] });
-			// 		}
-			// 	} catch(err) {
-			// 		console.log(err)
-			// 	}
 
 			try {
 				if (recordId > '1' && hasImage == 'Y') {
@@ -134,7 +55,6 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				}
 			} catch(err) {
 				console.log(err)
-				//$('div.legend-img-sculpture').html('');
 			}
 
 			try {
@@ -173,19 +93,13 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				if (legendType != 'menuBuilding') {
 					$('.floorNo').html(bldgMap[floorId].floor + ' floor');
 				} else {
-
 					//alert(legendType);
-					//console.log(ambiarc);
-					//createPointLabel(buildingId,floorId);
-
 				}
 			} catch(err) { console.log(err) }
 
 			try {
 				$('.floorNo').html(ambiarc.poiStuff[ambiarcId].floorNo + ' floor');
 			} catch(err) { console.log(err) }
-
-			//console.log('floorId '+floorId + ' -- ambiarcId ' + ambiarcId + ' -- recordId ' + recordId);
 
 			try {
 				if (legendType != 'menuBuilding') {
@@ -220,7 +134,6 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				}
 
 				var copyArr = prattCopy[bId].split(' ');
-				//console.log(copyArr);
 				$.each(copyArr, function(k, v) {
 					if (v.indexOf(':') != -1) {
 						copyArr[k] = '<br><span class="copy-bold">'+v+'</span>';
@@ -240,9 +153,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 
 			if (pointLable == 'PPS' || pointLable == 'GATE') {
 				var imgBldg = '<img src="images/buildings/'+pointLable+'.png">'
-				//var imgAccs = '<img class="access" src="images/buildings/'+bldgMap[floorId].buildingId+'.png">'
 				$('.legend-building').html(imgBldg);
-				//$('.legend-copy').prepend(imgAccs);
 				$('.bldgName').html(sculptureName);
 				$('.roomName').html(roomName);
 				$('.floorNo').html('');
@@ -252,23 +163,8 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				if (person != '') {
 
 					var floorIdPerson = hallMap[building].floorId
-					//alert('three '+floorId);
-
-					//console.log(hallMap[building]);
-
-					//alert(hallMap[building].floor);
-
-					// 	ambiarc.building = $(this).attr('data-building');
-					// 	ambiarc.dept = $(this).attr('data-dept');
-					// 	ambiarc.title = $(this).attr('data-title');
-					// 	ambiarc.phone = $(this).attr('data-phone');
-					// 	ambiarc.office = $(this).attr('data-office');
-					// 	ambiarc.email = $(this).attr('data-email');
-
 					var imgBldg = '<img src="images/buildings/'+building+'.jpg">'
 					$('.legend-building').html(imgBldg);
-
-					//alert(building + ' - ' + hallMap[building].bldg_name);
 
 					$('.bldgName').html(hallMap[building].bldg_name);
 					$('.roomName').html(person + '<br>' + title + '<br>' + dept + '<br>' + office);
@@ -277,16 +173,11 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				}
 			} catch(err) { console.log(err) }
 
-			//if ($('.bldgName').html() == '' && buildingId != '') {
 			if (legendType == 'offCampusPoint') {
 				var imgBldg = '<img src="images/buildings/'+floorId+'.jpg">'
-				//var imgAccs = '<img class="access" src="images/buildings/'+bldgMap[floorId].buildingId+'.png">'
 				$('.legend-building').html(imgBldg);
-				//$('.legend-copy').prepend(imgAccs);
 				$('.bldgName').html(buildingId);
 			}
-
-			//alert('popMapLegend ' + recordId);
 
 			/// last chance fill the legend with generic building info
 			setTimeout(function(){
@@ -307,7 +198,6 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 							var imgBldg = '<img src="images/buildings/'+buildingId+'.jpg">'
 							var imgAccs = '<img class="access" src="images/buildings/'+buildingId+'.png">'
 							$('.legend-building').html(imgBldg);
-							//$('.legend-access').html(imgAccs);
 							$('.legend-copy').prepend(imgAccs);
 
 						}
@@ -319,15 +209,12 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 
 			setTimeout(function(){
 				var isLegendFilled = $('.bldgName').html();
-				//console.log(isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' + isLegendFilled.length + ' %% ' )
 				if (isLegendFilled.length > '1') {
 					$('.legend').addClass('showlegend');
 				} else {
 					$('.legend').removeClass('showlegend');
 				}
 			},200);
-
-			//ambiarc.keepFloorId = ambiarc.floorId;
 
 			setTimeout(function(){
 

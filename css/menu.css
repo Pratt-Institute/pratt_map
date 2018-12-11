@@ -1,6 +1,5 @@
 
 
-
 .md-ripple {
 	overflow: hidden;
 	position: absolute;
@@ -24,9 +23,6 @@
   border-radius: 100%;
   z-index: 1;
 }
-
-
-
 
 div.click-capture {
 	position: absolute;
@@ -183,7 +179,7 @@ div.menu-category {
 }
 
 span.cat-box {
-	display: block;
+	/*display: block;*/
 	margin: 18px 30px;
 	pointer-events: auto;
 }
@@ -493,7 +489,6 @@ div.legend .copy-bold {
 }
 
 /* -------------------------------------------------------------------------------------- */
-
 
 .mode-button {
 	pointer-events: auto;

@@ -42,8 +42,27 @@ var mapLabelClickHandler = function(e) {
 
 	currentLabelId = e.detail;
 
-	resetMenus();
+	//resetMenus();
 	hidePopMap();
+
+	try {
+		params = {};
+		params.floor	= ambiarc.poiStuff[e.detail].floorId;
+		params.recordId	= ambiarc.poiStuff[e.detail].recordId;
+		params.action	= 'focusAfterDataLoad';
+		ambiarc.recordId = ambiarc.poiStuff[e.detail].recordId;
+		ambiarc.floorId = ambiarc.poiStuff[e.detail].floorId;
+	} catch(err) {
+		console.log(err)
+		params = false;
+	}
+
+	if (params) {
+		//alert('here');
+		clearMapLegend('events 62');
+		ambiarc.menuAction = 'yes';
+		fetchPoisFromApi(params);
+	}
 
 };
 
@@ -73,11 +92,11 @@ var runMapLoad = function() {
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
-    //var full = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+(window.location.pathname ? window.location.pathname.substring(0,window.location.pathname.lastIndexOf("/")) : '');
-    //ambiarc.setMapAssetBundleURL(full+'/ambiarc/');
+    var full = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+(window.location.pathname ? window.location.pathname.substring(0,window.location.pathname.lastIndexOf("/")) : '');
+    ambiarc.setMapAssetBundleURL(full+'/ambiarc/');
     //ambiarc.loadMap("pratt");
     //var mapFolder = getMapName('map');
-    ambiarc.setMapAssetBundleURL('https://s3-us-west-1.amazonaws.com/gk-web-demo/ambiarc/');
+   // ambiarc.setMapAssetBundleURL('https://s3-us-west-1.amazonaws.com/gk-web-demo/ambiarc/');
     //ambiarc.loadMap(mapFolder);
     ambiarc.loadMap("pratt");
 
@@ -165,12 +184,12 @@ var BuildingExitCompleted = function(event) {
 	allowFullView = true;
 	//unDisableReset();
 
-	clearMapLegend();
+	//clearMapLegend('events 187');
 
 	//alert('BuildingExitCompleted'); // auto
 
-	//console.log('BuildingExitCompleted');
-	//console.log(event);
+	console.log('BuildingExitCompleted');
+	console.log(event);
 
 	currentFloorId = undefined;
 	currentBldgID = undefined;
@@ -241,7 +260,7 @@ var onEnteredFloorSelector = function(event) {
 
 	ambiarc.buildingId = buildingId;
 	ambiarc.floorId = '';
-	popMapLegend(250);
+	popMapLegend(250,'map-events.js 244');
 
 }
 
@@ -271,14 +290,49 @@ var onFloorSelectorFocusChanged = function(event) {
 
 	doPauseTour();
 
-	console.log('onFloorSelectorFocusChanged');
+
+	console.log('onFloorSelectorFocusChanged @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+
 	console.log(event.detail);
+
+	try { console.log('ambiarc.floorId ' + ambiarc.floorId + ' should be empty'); } catch(err) { console.log('ambiarc.floorId is empty'); }
+
+	try { console.log('ambiarc.recordId ' + ambiarc.recordId + ' should be empty'); } catch(err) { console.log('ambiarc.recordId is empty'); }
+
+	try { console.log('ambiarc.legendType ' + ambiarc.legendType + ' should be empty'); } catch(err) { console.log('ambiarc.legendType is empty'); }
+
+	try { console.log('ambiarc.ambiarcId ' + ambiarc.ambiarcId + ' should be empty'); } catch(err) { console.log('ambiarc.ambiarcId is empty'); }
+
+	try { console.log('allowFloorEvent ' + allowFloorEvent + ' should be true'); } catch(err) { }
+
+	console.log('onFloorSelectorFocusChanged @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
 	//clearTimeout(document.scheduleLegend);
 
-	if (event.detail.newFloodId > '0000' && ambiarc.floorId == '' && ambiarc.recordId == '' && ambiarc.legendType == '' && ambiarc.ambiarcId == '' && doFloorSelected) {
+	if (typeof ambiarc.floorId == 'undefined') {
+		ambiarc.floorId = '';
+	}
+	if (typeof ambiarc.recordId == 'undefined') {
+		ambiarc.recordId = '';
+	}
+	if (typeof ambiarc.legendType == 'undefined') {
+		ambiarc.legendType = '';
+	}
+	if (typeof ambiarc.ambiarcId == 'undefined') {
+		ambiarc.ambiarcId = '';
+	}
+
+	//alert(event.detail.newFloodId.length);
+
+	if (event.detail.newFloodId.length > '1' &&
+		ambiarc.floorId == '' &&
+		ambiarc.recordId == '' &&
+		ambiarc.legendType == '' &&
+		ambiarc.ambiarcId == '' &&
+		allowFloorEvent) {
 
 		console.log('onFloorSelectorFocusChanged '+ ambiarc.recordId);
 
@@ -286,9 +340,12 @@ var onFloorSelectorFocusChanged = function(event) {
 
 		//alert('onFloorSelectorFocusChanged');
 
-		ambiarc.floorId = event.detail.newFloodId;
+		//alert(ambiarc.floorId);
 
-		popMapLegend(125);
+		setTimeout(function(){
+			ambiarc.floorId = event.detail.newFloodId;
+			popMapLegend(125,'map-events.js 329');
+		},125);
 
 	}
 
@@ -304,22 +361,24 @@ var cameraStartedHandler = function(event){
 	allowFullView = false;
 	//unDisableReset();
 
+	console.log('~~collapseMenus~~');
 	collapseMenus();
 
 	console.log('cameraStartedHandler'); // auto
+	console.log(event.detail);
 
 	//clearTimeout(document.launchDestroyer);
 
 	//clearTimeout(document.scheduleLegend);
 
-	if (event.detail.indexOf('UNTRACKED') != -1) {
-		return false;
-	}
-	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-	if (typeof ambiarc.selectedPoiId != 'undefined') {
-		console.log('cameraStartedHandler');
-		console.log(event);
-	}
+	// 	if (event.detail.indexOf('UNTRACKED') != -1) {
+	// 		return false;
+	// 	}
+	// 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+	// 	if (typeof ambiarc.selectedPoiId != 'undefined') {
+	// 		console.log('cameraStartedHandler');
+	// 		console.log(event);
+	// 	}
 };
 
 var cameraCompletedHandler = function(event){
@@ -350,7 +409,7 @@ var cameraCompletedHandler = function(event){
 					console.log('do fetch from cameraCompletedHandler');
 					console.log('cameraCompletedHandler');
 					console.log(event);
-					console.log(event.detail + ' --- ' + doFloorSelected + ' --- ' + ambiarc.menuAction);
+					console.log(event.detail + ' --- ' + ambiarc.menuAction);
 					fetchPoisFromApi(params);
 				} else {
 					console.log('`````````````````````````````````````````````````````````````````');
@@ -363,6 +422,6 @@ var cameraCompletedHandler = function(event){
 
 	setTimeout(function(){
 		allowFloorEvent = true;
-	},5000);
+	},2500);
 
 };
