@@ -294,7 +294,11 @@
 
 	<div class="track"></div>
 
-	<!--<div class="debug"></div>-->
+	<div class="debug"></div>
+
+	<img class="compass" src="images/compass.png">
+
+	<!--<button class="ripple"></button>-->
 
 </body>
 

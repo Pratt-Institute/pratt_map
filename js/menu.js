@@ -8,7 +8,7 @@
 			ambiarc.ambiarcId	= '';
 			ambiarc.recordId	= '';
 			ambiarc.buildingId	= '';
-			ambiarc.floorId		= '';
+			ambiarc.floorId		= ''; // alert('menu 11');
 			ambiarc.roomName	= '';
 			ambiarc.hasImage	= '';
 			ambiarc.lat			= '';
@@ -28,7 +28,18 @@
 			window.winLon = '';
 
 			var pollMapStatus = setInterval(function(){
-				$('div.debug').html(currentMapStatus);
+
+				//$('div.debug').html(currentMapStatus);
+
+				ambiarc.getCameraRotation(function(rot){
+					//$('div.debug').html(rot);
+					//console.log(rot);
+
+					$('.compass').css({
+						//'transform': 'rotate('+ ((parseInt(rot)-10) * -1) +'deg)'
+						'transform': 'rotate('+ (parseInt(rot) * -1) +'deg)'
+					});
+				});
 			},125);
 
 			new materialTouch('.md-ripple', {
@@ -61,9 +72,25 @@
 				window.haltLoops = true;
 			});
 
+			$(document).on('click', '.compass', function(e) {
+				console.log('compass click');
+				console.log(e);
+				console.log(overhead);
+				if (overhead) {
+					ambiarc.ExitOverheadCamera();
+					overhead = false;
+				} else {
+					ambiarc.EnterOverheadCamera();
+					setTimeout(function(){
+						ambiarc.setCameraRotation(0, 0);
+					},500);
+					overhead = true;
+				}
+			});
+
 			$(document).on("click", "li.list-group-item, span.fly-sculp", function(e){
 
-				clearMapLegend('menu 66');
+				clearMapLegend('menu 93');
 				ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'yes';
 
@@ -102,7 +129,7 @@
 				ambiarc.recordId = $(this).attr('data-recordid');
 				//ambiarc.recordIdKeep = $(this).attr('data-recordid');
 				ambiarc.hasImage = $(this).attr('data-hasimage');
-				ambiarc.floorId = $(this).attr('data-floorid');
+				ambiarc.floorId = $(this).attr('data-floorid'); // alert('menu 132');
 
 				/* TODO find better way to id outdoor points */
 				if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS' || $(this).attr('data-building') == 'GATE') {
@@ -121,15 +148,18 @@
 						ambiarc.sculptureName = 'Campus Gate';
 					}
 
-					var winLat		= $(this).attr('data-lat');
-					var winLon		= $(this).attr('data-long');
+					winLat		= $(this).attr('data-lat');
+					winLon		= $(this).attr('data-long');
 					var heightAboveFloor = '50';
 
-					ambiarc.focusOnLatLonAndZoomToHeight('', '', winLat, winLon, heightAboveFloor);
+					/// focusing on a point is hard?
+
 
 					params.action = 'focusOutdoorPoint';
 
 					if ($(this).attr('data-building') == 'SG') {
+						//alert('here');
+						//ambiarc.setCameraRotation(45, 0);
 
 						var sculpture = $(this).attr('data-value');
 						var split = sculpture.split(' :: ');
@@ -352,7 +382,7 @@
 						ambiarc.legendType		= 'menuBuilding';
 						ambiarc.ambiarcId		= '';
 						ambiarc.buildingId		= $(this).attr('data-buildingid');
-						ambiarc.floorId			= $(this).attr('data-floorid');
+						ambiarc.floorId			= $(this).attr('data-floorid'); // alert('menu 382');
 						ambiarc.roomName		= '';
 						ambiarc.roomNo			= '';
 						ambiarc.lat				= $(this).attr('data-lat');
@@ -418,6 +448,10 @@
 							params.accessLat			= $(this).attr('data-acclat');
 							params.accessLon			= $(this).attr('data-acclong');
 
+							console.log('this this this this this this this this this this this this this this this this ');
+							console.log(this);
+							console.log('this this this this this this this this this this this this this this this this ');
+
 							params.bldgLat			= $(this).attr('data-bldglat');
 							params.bldgLon			= $(this).attr('data-bldglong');
 
@@ -438,11 +472,11 @@
 
 						//window.doFloorSelected = true;
 
-						// 	ambiarc.getDirections('0024', '0093', '40.693321228027344', '-73.96354675292969', ambiarc.buildingId, ambiarc.floorId, ambiarc.lat, ambiarc.lon, function(res){
-						// 	//ambiarc.getDirections(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, function(res){
-						// 		console.log(res);
-						// 		alert('getDirections');
-						// 	});
+						//ambiarc.getDirections('0024', '0093', '40.693321228027344', '-73.96354675292969', ambiarc.buildingId, ambiarc.floorId, ambiarc.lat, ambiarc.lon, function(res){
+						//ambiarc.getDirections(startingBuilding, startingLevel, startingLatitude, startingLongitude, endingBuilding, endingLevel, endingLatitude, endingLongitude, function(res){
+						//	console.log(res);
+						//	alert('getDirections');
+						//});
 
 						createPointLabel(ambiarc.buildingId,ambiarc.floorId);
 
@@ -452,7 +486,7 @@
 					ambiarc.legendType = 'menuOther';
 					ambiarc.ambiarcId = '';
 					ambiarc.buildingId = '';
-					ambiarc.floorId = $(this).attr('data-floorid');
+					ambiarc.floorId = $(this).attr('data-floorid'); // alert('menu 482');
 					ambiarc.roomName = $(this).html();
 					ambiarc.roomNo = $(this).attr('data-roomno');
 					ambiarc.lat = $(this).attr('data-lat');
@@ -462,7 +496,7 @@
 
 						ambiarc.pointLable = $(this).attr('data-bldg');
 						ambiarc.roomName = $(this).attr('data-keywords');
-						ambiarc.floorId = '';
+						ambiarc.floorId = ''; // alert('menu 492');
 
 						if ($(this).attr('data-bldg') == 'PPS') {
 							ambiarc.sculptureName = 'Pratt Public Safety';
@@ -474,6 +508,8 @@
 
 						window.winLat = ambiarc.lat;
 						window.winLon = ambiarc.lon;
+
+						//alert('here');
 
 						ambiarc.focusOnLatLonAndZoomToHeight('', '', ambiarc.lat, ambiarc.lon, '50');
 					}
@@ -1043,6 +1079,10 @@
 		var i, tablinks;
 		///var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 		ambiarc.focusOnMapLabel(mapLabelId, 200);
+
+		setTimeout(function(){
+			ambiarc.ShowTooltipForMapLabel(mapLabelId);
+		},1500);
 
 		if (callback && typeof(callback) === "function") {
 			callback();

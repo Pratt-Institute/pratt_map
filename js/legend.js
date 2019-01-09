@@ -36,6 +36,8 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 
 			var now = Date.now();
 
+			//alert(floorId);
+
 			try {
 				$('img.access').remove();
 				var imgBldg = '<img src="images/buildings/'+bldgMap[floorId].buildingId+'.jpg">'
@@ -148,6 +150,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				if (sculptureName != '') {
 					$('.bldgName').html(sculptureName);
 					$('.floorNo').html(sculptureArtist);
+					$('.history').html('');
 				}
 			} catch(err) { console.log(err) }
 
@@ -220,11 +223,13 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 
 				//alert('clear ambiarc vars');
 
+				ambiarc.menuAction	= '';
+
 				ambiarc.pointLable	= '';
 				ambiarc.legendType	= '';
 				ambiarc.ambiarcId	= '';
 				ambiarc.buildingId	= '';
-				ambiarc.floorId		= '';
+				ambiarc.floorId		= ''; console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ clear floorid legend 229 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 				//ambiarc.floorIdExtra = 'z';
 				ambiarc.roomName	= '';
 				ambiarc.hasImage	= '';
@@ -242,7 +247,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				ambiarc.office		= '';
 				ambiarc.email		= '';
 
-			},750);
+			},250);
 
 		},legendDelay);
 

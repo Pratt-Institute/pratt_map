@@ -45,24 +45,23 @@ var mapLabelClickHandler = function(e) {
 	//resetMenus();
 	hidePopMap();
 
-	try {
-		params = {};
-		params.floor	= ambiarc.poiStuff[e.detail].floorId;
-		params.recordId	= ambiarc.poiStuff[e.detail].recordId;
-		params.action	= 'focusAfterDataLoad';
-		ambiarc.recordId = ambiarc.poiStuff[e.detail].recordId;
-		ambiarc.floorId = ambiarc.poiStuff[e.detail].floorId;
-	} catch(err) {
-		console.log(err)
-		params = false;
-	}
-
-	if (params) {
-		//alert('here');
-		clearMapLegend('events 62');
-		ambiarc.menuAction = 'yes';
-		fetchPoisFromApi(params);
-	}
+// 	try {
+// 		params = {};
+// 		params.floor	= ambiarc.poiStuff[e.detail].floorId;
+// 		params.recordId	= ambiarc.poiStuff[e.detail].recordId;
+// 		params.action	= 'focusAfterDataLoad';
+// 		ambiarc.recordId = ambiarc.poiStuff[e.detail].recordId;
+// 		ambiarc.floorId = ambiarc.poiStuff[e.detail].floorId;
+// 	} catch(err) {
+// 		console.log(err)
+// 		params = false;
+// 	}
+//
+// 	if (params) {
+// 		clearMapLegend('events 62');
+// 		ambiarc.menuAction = 'yes';
+// 		fetchPoisFromApi(params);
+// 	}
 
 };
 
@@ -123,7 +122,10 @@ var mapStartedLoading = function() {
 // 		}, 500);
 // 	}
 
-	ambiarc.setMapTheme(ambiarc.mapTheme.light);
+	//alert('custom theme');
+	//ambiarc.setMapTheme(ambiarc.mapTheme.custom);
+ 	//ambiarc.setSkyColor('#FF0000', '#660000');
+ 	//ambiarc.setLightColor('#cccccc', '#666666', '#990000');
 
 }
 
@@ -146,8 +148,8 @@ var mapFinishedLoading = function() {
 		}, 1);
 		$('.legend').css({'color':'#000'});
 	} else {
-		ambiarc.setMapTheme(ambiarc.mapTheme.light);
-		//ambiarc.setSkyColor('#fff', '#00f');
+		ambiarc.setMapTheme(ambiarc.mapTheme.custom);
+		ambiarc.setSkyColor('#0090d0', '#00567c');
 		setTimeout(function(){
 			$('.mode-light').addClass('show-mode-button');
 		}, 1);
@@ -211,7 +213,7 @@ var onFloorSelected = function(event) {
 
 	console.log('onFloorSelected');
 
-	console.log('onFloorSelected');
+	//console.log('onFloorSelected');
 	console.log(event);
 	var floorInfo = event.detail;
 	currentFloorId = floorInfo.floorId;
@@ -223,7 +225,10 @@ var onFloorSelected = function(event) {
 
 		ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 		ambiarc.buildingId = event.detail.buildingId;
-		ambiarc.floorId = event.detail.floorId;
+		//alert('228 '+ambiarc.menuAction);
+		if (ambiarc.menuAction != 'yes') {
+			ambiarc.floorId = event.detail.floorId; //alert('onFloorSelected events 229');
+		}
 
 		//window.legendInfo.buildingId = event.detail.buildingId;
 		//window.legendInfo.floorId = event.detail.floorId;
@@ -259,7 +264,11 @@ var onEnteredFloorSelector = function(event) {
 	currentMapStatus = 'isFloorSelectorEnabled = true';
 
 	ambiarc.buildingId = buildingId;
-	ambiarc.floorId = '';
+	console.log('onEnteredFloorSelector 267 '+ambiarc.menuAction);
+	if (ambiarc.menuAction != 'yes') {
+		ambiarc.floorId = ''; //alert('onEnteredFloorSelector events 267');
+	}
+	//try { clearTimeout(document.scheduleLegend) } catch(err) { }
 	popMapLegend(250,'map-events.js 244');
 
 }
@@ -341,9 +350,10 @@ var onFloorSelectorFocusChanged = function(event) {
 		//alert('onFloorSelectorFocusChanged');
 
 		//alert(ambiarc.floorId);
+		ambiarc.floorId = event.detail.newFloodId;  console.log('onFloorSelectorFocusChanged events 348 '+event.detail.newFloodId);
+		//try { clearTimeout(document.scheduleLegend) } catch(err) { }
 
 		setTimeout(function(){
-			ambiarc.floorId = event.detail.newFloodId;
 			popMapLegend(125,'map-events.js 329');
 		},125);
 
@@ -390,12 +400,21 @@ var cameraCompletedHandler = function(event){
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
+	// 	console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq');
+	// 	console.log(event.detail);//			UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor
+	// 	console.log(allowFloorEvent);//			true
+	// 	console.log(ambiarc.legendType);//		empty
+	// 	console.log(isFloorSelectorEnabled);//	false
+	// 	console.log(mainBldgID);//				should be set
+	// 	console.log(ambiarc.recordId);//		empty
+	// 	console.log(ambiarc.floorId);//			should be set
+	// 	console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq');
+
 	if (event.detail == 'UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor' && allowFloorEvent) {
 
 		if (typeof ambiarc.legendType == 'undefined' || ambiarc.legendType == '') {
-			if (isFloorSelectorEnabled == false && mainBldgID > 0 && ambiarc.recordId == '') {
 
-				//alert(event.detail);
+			if (isFloorSelectorEnabled == false && mainBldgID > 0 && ambiarc.recordId == '') {
 
 				params = {};
 				//params.bldg = floorInfo.buildingId;
@@ -422,6 +441,7 @@ var cameraCompletedHandler = function(event){
 
 	setTimeout(function(){
 		allowFloorEvent = true;
-	},2500);
+		ambiarc.menuAction = '';
+	},4500);
 
 };

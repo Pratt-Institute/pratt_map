@@ -36,7 +36,8 @@
 
     this.mapTheme = {
       dark: "dark",
-      light: "light"
+      light: "light",
+      custom: "custom"
     }
 
     this.coordType = {
@@ -247,6 +248,8 @@
         jsonColorTheme = JSON.stringify(window.AmbiarcThemes.darkTheme);
       } else if (theme === this.mapTheme.light) {
         jsonColorTheme = JSON.stringify(window.AmbiarcThemes.lightTheme);
+      } else if (theme === this.mapTheme.custom) {
+        jsonColorTheme = JSON.stringify(window.AmbiarcThemes.customTheme);
       }
       gameInstance.SendMessage('Ambiarc', 'SetColorsByTheme', jsonColorTheme);
     };
@@ -379,12 +382,12 @@
     };
 
     this.EnterOverheadCamera = function() {
-    	window.overhead = true;
+    	//window.overhead = true;
       gameInstance.SendMessage('Ambiarc', 'EnterOverheadCamera');
     };
 
     this.ExitOverheadCamera = function() {
-    	window.overhead = false;
+    	//window.overhead = false;
       gameInstance.SendMessage('Ambiarc', 'ExitOverheadCamera');
     };
 
@@ -403,6 +406,10 @@
 					// 		}
 					// 	}
 
+					//setTimeout(function(){
+					//	console.log('slow down the ambiarc load');
+					//},125);
+
 					element.properties.latitude = element.geometry.coordinates[1];
 					element.properties.longitude = element.geometry.coordinates[0];
 					window.Ambiarc.createMapLabel(element.properties.type, element.properties, function(id) {
@@ -420,6 +427,8 @@
 						if (typeof id == 'undefined') {
 							alert(element.user_properties.recordId);
 						}
+
+
 
 						// 	console.log('~~~loadRemoteMapLabels~~~begin~~~');
 						// 	console.log(id);
