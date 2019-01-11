@@ -24,6 +24,8 @@
 			window.overhead			= false;
 			window.keypadVisible	= false;
 
+			window.timeoutVariables = '';
+
 			window.winLat = '';
 			window.winLon = '';
 
@@ -680,6 +682,8 @@
 		prattCopy['0023'] = '<span class="copy-bold">Cannoneer Court</span> <br>1986-87 <br>Architects: Skidmore, Owings and Merrill <br><br>A rather stark-looking residence hall on the most eastern part of the campus on an area which had been an athletic field. It is connected to the ARC building and was built from pre-fabricated units.';
 
 		prattCopy['0024'] = 'The building, which is located at 536 Myrtle Avenue between Grand Avenue and Steuben Street, was designed by multi-disciplinary architectural firm WASA/Studio A under the leadership of principal Jack Esterson, who received a bachelor\'s degree in architecture from Pratt in 1975. <br>Myrtle Hall recently met the United States Green Building Council standards for LEED (Leadership in Energy and Environmental Design) Gold certification based on its eco-features that include exterior sun shades; a green roof that absorbs rainwater, reflects heat, and sequesters greenhouse gasses; and solar photo-voltaic panels that generate on-site electricity. It is the first higher education building project in Brooklyn to receive any LEED certification and the first academic building to receive a LEED-gold certification in Brooklyn.';
+
+		prattCopy['pps'] = 'The Pratt Institute Department of Public Safety provides 24&#8209;hour protection to the campus. Public Safety Officers are charged with the enforcement of Pratt Institute rules and regulations. They are staff employees and are responsible for a full range of services, including preparation of crime and condition reports, response to emergencies, conducting fire drills, and any other situation requiring security assistance. Contact us at security@pratt.edu or at 718.636.3540.';
 
 	}
 

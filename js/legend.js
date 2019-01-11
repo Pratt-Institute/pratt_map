@@ -162,6 +162,10 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				$('.floorNo').html('');
 			}
 
+			if (pointLable == 'PPS') {
+				$('.history').html(prattCopy['pps']);
+			}
+
 			try {
 				if (person != '') {
 
@@ -219,9 +223,9 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				}
 			},200);
 
-			setTimeout(function(){
+			timeoutVariables = setTimeout(function(){
 
-				//alert('clear ambiarc vars');
+				console.log('clear ambiarc vars');
 
 				ambiarc.menuAction	= '';
 
@@ -247,7 +251,7 @@ var popMapLegend = function(legendDelay=1000,src='line') {
 				ambiarc.office		= '';
 				ambiarc.email		= '';
 
-			},250);
+			},1000);
 
 		},legendDelay);
 

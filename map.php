@@ -11,12 +11,11 @@
   <script src="TemplateData/js/UnityProgress.js?nc=<?php echo time(); ?>"></script>
   <script src="TemplateData/js/ambiarc.js?nc=<?php echo time(); ?>"></script>
   <script src="TemplateData/js/ambiarc-theme.js?nc=<?php echo time(); ?>"></script>
-  <script src="map/04cfd823429f9d23bbb0a65451607432.js?nc=<?php echo time(); ?>"></script>
+  <script src="map/3544178c924aac8c5129f2d974d60dd7.js?nc=<?php echo time(); ?>"></script>
   <script src="TemplateData/js/UnityCompatibility.js?nc=<?php echo time(); ?>"></script>
   <script>
 
-    //var gameInstance = UnityLoader.instantiate("gameContainer", "map/c1712c72a14dd0859afd9abd568f0c10.json?nc=<?php echo time(); ?>", {
-    var gameInstance = UnityLoader.instantiate("gameContainer", "map/eb61117c1adcf25fa62799db34e85755.json?nc=<?php echo time(); ?>", {
+    var gameInstance = UnityLoader.instantiate("gameContainer", "map/77448287a7e719cee5c3228556fc4962.json?nc=<?php echo time(); ?>", {
 
       onProgress: UnityProgress,
       Module: {

@@ -397,48 +397,58 @@
         .then((out) => {
           return new Promise(function(resolve, reject) {
 
-				out.features.forEach(function(element) {
-
-					// 	if (typeof poiMap != 'undefined') {
-					// 		var testId = element.user_properties.recordId;
-					// 		if (typeof poiMap[testId] != 'undefined') {
-					// 			return true;
-					// 		}
-					// 	}
-
-					//setTimeout(function(){
-					//	console.log('slow down the ambiarc load');
-					//},125);
-
-					element.properties.latitude = element.geometry.coordinates[1];
-					element.properties.longitude = element.geometry.coordinates[0];
-					window.Ambiarc.createMapLabel(element.properties.type, element.properties, function(id) {
-
-						//alert(id);
-
-						element.properties.mapLabelId = id;
-
-						element.properties.showOnCreation = false;
-
-						//element.properties.mapLabelId = element.user_properties.recordId;
-						//element.properties.id = element.user_properties.recordId;
-						element.user_properties.ambiarcId = id;
-
-						if (typeof id == 'undefined') {
-							alert(element.user_properties.recordId);
-						}
+          		var i = 0;
+				var delay = 0;
 
 
+				out.features.forEach(function(element, index) {
 
-						// 	console.log('~~~loadRemoteMapLabels~~~begin~~~');
-						// 	console.log(id);
-						// 	console.log(element);
-						// 	console.log('~~~loadRemoteMapLabels~~~end~~~');
+					i++;
 
-					})
+					setTimeout(function(){
+
+
+						element.properties.latitude = element.geometry.coordinates[1];
+						element.properties.longitude = element.geometry.coordinates[0];
+						window.Ambiarc.createMapLabel(element.properties.type, element.properties, function(id) {
+
+							processingPoints = true;
+
+							//alert(id);
+
+							element.properties.mapLabelId = id;
+
+							element.properties.showOnCreation = false;
+
+							//element.properties.mapLabelId = element.user_properties.recordId;
+							//element.properties.id = element.user_properties.recordId;
+							element.user_properties.ambiarcId = id;
+
+							if (typeof id == 'undefined') {
+								alert(element.user_properties.recordId);
+							}
+
+							console.log('~~~loadRemoteMapLabels~~~begin~~~');
+							console.log(id);
+							console.log(element);
+							console.log('~~~loadRemoteMapLabels~~~end~~~');
+
+						})
+
+						delay = parseInt(i*125);
+
+					},delay);
+
 				});
 
-           resolve(out.features)
+
+
+				setTimeout(function(){
+					resolve(out.features)
+				//},parseInt(i*10));
+				},parseInt(delay+125));
+
+
           });
         })
         .catch(err => {

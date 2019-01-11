@@ -205,6 +205,8 @@ var BuildingExitCompleted = function(event) {
 
 var onFloorSelected = function(event) {
 
+	clearTimeout(timeoutVariables);
+
 	//currentMapStatus = 'onFloorSelected';
 
 	$('.reset-map-vert').removeClass('disabled');
@@ -221,6 +223,7 @@ var onFloorSelected = function(event) {
 
 	if (event.type == 'FloorSelected') {
 
+		//alert(event.type);
 		//alert('onFloorSelected');
 
 		ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
@@ -228,6 +231,7 @@ var onFloorSelected = function(event) {
 		//alert('228 '+ambiarc.menuAction);
 		if (ambiarc.menuAction != 'yes') {
 			ambiarc.floorId = event.detail.floorId; //alert('onFloorSelected events 229');
+			//alert(ambiarc.floorId);
 		}
 
 		//window.legendInfo.buildingId = event.detail.buildingId;
@@ -243,6 +247,8 @@ var onFloorSelected = function(event) {
 }
 
 var onEnteredFloorSelector = function(event) {
+
+	clearTimeout(timeoutVariables);
 
 	//currentMapStatus = 'onEnteredFloorSelector';
 
@@ -267,6 +273,7 @@ var onEnteredFloorSelector = function(event) {
 	console.log('onEnteredFloorSelector 267 '+ambiarc.menuAction);
 	if (ambiarc.menuAction != 'yes') {
 		ambiarc.floorId = ''; //alert('onEnteredFloorSelector events 267');
+		console.log(ambiarc.floorId);
 	}
 	//try { clearTimeout(document.scheduleLegend) } catch(err) { }
 	popMapLegend(250,'map-events.js 244');
@@ -297,24 +304,11 @@ var onFloorSelectorFocusChanged = function(event) {
 
 	//currentMapStatus = 'onFloorSelectorFocusChanged';
 
+	//clearTimeout(timeoutVariables);
+
 	doPauseTour();
 
 
-	console.log('onFloorSelectorFocusChanged @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-
-	console.log(event.detail);
-
-	try { console.log('ambiarc.floorId ' + ambiarc.floorId + ' should be empty'); } catch(err) { console.log('ambiarc.floorId is empty'); }
-
-	try { console.log('ambiarc.recordId ' + ambiarc.recordId + ' should be empty'); } catch(err) { console.log('ambiarc.recordId is empty'); }
-
-	try { console.log('ambiarc.legendType ' + ambiarc.legendType + ' should be empty'); } catch(err) { console.log('ambiarc.legendType is empty'); }
-
-	try { console.log('ambiarc.ambiarcId ' + ambiarc.ambiarcId + ' should be empty'); } catch(err) { console.log('ambiarc.ambiarcId is empty'); }
-
-	try { console.log('allowFloorEvent ' + allowFloorEvent + ' should be true'); } catch(err) { }
-
-	console.log('onFloorSelectorFocusChanged @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
 
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
@@ -333,6 +327,24 @@ var onFloorSelectorFocusChanged = function(event) {
 	if (typeof ambiarc.ambiarcId == 'undefined') {
 		ambiarc.ambiarcId = '';
 	}
+
+
+	console.log('onFloorSelectorFocusChanged @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+
+	console.log(event.detail);
+
+	try { console.log('ambiarc.floorId ' + ambiarc.floorId + ' should be empty'); } catch(err) { console.log('ambiarc.floorId is empty'); }
+
+	try { console.log('ambiarc.recordId ' + ambiarc.recordId + ' should be empty'); } catch(err) { console.log('ambiarc.recordId is empty'); }
+
+	try { console.log('ambiarc.legendType ' + ambiarc.legendType + ' should be empty'); } catch(err) { console.log('ambiarc.legendType is empty'); }
+
+	try { console.log('ambiarc.ambiarcId ' + ambiarc.ambiarcId + ' should be empty'); } catch(err) { console.log('ambiarc.ambiarcId is empty'); }
+
+	try { console.log('allowFloorEvent ' + allowFloorEvent + ' should be true'); } catch(err) { }
+
+	console.log('onFloorSelectorFocusChanged @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+
 
 	//alert(event.detail.newFloodId.length);
 
@@ -393,6 +405,8 @@ var cameraStartedHandler = function(event){
 
 var cameraCompletedHandler = function(event){
 
+	//clearTimeout(timeoutVariables);
+
 	//currentMapStatus = 'cameraCompletedHandler';
 
 	//console.log('cameraCompletedHandler'); // auto
@@ -403,10 +417,10 @@ var cameraCompletedHandler = function(event){
 	// 	console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq');
 	// 	console.log(event.detail);//			UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor
 	// 	console.log(allowFloorEvent);//			true
-	// 	console.log(ambiarc.legendType);//		empty
+	// 	console.log(ambiarc.legendType);//		empty---
 	// 	console.log(isFloorSelectorEnabled);//	false
 	// 	console.log(mainBldgID);//				should be set
-	// 	console.log(ambiarc.recordId);//		empty
+	// 	console.log(ambiarc.recordId);//		empty---
 	// 	console.log(ambiarc.floorId);//			should be set
 	// 	console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq');
 
@@ -442,6 +456,6 @@ var cameraCompletedHandler = function(event){
 	setTimeout(function(){
 		allowFloorEvent = true;
 		ambiarc.menuAction = '';
-	},4500);
+	},5000);
 
 };
