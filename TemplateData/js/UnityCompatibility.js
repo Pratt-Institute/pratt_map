@@ -1,5 +1,5 @@
 UnityLoader.compatibilityCheck = function(e,t,r) {
-	console.log("Skipped comaptibility check!");
+	///console.log("Skipped comaptibility check!");
 	if(UnityLoader.SystemInfo.hasWebGL) {
 		if(UnityLoader.SystemInfo.mobile) {
 			$("#CompatModal").modal();

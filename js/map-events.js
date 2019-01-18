@@ -23,9 +23,9 @@ var onAmbiarcLoaded = function() {
 
 var mapLabelSelected = function(e) {
 
-	console.log('mapLabelSelected');
-	console.log(e);
-	console.log(e.detail);
+	///console.log('mapLabelSelected');
+	///console.log(e);
+	///console.log(e.detail);
 
 	adjustMapFocus($("#" + e.detail)[0], e.detail);
 
@@ -36,9 +36,9 @@ var mapLabelSelected = function(e) {
 var mapLabelClickHandler = function(e) {
 
     console.log('mapLabelClickHandler');
-	console.log(e);
-	console.log(e.detail);
-	console.log(ambiarc.poiStuff[e.detail]);
+	///console.log(e);
+	///console.log(e.detail);
+	///console.log(ambiarc.poiStuff[e.detail]);
 
 	currentLabelId = e.detail;
 
@@ -53,7 +53,7 @@ var mapLabelClickHandler = function(e) {
 // 		ambiarc.recordId = ambiarc.poiStuff[e.detail].recordId;
 // 		ambiarc.floorId = ambiarc.poiStuff[e.detail].floorId;
 // 	} catch(err) {
-// 		console.log(err)
+// 		///console.log(err)
 // 		params = false;
 // 	}
 //
@@ -68,7 +68,7 @@ var mapLabelClickHandler = function(e) {
 // capture right click event and do stuff
 var onRightMouseDown = function(event) {
 
-	console.log('onRightMouseDown');
+	///console.log('onRightMouseDown');
 
 	//if(isFloorSelectorEnabled){
     //    return;
@@ -105,7 +105,7 @@ var mapStartedLoading = function() {
 
 //	alert('mapStartedLoading');
 
-// 	console.log('mapStartedLoading');
+// 	///console.log('mapStartedLoading');
 // 	var mode = sessionStorage.getItem('mode');
 // 	if (mode == 'dark') {
 // 		ambiarc.setMapTheme(ambiarc.mapTheme.dark);
@@ -155,7 +155,7 @@ var mapFinishedLoading = function() {
 		}, 1);
 		$('.legend').css({'color':'#333'});
 	}
-	console.log('mapFinishedLoading');
+	///console.log('mapFinishedLoading');
 	createCampusLabels();
 	$('#bootstrap').removeAttr('hidden');
 
@@ -193,6 +193,8 @@ var BuildingExitCompleted = function(event) {
 	console.log('BuildingExitCompleted');
 	console.log(event);
 
+	//clearMapLegend('event 196');
+
 	currentFloorId = undefined;
 	currentBldgID = undefined;
 
@@ -213,24 +215,33 @@ var onFloorSelected = function(event) {
 
 	doPauseTour();
 
-	console.log('onFloorSelected');
+	///console.log('onFloorSelected');
 
 	//console.log('onFloorSelected');
-	console.log(event);
+	///console.log(event);
 	var floorInfo = event.detail;
 	currentFloorId = floorInfo.floorId;
 	currentBldgID = floorInfo.buildingId;
+
+	if (allowFloorEvent) {
+		if (currentFloorId.length > '1') {
+			ambiarc.floorId = event.detail.floorId;
+		}
+		if (currentBldgID.length > '1') {
+			ambiarc.buildingId = event.detail.buildingId;
+		}
+	}
 
 	if (event.type == 'FloorSelected') {
 
 		//alert(event.type);
 		//alert('onFloorSelected');
 
-		ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-		ambiarc.buildingId = event.detail.buildingId;
+//		ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 		//alert('228 '+ambiarc.menuAction);
 		if (ambiarc.menuAction != 'yes') {
-			ambiarc.floorId = event.detail.floorId; //alert('onFloorSelected events 229');
+//			ambiarc.buildingId = event.detail.buildingId;
+//			ambiarc.floorId = event.detail.floorId; //alert('onFloorSelected events 229');
 			//alert(ambiarc.floorId);
 		}
 
@@ -248,7 +259,9 @@ var onFloorSelected = function(event) {
 
 var onEnteredFloorSelector = function(event) {
 
-	clearTimeout(timeoutVariables);
+	clearRoomInfo();
+
+	//clearTimeout(timeoutVariables);
 
 	//currentMapStatus = 'onEnteredFloorSelector';
 
@@ -257,10 +270,8 @@ var onEnteredFloorSelector = function(event) {
 	doPauseTour();
 
 	console.log('onEnteredFloorSelector');
-
-	//alert('onEnteredFloorSelector');
-	console.log('onEnteredFloorSelector');
 	console.log(event);
+
 	var buildingId = event.detail;
 	currentFloorId = undefined;
 	currentBldgID = buildingId;
@@ -269,107 +280,99 @@ var onEnteredFloorSelector = function(event) {
 
 	currentMapStatus = 'isFloorSelectorEnabled = true';
 
-	ambiarc.buildingId = buildingId;
-	console.log('onEnteredFloorSelector 267 '+ambiarc.menuAction);
-	if (ambiarc.menuAction != 'yes') {
-		ambiarc.floorId = ''; //alert('onEnteredFloorSelector events 267');
-		console.log(ambiarc.floorId);
+	///console.log('onEnteredFloorSelector 267 '+ambiarc.menuAction);
+
+	if (allowFloorEvent) {
+		ambiarc.buildingId = buildingId;
+		//ambiarc.floorId = '';
+		popMapLegend2();
 	}
+
+//	if (ambiarc.menuAction != 'yes') {
+//		ambiarc.floorId = ''; //alert('onEnteredFloorSelector events 267');
+//		///console.log(ambiarc.floorId);
+//	}
 	//try { clearTimeout(document.scheduleLegend) } catch(err) { }
-	popMapLegend(250,'map-events.js 244');
+
+	///console.log('popMapLegend legendtype: ' + ambiarc.legendType);
+
+	if (ambiarc.legendType == 'menuBuildingAccessibility') {
+		return;
+	}
+	if (ambiarc.legendType == 'menuOther') {
+		return;
+	}
+	if (ambiarc.action == 'showFloorInfo') {
+
+	}
 
 }
 
 var onExitedFloorSelector = function(event) {
 
-	//currentMapStatus = 'onExitedFloorSelector';
-
 	doPauseTour();
 
 	console.log('onExitedFloorSelector');
-
-	console.log('onExitedFloorSelector');
 	console.log(event.detail);
+
 	var buildingId = event.detail;
 	currentFloorId = undefined;
 	buildingId = undefined; /// from the new SDK looks wrong but we'll try it
 
 	isFloorSelectorEnabled = false;
 
-	currentMapStatus = 'isFloorSelectorEnabled = false';
-
 }
 
 var onFloorSelectorFocusChanged = function(event) {
 
-	//currentMapStatus = 'onFloorSelectorFocusChanged';
-
-	//clearTimeout(timeoutVariables);
-
 	doPauseTour();
-
-
-
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
-	//clearTimeout(document.scheduleLegend);
+	console.log('onFloorSelectorFocusChanged');
+	console.log(event);
 
-	if (typeof ambiarc.floorId == 'undefined') {
-		ambiarc.floorId = '';
-	}
-	if (typeof ambiarc.recordId == 'undefined') {
-		ambiarc.recordId = '';
-	}
-	if (typeof ambiarc.legendType == 'undefined') {
-		ambiarc.legendType = '';
-	}
-	if (typeof ambiarc.ambiarcId == 'undefined') {
-		ambiarc.ambiarcId = '';
-	}
+	///try { console.log('ambiarc.floorId ' + ambiarc.floorId + ' should be empty'); } catch(err) { console.log('ambiarc.floorId is empty'); }
 
+	///try { console.log('ambiarc.recordId ' + ambiarc.recordId + ' should be empty'); } catch(err) { console.log('ambiarc.recordId is empty'); }
 
-	console.log('onFloorSelectorFocusChanged @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+	///try { console.log('ambiarc.legendType ' + ambiarc.legendType + ' should be empty'); } catch(err) { console.log('ambiarc.legendType is empty'); }
 
-	console.log(event.detail);
+	///try { console.log('ambiarc.ambiarcId ' + ambiarc.ambiarcId + ' should be empty'); } catch(err) { console.log('ambiarc.ambiarcId is empty'); }
 
-	try { console.log('ambiarc.floorId ' + ambiarc.floorId + ' should be empty'); } catch(err) { console.log('ambiarc.floorId is empty'); }
+	///try { console.log('allowFloorEvent ' + allowFloorEvent + ' should be true'); } catch(err) { }
 
-	try { console.log('ambiarc.recordId ' + ambiarc.recordId + ' should be empty'); } catch(err) { console.log('ambiarc.recordId is empty'); }
+	///console.log('onFloorSelectorFocusChanged @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
 
-	try { console.log('ambiarc.legendType ' + ambiarc.legendType + ' should be empty'); } catch(err) { console.log('ambiarc.legendType is empty'); }
-
-	try { console.log('ambiarc.ambiarcId ' + ambiarc.ambiarcId + ' should be empty'); } catch(err) { console.log('ambiarc.ambiarcId is empty'); }
-
-	try { console.log('allowFloorEvent ' + allowFloorEvent + ' should be true'); } catch(err) { }
-
-	console.log('onFloorSelectorFocusChanged @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-
-
+	//alert(event.detail.newFloodId);
 	//alert(event.detail.newFloodId.length);
 
-	if (event.detail.newFloodId.length > '1' &&
-		ambiarc.floorId == '' &&
-		ambiarc.recordId == '' &&
-		ambiarc.legendType == '' &&
-		ambiarc.ambiarcId == '' &&
-		allowFloorEvent) {
-
-		console.log('onFloorSelectorFocusChanged '+ ambiarc.recordId);
-
-		console.log('do pop legend from focus change ---------------------------------------');
-
-		//alert('onFloorSelectorFocusChanged');
-
-		//alert(ambiarc.floorId);
-		ambiarc.floorId = event.detail.newFloodId;  console.log('onFloorSelectorFocusChanged events 348 '+event.detail.newFloodId);
-		//try { clearTimeout(document.scheduleLegend) } catch(err) { }
-
-		setTimeout(function(){
-			popMapLegend(125,'map-events.js 329');
-		},125);
-
+	if (allowFloorEvent) {
+		///console.log(event.detail.newFloodId.length)
+		if (event.detail.newFloodId.length > '1') {
+			ambiarc.floorId = event.detail.newFloodId;
+			setFloorInfo();
+		}
 	}
+
+// 	if (event.detail.newFloodId.length > '1' &&
+// 		ambiarc.floorId == '' &&
+// 		ambiarc.recordId == '' &&
+// 		ambiarc.legendType == '' &&
+// 		ambiarc.ambiarcId == '' &&
+// 		allowFloorEvent) {
+//
+// 		///console.log('onFloorSelectorFocusChanged '+ ambiarc.recordId);
+//
+// 		///console.log('do pop legend from focus change ---------------------------------------');
+//
+// 		//alert('onFloorSelectorFocusChanged');
+//
+// 		//alert(ambiarc.floorId);
+// 		ambiarc.floorId = event.detail.newFloodId;  console.log('onFloorSelectorFocusChanged events 348 '+event.detail.newFloodId);
+// 		//try { clearTimeout(document.scheduleLegend) } catch(err) { }
+//
+// 	}
 
 	//allowFloorEvent = true;
 
@@ -381,13 +384,11 @@ var cameraStartedHandler = function(event){
 
 	mapIsParked = false;
 	allowFullView = false;
-	//unDisableReset();
 
-	console.log('~~collapseMenus~~');
 	collapseMenus();
 
 	console.log('cameraStartedHandler'); // auto
-	console.log(event.detail);
+	console.log(event);
 
 	//clearTimeout(document.launchDestroyer);
 
@@ -398,8 +399,8 @@ var cameraStartedHandler = function(event){
 	// 	}
 	// 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 	// 	if (typeof ambiarc.selectedPoiId != 'undefined') {
-	// 		console.log('cameraStartedHandler');
-	// 		console.log(event);
+	// 		///console.log('cameraStartedHandler');
+	// 		///console.log(event);
 	// 	}
 };
 
@@ -409,49 +410,55 @@ var cameraCompletedHandler = function(event){
 
 	//currentMapStatus = 'cameraCompletedHandler';
 
-	//console.log('cameraCompletedHandler'); // auto
+	console.log('cameraCompletedHandler'); // auto
 	//unDisableReset();
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
-	// 	console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq');
-	// 	console.log(event.detail);//			UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor
-	// 	console.log(allowFloorEvent);//			true
-	// 	console.log(ambiarc.legendType);//		empty---
-	// 	console.log(isFloorSelectorEnabled);//	false
-	// 	console.log(mainBldgID);//				should be set
-	// 	console.log(ambiarc.recordId);//		empty---
-	// 	console.log(ambiarc.floorId);//			should be set
-	// 	console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq');
+	///console.log(event.detail);//			UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor
+	console.log(event);//					UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor
+	///console.log(allowFloorEvent);//			true
+	///console.log(ambiarc.legendType);//		empty---
+	///console.log(isFloorSelectorEnabled);//	false
+	///console.log(mainBldgID);//				should be set
+	///console.log(ambiarc.recordId);//		empty---
+	///console.log(ambiarc.floorId);//			should be set
 
-	if (event.detail == 'UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor' && allowFloorEvent) {
+	// UNTRACKED_AMBIARC_EVENT_ZoomCamera
+	// UNTRACKED_AMBIARC_EVENT_ViewFloorSelector
+	// UNTRACKED_AMBIARC_EVENT_MoveAndRotateCameraToMatchValues
+	// UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor
 
-		if (typeof ambiarc.legendType == 'undefined' || ambiarc.legendType == '') {
+	if (event.detail == 'UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor' && allowFloorEvent && ambiarc.recordId == '') {
+	//if ((event.detail == 'UNTRACKED_AMBIARC_EVENT_MoveAndRotateCameraToMatchValues' || event.detail == 'UNTRACKED_AMBIARC_EVENT_FocusOnIsolatedFloor') && allowFloorEvent) {
 
-			if (isFloorSelectorEnabled == false && mainBldgID > 0 && ambiarc.recordId == '') {
+		//if (typeof ambiarc.legendType == 'undefined' || ambiarc.legendType == '') {
+
+			//if (isFloorSelectorEnabled == false && mainBldgID > 0 && ambiarc.recordId == '') {
 
 				params = {};
-				//params.bldg = floorInfo.buildingId;
-				//params.floor = floorInfo.floorId;
 				params.bldg = ambiarc.buildingId;
 				params.floor = ambiarc.floorId;
 				params.action = 'showFloorInfo';
 				params.select = 'floor';
 
-				if (params.action == 'showFloorInfo' && params.floor != '') {
-					console.log('do fetch from cameraCompletedHandler');
-					console.log('cameraCompletedHandler');
-					console.log(event);
-					console.log(event.detail + ' --- ' + ambiarc.menuAction);
+				if (params.floor != '') {
 					fetchPoisFromApi(params);
-				} else {
-					console.log('`````````````````````````````````````````````````````````````````');
-					console.log(params);
-					console.log('`````````````````````````````````````````````````````````````````');
 				}
-			}
+
+			//}
+		//}
+	}
+
+	if (allowFloorEvent == false) {
+		if (event.detail == 'UNTRACKED_AMBIARC_EVENT_RotateCamera' ||  event.detail == 'UNTRACKED_AMBIARC_EVENT_ZoomCamera') {
+			popMapLegend2();
 		}
 	}
+
+	// 	if (ambiarc.floorId.length > '1' || ambiarc.buildingId.length > '1') {
+	// 		popMapLegend2();
+	// 	}
 
 	setTimeout(function(){
 		allowFloorEvent = true;

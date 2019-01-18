@@ -1,6 +1,6 @@
 var loadEmbeddedApp = function() {
 	location.replace("./index.html");
-	console.log(location);
+	///console.log(location);
 };
 
 var getLinks = function() {

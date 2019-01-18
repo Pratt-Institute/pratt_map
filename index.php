@@ -90,7 +90,7 @@
 
   <script src="js/map-events.js?nc=<?php echo time(); ?>"></script>
   <script src="js/demo-ui.js?nc=<?php echo time(); ?>"></script>
-  <script src="js/legend.js?nc=<?php echo time(); ?>"></script>
+  <script src="js/legend2.js?nc=<?php echo time(); ?>"></script>
 
   <script src="TemplateData/js/jquery-2.2.4.min.js?nc=<?php echo time(); ?>"></script>
   <script src="TemplateData/js/bootstrap.min.js?nc=<?php echo time(); ?>"></script>
@@ -107,6 +107,10 @@
   <link href="https://fonts.googleapis.com/css?family=Exo:900|Sarpanch:700" rel="stylesheet">
 
     <script>
+
+        //window.alert = function() {
+    	//	location.reload();
+    	//};
 
 		$.cookie('token', "<?php echo $_SESSION['token'] ?>", { expires: 1, secure: false });
 
@@ -197,9 +201,9 @@
 				</td>
 			</tr>
 			<tr class="row-menu">
-				<td style="background-color:#fff" class="menu-category">
+				<td style="background-color:#ed1b2e" class="menu-category">
 					<!--<span class="cat-box" data-type="accessibility">accessibility</span>-->
-					<span class="cat-box nav-icon" data-type="firstaid"><img src="images/firstaid.png"></span>
+					<span class="cat-box nav-icon" data-type="firstaid"><img src="images/firstaid2.png"></span>
 				</td>
 			</tr>
 			<tr class="row-menu">

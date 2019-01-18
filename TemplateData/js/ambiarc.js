@@ -349,7 +349,7 @@
 
 	this.hideMapLabelGroup = function(mapLabelIds, immediate) {
 
-		console.log('ambiarc :: hideMapLabelGroup');
+		///console.log('ambiarc :: hideMapLabelGroup');
 
       var json = JSON.stringify({
         mapLabelIds: mapLabelIds,
@@ -428,10 +428,10 @@
 								alert(element.user_properties.recordId);
 							}
 
-							console.log('~~~loadRemoteMapLabels~~~begin~~~');
-							console.log(id);
-							console.log(element);
-							console.log('~~~loadRemoteMapLabels~~~end~~~');
+							///console.log('~~~loadRemoteMapLabels~~~begin~~~');
+							///console.log(id);
+							///console.log(element);
+							///console.log('~~~loadRemoteMapLabels~~~end~~~');
 
 						})
 

@@ -99,6 +99,7 @@
         };
 
         hideKeyboard = function() {
+            //if (!$layout.is(':hidden') && $('input.filter').is(":hidden")) {
             if (!$layout.is(':hidden')) {
                 $layout.slideUp(optionsKeyboard.close_speed);
                 keypadVisible = false;

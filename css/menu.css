@@ -338,10 +338,10 @@ div.sculptures span {
 	background-color: #f4581e;
 }
 div.accessibility span {
-	background-color: #fff;
+	background-color: #3cf;
 }
 div.firstaid span {
-	background-color: #fff;
+	background-color: #ed1b2e;
 }
 div.flyout span:hover, div.subfly span:hover {
 	text-decoration: underline;
