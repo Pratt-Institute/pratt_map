@@ -400,6 +400,9 @@
           		var i = 0;
 				var delay = 0;
 
+				console.log(' fetch points out ambiarc ');
+				console.log(out);
+				//return;
 
 				out.features.forEach(function(element, index) {
 

@@ -1,4 +1,4 @@
-var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=4000,src='line') {
+var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,src='line') {
 
 	console.log('popMapLegend2');
 

@@ -2,11 +2,6 @@
 
 	date_default_timezone_set('America/New_York');
 
-	//echo phpversion();
-	//phpinfo();
-	//die();
-
-	//ini_set('error_reporting', E_ERROR & ~E_WARNING);
 	ini_set('error_reporting', E_ALL);
 	ini_set('display_errors', true);
 	ini_set('log_errors', 1);
@@ -15,55 +10,27 @@
 
 	session_start();
 
-	//unset($_SESSION['token']);
-	//echo '<br>';
-	//print_r($_SESSION);
-
-	//echo __DIR__;
-
-	//include_once('includes/eetools.inc.php');
-	//$ee = new EeTools;
-	//$ee->fetchFromExpressionEngine();
-	//die();
-
 	include_once('includes/dbtools.inc.php');
 	$obj = new DbTools;
 	if (!@$_SESSION['token']) {
 		if($obj->createToken()) {
-			//echo '<br>token created';
+			echo '<br>token created';
 		} else {
-			//echo '<br>error, token not created';
+			echo '<br>error, token not created';
 		}
 	} else {
 		if ($obj->checkToken($_SESSION['token'])) {
-			//is okay
+			//echo '<br>token is good';
 		} else {
-			//echo '<br>error, no token found';
+			echo '<br>error, no token found';
 		}
 	}
-	//die();
-
-	// echo $obj->firstAidMenu();
-	// die();
 
 	$slists = $obj->buildSearchList();
-
-	// 	echo '<pre>';
-	// 	print_r($slists);
-	// 	echo '</pre>';
-	//
-	// 	die();
 
 	if (@$_POST['mode']) {
 		$obj->setMode = addslashes($_POST['mode']);
 	}
-
-	//$obj->makeSearchMenu();
-	//die();
-
-	//include_once('includes/lookup.php');
-	//die();
-
 
 ?>
 
@@ -108,9 +75,9 @@
 
     <script>
 
-        //window.alert = function() {
-    	//	location.reload();
-    	//};
+        window.alert = function() {
+    		location.reload();
+    	};
 
 		$.cookie('token', "<?php echo $_SESSION['token'] ?>", { expires: 1, secure: false });
 
@@ -131,44 +98,14 @@
 
 <body style="pointer-events: none">
 
-	<form id="myform" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+	<form id="myform" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post"></form>
 
-		<button class="mode-button mode-dark" type="submit" name="mode" value="light">
-			<img src="images/tactical.png">
-		</button>
-
-		<button class="mode-button mode-light pratt-logo" type="submit" name="mode" value="dark">
-			<img src="images/Pratt_Logo_Black.png"  style="height:30px;opacity:1;">
-		</button>
-
-	</form>
-
-	<div id="bootstrap" hidden>
-
-		<!--<img  class="reset-map" src="images/arrow_left.png">-->
-
-		<!--<div id="controls-section" style="pointer-events: all; z-index:9999;">
-			<ul>
-				<li class="" onclick="zoomInHandler()">
-					<span class="controls-btn ctrl-zoom-in"  aria-hidden="true"></span>
-				</li>
-				<li class="">
-					<i id="rotate_left" class=" controls-btn ctrl-rotate-left"  onclick="rotateLeft()" aria-hidden="true"></i>
-					 <i id="rotate_right" class="controls-btn ctrl-rotate-right"  onclick="rotateRight()" aria-hidden="true"></i>
-				</li>
-				<li class="">
-					<span class=" controls-btn ctrl-zoom-out" onclick="zoomOutHandler()" aria-hidden="true"></span>
-				</li>
-			</ul>
-		</div>-->
-
-	</div>
 	<iframe src="./map.php?nc=<?php echo time(); ?>" id="ambiarcIframe" style="width:100%; height:100%; border:none; top:
 	0; z-index:-1; position:fixed; pointer-events: all;">
 		Your browser doesn't support iframes
 	</iframe>
 
-	<div class="nav-menu-new">
+	<div class="nav-menu-new" style="">
 		<table class="nav-menu-new">
 			<tr class="row-btn">
 				<td style="background-color:#fff" class="menu-category">
@@ -302,12 +239,29 @@
 
 	<img class="compass" src="images/compass.png">
 
+	<table class="icons">
+		<tr>
+			<td class="provisions hide" data-provision="narcan">
+				<img src="images/narcan-color.png">
+			</td>
+			<td class="provisions hide" data-provision="defibrillator" >
+				<img src="images/aed-color.png">
+			</td>
+			<td class="reset hide">
+				<img src="images/reset.png">
+			</td>
+			<td class="reset">
+				<img src="images/Pratt_Logo_Black.png">
+			</td>
+		</tr>
+	</table>
+
+	<div class="reset">
+		<img src="images/reset.png">
+	</div>
+
 	<!--<button class="ripple"></button>-->
 
 </body>
-
-<script>
-	$('.menu-open').hide();
-</script>
 
 </html>

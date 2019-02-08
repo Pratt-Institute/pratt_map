@@ -1,3 +1,7 @@
+.hide {
+	display: none;
+}
+
 .compass {
 	pointer-events: auto;
 	position: fixed;
@@ -22,14 +26,14 @@
 }
 
 .md-ripple-effect {
-  pointer-events: none;
-  position: absolute;
-  display: block;
-  background: #000;
-  width: 0;
-  height: 0;
-  border-radius: 100%;
-  z-index: 1;
+	pointer-events: none;
+	position: absolute;
+	display: block;
+	background: #000;
+	width: 0;
+	height: 0;
+	border-radius: 100%;
+	z-index: 1;
 }
 
 div.click-capture {
@@ -342,6 +346,7 @@ div.accessibility span {
 }
 div.firstaid span {
 	background-color: #ed1b2e;
+	color: #fff;
 }
 div.flyout span:hover, div.subfly span:hover {
 	text-decoration: underline;
@@ -590,6 +595,20 @@ div.veil-text {
 	left: 30px !important;
 }
 
+div.reset {
+	pointer-events: auto;
+	position:	fixed;
+	top:		20px;
+	right:		20px;
+	opacity:	0.6;
+	transition: all 0.125s ease;
+	cursor:		pointer;
+}
+
+div.reset img {
+	width: 35px;
+}
+
 div.track {
 	position: fixed;
 	top: 0px;
@@ -645,3 +664,23 @@ div.track {
 		z-index: 1112;
 	}
 
+
+table.icons {
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+	border-spacing: 15px;
+    border-collapse: separate;
+}
+
+table.icons td {
+	pointer-events: auto;
+	cursor: pointer;
+	height: 35px;
+}
+
+table.icons img {
+	pointer-events: auto;
+	cursor: pointer;
+	height: 35px;
+}

@@ -103,6 +103,18 @@
 				allowFloorEvent = false;
 			});
 
+			$(document).on("click", ".reset", function(e){
+				location.reload();
+			});
+
+			$(document).on("click", "img.provisions", function(e){
+
+				params.provision = $(this).attr('data-provision');
+				params.action	= 'displayProvisions';
+				fetchPoisFromApi(params);
+
+			});
+
 			$(document).on("click", "li.list-group-item, span.fly-sculp", function(e){
 
 				clearMapLegend('menu 100');
@@ -319,6 +331,8 @@
 			});
 
 			$(document).on('click', '.fly-box', function(e) {
+
+				$('img.access').remove();
 
 				params = {};
 
@@ -570,7 +584,7 @@
 
 		});
 
-		//prattCopy['0001'] = '<span class="copy-bold">Information Science Center <br>(ISC Building)</span> <br>1954-55. Renovated 1973 <br>Architects: Firm of McKim, Mead and White <br><br>Built as a dormitory for women at the same time DeKalb Hall was built for men. By the 1960s after the acquisition of Willoughby Hall, both buildings were being used for offices and classrooms. They had been built during the extensive PrattArea Urban Renewal under the direction of Robert Moses. The renovation made extensive changes for the Graduate School of Information and Library Science as well as for a large computer laboratory.';
+//		prattCopy['0001'] = '<span class="copy-bold">Information Science Center <br>(ISC Building)</span> <br>1954-55. Renovated 1973 <br>Architects: Firm of McKim, Mead and White <br><br>Built as a dormitory for women at the same time DeKalb Hall was built for men. By the 1960s after the acquisition of Willoughby Hall, both buildings were being used for offices and classrooms. They had been built during the extensive PrattArea Urban Renewal under the direction of Robert Moses. The renovation made extensive changes for the Graduate School of Information and Library Science as well as for a large computer laboratory.';
 
 // 		prattCopy['0002'] = '<span class="copy-bold">Library</span> <br>1896. Renovated 1982 <br>Architect: William B. Tubby, <br>Interiors by Tiffany firm. <br>Renovation by Cavaglieri and Gran. <br><br>There was a small library in the Main building when the school began in 1887. The splendid Victorian Renaissance revival structure was built as a public as well as a college library. There was emphasis on service to local children. In 1912, a copy of a Romanesque porch was added to the children\'s entrance. This was relocated near the ARC building during the renovation of 1982. The north porch was added in 1936 by John Mead Howells, and is now an office. Pratt\'s library was the first free Library in New York City. However, as the Institute grew and the public library system expanded, it ceased being a public library in 1941. The elegant interiors, originally designed by the Louis Tiffany firm have a magnificent marble and brass central staircase. The mosaic and glass floors are also noteworthy. The renovation in 1982 enhanced the building and brought an elevator as well as a below-ground wing. The building was designated a New York City Landmark in 1986.';
 //
@@ -620,64 +634,6 @@
 //
 // 		prattCopy['pps'] = 'The Pratt Institute Department of Public Safety provides 24&#8209;hour protection to the campus. Public Safety Officers are charged with the enforcement of Pratt Institute rules and regulations. They are staff employees and are responsible for a full range of services, including preparation of crime and condition reports, response to emergencies, conducting fire drills, and any other situation requiring security assistance. Contact us at security@pratt.edu or at 718.636.3540.';
 
-// 		prattCopy['0001'] = '<span class="copy-bold">Information Science Center <br>(ISC Building)</span> <br>Date: 1954-55. Renovated 1973 <br>Architects: Firm of McKim, Mead and White';
-//
-// 		prattCopy['0002'] = '<span class="copy-bold">Library</span> <br>Date: 1896. Renovated: 1982 <br>Architect: William B. Tubby, <br>Interiors by Tiffany firm. <br>Renovation by Cavaglieri and Gran.';
-//
-// 		prattCopy['0003'] = '<span class="copy-bold">DeKalb Hall</span> <br>Date: 1954-55 <br>Architects: Firm of McKim, Mead and White';
-//
-// 		prattCopy['0004'] = '<span class="copy-bold">Higgins Hall</span> <br>Date: 1868-1890 <br>Architects: Mundell and Teckritz, Ebenezer L. Roberts, <br>Charles C. Haight and William B. Tubby';
-//
-// 		prattCopy['0005'] = '<span class="copy-bold">North Hall</span> <br>Date: 1958 <br>Architects: Firm of McKim, Mead and White';
-//
-// 		prattCopy['0006'] = '<span class="copy-bold">Memorial Hall</span> <br>Date: 1926-7 <br>Architect: John Mead Howells <br>Sculptor: Rene Chambellan';
-//
-// 		prattCopy['0007'] = '<span class="copy-bold">Student Union</span> <br>Date: 1887 <br>Architect: William B. Tubby';
-//
-// 		prattCopy['0008'] = '<span class="copy-bold">Main Building</span> <br>Date: 1887 <br>Architects: Hugo Lamb and Charles A. Rich';
-//
-// 		prattCopy['0009'] = '<span class="copy-bold">East Building</span> <br>Date: 1887 <br>Architect: William Windrim';
-//
-// 		prattCopy['0010'] = '<span class="copy-bold">South Hall</span> <br>Date: 1889-92 <br>Architect: William B. Tubby';
-//
-// 		prattCopy['0011'] = '<span class="copy-bold">Esther Lloyd Jones Hall</span> <br>Date: 1921 <br>Architect: unknown';
-//
-// 		prattCopy['0012'] = '<span class="copy-bold">Thrift Hall</span> <br>Date: 1916-17 <br>Architects: Shampan and Shampan';
-//
-// 		prattCopy['0013'] = '<span class="copy-bold">Leo J. Pantas Hall</span> <br>Date: 1986-87 <br>Architects: Skidmore, Owings and Merrill';
-//
-// 		prattCopy['0014'] = '<span class="copy-bold">Willoughby Hall</span> <br>Date: 1957 <br>Architect: S. J. Kessler';
-//
-// 		prattCopy['0015'] = '<span class="copy-bold">Chemistry Building</span> <br>Date: 1904-05 <br>Architects: Howells and Stokes';
-//
-// 		prattCopy['0016'] = '<span class="copy-bold">Machinery Building</span> <br>Date: 1914 <br>Architects: Howells and Stokes';
-//
-// 		prattCopy['0017'] = '<span class="copy-bold">Engineering Building</span> <br>Date: 1928-29. Extended in 1935. <br>Architect: John Mead Howells';
-//
-// 		prattCopy['0018'] = '<span class="copy-bold">Steuben Hall</span> <br>Date: -- <br>Architect: --';
-//
-// 		prattCopy['0019'] = '<span class="copy-bold">Film/Video Building</span> <br>Date: 2015 <br>Architect: WASA/Studio, Jack Esterson<br>lead architect and Pratt alumnus';
-//
-// 		prattCopy['0020'] = '--';
-//
-// 		prattCopy['0021'] = '<span class="copy-bold">Activities Resource Center <br>(ARC Building)</span> <br>Date: 1974-75 <br>Architects: Ezra Ehrenkranz (lower level),<br>Daniel Tully (upper level)';
-//
-// 		prattCopy['0022'] = '<span class="copy-bold">Vincent A. Stabile Hall</span> <br>Date: 1999 <br>Architects: --';
-//
-// 		prattCopy['0023'] = '<span class="copy-bold">Cannoneer Court</span> <br>Date: 1986-87 <br>Architects: Skidmore, Owings and Merrill';
-//
-// 		prattCopy['0024'] = '<span class="copy-bold">Myrtle Hall</span> <br>Date: -- <br>Architect: Architect: WASA/Studio, Jack Esterson<br>lead architect and Pratt alumnus';
-//
-// 		prattCopy['pps'] = 'The Pratt Institute Department of Public Safety provides 24&#8209;hour protection to the campus. Public Safety Officers are charged with the enforcement of Pratt Institute rules and regulations. They are staff employees and are responsible for a full range of services, including preparation of crime and condition reports, response to emergencies, conducting fire drills, and any other situation requiring security assistance. Contact us at security@pratt.edu or at 718.636.3540.';
-
-
-
-
-
-
-
-
-
 		prattCopy['0001'] = '<span class="copy-bold">Information Science Center <br>(ISC Building)</span> <br>1954-55. Renovated 1973 <br>Architects: Firm of McKim, Mead and White <br><br>Built as a dormitory for women at the same time DeKalb Hall was built for men. By the 1960s after the acquisition of Willoughby Hall, both buildings were being used for offices and classrooms. They had been built during the extensive Pratt Area Urban Renewal under the direction of Robert Moses.';
 
 		prattCopy['0002'] = '<span class="copy-bold">Library</span> <br>1896. Renovated 1982 <br>Architect: William B. Tubby, <br>Interiors by Tiffany firm. <br>Renovation by Cavaglieri and Gran. <br><br>The splendid Victorian Renaissance revival structure was built as a public as well as a college library. There was emphasis on service to local children. In 1912, a copy of a Romanesque porch was added to the children\'s entrance. This was relocated near the ARC building during the renovation of 1982. The north porch was added in 1936 by John Mead Howells. Pratt\'s library was the first free Library in New York City. However, as the Institute grew and the public library system expanded, it ceased being a public library in 1941. The elegant interiors, originally designed by the Louis Tiffany firm have a magnificent marble and brass central staircase. The mosaic and glass floors are also noteworthy. The renovation in 1982 enhanced the building and brought an elevator as well as a below-ground wing. The building was designated a New York City Landmark in 1986.';
@@ -712,7 +668,7 @@
 
 		prattCopy['0017'] = '<span class="copy-bold">Engineering Building</span> <br>1928-29. Extended in 1935. <br>Architect: John Mead Howells <br><br>The most recent of the three buildings in this group. It connects to the Machinery and Chemistry buildings.';
 
-		prattCopy['0018'] = '<span class="copy-bold">Steuben Hall</span> <br>Date: unknown <br>Architect: unknown <br><br>Previously, this was the United Metals factory, which manufactured small metal items and was acquired by Pratt in the early 1970s. <br><br><span class="copy-bold">Pratt Studio Building</span> <br>Date: unknown <br>Architect: unknown <br>Former industrial building acquired by Pratt in 1962, and converted for use as art and design studios.';
+		prattCopy['0018'] = '<span class="copy-bold">Steuben Hall</span> <br>Date: unknown <br>Architect: unknown <br><br>Previously, this was the United Metals factory, which manufactured small metal items and was acquired by Pratt in the early 1970s. <br><br><span class="copy-bold">Pratt Studio Building</span> <br>Date: unknown <br>Architect: unknown <br><br>Former industrial building acquired by Pratt in 1962, and converted for use as art and design studios.';
 
 		prattCopy['0019'] = '<span class="copy-bold">Film/Video Building</span> <br>Date: 2015 <br>Architect: WASA/Studio, Jack Esterson<br>lead architect and Pratt alumnus  <br><br>Pratt Institute recently opened a new home for the Film/Video Department in the former Prattstore building at 550 Myrtle Avenue on the Brooklyn campus. The 15,000-square-foot facility was designed by WASA/Studio A with lead architect and Pratt alumnus Jack Esterson. The project was recognized with a citation award in the 2015 American Institute of Architects New York State Design Awards.';
 
@@ -726,9 +682,7 @@
 
 		prattCopy['0024'] = '<span class="copy-bold">Myrtle Hall</span> <br>Date: -- <br>Architect: WASA/Studio, Jack Esterson<br>lead architect and Pratt alumnus <br><br>The building, which is located at 536 Myrtle Avenue between Grand Avenue and Steuben Street, was designed by multi-disciplinary architectural firm WASA/Studio A under the leadership of principal Jack Esterson, who received a bachelor\'s degree in architecture from Pratt in 1975. <br>Myrtle Hall recently met the United States Green Building Council standards for LEED (Leadership in Energy and Environmental Design) Gold certification based on its eco-features that include exterior sun shades; a green roof that absorbs rainwater, reflects heat, and sequesters greenhouse gasses; and solar photo-voltaic panels that generate on-site electricity. It is the first higher education building project in Brooklyn to receive any LEED certification and the first academic building to receive a LEED-gold certification in Brooklyn.';
 
-
-
-
+ 		prattCopy['pps'] = 'The Pratt Institute Department of Public Safety provides 24&#8209;hour protection to the campus. Public Safety Officers are charged with the enforcement of Pratt Institute rules and regulations. They are staff employees and are responsible for a full range of services, including preparation of crime and condition reports, response to emergencies, conducting fire drills, and any other situation requiring security assistance. Contact us at security@pratt.edu or at 718.636.3540.';
 
 	}
 

@@ -77,10 +77,17 @@ var onRightMouseDown = function(event) {
 	//$(poiMenuSelector).css('top', $(window).height() - event.detail.pixelY + "px");
 	//$(poiMenuSelector).css('left', event.detail.pixelX + "px");
 
-//     if (currentLabelId){
-//         repositionLabel(currentLabelId);
-//         return;
-//     }
+    //if (currentLabelId){
+     //   repositionLabel(currentLabelId);
+     //   return;
+    //}
+
+    ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps, (latlon) => {
+
+    	console.log('lat and long ');
+    	console.log(latlon);
+
+    });
 
     //$('#bootstrap').trigger('contextmenu');
     //console.log("Ambiarc received a RightMouseDown event");

@@ -235,6 +235,9 @@ class DbTools {
 							// 	$out[$dept]['dept']	= $dept;
 							// 	$out[$dept]['bldg']	= trim($record['bldg_abbre']);
 							//	$out[$dept] = "<span class=\"fly-box\" data-cat=\"office\"  data-office=\"$dept\" >$dept</span>";
+
+							$dept = str_replace('|',',',$dept);
+
 							$camploc = strtolower($record['on_off_campus']).'camp';
 							$out[$dept] = "<span
 								class=\"fly-box $camploc\"
@@ -558,9 +561,11 @@ class DbTools {
 			foreach($rows as $field=>$record) {
 
 				if ($record['gk_space_provisions'] != '') {
-					$exp = explode(',',$record['gk_space_provisions']);
+					//$exp = explode(',',$record['gk_space_provisions']);
+					$exp = explode('#',$record['gk_space_provisions']);
 				} else {
-					$exp = explode('-',$record['room_name']);
+					//$exp = explode('-',$record['room_name']);
+					$exp = explode('#',$record['room_name']);
 					//$exp = $exp[1];
 					unset($exp[0]);
 				}

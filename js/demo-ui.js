@@ -237,7 +237,7 @@ var buildingLabelUpdate = function(bldgId, labelId) {
 	poiObject.partialPath = 'css/icons/ic_building.pngZ'
 	poiObject.collapsedIconPartialPath = '/css/icons/ic_building.pngZ'
 	poiObject.collapsedIconLocation = 'URL'
-	poiObject.ignoreCollision = false;
+	poiObject.ignoreCollision = true;
 	ambiarc.updateMapLabel(labelId, ambiarc.mapLabel.IconWithText, poiObject);
 }
 
@@ -277,33 +277,38 @@ var fetchPoisFromApi = function(params) {
 	//	allowFloorEvent = false;
 	//}
 
-	var token = $.cookie('token');
 	var hash = Math.random().toString(36).substr(2, 5);
 	if (typeof params == 'undefined') {
 		alert('Error, fetch params not defined.');
 		return true;
 	}
-	params.host = window.location.hostname;
-	var str = '';
-	for (var prop in params) {
-		if (prop == 'currentTarget' || typeof params[prop] == 'undefined') {
-			continue;
-		}
-		str += "&"+prop+"="+params[prop];
-	}
-	str = encodeURI(str);
-
-	var url = "https://map.pratt.edu/facilities/web/facilities/get?token="+token+"&countzeros="+countZeros+"&hash="+hash+str;
-	console.log('url '+url);
-
-	//var url = "http://localhost/~iancampbell/PrattSDK-mod/points_sample.json";
 
 	if (params.action == 'showFloorInfo' && params.floor =='') {
 		url = '';
 		alert('stop');
 	}
 
-	ambiarc.loadRemoteMapLabels(url).then((out) => {
+	params.host = window.location.hostname;
+	params.token		= $.cookie('token');
+	params.hash			= hash;
+	params.countzeros	= countZeros;
+
+	var pObj = {}
+	for (var prop in params) {
+		if (prop == 'currentTarget' || typeof params[prop] == 'undefined' || params[prop] == '') {
+			continue;
+		}
+		pObj[prop] = params[prop];
+	}
+
+	console.log(pObj);
+
+	url = "https://map.pratt.edu/facilities/web/facilities/pull";
+	var options = { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' }, body: JSON.stringify(pObj) };
+
+	console.log('url '+url);
+
+	ambiarc.loadRemoteMapLabels(url,options).then((out) => {
 
 		//allowFloorEvent = false;
 
@@ -312,7 +317,8 @@ var fetchPoisFromApi = function(params) {
 			/// show labels if building exploded
 			//ambiarc.EnableAutoShowPOIsOnFloorEnter();
 
-			console.log(' fetch points out ');
+			console.log(params);
+			console.log(' fetch points out demo ');
 			console.log(out);
 
 			if (params.fetch == 'all') {
@@ -411,6 +417,8 @@ var fetchPoisFromApi = function(params) {
 					alert('no records found');
 				}
 
+				console.log('processProceed = ' + processProceed)
+
 				if (processProceed == 'Y') {
 					processAndRun(params);
 				}
@@ -450,6 +458,22 @@ var deleteAllLabels = function() {
 var processAndRun = function(params) {
 
 	//hideAllLabels();
+
+	if (params.action == 'displayProvisions') {
+
+		if (isFloorSelectorEnabled) {
+			ambiarc.exitBuilding();
+			clearMapLegend('demo 462');
+			//setTimeout(function(){
+			//	fullMapView();
+			//},1000);
+		}
+
+
+
+		return;
+
+	}
 
 	if (ambiarc.floorId > '1') {
 		ambiarc.buildingId = bldgMap[ambiarc.floorId].buildingId;
@@ -500,21 +524,43 @@ var processAndRun = function(params) {
 					focusAfterDataLoad(itemId);
 				}
 			} catch(err) { console.log(err) }
-		},125);
+		},250);
+
+		setTimeout(function(){
+			try {
+				if (itemId !== '' && roomName != '') {
+					var obj = {};
+					obj.label = roomName;
+					try {
+						ambiarc.updateMapLabel(itemId, 'IconWithText', obj);
+					} catch(err) { console.log(err) }
+				}
+			} catch(err) { console.log(err) }
+		},500);
 	}
 
 	if (params.action == 'focusOutdoorPoint') {
+
 		setTimeout(function(){
-			ambiarc.focusOnLatLonAndZoomToHeight('', '', winLat, winLon, 50);
-			setTimeout(function(){ ambiarc.focusOnLatLonAndZoomToHeight('', '', winLat, winLon, 50); },1000);
+
+			ambiarc.focusOnLatLonAndZoomToHeight('', '', winLat, winLon, 75);
+
 			setTimeout(function(){
-				ambiarc.setCameraRotation(45, 0);
+
+				ambiarc.showMapLabel(itemId, true);
+				popMapLegend2();
+
 				setTimeout(function(){
-					ambiarc.showMapLabel(itemId, true);
-				},1000);
-			},1000);
-		},100);
-		popMapLegend2();
+
+					ambiarc.setCameraRotation(45, 0);
+
+				},2000);
+
+			},2000);
+
+		},1000);
+
+		//popMapLegend2();
 	}
 
 	if (params.action == 'showFloorInfo') {
@@ -719,25 +765,25 @@ var createTextIcon = function (mapLabelInfo) {
 	});
 };
 
-// var repositionLabel = function(currentLabelId){
-//
-// 	currentLabelId = poiMap[ambiarc.recordIdKeep];
-//
-// 	alert(currentLabelId);
-//
-//     ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps, (latlon) => {
-//
-//     	///console.log('getMapPositionAtCursor');
-//     	///console.log(latlon);
-//
-//     	var send = {};
-// 		send.id = ambiarc.recordIdKeep;
-// 		send.latitude = parseFloat(latlon.lat);
-// 		send.longitude = parseFloat(latlon.lon);
-//
-// 		postJsonToApi(send);
-//     });
-// };
+var repositionLabel = function(currentLabelId){
+
+	currentLabelId = poiMap[ambiarc.recordIdKeep];
+
+	console.log('currentLabelId ' + currentLabelId);
+
+    ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps, (latlon) => {
+
+    	///console.log('getMapPositionAtCursor');
+    	console.log(latlon);
+
+    	var send = {};
+		send.id = ambiarc.recordIdKeep;
+		send.latitude = parseFloat(latlon.lat);
+		send.longitude = parseFloat(latlon.lon);
+
+		postJsonToApi(send);
+    });
+};
 
 var postJsonToApi = function(send) {
 
@@ -764,10 +810,40 @@ var postJsonToApi = function(send) {
 		}
 	})
     .done(function( ret ) {
-		alert('post data to api');
+		///alert('post data to api');
     	///console.log('post begin');
         console.log(ret);
         console.log('post end');
+
+
+
+        var poiObject = {
+			//buildingId: currentBuildingId,
+			//floorId: floorId,
+			latitude: send.latitude,
+			longitude: send.longitude,
+			label: 'Point Moved',
+			//fontSize: 26,
+			//category: 'Label',
+			showOnCreation: true,
+			type: 'IconWithText',
+			showToolTip: false,
+			//tooltipTitle: '',
+			//tooltipBody: '',
+			//base64: iconDefault,
+			location: 'URL',
+			partialPath: 'images/icons/ic_admin_info_v2.png',
+			collapsedIconLocation: 'URL',
+			collapsedIconPartialPath: 'images/icons/ic_admin_info_v2.png',
+			ignoreCollision: true,
+		};
+
+		//console.log(poiObject);
+
+		createTextIcon(poiObject);
+
+
+
     })
     .fail( function(xhr, textStatus, errorThrown) {
         console.log(xhr.responseText);
