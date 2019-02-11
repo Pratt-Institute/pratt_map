@@ -94,10 +94,10 @@ class DbTools {
 			and room_name not like '%inactive%'
 
 
-			and room_name not like '%toilet%'
+			/* and room_name not like '%toilet%'
 			and room_name not like '%men%'
 			and room_name not like '%women%'
-			and room_name not like '%bath%'
+			and room_name not like '%bath%' */
 
 			and department not like '%inactive%'
 			and major_category not like '%inactive%'
@@ -107,8 +107,8 @@ class DbTools {
 			/*and gk_bldg_id != ''
 			and gk_floor_id != ''*/
 			and room_name != ''
-			and room_name not like '%storage%'
-			and room_name not like '%corr%'
+			/* and room_name not like '%storage%'
+			and room_name not like '%corr%' */
 			and room_name not like '%elev%'
 			and room_name not like '%stair%'
 
@@ -383,13 +383,13 @@ class DbTools {
 
 					if ($record['on_off_campus'] == 'ON' && strlen(trim($record['latitude'])) > '8') {
 
-						if (stripos('_'.$record['room_name'], 'shower') !== false) {
-							continue;
-						}
-
-						if (stripos('_'.$record['room_name'], 'washr') !== false) {
-							continue;
-						}
+						// 	if (stripos('_'.$record['room_name'], 'shower') !== false) {
+						// 		continue;
+						// 	}
+						//
+						// 	if (stripos('_'.$record['room_name'], 'washr') !== false) {
+						// 		continue;
+						// 	}
 
 						$pointArr = array();
 
@@ -598,6 +598,10 @@ class DbTools {
 					//$point = ucwords($point);
 
 					$name = trim($record['bldg_name']).' - '.$point;
+
+					if (trim($record['bldg_abbre']) == 'PPS') {
+						$name = trim($record['room_name']);
+					}
 
 					//$name = strtolower($name);
 					//$name = ucwords($name);

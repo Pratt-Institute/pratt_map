@@ -89,6 +89,11 @@ var onRightMouseDown = function(event) {
 
     });
 
+	if (currentLabelId){
+		repositionLabel(currentLabelId);
+		return;
+	}
+
     //$('#bootstrap').trigger('contextmenu');
     //console.log("Ambiarc received a RightMouseDown event");
 

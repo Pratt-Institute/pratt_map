@@ -767,82 +767,61 @@ var createTextIcon = function (mapLabelInfo) {
 
 var repositionLabel = function(currentLabelId){
 
-	currentLabelId = poiMap[ambiarc.recordIdKeep];
-
 	console.log('currentLabelId ' + currentLabelId);
 
     ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps, (latlon) => {
-
-    	///console.log('getMapPositionAtCursor');
     	console.log(latlon);
-
     	var send = {};
-		send.id = ambiarc.recordIdKeep;
+		send.id = ambiarc.poiStuff[currentLabelId].recordId;
 		send.latitude = parseFloat(latlon.lat);
 		send.longitude = parseFloat(latlon.lon);
-
 		postJsonToApi(send);
     });
 };
 
 var postJsonToApi = function(send) {
 
-	return true;
-
-	///console.log('postJsonToApi');
-	///console.log(send);
-	///console.log($.cookie('token'));
+	// return true;
 
 	$.ajax({
 		type: "POST",
 		//dataType: 'json',
-		//url: "http://local.facilities.com/facilities/put",
 		url: "https://map.pratt.edu/facilities/web/facilities/put",
 		crossDomain : true,
-		//data: JSON.stringify(obj),
 		data: {
 			id: send.id,
-			//info: ambiarc.poiList[currentLabelId],
 			info: send,
 			message: 'hello from front end',
-			//token: document.token
 			token: $.cookie('token')
 		}
 	})
     .done(function( ret ) {
-		///alert('post data to api');
-    	///console.log('post begin');
+
         console.log(ret);
         console.log('post end');
 
-
-
-        var poiObject = {
-			//buildingId: currentBuildingId,
-			//floorId: floorId,
-			latitude: send.latitude,
-			longitude: send.longitude,
-			label: 'Point Moved',
-			//fontSize: 26,
-			//category: 'Label',
-			showOnCreation: true,
-			type: 'IconWithText',
-			showToolTip: false,
-			//tooltipTitle: '',
-			//tooltipBody: '',
-			//base64: iconDefault,
-			location: 'URL',
-			partialPath: 'images/icons/ic_admin_info_v2.png',
-			collapsedIconLocation: 'URL',
-			collapsedIconPartialPath: 'images/icons/ic_admin_info_v2.png',
-			ignoreCollision: true,
-		};
-
-		//console.log(poiObject);
-
-		createTextIcon(poiObject);
-
-
+		// 	var poiObject = {
+		// 		//buildingId: currentBuildingId,
+		// 		//floorId: floorId,
+		// 		latitude: send.latitude,
+		// 		longitude: send.longitude,
+		// 		label: 'Point Moved',
+		// 		//fontSize: 26,
+		// 		//category: 'Label',
+		// 		showOnCreation: true,
+		// 		type: 'IconWithText',
+		// 		showToolTip: false,
+		// 		//tooltipTitle: '',
+		// 		//tooltipBody: '',
+		// 		//base64: iconDefault,
+		// 		location: 'URL',
+		// 		partialPath: 'images/icons/ic_admin_info_v2.png',
+		// 		collapsedIconLocation: 'URL',
+		// 		collapsedIconPartialPath: 'images/icons/ic_admin_info_v2.png',
+		// 		ignoreCollision: true,
+		// 	};
+		//
+		// 	createTextIcon(poiObject);
 
     })
     .fail( function(xhr, textStatus, errorThrown) {
