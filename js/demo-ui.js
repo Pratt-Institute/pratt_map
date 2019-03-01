@@ -24,9 +24,17 @@
  window.fetchDelay		= 0;
  window.countZeros		= 0;
 
+window.youAreHereLat = '';
+window.youAreHereLon = '';
+
  /// icampb15@pratt.edu
  /// 718.687.5762
  /// 347.904.6743
+
+// $.urlParam = function(name){
+// 	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+// 	return results[1] || 0;
+// }
 
 function range(start, edge, step=1) {
 	// If only 1 number passed make it the edge and 0 the start
@@ -623,17 +631,58 @@ var processAndRun = function(params) {
 
 				setTimeout(function(){
 
-					ambiarc.setCameraRotation(rotation, 0);
+					//40.693350, -73.963480
+					//40.692259, -73.963140
 
-					ambiarc.getDirections('', '', 40.690354, -73.964872, '', '', params.accessLat, params.accessLon, function(res){
-						///console.log(res);
-					});
+					if (typeof youAreHereLat != 'undefined' && youAreHereLat.length > 0) {
 
-				},1000);
+						if (youAreHereId == 999) {
 
-			},1000);
+							ambiarc.getDirections('', '', youAreHereLat, youAreHereLon, '', '', 40.692259, -73.963140, function(res){
+								console.log('one one one one one one one one one one one one one one one one one one one one one one one one ');
+								console.log(res);
 
-		},1000);
+								setTimeout(function(){
+
+									ambiarc.getDirections('', '', 40.692259, -73.963140, '', '', params.accessLat, params.accessLon, function(res){
+										console.log('two two two two two two two two two two two two two two two two two two two two two two two two ');
+										console.log(res);
+									});
+
+								},500);
+
+							});
+
+						} else {
+
+							ambiarc.getDirections('', '', youAreHereLat, youAreHereLon, '', '', params.accessLat, params.accessLon, function(res){
+								console.log('dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic ');
+								console.log(res);
+							});
+
+							setTimeout(function(){
+								ambiarc.getDirections('', '', youAreHereLat, youAreHereLon, '', '', params.accessLat, params.accessLon, function(res){
+									console.log('two two two two two two two two two two two two two two two two two two two two two two two two ');
+									console.log(res);
+								});
+							},1000);
+
+						}
+
+					} else {
+
+						ambiarc.getDirections('', '', 40.690354, -73.964872, '', '', params.accessLat, params.accessLon, function(res){
+							console.log('static static static static static static static static static static static static static static static static static ');
+							console.log(res);
+						});
+
+					}
+
+				},1500);
+
+			},1500);
+
+		},1500);
 	}
 }
 

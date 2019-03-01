@@ -14,7 +14,7 @@
 	$obj = new DbTools;
 	if (!@$_SESSION['token']) {
 		if($obj->createToken()) {
-			echo '<br>token created';
+			//echo '<br>token created';
 		} else {
 			echo '<br>error, token not created';
 		}
@@ -31,6 +31,11 @@
 	if (@$_POST['mode']) {
 		$obj->setMode = addslashes($_POST['mode']);
 	}
+
+	$obj->kioskId = addslashes($_GET['kiosk']);
+	$kiosk_location = $obj->getKioskLocation();
+
+	//die();
 
 ?>
 
@@ -79,16 +84,26 @@
     		location.reload();
     	};
 
-		$.cookie('token', "<?php echo $_SESSION['token'] ?>", { expires: 1, secure: false });
+    	var kioskLocation = '<?php echo $kiosk_location ?>';
 
-		//var deptMap =  '<?php $obj->buildDepartmentMap() ?>';
-		//document.deptMap = JSON.parse(deptMap);
+		if (typeof kioskLocation != 'undefined' && kioskLocation.length > 0) {
+			var splitLoc = kioskLocation.split(',');
+			window.youAreHereId		= splitLoc[0];
+			window.youAreHereName	= splitLoc[1];
+			window.youAreHereLat	= splitLoc[2];
+			window.youAreHereLon	= splitLoc[3];
+			console.log('Kiosk Location: ' + youAreHereLat + ' - ' + youAreHereLon);
+		}
+
+		$.cookie('token', "<?php echo $_SESSION['token'] ?>", { expires: 1, secure: false });
 
 		var bldgMap =  '<?php $obj->createBuildingMap() ?>';
 		document.bldgMap = JSON.parse(bldgMap);
 
 		var hallMap =  '<?php $obj->createHallMap() ?>';
 		document.hallMap = JSON.parse(hallMap);
+
+
 
 	</script>
 
@@ -256,9 +271,12 @@
 		</tr>
 	</table>
 
-	<div class="reset">
+	<!--<div class="reset">
 		<img src="images/reset.png">
-	</div>
+	</div>-->
+
+	<div id="show_geoloc"></div>
+
 
 	<!--<button class="ripple"></button>-->
 

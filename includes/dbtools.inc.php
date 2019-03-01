@@ -18,6 +18,7 @@ class DbTools {
 	private $error;
 
 	public $setMode;
+	public $kioskId;
 
 	public function __construct() {
 
@@ -33,6 +34,29 @@ class DbTools {
 		} catch(PDOException $e){
 			$this->error = $e->getMessage();
 		}
+	}
+
+	public function getKioskLocation() {
+
+		try {
+			//echo '<br>check token: '.$sql = "SELECT * FROM tokens WHERE token = '$token'";
+			$sql = "SELECT * FROM locations WHERE id = '".$this->kioskId."'";
+			$stmt = $this->dbh->prepare($sql);
+			$stmt->execute();
+			$rows = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			//echo '<br>';
+			//print_r($rows);
+
+			if ($rows['id']) {
+				return implode(',',$rows);
+				//return true;
+			}
+			return false;
+		} catch(PDOException $e) {
+			echo $sql . "<br>" . $e->getMessage();
+		}
+
 	}
 
 	public function fetchThemeMode() {
@@ -531,6 +555,7 @@ class DbTools {
 					id,
 					bldg_abbre,
 					bldg_name,
+					floor,
 					gk_bldg_id,
 					gk_floor_id,
 					gk_space_provisions,
@@ -597,7 +622,7 @@ class DbTools {
 
 					//$point = ucwords($point);
 
-					$name = trim($record['bldg_name']).' - '.$point;
+					$name = trim($record['bldg_name']).' - '.$point.' - '.trim($record['floor']);
 
 					if (trim($record['bldg_abbre']) == 'PPS') {
 						$name = trim($record['room_name']);
@@ -607,7 +632,7 @@ class DbTools {
 					//$name = ucwords($name);
 
 					$out[$name] = "<span
-						class=\"fly-box ".$camploc."\"
+						class=\"first-aid fly-box ".$camploc."\"
 						data-recordid=\"".$record['id']."\"
 						data-bldg=\"".$record['bldg_abbre']."\"
 						data-floorid=\"".$record['gk_floor_id']."\"
@@ -617,7 +642,8 @@ class DbTools {
 						data-roomno=\"$room_number\"
 						data-lat=\"".$record['latitude']."\"
 						data-long=\"".$record['longitude']."\"
-						>$name</span>";
+						data-label=\"".$record['room_name']."\"
+						><div class=\"\">".trim($record['bldg_name'])."</div><div>".$point."</div><div>".trim($record['floor'])."</div></span>";
 				}
 			}
 		}

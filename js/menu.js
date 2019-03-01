@@ -29,6 +29,37 @@
 			window.winLat = '';
 			window.winLon = '';
 
+			//	alert(kioskLocation);
+
+			// 	if (typeof kioskLocation != 'undefined' && kioskLocation.length > 0) {
+			// 		var splitLoc = kioskLocation.split(',');
+			// 		youAreHereLat = splitLoc[2];
+			// 		youAreHereLon = splitLoc[3];
+			// 		console.log('Kiosk Location: ' + youAreHereLat + ' - ' + youAreHereLon);
+			// 	}
+
+			// 	var x = document.getElementById("show_geoloc");
+			// 	function getLocation() {
+			// 		if (navigator.geolocation) {
+			// 			navigator.geolocation.getCurrentPosition(showPosition);
+			// 		} else {
+			// 			x.innerHTML = "Geolocation is not supported by this browser.";
+			// 		}
+			// 	}
+			// 	function showPosition(position) {
+			// 		//x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+			// 		x.innerHTML = '';
+			//
+			// 		youAreHereLat = position.coords.latitude;
+			// 		youAreHereLon = position.coords.longitude;
+			// 	}
+			//
+			// 	setInterval(getLocation, 5000);
+
+			$.getJSON('https://json.geoiplookup.io/api?callback=?', function(data) {
+				console.log(JSON.stringify(data, null, 2));
+			});
+
 			var pollMapStatus = setInterval(function(){
 
 				//$('div.debug').html(currentMapStatus);
@@ -517,6 +548,10 @@
 					ambiarc.roomNo = $(this).attr('data-roomno');
 					ambiarc.lat = $(this).attr('data-lat');
 					ambiarc.lon = $(this).attr('data-long');
+
+					if ($(this).attr('data-label') != '') {
+						ambiarc.roomName = $(this).attr('data-label');
+					}
 
 					if ( $(this).attr('data-bldg') == 'PPS' || $(this).attr('data-bldg') == 'GATE' ) {
 

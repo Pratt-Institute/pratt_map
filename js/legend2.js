@@ -178,6 +178,11 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 			var bId = buildingId;
 		}
 
+
+		if (typeof person != 'undefined' && person != '') {
+			var bId = building;
+		}
+
 		var copyArr = prattCopy[bId].split(' ');
 		$.each(copyArr, function(k, v) {
 			if (v.indexOf(':') != -1) {
@@ -209,22 +214,6 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 
 	if (pointLable == 'PPS') {
 		$('.history').html(prattCopy['pps']);
-	}
-
-	try {
-		if (person != '') {
-
-			var floorIdPerson = hallMap[building].floorId
-			var imgBldg = '<img src="images/buildings/'+building+'.jpg">'
-			$('.legend-building').html(imgBldg);
-
-			$('.bldgName').html(hallMap[building].bldg_name);
-			$('.roomName').html(person + '<br>' + title + '<br>' + dept + '<br>' + office);
-
-			createPointLabel(building,floorIdPerson);
-		}
-	} catch(err) {
-		//console.log(err)
 	}
 
 	if (legendType == 'offCampusPoint') {
@@ -278,6 +267,24 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 			$('.legend-copy').prepend(imgAccs);
 		}
 
+	} catch(err) {
+		//console.log(err)
+	}
+
+	try {
+		if (person != '') {
+
+			var floorIdPerson = hallMap[building].floorId
+			var imgBldg = '<img src="images/buildings/'+building+'.jpg">'
+			$('.legend-building').html(imgBldg);
+
+			$('.bldgName').html(hallMap[building].bldg_name);
+			$('.roomName').html(person + '<br>' + title + '<br>' + dept + '<br>' + office);
+
+			//$('.history').html();
+
+			createPointLabel(building,floorIdPerson);
+		}
 	} catch(err) {
 		//console.log(err)
 	}
@@ -354,7 +361,7 @@ var clearLegendVariables = function(src=''){
 	ambiarc.sculptureArtist	= '';
 
 	ambiarc.person		= '';
-	ambiarc.building	= '';
+	//ambiarc.building	= '';
 	ambiarc.dept		= '';
 	ambiarc.title		= '';
 	ambiarc.phone		= '';

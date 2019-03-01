@@ -292,6 +292,10 @@ div.flyout span, div.subfly span {
     transition: background-color 0.2s ease;
 }
 
+div.flyout span.first-aid {
+	height: 48px;
+}
+
 div.search-box {
 	overflow: hidden;
 }
@@ -684,3 +688,34 @@ table.icons img {
 	cursor: pointer;
 	height: 35px;
 }
+
+span.fly-box div {
+	display: inline-block;
+	float: left;
+	border: none;
+	overflow: hidden;
+	margin-right: 15px;
+}
+
+span.first-aid div:nth-child(1) {
+	width: 300px;
+}
+span.first-aid div:nth-child(2) {
+	width: 225px;
+}
+span.first-aid div:nth-child(3) {
+	width: 75px;
+}
+
+
+    	#show_geoloc {
+    		position: absolute;
+    		top: 0px;
+    		right: 0px;
+    	}
+
+
+
+
+
+
