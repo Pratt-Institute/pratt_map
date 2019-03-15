@@ -26,7 +26,11 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 	var sculptureName	= ambiarc.sculptureName;
 	var sculptureArtist	= ambiarc.sculptureArtist;
 
-	console.log(ambiarc);
+	var professor	= ambiarc.professor;
+	var course		= ambiarc.course;
+	var times		= ambiarc.times;
+
+	//console.log(ambiarc);
 
 	var hasFloor = false;
 
@@ -280,6 +284,29 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 
 			$('.bldgName').html(hallMap[building].bldg_name);
 			$('.roomName').html(person + '<br>' + title + '<br>' + dept + '<br>' + office);
+
+			//$('.history').html();
+
+			createPointLabel(building,floorIdPerson);
+		}
+	} catch(err) {
+		//console.log(err)
+	}
+
+	try {
+		if (professor != '') {
+
+			//var floorIdPerson = hallMap[building].floorId
+			//var imgBldg = '<img src="images/buildings/'+building+'.jpg">'
+			//$('.legend-building').html(imgBldg);
+
+			//$('.bldgName').html(hallMap[building].bldg_name);
+			//$('.roomName').html(person + '<br>' + title + '<br>' + dept + '<br>' + office);
+
+			$('.professor').html(professor);
+			$('.course').html(course);
+			$('.roomName').html(roomName);
+			$('.times').html(times);
 
 			//$('.history').html();
 

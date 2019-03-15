@@ -130,7 +130,7 @@
 			});
 
 			$(document).on("click", "li.list-group-item, span.fly-sculp, .cat-box, .fly-box", function(e){
-				clearLegendVariables('menu 94');
+				clearLegendVariables('menu 133');
 				allowFloorEvent = false;
 			});
 
@@ -148,15 +148,16 @@
 
 			$(document).on("click", "li.list-group-item, span.fly-sculp", function(e){
 
-				clearMapLegend('menu 100');
+				clearMapLegend('menu 151');
 				ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'yes';
 
 				//window.doFloorSelected = false;
 
 				var personAttr = $(this).attr('data-person');
+				var professorAttr = $(this).attr('data-professor');
 
-				if (typeof personAttr != 'undefined') {
+				if (typeof personAttr != 'undefined' || typeof professorAttr != 'undefined') {
 
 					ambiarc.person = $(this).attr('data-person');
 					ambiarc.building = $(this).attr('data-building');
@@ -168,6 +169,11 @@
 					ambiarc.email = $(this).attr('data-email');
 					ambiarc.lat = $(this).attr('data-lat');
 					ambiarc.lon = $(this).attr('data-long');
+
+					ambiarc.professor = $(this).attr('data-professor');
+					ambiarc.course = $(this).attr('data-course');
+					ambiarc.roomName = $(this).attr('data-room');
+					ambiarc.times = $(this).attr('data-times');
 
 					window.winLat = $(this).attr('data-lat');
 					window.winLon = $(this).attr('data-long');
@@ -961,6 +967,10 @@
 			appendFromApi(filter);
 		}
 
+		if (filter.length > '2') {
+			lookupClasses(filter);
+		}
+
 	}
 
 	function appendFromApi(filter) {
@@ -986,6 +996,40 @@
 				try {
 					//console.log(ret);
 					$('li.ldap-item').remove();
+					$('ul.list-group').append(ret);
+				} catch(e) {
+					///console.log(e);
+					alert('ldap search failed');
+					return;
+				}
+			}
+		});
+
+	}
+
+	function lookupClasses(filter) {
+
+		$('li.ldap-item').remove();
+
+		var host = window.location.hostname;
+
+		if (host == 'localhost') {
+			host = 'http://localhost/~iancampbell/maps/PrattSDK-demo';
+		} else {
+			host = 'https://map.pratt.edu/demo';
+		}
+
+		$.ajax({
+			url: 'https://map.pratt.edu/facilities/web/sections/lookup',
+			data: {
+				filter: filter,
+			},
+			type: "POST",
+			//beforeSend: function(xhr){xhr.setRequestHeader('X-Test-Header', 'test-value');},
+			success: function(ret) {
+				try {
+					//console.log(ret);
+					$('li.class-item').remove();
 					$('ul.list-group').append(ret);
 				} catch(e) {
 					///console.log(e);

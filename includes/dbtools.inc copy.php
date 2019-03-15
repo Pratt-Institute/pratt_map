@@ -251,9 +251,7 @@ class DbTools {
 						continue;
 					}
 
-					//$dept_exp = explode(',',$record['gk_department']);
-					$dept_exp = explode('|',$record['gk_department']);
-
+					$dept_exp = explode(',',$record['gk_department']);
 					foreach($dept_exp as $dept) {
 						$dept = trim($dept);
 						if ($dept != '') {
@@ -420,8 +418,7 @@ class DbTools {
 						$pointArr = array();
 
 						if ($record['gk_department'] != '') {
-							//$pointArr = explode(',',$record['gk_department']);
-							$pointArr = explode('|',$record['gk_department']);
+							$pointArr = explode(',',$record['gk_department']);
 						} else {
 							$pointArr[] = $record['room_name'];
 						}
@@ -696,9 +693,7 @@ class DbTools {
 
 		if ($rows[0]['id']) {
 			foreach($rows as $field=>$record) {
-
-				//$exp = explode(',',$record['gk_department']);
-				$exp = explode('|',$record['gk_department']);
+				$exp = explode(',',$record['gk_department']);
 
 				if (trim($record['new_room_no']) != '') {
 					$room_number = trim($record['new_room_no']);
@@ -822,8 +817,7 @@ class DbTools {
 					if ($record['gk_school']!='' && $record['gk_department']!='') {
 
 						$schl_exp = explode(',',$record['gk_school']);
-						//$dept_exp = explode(',',$record['gk_department']);
-						$dept_exp = explode('|',$record['gk_department']);
+						$dept_exp = explode(',',$record['gk_department']);
 
 						if ($record['bldg_abbre'] == 'W14' || $record['bldg_abbre'] == 'W18' || $record['bldg_abbre'] == 'FLSH' || $record['bldg_abbre'] == 'CRR') {
 							$campLoc = 'offcamp';
@@ -966,8 +960,7 @@ class DbTools {
 						$record['floor'] = 'Basement';
 					}
 
-					//$exp = explode(',',$record['gk_department']);
-					$exp = explode('|',$record['gk_department']);
+					$exp = explode(',',$record['gk_department']);
 
 					$i=0;
 					foreach($exp as $dept) {

@@ -234,7 +234,10 @@
 				<td class="legend-copy">
 					<span class="bldgName"></span><br>
 					<span class="floorNo"></span><br>
+					<span class="course"></span><br>
+					<span class="professor"></span><br>
 					<span class="roomName"></span><br>
+					<span class="times"></span><br><br>
 					<span class="roomNo"></span><br><br>
 					<span class="history"></span>
 				</td>
