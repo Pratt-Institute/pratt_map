@@ -392,6 +392,8 @@ var onFloorSelectorFocusChanged = function(event) {
 
 var cameraStartedHandler = function(event){
 
+	//$('.veil').hide();
+
 	//currentMapStatus = 'cameraStartedHandler';
 
 	mapIsParked = false;

@@ -103,8 +103,6 @@
 		var hallMap =  '<?php $obj->createHallMap() ?>';
 		document.hallMap = JSON.parse(hallMap);
 
-
-
 	</script>
 
 <style></style>
@@ -119,6 +117,10 @@
 	0; z-index:-1; position:fixed; pointer-events: all;">
 		Your browser doesn't support iframes
 	</iframe>
+
+	<div class="veil veil-text">
+		TAP TO FIND PLACES,<BR>PATHWAYS, PEOPLE, AND COURSES.
+	</div>
 
 	<div class="nav-menu-new" style="">
 		<table class="nav-menu-new">
@@ -137,12 +139,12 @@
 					<span class="cat-box" data-type="academics">academics</span>
 				</td>
 			</tr>
-			<tr class="row-menu">
+			<tr class="row-menu ban1">
 				<td style="background-color:#9a8e88" class="menu-category">
 					<span class="cat-box" data-type="offices">offices</span>
 				</td>
 			</tr>
-			<tr class="row-menu">
+			<tr class="row-menu ban2">
 				<td style="background-color:#52869f" class="menu-category">
 					<span class="cat-box" data-type="facilities">make/do</span>
 				</td>
@@ -249,7 +251,7 @@
 	<div class="md-ripple myRipple tap-to-start"></div>
 
 	<div class="veil veil-box"></div>
-	<div class="veil veil-text">⋮⋮⋮ TAP TO BEGIN ⋮⋮⋮</div>
+	<div class="capture"></div>
 
 	<div class="track"></div>
 
@@ -282,6 +284,16 @@
 
 
 	<!--<button class="ripple"></button>-->
+
+	<script>
+		$('.veil').hide();
+		var pos1 = $('.ban1').offset();
+		var hei = parseInt($('.ban1').height() + $('.ban2').height());
+		$('.veil').css({
+			'top':pos1.top,
+			'height':hei
+		});
+	</script>
 
 </body>
 

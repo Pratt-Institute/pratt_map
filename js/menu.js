@@ -177,7 +177,18 @@
 
 					window.winLat = $(this).attr('data-lat');
 					window.winLon = $(this).attr('data-long');
-					ambiarc.focusOnLatLonAndZoomToHeight(ambiarc.building, '', ambiarc.lat, ambiarc.lon, '75');
+
+					if ($(this).attr('data-building') != '') {
+
+						if ($(this).attr('data-building') == 'PFZR' || $(this).attr('data-building') == 'FLSH' || $(this).attr('data-building') == 'CRR' || $(this).attr('data-building') == 'W14') {
+							window.bldg = $(this).attr('data-building');
+							doPopupMap($(this).attr('data-building'));
+							return true;
+						} else {
+							ambiarc.focusOnLatLonAndZoomToHeight(ambiarc.building, '', ambiarc.lat, ambiarc.lon, '75');
+						}
+
+					}
 
 					popMapLegend2();
 
@@ -350,6 +361,7 @@
 			$(document).on('click', '*', function(e) {
 				///console.log('dom click event '+e);
 				$('.veil').hide();
+				$('.capture').hide();
 				hidePopMap();
 				//console.log(e.target.nodeName);
 				if (e.target.nodeName=='BODY' || e.target.nodeName=='HTML') {
@@ -605,6 +617,7 @@
 
 			$(document).on('mousemove keypress click', function() {
 				$('.veil').hide();
+				$('.capture').hide();
 				clearTimeout(intRefresh);
 				clearTimeout(showVeil);
 				intRefresh;
@@ -862,6 +875,14 @@
 				ambiarc.buildingId = 'Pratt Manhattan';
 				ambiarc.floorId = 'W14';
 				ambiarc.roomName = '144 W 14th St<br>New York, NY 10011';
+			}
+
+			if (bldg=='PFZR') {
+				$('div.mapouter').css({'background-image':'url("images/flsh.png")'});
+				$('div.mapouter').addClass('showpopmap');
+				ambiarc.buildingId = 'Pfizer Building';
+				ambiarc.floorId = 'PFZR';
+				ambiarc.roomName = '630 Flushing Ave #704<br>Brooklyn, NY 11206';
 			}
 
 			if (bldg=='FLSH') {

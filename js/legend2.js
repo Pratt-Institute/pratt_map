@@ -294,26 +294,36 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 	}
 
 	try {
-		if (professor != '') {
-
-			//var floorIdPerson = hallMap[building].floorId
-			//var imgBldg = '<img src="images/buildings/'+building+'.jpg">'
-			//$('.legend-building').html(imgBldg);
-
-			//$('.bldgName').html(hallMap[building].bldg_name);
-			//$('.roomName').html(person + '<br>' + title + '<br>' + dept + '<br>' + office);
-
+		//if (professor != '') {
 			$('.professor').html(professor);
-			$('.course').html(course);
-			$('.roomName').html(roomName);
-			$('.times').html(times);
-
-			//$('.history').html();
-
-			createPointLabel(building,floorIdPerson);
-		}
+			//createPointLabel(building,floorIdPerson);
+		//}
 	} catch(err) {
-		//console.log(err)
+		console.log(err)
+	}
+	try {
+		//if (course != '') {
+			$('.course').html(course);
+			//createPointLabel(building,floorIdPerson);
+		//}
+	} catch(err) {
+		console.log(err)
+	}
+	try {
+		//if (roomName != '') {
+			$('.roomName').html(roomName);
+			//createPointLabel(building,floorIdPerson);
+		//}
+	} catch(err) {
+		console.log(err)
+	}
+	try {
+		//if (times != '') {
+			$('.times').html(times);
+			//createPointLabel(building,floorIdPerson);
+		//}
+	} catch(err) {
+		console.log(err)
 	}
 
 	revealLegend(delayReveal);
@@ -394,5 +404,10 @@ var clearLegendVariables = function(src=''){
 	ambiarc.phone		= '';
 	ambiarc.office		= '';
 	ambiarc.email		= '';
+
+	ambiarc.professor	= '';
+	ambiarc.course		= '';
+	ambiarc.roomName	= '';
+	ambiarc.times		= '';
 
 };
