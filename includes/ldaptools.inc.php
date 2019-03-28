@@ -62,7 +62,7 @@ class LdapTools {
 
 		$arr['0021'] = '40.690893,-73.962043';						///'ARC'
 		$arr['0023'] = '40.6910285949707,-73.96123504638672';		///'CC'
-		$arr['0060'] = '40.691675,-73.963465';						///'CHEM'
+		$arr['0015'] = '40.691675,-73.963465';						///'CHEM'
 		$arr['0003'] = '40.690072,-73.964735';						///'DEK'
 		$arr['0009'] = '40.691230,-73.963968';						///'EAST'
 		$arr['0017'] = '40.691282,-73.962845';						///'ENGR'
@@ -173,7 +173,8 @@ class LdapTools {
 						data-person="'.$fname.' '.$lname.'"
 						data-email="'.$mail.'"
 						class=" list-group-item ldap-item ">
-					<div class="li-col li-label "><span class="list-group-point">'.$fname.' '.$lname.'</span></div>
+					<div class="li-col li-icon li-icon-person"></div>
+					<div class="li-col li-label "><span class="list-group-point ldap">'.$fname.' '.$lname.'</span></div>
 					<div class="li-col li-bldg "><span>'.$exp1[1].'</span></div>
 					</li>';
 

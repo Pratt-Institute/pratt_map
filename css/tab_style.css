@@ -142,6 +142,24 @@ li.seen {
 	text-overflow: ellipsis;
 }
 
+.li-icon {
+	width: 35px;
+	height: 35px;
+	margin-left: 10px;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.li-icon-point {
+	background-image: url(../images/icons/icon_point_25.png);
+}
+.li-icon-person {
+	background-image: url(../images/icons/icon_person_25.png);
+}
+.li-icon-course {
+	background-image: url(../images/icons/icon_course_25.png);
+}
+
 .li-label {
 	/*width: 170px;
 	max-width: 170px;

@@ -271,7 +271,13 @@ var onFloorSelected = function(event) {
 
 var onEnteredFloorSelector = function(event) {
 
-	clearRoomInfo();
+	setTimeout(function(){
+		$('div.proh').fadeOut();
+	},500);
+
+	if (skipPointLoad != true) {
+		clearRoomInfo();
+	}
 
 	//clearTimeout(timeoutVariables);
 
@@ -300,6 +306,10 @@ var onEnteredFloorSelector = function(event) {
 		popMapLegend2();
 	}
 
+	if (skipPointLoad == true) {
+		popMapLegend2();
+	}
+
 //	if (ambiarc.menuAction != 'yes') {
 //		ambiarc.floorId = ''; //alert('onEnteredFloorSelector events 267');
 //		///console.log(ambiarc.floorId);
@@ -321,6 +331,10 @@ var onEnteredFloorSelector = function(event) {
 }
 
 var onExitedFloorSelector = function(event) {
+
+	if (skipPointLoad != true) {
+		clearRoomInfo();
+	}
 
 	doPauseTour();
 
@@ -367,6 +381,10 @@ var onFloorSelectorFocusChanged = function(event) {
 		}
 	}
 
+	if (skipPointLoad == true) {
+		popMapLegend2();
+	}
+
 // 	if (event.detail.newFloodId.length > '1' &&
 // 		ambiarc.floorId == '' &&
 // 		ambiarc.recordId == '' &&
@@ -393,6 +411,10 @@ var onFloorSelectorFocusChanged = function(event) {
 var cameraStartedHandler = function(event){
 
 	//$('.veil').hide();
+
+	setTimeout(function(){
+		$('div.proh').fadeOut();
+	},500);
 
 	//currentMapStatus = 'cameraStartedHandler';
 
@@ -421,6 +443,8 @@ var cameraStartedHandler = function(event){
 var cameraCompletedHandler = function(event){
 
 	//clearTimeout(timeoutVariables);
+
+	clearTimeout(resetFloorEvent);
 
 	//currentMapStatus = 'cameraCompletedHandler';
 
@@ -474,9 +498,13 @@ var cameraCompletedHandler = function(event){
 	// 		popMapLegend2();
 	// 	}
 
-	setTimeout(function(){
+	if (skipPointLoad == true) {
+		popMapLegend2();
+	}
+
+	var resetFloorEvent = setTimeout(function(){
 		allowFloorEvent = true;
 		ambiarc.menuAction = '';
-	},5000);
+	},3000);
 
 };

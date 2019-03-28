@@ -118,6 +118,9 @@
 		Your browser doesn't support iframes
 	</iframe>
 
+	<div class="veil veil-box"></div>
+	<div class="capture"></div>
+
 	<div class="veil veil-text">
 		TAP TO FIND PLACES,<BR>PATHWAYS, PEOPLE, AND COURSES.
 	</div>
@@ -234,13 +237,15 @@
 			</tr>
 			<tr>
 				<td class="legend-copy">
-					<span class="bldgName"></span><br>
-					<span class="floorNo"></span><br>
-					<span class="course"></span><br>
-					<span class="professor"></span><br>
-					<span class="roomName"></span><br>
-					<span class="times"></span><br><br>
-					<span class="roomNo"></span><br><br>
+					<span class="bldgName"></span>
+					<span class="floorNo"></span>
+					<span class="title"></span>
+					<span class="course"></span>
+					<span class="professor"></span>
+					<span class="roomName"></span>
+					<span class="times"></span>
+					<span class="roomNo"></span>
+					<hr class="dotted">
 					<span class="history"></span>
 				</td>
 			</tr>
@@ -250,14 +255,13 @@
 
 	<div class="md-ripple myRipple tap-to-start"></div>
 
-	<div class="veil veil-box"></div>
-	<div class="capture"></div>
-
 	<div class="track"></div>
 
 	<div class="debug"></div>
 
 	<img class="compass" src="images/compass.png">
+	<img class="proh" src="images/proh.png">
+	<div class="proh"><?php $obj->fetchProhMenu(); ?></div>
 
 	<table class="icons">
 		<tr>
@@ -282,16 +286,20 @@
 
 	<div id="show_geoloc"></div>
 
-
 	<!--<button class="ripple"></button>-->
 
 	<script>
+		$('div.proh').hide();
 		$('.veil').hide();
 		var pos1 = $('.ban1').offset();
 		var hei = parseInt($('.ban1').height() + $('.ban2').height());
 		$('.veil').css({
 			'top':pos1.top,
 			'height':hei
+		});
+		var pos2 = $('img.proh').offset();
+		$('div.proh').css({
+			'top': parseInt(pos2.top + $('img.proh').height()),
 		});
 	</script>
 

@@ -10,6 +10,7 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 	var buildingId	= ambiarc.buildingId;
 	var floorId		= ambiarc.floorId;
 	var roomName	= ambiarc.roomName;
+	var roomNo		= ambiarc.roomNo;
 	var hasImage	= ambiarc.hasImage;
 	//var lat			= ambiarc.lat;
 	//var lon			= ambiarc.lon;
@@ -72,7 +73,7 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 		try {
 			$('img.access').remove();
 			var imgBldg = '<img class="floor-is-int" src="images/buildings/'+bldgMap[floorId].buildingId+'.jpg">'
-			var imgAccs = '<img class="access" src="images/buildings/'+bldgMap[floorId].buildingId+'.png">'
+			var imgAccs = '<img class="access" src="images/buildings/'+bldgMap[floorId].buildingId+'.png" onerror="this.style.display=\'none\'">'
 			$('.legend-building').html(imgBldg);
 			$('.legend-copy').prepend(imgAccs);
 		} catch(err) {
@@ -147,6 +148,8 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 	try {
 		if (legendType != 'menuBuilding') {
 			$('.floorNo').html(bldgMap[floorId].floor + ' floor');
+		} else {
+			$('.floorNo').html('');
 		}
 	} catch(err) {
 		//console.log(err)
@@ -167,8 +170,10 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 	}
 
 	try {
-		if (roomName.roomNo > '1') {
+		if (roomNo.length < '1') {
 			$('.roomNo').html('Room '+ambiarc.poiStuff[ambiarcId].roomNo);
+		} else {
+			$('.roomNo').html('Room '+roomNo);
 		}
 	} catch(err) {
 		//console.log(err)
@@ -255,7 +260,7 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 			$('img.access').remove();
 
 			var imgBldg = '<img src="images/buildings/'+buildingId+'.jpg">'
-			var imgAccs = '<img class="access" src="images/buildings/'+buildingId+'.png">'
+			var imgAccs = '<img class="access" src="images/buildings/'+buildingId+'.png" onerror="this.style.display=\'none\'">'
 
 			try { var bldgName = hallMap[buildingId].bldg_name; } catch(err) {}
 
@@ -265,8 +270,8 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 
 			$('.bldgName').html(bldgName);
 
-			var imgBldg = '<img class="last-try" src="images/buildings/'+buildingId+'.jpg">'
-			var imgAccs = '<img class="access" src="images/buildings/'+buildingId+'.png">'
+			//var imgBldg = '<img class="last-try" src="images/buildings/'+buildingId+'.jpg">'
+			//var imgAccs = '<img class="access" src="images/buildings/'+buildingId+'.png">'
 			$('.legend-building').html(imgBldg);
 			$('.legend-copy').prepend(imgAccs);
 		}
@@ -294,36 +299,49 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 	}
 
 	try {
-		//if (professor != '') {
-			$('.professor').html(professor);
-			//createPointLabel(building,floorIdPerson);
-		//}
+		$('.professor').html(professor);
 	} catch(err) {
 		console.log(err)
 	}
 	try {
-		//if (course != '') {
-			$('.course').html(course);
-			//createPointLabel(building,floorIdPerson);
-		//}
+		$('.course').html(course);
 	} catch(err) {
 		console.log(err)
 	}
 	try {
-		//if (roomName != '') {
-			$('.roomName').html(roomName);
-			//createPointLabel(building,floorIdPerson);
-		//}
+		$('.roomName').html(roomName);
 	} catch(err) {
 		console.log(err)
 	}
 	try {
-		//if (times != '') {
+
+		if (times.length > '1') {
+
 			$('.times').html(times);
-			//createPointLabel(building,floorIdPerson);
-		//}
+			$('.floorNo').html('');
+
+			$('.history').html('');
+			$('.title').html(title);
+
+			$('img.access').remove();
+
+			var imgBldg = '<img class="last-try" src="images/buildings/'+buildingId+'.jpg">'
+			var imgAccs = '<img class="access" src="images/buildings/'+buildingId+'.png" onerror="this.style.display=\'none\'">'
+			$('.legend-building').html(imgBldg);
+			$('.legend-copy').prepend(imgAccs);
+
+		}
 	} catch(err) {
 		console.log(err)
+	}
+
+
+	try {
+		if (legendType == 'menuBuilding') {
+			$('.floorNo').html('');
+		}
+	} catch(err) {
+		//console.log(err)
 	}
 
 	revealLegend(delayReveal);
@@ -354,6 +372,8 @@ var clearMapLegend = function(src) {
 			$('.roomName').html('');
 			$('.roomNo').html('');
 			$('.history').html('');
+			$('.title').html('');
+			$('.times').html('');
 		},1);
 	});
 }
@@ -379,6 +399,10 @@ var revealLegend = function(delayReveal){
 }
 
 var clearLegendVariables = function(src=''){
+
+	if (skipPointLoad == true) {
+		return;
+	}
 
 	console.log('clear ambiarc vars ' + src);
 
@@ -407,7 +431,6 @@ var clearLegendVariables = function(src=''){
 
 	ambiarc.professor	= '';
 	ambiarc.course		= '';
-	ambiarc.roomName	= '';
 	ambiarc.times		= '';
 
 };

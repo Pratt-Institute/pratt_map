@@ -136,6 +136,8 @@ class DbTools {
 			and room_name not like '%elev%'
 			and room_name not like '%stair%'
 
+			and bldg_abbre != 'W18'
+
 			";
 
 		//$sql .= " group by bldg_abbre, floor, gk_department, department, room_name, gk_sculpture_name ";
@@ -295,6 +297,81 @@ class DbTools {
 		}
 	}
 
+	public function fetchProhMenu() {
+
+		try {
+
+			$sql = "
+				select *
+				from facilities F
+				where gk_roh = '1'
+				order by bldg_name asc, room_name asc ";
+
+			$stmt = $this->dbh->prepare($sql);
+			$stmt->execute();
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			if ($rows[0]['id']) {
+
+				foreach($rows as $field=>$record) {
+
+					extract($record, EXTR_OVERWRITE);
+
+					$exp = array();
+
+					$exp = explode(' - ',$record['room_name']);
+
+					if ($exp[1] != '') {
+						$level = ' - '.$exp[1];
+					} else {
+						$level = '';
+					}
+
+					//if (strlen($record['bldg_name'])>4) {
+					//	$record['bldg_name'] = ucwords(strtolower($record['bldg_name']));
+					//}
+
+					if (trim($record['new_room_no']) != '') {
+						$room_number = trim($record['new_room_no']);
+					} else {
+						$room_number = trim($record['room_no']);
+					}
+
+					$room_number = trim($room_number,'-');
+
+					$type = ucwords($type);
+
+					$out[] = "<span
+						class=\"fly-box proh \"
+						data-recordid=\"".$record['id']."\"
+						data-bldg=\"".$record['bldg_abbre']."\"
+						data-buildingid=\"".$record['gk_bldg_id']."\"
+						data-floorid=\"".$record['gk_floor_id']."\"
+						data-roomno=\"$room_number\"
+						data-roomname=\"".$record['room_name']."\"
+						data-cat=\"proh\"
+						data-lat=\"".$record['latitude']."\"
+						data-long=\"".$record['longitude']."\"
+						><div class=\"left\">".$record['bldg_name'].$level.'</div><div class="right" style="width:85px;text-align:right;">'.$room_number.'</div><div class="right">'.$record['room_name'].'</div></span>';
+
+				}
+
+				ksort($out);
+
+				// 	echo '<pre>';
+				// 	print_r($out);
+				// 	echo '</pre>';
+				// 	die();
+
+				echo implode('<br>',$out);
+
+				//return true;
+			}
+			return false;
+		} catch(PDOException $e) {
+			echo $sql . "<br>" . $e->getMessage();
+		}
+	}
 
 	public function fetchAccessibleMenu() {
 
@@ -465,6 +542,7 @@ class DbTools {
 							if ($record['bldg_abbre'] == 'SG') {
 								//$line[] = '<div class="li-col li-sculpture '.$camploc.'"><span>'.$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist'].'</span></div>';
 							} else {
+								$line[] = '<div class="li-col li-icon li-icon-point"></div>';
 								$line[] = '<div class="li-col li-label '.$camploc.'"><span class="list-group-point">'.$point.'</span></div>';
 								$line[] = '<div class="li-col li-bldg '.$camploc.'"><span>'.$record['bldg_name'].'</span></div>';
 								//$line[] = '<div class="li-col li-floor '.$camploc.'"><span>'.$record['floor'].'</span></div>';
@@ -1104,7 +1182,7 @@ class DbTools {
 					$map[$record['gk_floor_id']]['recordId']	= $record['id'];
 					$map[$record['gk_floor_id']]['buildingId']	= $record['gk_bldg_id'];
 					$map[$record['gk_floor_id']]['bldg_name']	= $record['bldg_name'];
-					$map[$record['gk_floor_id']]['floor']		= $record['floor'];
+					$map[$record['gk_floor_id']]['floor']		= ucwords($record['floor']);
 					$map[$record['gk_floor_id']]['bldgAbbr']	= $record['bldg_abbre'];
 
 				}

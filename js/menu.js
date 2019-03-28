@@ -130,6 +130,7 @@
 			});
 
 			$(document).on("click", "li.list-group-item, span.fly-sculp, .cat-box, .fly-box", function(e){
+				$('div.proh').fadeOut();
 				clearLegendVariables('menu 133');
 				allowFloorEvent = false;
 			});
@@ -147,6 +148,8 @@
 			});
 
 			$(document).on("click", "li.list-group-item, span.fly-sculp", function(e){
+
+				$('div.proh').fadeOut();
 
 				clearMapLegend('menu 151');
 				ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
@@ -230,7 +233,6 @@
 
 					/// focusing on a point is hard?
 
-
 					params.action = 'focusOutdoorPoint';
 
 					if ($(this).attr('data-building') == 'SG') {
@@ -245,8 +247,6 @@
 						ambiarc.sculptureArtist	= split[1];
 
 					}
-
-
 
 				}
 
@@ -279,14 +279,21 @@
 				}
 			});
 
+			$(document).on('click', 'img.proh', function() {
+				$('.reveal-horz').removeClass('reveal-horz');
+				$('div.proh').fadeIn();
+			});
+
 			$(document).on('click', '.cat-box', function() {
+
+				$('div.proh').fadeOut();
 
 				if ($(this).hasClass('cat-box-search') && $('div.search-box').css('opacity') > 0) {
 					return false;
 				}
 
-				var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-				ambiarc.clearDirections();
+				//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				//ambiarc.clearDirections();
 
 				deleteAllLabels();
 
@@ -360,6 +367,10 @@
 
 			$(document).on('click', '*', function(e) {
 				///console.log('dom click event '+e);
+
+				var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				ambiarc.clearDirections();
+
 				$('.veil').hide();
 				$('.capture').hide();
 				hidePopMap();
@@ -381,6 +392,11 @@
 
 			$(document).on('click', '.fly-box', function(e) {
 
+				//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+				//ambiarc.clearDirections();
+
+				skipPointLoad = false;
+
 				$('img.access').remove();
 
 				params = {};
@@ -391,7 +407,7 @@
 					return false;
 				}
 
-				clearMapLegend('menu 305');
+				clearMapLegend('menu 405');
 
 				var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'yes';
@@ -461,18 +477,18 @@
 
 					}
 
-					if ($(this).attr('data-cat') == 'buildings') {
+					if ( $(this).attr('data-cat') == 'buildings' || $(this).attr('data-cat') == 'proh' ) {
 
 						ambiarc.legendType		= 'menuBuilding';
 						ambiarc.ambiarcId		= '';
 						ambiarc.buildingId		= $(this).attr('data-buildingid');
 						ambiarc.floorId			= $(this).attr('data-floorid'); // alert('menu 382');
-						ambiarc.roomName		= '';
-						ambiarc.roomNo			= '';
+						ambiarc.roomName		= $(this).attr('data-roomname');
+						ambiarc.roomNo			= $(this).attr('data-roomno');
 						ambiarc.lat				= $(this).attr('data-lat');
 						ambiarc.lon				= $(this).attr('data-long');
 
-						if ($(this).closest('div').hasClass('accessibility')) {
+						if ( $(this).closest('div').hasClass('accessibility') ) {
 
 							ambiarc.legendType = 'menuBuildingAccessibility';
 							//ambiarc.buildingId		= $(this).attr('data-buildingid');
@@ -550,8 +566,31 @@
 
 						} else {
 
-							popMapLegend2(1000,500,7000);
-							ambiarc.focusOnLatLonAndZoomToHeight(ambiarc.buildingId, '', winLat, winLon, '125');
+							if ( $(this).attr('data-cat') == 'proh' ) {
+
+								ambiarc.legendType		= 'proh';
+
+								params.accessible		= 'N';
+								params.recordId			= $(this).attr('data-recordid');
+								params.bldg				= $(this).attr('data-buildingid');
+								params.floor			= $(this).attr('data-floorid');
+								params.roomno			= $(this).attr('data-roomno');
+								params.action			= 'doProhThing';
+
+								params.lat				= $(this).attr('data-lat');
+								params.lon				= $(this).attr('data-long');
+
+								fetchPoisFromApi(params);
+
+								return true;
+
+							} else {
+
+								popMapLegend2(1000,500,7000);
+								ambiarc.focusOnLatLonAndZoomToHeight(ambiarc.buildingId, '', winLat, winLon, '125');
+
+							}
+
 						}
 
 						createPointLabel(ambiarc.buildingId,ambiarc.floorId);
@@ -734,7 +773,8 @@
 
 		prattCopy['0023'] = '<span class="copy-bold">Cannoneer Court</span> <br>1986-87 <br>Architects: Skidmore, Owings and Merrill <br><br>A rather stark-looking residence hall on the most eastern part of the campus on an area which had been an athletic field. It is connected to the ARC building and was built from prefabricated units.';
 
-		prattCopy['0024'] = '<span class="copy-bold">Myrtle Hall</span> <br>Date: -- <br>Architect: WASA/Studio, Jack Esterson<br>lead architect and Pratt alumnus <br><br>The building, which is located at 536 Myrtle Avenue between Grand Avenue and Steuben Street, was designed by multi-disciplinary architectural firm WASA/Studio A under the leadership of principal Jack Esterson, who received a bachelor\'s degree in architecture from Pratt in 1975. <br>Myrtle Hall recently met the United States Green Building Council standards for LEED (Leadership in Energy and Environmental Design) Gold certification based on its eco-features that include exterior sun shades; a green roof that absorbs rainwater, reflects heat, and sequesters greenhouse gasses; and solar photo-voltaic panels that generate on-site electricity. It is the first higher education building project in Brooklyn to receive any LEED certification and the first academic building to receive a LEED-gold certification in Brooklyn.';
+		//prattCopy['0024'] = '<span class="copy-bold">Myrtle Hall</span> <br>Date: -- <br>Architect: WASA/Studio, Jack Esterson<br>lead architect and Pratt alumnus <br><br>The building, which is located at 536 Myrtle Avenue between Grand Avenue and Steuben Street, was designed by multi-disciplinary architectural firm WASA/Studio A under the leadership of principal Jack Esterson, who received a bachelor\'s degree in architecture from Pratt in 1975. <br>Myrtle Hall recently met the United States Green Building Council standards for LEED (Leadership in Energy and Environmental Design) Gold certification based on its eco-features that include exterior sun shades; a green roof that absorbs rainwater, reflects heat, and sequesters greenhouse gasses; and solar photo-voltaic panels that generate on-site electricity. It is the first higher education building project in Brooklyn to receive any LEED certification and the first academic building to receive a LEED-gold certification in Brooklyn.';
+		prattCopy['0024'] = '<span class="copy-bold">Myrtle Hall</span> <br>Architect: WASA/Studio, Jack Esterson<br>lead architect and Pratt alumnus <br><br>The building, which is located at 536 Myrtle Avenue between Grand Avenue and Steuben Street, was designed by multi-disciplinary architectural firm WASA/Studio A under the leadership of principal Jack Esterson, who received a bachelor\'s degree in architecture from Pratt in 1975. <br>Myrtle Hall recently met the United States Green Building Council standards for LEED (Leadership in Energy and Environmental Design) Gold certification based on its eco-features that include exterior sun shades; a green roof that absorbs rainwater, reflects heat, and sequesters greenhouse gasses; and solar photo-voltaic panels that generate on-site electricity. It is the first higher education building project in Brooklyn to receive any LEED certification and the first academic building to receive a LEED-gold certification in Brooklyn.';
 
  		prattCopy['pps'] = 'The Pratt Institute Department of Public Safety provides 24&#8209;hour protection to the campus. Public Safety Officers are charged with the enforcement of Pratt Institute rules and regulations. They are staff employees and are responsible for a full range of services, including preparation of crime and condition reports, response to emergencies, conducting fire drills, and any other situation requiring security assistance. Contact us at security@pratt.edu or at 718.636.3540.';
 
@@ -984,11 +1024,11 @@
 			'max-height':parseInt($(window).height()-80),
 		});
 
-		if (filter.length > '2') {
-			appendFromApi(filter);
-		}
+		//if (filter.length > '3') {
+		//	appendFromApi(filter);
+		//}
 
-		if (filter.length > '2') {
+		if (filter.length > '3') {
 			lookupClasses(filter);
 		}
 
@@ -1001,9 +1041,9 @@
 		var host = window.location.hostname;
 
 		if (host == 'localhost') {
-			host = 'http://localhost/~iancampbell/maps/PrattSDK-demo';
+			host = 'http://localhost/~iancampbell/maps/PrattSDK-post';
 		} else {
-			host = 'https://map.pratt.edu/demo';
+			host = 'https://map.pratt.edu/live';
 		}
 
 		$.ajax({
@@ -1052,6 +1092,11 @@
 					//console.log(ret);
 					$('li.class-item').remove();
 					$('ul.list-group').append(ret);
+
+					setTimeout(function(){
+						appendFromApi(filter);
+					},125);
+
 				} catch(e) {
 					///console.log(e);
 					alert('ldap search failed');

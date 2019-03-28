@@ -20,6 +20,7 @@
  window.labelLoop		= 'Y';
  window.processProceed	= 'Y';
  window.allowFloorEvent = true;
+ window.skipPointLoad	= false;
  window.processingPoints = false;
  window.fetchDelay		= 0;
  window.countZeros		= 0;
@@ -251,6 +252,10 @@ var buildingLabelUpdate = function(bldgId, labelId) {
 
 var fetchPoisFromApi = function(params) {
 
+	if (skipPointLoad) {
+		return;
+	}
+
 	///clearMapLegend('demo 252');
 	//hideAllLabels();
 	//deleteAllLabels();
@@ -260,7 +265,7 @@ var fetchPoisFromApi = function(params) {
 		ambiarc.poiStuff = [];
 	}
 
-	ambiarc.clearDirections();
+	//ambiarc.clearDirections();
 
 	for (var i = -999; i <= 999; i++) {
 		//console.log(i);
@@ -477,10 +482,7 @@ var processAndRun = function(params) {
 			//},1000);
 		}
 
-
-
 		return;
-
 	}
 
 	if (ambiarc.floorId > '1') {
@@ -650,7 +652,6 @@ var processAndRun = function(params) {
 									});
 
 								},500);
-
 							});
 
 						} else {
@@ -666,7 +667,6 @@ var processAndRun = function(params) {
 									console.log(res);
 								});
 							},1000);
-
 						}
 
 					} else {
@@ -683,6 +683,75 @@ var processAndRun = function(params) {
 			},1500);
 
 		},1500);
+	}
+
+	if (params.action == 'doProhThing') {
+
+		if (typeof currentBldgID == 'undefined') {
+			var wait = 1;
+		} else {
+			fullMapView();
+			var wait = 2000;
+		}
+
+		//ambiarc.exitBuilding();
+
+		skipPointLoad = true;
+
+		allowFloorEvent = false;
+
+		setTimeout(function(){
+
+			ambiarc.getDirections('0017', '0073', youAreHereLat, youAreHereLon, params.bldg, params.floor, params.lat, params.lon, function(res){
+
+				console.log('proh proh proh proh proh proh proh proh proh proh proh proh proh proh proh proh proh proh proh proh proh proh ');
+				console.log(res);
+
+				setTimeout(function(){
+
+					allowFloorEvent = false;
+
+					ambiarc.focusOnLatLonAndZoomToHeight('', '', params.lat, params.lon, 125);
+
+					setTimeout(function(){
+
+						allowFloorEvent = false;
+
+						//ambiarc.getDirections(startBLG, startFloor, startLat, startLon, endBLG, endFloor, endLat, endLon, (directions) => {})
+						//	console.log('proh2 proh2 proh2 proh2 proh2 proh2 proh2 proh2 proh2 proh2 proh2 proh2 proh2 proh2 proh2 proh2 ');
+						//	console.log(res);
+						//})
+
+						ambiarc.viewFloorSelector(params.bldg, 200);
+
+						setTimeout(function(){
+
+							allowFloorEvent = false;
+
+							ambiarc.focusOnFloor(params.bldg, params.floor, 200, true, false);
+
+							setTimeout(function(){
+
+								allowFloorEvent = false;
+
+								ambiarc.focusOnMapLabel(itemId, 200);
+
+								setTimeout(function(){
+									skipPointLoad = false;
+								},1500);
+
+							},1500);
+
+						},1500);
+
+					},3000);
+
+				},1000);
+
+			});
+
+		},wait);
+
 	}
 }
 
