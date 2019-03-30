@@ -401,9 +401,12 @@ div.firstaid span {
 	color: #fff;
 }
 div.flyout span:hover, div.subfly span:hover, div.proh span:hover {
-	text-decoration: underline;
+	text-decoration: underline !important;
 	color: #fff;
 	background-color: #39f;
+}
+span.proh:hover div {
+	text-decoration: underline !important;
 }
 
 .warn {
