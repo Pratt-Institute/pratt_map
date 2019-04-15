@@ -558,7 +558,7 @@ var processAndRun = function(params) {
 			setTimeout(function(){
 
 				ambiarc.showMapLabel(itemId, true);
-				popMapLegend2();
+				popMapLegend2(1000,1500,5000,'demo 561');
 
 				setTimeout(function(){
 
@@ -570,7 +570,6 @@ var processAndRun = function(params) {
 
 		},1000);
 
-		//popMapLegend2();
 	}
 
 	if (params.action == 'showFloorInfo') {
@@ -578,7 +577,7 @@ var processAndRun = function(params) {
 		ambiarc.action = params.action;
 		ambiarc.buildingId = params.bldg;
 		//ambiarc.floorId = params.floor;
-		popMapLegend2();
+		popMapLegend2(1000,1500,5000,'demo 580');
 	}
 
 	if (params.action == 'doAccessibilityThing') {
@@ -857,7 +856,7 @@ var focusAfterDataLoad = function(itemId) {
 		try {
 			ambiarc.legendType = 'menuOther';
 			ambiarc.ambiarcId = itemId;
-			popMapLegend2();
+			popMapLegend2(1000,1500,5000,'demo 859');
 		} catch(err) {
 			///console.log(err);
 		}

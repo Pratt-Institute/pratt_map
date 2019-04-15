@@ -50,6 +50,7 @@ class LdapTools {
 		$arr['Design Center']				=  '0018'; /// ???
 		$arr['Film Video']					=  '0019';
 		$arr['Activity Resource']			=  '0021';
+		$arr['Activities Resource']			=  '0021';
 		$arr['Stabile Hall']				=  '0022'; /// ???
 		$arr['Cannoneer Court']				=  '0023'; /// ???
 		$arr['Myrtle Hall']					=  '0024';

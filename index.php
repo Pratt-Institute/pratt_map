@@ -45,15 +45,15 @@
   <title>Ambiarc</title>
   <meta charset="UTF-8">
 
-  <link rel="stylesheet" media="all" href="TemplateData/css/bootstrap.css?nc=<?php echo time(); ?>" />
-  <link rel="stylesheet" media="all" href="css/demo-ui.css?nc=<?php echo time(); ?>" />
+  <link rel="stylesheet" media="all" href="css/master.css?nc=<?php echo time(); ?>" />
 
-  <link rel="stylesheet" media="all" href="css/tab_style.css?nc=<?php echo time(); ?>" />
-  <link rel="stylesheet" media="all" href="css/menu.css?nc=<?php echo time(); ?>" />
-  <link rel="stylesheet" media="all" href="css/pop_maps.css?nc=<?php echo time(); ?>" />
-
-  <link href="css/jquery.virtual_keyboard.css?nc=<?php echo time(); ?>" rel="stylesheet" type="text/css"/>
-  <link href="css/scroll.css" rel="stylesheet" type="text/css"/>
+  <!-- <link rel="stylesheet" media="all" href="TemplateData/css/bootstrap.css?nc=<?php echo time(); ?>" /> -->
+  <!-- <link rel="stylesheet" media="all" href="css/demo-ui.css?nc=<?php echo time(); ?>" /> -->
+  <!-- <link rel="stylesheet" media="all" href="css/tab_style.css?nc=<?php echo time(); ?>" /> -->
+  <!-- <link rel="stylesheet" media="all" href="css/menu.css?nc=<?php echo time(); ?>" /> -->
+  <!-- <link rel="stylesheet" media="all" href="css/pop_maps.css?nc=<?php echo time(); ?>" /> -->
+  <!-- <link href="css/jquery.virtual_keyboard.css?nc=<?php echo time(); ?>" rel="stylesheet" type="text/css"/> -->
+  <!-- <link href="css/scroll.css" rel="stylesheet" type="text/css"/> -->
 
   	<script>
 		var mode = '<?php echo $obj->fetchThemeMode() ?>';
@@ -80,9 +80,9 @@
 
     <script>
 
-        window.alert = function() {
-    		location.reload();
-    	};
+		window.alert = function() {
+			location.reload();
+		};
 
     	var kioskLocation = '<?php echo $kiosk_location ?>';
 
@@ -284,7 +284,7 @@
 		<img src="images/reset.png">
 	</div>-->
 
-	<div id="show_geoloc"></div>
+	<div id="show_info"></div>
 
 	<!--<button class="ripple"></button>-->
 

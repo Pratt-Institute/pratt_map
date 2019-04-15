@@ -10,7 +10,7 @@ br {
 }
 
 .compass {
-	display: none;
+	/*display: none;*/
 	pointer-events: auto;
 	position: fixed;
 	top: 25px;
@@ -21,6 +21,7 @@ br {
 }
 
 img.proh {
+	display: none;
 	pointer-events: auto;
 	cursor: pointer;
 	position: fixed;
@@ -734,40 +735,39 @@ div.track {
 	color: #000;
 }
 
-	/* Ripple effect */
-	.ripple {
-	  background-position: center;
-	  transition: background 1s;
-	}
-	.ripple:hover {
-	  /*background: transparent radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;*/
-	  background: transparent radial-gradient(circle, transparent 1%, rgba(0,0,0,0.1) 1%) center/15000%;
-	}
-	.ripple:active {
-	  background-color: transparent;
-	  background-size: 100%;
-	  transition: background 0s;
-	}
+/* Ripple effect */
+.ripple {
+  background-position: center;
+  transition: background 1s;
+}
+.ripple:hover {
+  /*background: transparent radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;*/
+  background: transparent radial-gradient(circle, transparent 1%, rgba(0,0,0,0.1) 1%) center/15000%;
+}
+.ripple:active {
+  background-color: transparent;
+  background-size: 100%;
+  transition: background 0s;
+}
 
-	/* Button style */
-	.ripple {
-		pointer-events: auto;
-		display: inline-block;
-		position: absolute;
-		top:	0px;
-		right:	0px;
-		bottom:	0px;
-		left:	0px;
-		width: 100%;
-		height: 1%;
-		overflow:visible;
-		border:	none;
-		cursor:	pointer;
-		color:	white;
-		background-color: transparent;
-		z-index: 1112;
-	}
-
+/* Button style */
+.ripple {
+	pointer-events: auto;
+	display: inline-block;
+	position: absolute;
+	top:	0px;
+	right:	0px;
+	bottom:	0px;
+	left:	0px;
+	width: 100%;
+	height: 1%;
+	overflow:visible;
+	border:	none;
+	cursor:	pointer;
+	color:	white;
+	background-color: transparent;
+	z-index: 1112;
+}
 
 table.icons {
 	position: fixed;
@@ -811,15 +811,9 @@ span.first-aid div:nth-child(3) {
 	width: 75px;
 }
 
-
-    	#show_geoloc {
-    		position: absolute;
-    		top: 0px;
-    		right: 0px;
-    	}
-
-
-
-
-
-
+#show_info {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	margin: 5px;
+}

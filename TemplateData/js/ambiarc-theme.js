@@ -17,7 +17,7 @@
 			}, {
 				"category": "Stairs",
 				//"colorHex": "#FFFFFF00"
-				"colorHex": "#FF000000"
+				"colorHex": "#CC000000"
 			}, {
 				"category": "Escalator",
 				"colorHex": "#FFFFFF00"
@@ -33,7 +33,7 @@
 			}, {
 				"category": "Restroom",
 				//"colorHex": "#5EA2FF00"
-				"colorHex": "#0000FF00"
+				"colorHex": "#0099FF00"
 			}],
 			lighting: {
 				"sky": "#545454",

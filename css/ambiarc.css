@@ -1,0 +1,100 @@
+
+@font-face {
+	font-family: 'ApercuRegular';
+	src: url("https://www.pratt.edu/assets/fonts/apercu-regular-webfont.eot");
+	src: url("https://www.pratt.edu/assets/fonts/apercu-regular-webfont.eot?#iefix") format("embedded-opentype"), url("https://www.pratt.edu/assets/fonts/apercu-regular-webfont.svg#ApercuRegular") format("svg"), url("https://www.pratt.edu/assets/fonts/apercu-regular-webfont.woff") format("woff"), url("https://www.pratt.edu/assets/fonts/apercu-regular-webfont.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+body {
+	font-family: "ApercuRegular";
+	padding-top: 20px;
+	pointer-events: none;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+iframe {
+	pointer-events: all;
+}
+
+.floor-selector
+{
+  float:left;
+  margin-left: 20px;
+}
+ .poi-container
+ {
+   float:left;
+ }
+ #controls-section {
+    position: absolute;
+    right: 0;
+    top: 20px;
+    right: 20px;
+}
+
+#controls-section ul {
+    list-style: none;
+}
+
+.controls-btn {
+   font-size: 2.1rem;
+    background-color: #ffffff;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    box-shadow: 0px 2px #A9A9A9;
+    margin: 5px;
+    cursor: pointer;
+    font-weight: 100;
+    padding: 4px;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+
+.ctrl-rotate-left {
+    margin-left: -30px;
+     background-image: url('../icons/ic_rotate_left.png');
+}
+
+.ctrl-rotate-right {
+     margin-left: 20px;
+     background-image: url('../icons/ic_rotate_right.png');
+}
+
+.ctrl-zoom-in {
+    background-image: url('../icons/ic_add.png');
+}
+
+.ctrl-zoom-out {
+    background-image: url('../icons/ic_remove.png');
+}
+
+ .controls-btn {
+   font-size: 25px;
+   background-color: #ffffff;
+   border-radius: 50%;
+   width: 35px;
+   height: 35px;
+   text-align: center;
+   box-shadow: 0px 2px #A9A9A9;
+   margin: 5px;
+   cursor: pointer;
+   font-weight: 100;
+   padding: 4px;
+ }
+
+ .controls-btn.ctrl-rotate-left {
+   margin-left: -30px;
+ }
+
+ .controls-btn.ctrl-rotate-right {
+   margin-left: 20px;
+ }

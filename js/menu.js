@@ -176,10 +176,13 @@
 					ambiarc.professor = $(this).attr('data-professor');
 					ambiarc.course = $(this).attr('data-course');
 					ambiarc.roomName = $(this).attr('data-room');
+					ambiarc.roomNo = '';
 					ambiarc.times = $(this).attr('data-times');
 
 					window.winLat = $(this).attr('data-lat');
 					window.winLon = $(this).attr('data-long');
+
+					skipPointLoad = true;
 
 					if ($(this).attr('data-building') != '') {
 
@@ -193,7 +196,7 @@
 
 					}
 
-					popMapLegend2();
+					popMapLegend2(1000,1500,5000,'menu 197');
 
 					return true;
 
@@ -280,8 +283,8 @@
 			});
 
 			$(document).on('click', 'img.proh', function() {
-				$('.reveal-horz').removeClass('reveal-horz');
-				$('div.proh').fadeIn();
+				//$('.reveal-horz').removeClass('reveal-horz');
+				//$('div.proh').fadeIn();
 			});
 
 			$(document).on('click', '.cat-box', function() {
@@ -316,6 +319,11 @@
 					style.innerHTML = '.'+type+'{max-height:'+maxHei+';}';
 					document.getElementsByTagName('head')[0].appendChild(style);
 				}
+
+				// 	setTimeout(function(){
+				// 		var sHei = $('div.'+type).scrollTop();
+				// 		$('#show_info').html(sHei);
+				// 	},2500);
 
 				if (type == 'search-box') {
 					$('input.filter').focus();
@@ -586,7 +594,7 @@
 
 							} else {
 
-								popMapLegend2(1000,500,7000);
+								popMapLegend2(1000,500,7000,'menu 595');
 								ambiarc.focusOnLatLonAndZoomToHeight(ambiarc.buildingId, '', winLat, winLon, '125');
 
 							}
@@ -947,7 +955,7 @@
 
 			//alert(ambiarc.buildingId)
 
-			popMapLegend2();
+			popMapLegend2(1000,1500,5000,'menu 956');
 
 			$('div.map-'+bldg).addClass('showpopmap');
 		});

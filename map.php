@@ -4,8 +4,10 @@
   <title>Ambiarc</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" media="all" href="TemplateData/css/bootstrap.min.css?nc=<?php echo time(); ?>" />
-  <link rel="stylesheet" media="all" href="TemplateData/css/style.css?nc=<?php echo time(); ?>" />
+
+  <link rel="stylesheet" media="all" href="css/bootstrap/bootstrap.min.css?nc=<?php echo time(); ?>" />
+  <link rel="stylesheet" media="all" href="css/splash.css?nc=<?php echo time(); ?>" />
+
   <script src="TemplateData/js/jquery-2.2.4.min.js?nc=<?php echo time(); ?>"></script>
   <script src="TemplateData/js/bootstrap.min.js?nc=<?php echo time(); ?>"></script>
   <script src="TemplateData/js/UnityProgress.js?nc=<?php echo time(); ?>"></script>
@@ -13,9 +15,11 @@
   <script src="TemplateData/js/ambiarc-theme.js?nc=<?php echo time(); ?>"></script>
   <script src="map/3544178c924aac8c5129f2d974d60dd7.js?nc=<?php echo time(); ?>"></script>
   <script src="TemplateData/js/UnityCompatibility.js?nc=<?php echo time(); ?>"></script>
+
   <script>
 
-    var gameInstance = UnityLoader.instantiate("gameContainer", "map/77448287a7e719cee5c3228556fc4962.json?nc=<?php echo time(); ?>", {
+    ///var gameInstance = UnityLoader.instantiate("gameContainer", "map/77448287a7e719cee5c3228556fc4962.json?nc=<?php echo time(); ?>", {
+    var gameInstance = UnityLoader.instantiate("gameContainer", "map/3771d2a502e93bf4d8e431a496eb1908.json?nc=<?php echo time(); ?>", {
 
       onProgress: UnityProgress,
       Module: {

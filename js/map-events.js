@@ -303,11 +303,11 @@ var onEnteredFloorSelector = function(event) {
 	if (allowFloorEvent) {
 		ambiarc.buildingId = buildingId;
 		//ambiarc.floorId = '';
-		popMapLegend2();
+		popMapLegend2(1000,1500,5000,'events 306');
 	}
 
 	if (skipPointLoad == true) {
-		popMapLegend2();
+		popMapLegend2(1000,1500,5000,'events 310');
 	}
 
 //	if (ambiarc.menuAction != 'yes') {
@@ -382,7 +382,7 @@ var onFloorSelectorFocusChanged = function(event) {
 	}
 
 	if (skipPointLoad == true) {
-		popMapLegend2();
+		popMapLegend2(1000,1500,5000,'events 385');
 	}
 
 // 	if (event.detail.newFloodId.length > '1' &&
@@ -490,7 +490,7 @@ var cameraCompletedHandler = function(event){
 
 	if (allowFloorEvent == false) {
 		if (event.detail == 'UNTRACKED_AMBIARC_EVENT_RotateCamera' ||  event.detail == 'UNTRACKED_AMBIARC_EVENT_ZoomCamera') {
-			popMapLegend2();
+			popMapLegend2(1000,1500,5000,'events 493');
 		}
 	}
 
@@ -499,7 +499,7 @@ var cameraCompletedHandler = function(event){
 	// 	}
 
 	if (skipPointLoad == true) {
-		popMapLegend2();
+		popMapLegend2(1000,1500,5000,'events 502');
 	}
 
 	var resetFloorEvent = setTimeout(function(){
