@@ -45,15 +45,15 @@
   <title>Ambiarc</title>
   <meta charset="UTF-8">
 
-  <link rel="stylesheet" media="all" href="css/master.css?nc=<?php echo time(); ?>" />
+  <link rel="stylesheet" media="all" href="css/zmaster.css?nc=<?php echo time(); ?>" />
 
-  <!-- <link rel="stylesheet" media="all" href="TemplateData/css/bootstrap.css?nc=<?php echo time(); ?>" /> -->
-  <!-- <link rel="stylesheet" media="all" href="css/demo-ui.css?nc=<?php echo time(); ?>" /> -->
-  <!-- <link rel="stylesheet" media="all" href="css/tab_style.css?nc=<?php echo time(); ?>" /> -->
-  <!-- <link rel="stylesheet" media="all" href="css/menu.css?nc=<?php echo time(); ?>" /> -->
-  <!-- <link rel="stylesheet" media="all" href="css/pop_maps.css?nc=<?php echo time(); ?>" /> -->
-  <!-- <link href="css/jquery.virtual_keyboard.css?nc=<?php echo time(); ?>" rel="stylesheet" type="text/css"/> -->
-  <!-- <link href="css/scroll.css" rel="stylesheet" type="text/css"/> -->
+  <link rel="stylesheet" media="all" href="css/bootstrap/bootstrap.css?nc=<?php echo time(); ?>" />
+  <link rel="stylesheet" media="all" href="css/ambiarc.css?nc=<?php echo time(); ?>" />
+  <link rel="stylesheet" media="all" href="css/tab_style.css?nc=<?php echo time(); ?>" />
+  <link rel="stylesheet" media="all" href="css/menu.css?nc=<?php echo time(); ?>" />
+  <link rel="stylesheet" media="all" href="css/pop_maps.css?nc=<?php echo time(); ?>" />
+  <link rel="stylesheet" media="all" href="css/jquery.virtual_keyboard.css?nc=<?php echo time(); ?>" />
+  <link rel="stylesheet" media="all" href="css/scroll.css?nc=<?php echo time(); ?>" />
 
   	<script>
 		var mode = '<?php echo $obj->fetchThemeMode() ?>';
@@ -126,9 +126,10 @@
 	</div>
 
 	<div class="nav-menu-new" style="">
-		<table class="nav-menu-new">
-			<tr class="row-btn">
+		<table class="nav-menu-new ">
+			<tr class="row-btn menu-top">
 				<td style="background-color:#fff" class="menu-category">
+					<span class="nav-icon cancel-access-menu"><img class="cancel-access-menu" src="images/cancel.png"></span>
 					<span class="nav-icon"><img class="reset-map-vert disabled" src="images/back-arrow2.png"></span>
 				</td>
 			</tr>
@@ -164,7 +165,7 @@
 				</td>
 			</tr>
 			<tr class="row-menu">
-				<td style="background-color:#3cf" class="menu-category">
+				<td style="background-color:#3cf" class="menu-category menu-accessibility">
 					<!--<span class="cat-box" data-type="accessibility">accessibility</span>-->
 					<span class="cat-box nav-icon" data-type="accessibility"><img src="images/accessible.png"></span>
 				</td>
@@ -237,17 +238,20 @@
 			</tr>
 			<tr>
 				<td class="legend-copy">
-					<span class="bldgName"></span>
-					<span class="floorNo"></span>
-					<span class="title"></span>
-					<span class="course"></span>
-					<span class="professor"></span>
-					<span class="roomName"></span>
-					<span class="times"></span>
-					<span class="roomNo"></span>
-					<hr class="dotted">
-					<span class="history"></span>
+						<span class="bldgName block"></span>
+						<span class="floorNo block"></span>
+						<span class="title block"></span>
+						<span class="course block"></span>
+						<span class="professor block"></span>
+						<span class="roomName block"></span>
+						<span class="times block"></span>
+						<span class="roomNo block"></span>
+						<hr class="dotted">
+						<span class="history"></span>
 				</td>
+			</tr>
+			<tr>
+				<td class="legend-access"></td>
 			</tr>
 		</table>
 
@@ -297,10 +301,20 @@
 			'top':pos1.top,
 			'height':hei
 		});
-		var pos2 = $('img.proh').offset();
-		$('div.proh').css({
-			'top': parseInt(pos2.top + $('img.proh').height()),
-		});
+
+		// 	var pos2 = $('img.proh').offset();
+		// 	$('div.proh').css({
+		// 		'top': parseInt(pos2.top + $('img.proh').height()),
+		// 	});
+		// 	console.log($(document).height() +' - '+ pos1.top);
+
+		// 	var hei2 = parseInt($(document).height() - pos1.top);
+		// 	console.log(hei2)
+		// 	$('div.flyout').css({
+		// 		'height':hei2,
+		// 		'max-height':hei2
+		// 	});
+
 	</script>
 
 </body>

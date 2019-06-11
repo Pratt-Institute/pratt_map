@@ -4,7 +4,7 @@
 
 	$obj = new LdapTools;
 
-	//$obj->lookfor = 'campbell';
+	//$obj->lookfor = 'pbarna@pratt.edu';
 	$obj->lookfor = addslashes($_POST['filter']);
 
 	$obj->fetchLdapMatches();

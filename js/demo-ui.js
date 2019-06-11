@@ -2,7 +2,7 @@
  var isFloorSelectorEnabled = false;
  var floors = {};
  var currentFloorId;
- var MapLabels = {};
+ //var MapLabels = {};
 
  window.rotation		= '0';
  window.rotationNew		= '0';
@@ -10,10 +10,9 @@
  window.rotationNeutral	= '0';
  window.currentLabelId	= '0';
  window.poiMap			= [];
- window.prattCopy		= [];
- window.legendDelay		= 2000;
- window.rangePoi		= range(-1000,1000);
- window.trackPoi		= [];
+
+ //window.rangePoi		= range(-1000,1000);
+ //window.trackPoi		= [];
  window.mapIsParked		= true;
  window.allowFullView	= false;
  window.currentMapStatus = 'start';
@@ -24,9 +23,17 @@
  window.processingPoints = false;
  window.fetchDelay		= 0;
  window.countZeros		= 0;
+ window.explodeDelay	= 0;
 
-window.youAreHereLat = '';
-window.youAreHereLon = '';
+ window.prattCopy		= [];
+ window.legendDelay		= 2000;
+ window.legendCopy		= '';
+
+ window.youAreHereLat = '';
+ window.youAreHereLon = '';
+
+ window.buildingLabels = [];
+ window.buildingHolder = {};
 
  /// icampb15@pratt.edu
  /// 718.687.5762
@@ -56,8 +63,9 @@ function range(start, edge, step=1) {
 	return arr;
 }
 
-//User clicked the floor selector
 var resetMap = function() {
+
+	destroyAllLabels();
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 	var zoom = ambiarc.getCurrentNormalizedZoomLevel(function(ret){
@@ -180,9 +188,81 @@ var doTourLoop = function() {
 		},parseInt(i * 7000));
 	});
 
-	// 	setTimeout(function(){
-	// 		doTourLoop();
-	// 	},parseInt(15*60*1000));
+	setTimeout(function(){
+		doTourLoop();
+	},parseInt(5*60*1000));
+
+}
+
+var showBuildingLabels = function() {
+
+	var i = 1;
+
+	$('.labelbuildings').each(function(){
+
+		if ( $(this).closest('div').hasClass('accessibility') ) {
+			return true;
+		}
+
+		var elm = this;
+		var lLat = $(elm).attr('data-lat');
+		var lLon = $(elm).attr('data-long');
+		var lBld = $(elm).html();
+		var lBldId = $(elm).attr('data-buildingid');
+		var lFlrId = $(elm).attr('data-floorid');
+
+		try {
+			if ( typeof buildingHolder[lBld] != 'undefined') {
+				ambiarc.showMapLabel(buildingHolder[lBld], true);
+				return true;
+			}
+		} catch(err) {
+			console.log(err);
+		}
+
+		i++;
+
+		setTimeout(function() {
+
+			console.log(lLat + ' ' + lLon + ' ' + lBld);
+
+			var createObj = {};
+
+			createObj.showTooltip 				= false;
+			createObj.latitude 					= lLat
+			createObj.longitude 				= lLon
+			createObj.label 					= lBld
+			createObj.showOnCreation 			= true
+			createObj.location 					= 'URL'
+			createObj.partialPath 				= 'images/icons/ic_building.png'
+			createObj.collapsedIconLocation 	= 'URL'
+			createObj.collapsedIconPartialPath 	= 'images/icons/ic_building.png'
+			createObj.ignoreCollision 			= false
+
+			//ambiarc.createMapLabel('IconWithText', createObj, (labelId) => {
+			ambiarc.createMapLabel('Text', createObj, (labelId) => {
+
+				console.log('????????????????????????????????????????????????');
+				console.log(lBldId + ' ' + labelId);
+				console.log('????????????????????????????????????????????????');
+
+				buildingLabels[labelId] = {
+					buildingId:		lBldId,
+					buildingFloor:	lFlrId,
+					buildingLat:	lLat,
+					buildingLon:	lLon
+				};
+
+				buildingHolder[lBldId] = labelId;
+				console.log(buildingHolder);
+
+			});
+
+		},parseInt(62*i));
+
+	});
+
+
 }
 
 var createCampusLabels = function() {
@@ -252,13 +332,16 @@ var buildingLabelUpdate = function(bldgId, labelId) {
 
 var fetchPoisFromApi = function(params) {
 
-	if (skipPointLoad) {
+	destroyAllLabels();
+
+	if (params.action == 'doAccessibilityThing') {
+		processAndRun(params);
 		return;
 	}
 
-	///clearMapLegend('demo 252');
-	//hideAllLabels();
-	//deleteAllLabels();
+	if (skipPointLoad) {
+		return;
+	}
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 	if (typeof ambiarc.poiStuff == 'undefined') {
@@ -267,14 +350,11 @@ var fetchPoisFromApi = function(params) {
 
 	//ambiarc.clearDirections();
 
-	for (var i = -999; i <= 999; i++) {
+	//for (var i = -999; i <= 999; i++) {
 		//console.log(i);
-		//ambiarc.destroyMapLabel(i);
-		ambiarc.hideMapLabel(i,true);
-	}
+	//	ambiarc.hideMapLabel(i,true);
+	//}
 
-	//ambiarc.destroyMapLabel(0);
-	//ambiarc.destroyMapLabel('0');
 	//alert('delete 0');
 
 	// 	if (params.action == 'doAccessibilityThing') {
@@ -421,6 +501,9 @@ var fetchPoisFromApi = function(params) {
 							if (keepId == '') {
 								keepId = v.user_properties.ambiarcId;
 							}
+
+							legendCopy			= v.user_properties.legendCopy;
+
 						}
 					}
 				});
@@ -444,33 +527,36 @@ var fetchPoisFromApi = function(params) {
 	return false;
 }
 
-var hideAllLabels = function() {
+// var hideAllLabels = function() {
+//
+// 	if (typeof poiMap != 'undefined') {
+// 		$.each(poiMap, function(k, v) {
+// 			if (typeof v != 'undefined') {
+// 				ambiarc.hideMapLabel(v,true);
+// 			}
+// 		});
+// 	}
+// }
 
-	if (typeof poiMap != 'undefined') {
-		$.each(poiMap, function(k, v) {
-			if (typeof v != 'undefined') {
-				//ambiarc.destroyMapLabel(v);
-				ambiarc.hideMapLabel(v,true);
-			}
-		});
+var destroyAllLabels = function() {
+
+	console.log('destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels ');
+
+	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+
+	for (var i = -1100; i <= 1100; i++) {
+		console.log('destroyAllLabels '+i);
+		ambiarc.destroyMapLabel(i);
 	}
-}
 
-var deleteAllLabels = function() {
+	buildingLabels = {};
+	buildingHolder = {};
 
-	if (typeof poiMap != 'undefined') {
-		$.each(poiMap, function(k, v) {
-			if (typeof v != 'undefined') {
-				ambiarc.destroyMapLabel(v);
-				//ambiarc.hideMapLabel(v,true);
-			}
-		});
-	}
+	console.log('destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels ');
+
 }
 
 var processAndRun = function(params) {
-
-	//hideAllLabels();
 
 	if (params.action == 'displayProvisions') {
 
@@ -515,11 +601,22 @@ var processAndRun = function(params) {
 		var roomName	= ambiarc.roomName;
 
 		/// testing heatmap stuff
-	// 	lat = ambiarc.poiStuff[itemId].latitude;
-	// 	lon = ambiarc.poiStuff[itemId].longitude;
-	// 	var arr = [lat,lon,0.5,1];
-	// 	ambiarc.createHeatmap(arr);
+	 	pLat = ambiarc.poiStuff[itemId].latitude;
+	 	pLon = ambiarc.poiStuff[itemId].longitude;
+		// 	var arr = [lat,lon,0.5,1];
+		// 	ambiarc.createHeatmap(arr);
 		/// testing heatmap stuff
+
+		//showBuildingLabels();
+
+		//ambiarc.focusOnLatLonAndZoomToHeight('', '', pLat, pLon, 75, 'focus_after_data_load');
+		ambiarc.focusOnLatLonAndZoomToHeight('', '', pLat, pLon, 125);
+
+		if (typeof currentFloorId != 'undefined') {
+			explodeDelay = 5000;
+		} else {
+			explodeDelay = 3000;
+		}
 
 		setTimeout(function(){
 			try {
@@ -534,7 +631,7 @@ var processAndRun = function(params) {
 					focusAfterDataLoad(itemId);
 				}
 			} catch(err) { console.log(err) }
-		},250);
+		},parseInt(explodeDelay));
 
 		setTimeout(function(){
 			try {
@@ -582,106 +679,116 @@ var processAndRun = function(params) {
 
 	if (params.action == 'doAccessibilityThing') {
 
-		try {
-			if (keepId) {
-				var buildLat = ambiarc.poiStuff[keepId].latitude;
-				var buildLon = ambiarc.poiStuff[keepId].longitude;
-				var bldg_name = ambiarc.poiStuff[keepId].bldgName;
-			}
-		} catch(err) { console.log(err) }
-
-		var createObj = {};
-		createObj.latitude =					params.bldgLat
-		createObj.longitude =					params.bldgLon
-		createObj.label =						bldg_name
-		createObj.showOnCreation =				true
-		createObj.type =						'IconWithText'
-		createObj.location =					'URL'
-		createObj.partialPath =					'images/icons/ic_building.png'
-		createObj.collapsedIconLocation =		'URL'
-		createObj.collapsedIconPartialPath =	'images/icons/ic_building.png'
-		createObj.ignoreCollision =				true
-
-		createTextIcon(createObj);
-
-		ambiarc.focusOnLatLonAndZoomToHeight('', '', params.accessLat, params.accessLon, params.heightAboveFloor);
-
-		var obj = {};
-		obj.label = 'Accessible Entrance';
-		obj.showOnCreation = true;
-		obj.ignoreCollision = true;
-		ambiarc.updateMapLabel(keepId, 'IconWithText', obj);
-
-		if (ambiarc.buildingId == '0002' || ambiarc.buildingId == '0009') {
-			ambiarc.UpdateHandicapLevel('Full');
-		} else {
-			ambiarc.UpdateHandicapLevel('None');
+		var delay = 1500;
+		if (isFloorSelectorEnabled) {
+			delay = 3500;
 		}
+
+		// 	if (params.overhead == 'Y') {
+		// 		ambiarc.EnterOverheadCamera();
+		// 		overhead = true;
+		// 	} else {
+		// 		ambiarc.ExitOverheadCamera();
+		// 		overhead = false;
+		// 	}
+
+		var accesspoint = params.accesspoint.split(',');
+		console.log(accesspoint);
+
+		var elevator = params.elevator.split(',');
+		console.log(elevator);
+
+		var destination = params.destination.split(',');
+		console.log(destination);
+
+		if (params.accesspoint.length > 8) {
+			var createObj = {};
+			createObj.latitude =					accesspoint[2]
+			createObj.longitude =					accesspoint[3]
+			createObj.label =						'Entrance'
+			createObj.showOnCreation =				true
+			createObj.type =						'IconWithText'
+			createObj.location =					'URL'
+			createObj.partialPath =					'images/icons/accessible.png'
+			createObj.collapsedIconLocation =		'URL'
+			createObj.collapsedIconPartialPath =	'images/icons/accessible.png'
+			createObj.ignoreCollision =				true
+			createTextIcon(createObj);
+		}
+
+		legendCopy = params.legendCopy;
+
+		ambiarc.UpdateHandicapLevel('Full');
 
 		setTimeout(function(){
 
-			ambiarc.showMapLabel(keepId, true);
+			ambiarc.focusOnLatLonAndZoomToHeight('', '', accesspoint[2], accesspoint[3], params.zoom);
 
 			setTimeout(function(){
 
-				ambiarc.setCameraRotation(rotation, 0);
+				legendCopy = params.legendCopy;
+				popMapLegend2(1000,1500,5000,'demo 701');
 
-				try {
-					ambiarc.buildingId = bldgMap[ambiarc.floorId].buildingId;
-				} catch(err) {}
+				ambiarc.setCameraRotation(params.rotation, 0);
 
 				setTimeout(function(){
 
-					//40.693350, -73.963480
-					//40.692259, -73.963140
-
 					if (typeof youAreHereLat != 'undefined' && youAreHereLat.length > 0) {
-
-						if (youAreHereId == 999) {
-
-							ambiarc.getDirections('', '', youAreHereLat, youAreHereLon, '', '', 40.692259, -73.963140, function(res){
-								console.log('one one one one one one one one one one one one one one one one one one one one one one one one ');
-								console.log(res);
-
-								setTimeout(function(){
-
-									ambiarc.getDirections('', '', 40.692259, -73.963140, '', '', params.accessLat, params.accessLon, function(res){
-										console.log('two two two two two two two two two two two two two two two two two two two two two two two two ');
-										console.log(res);
-									});
-
-								},500);
-							});
-
-						} else {
-
-							ambiarc.getDirections('', '', youAreHereLat, youAreHereLon, '', '', params.accessLat, params.accessLon, function(res){
-								console.log('dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic ');
-								console.log(res);
-							});
-
-							setTimeout(function(){
-								ambiarc.getDirections('', '', youAreHereLat, youAreHereLon, '', '', params.accessLat, params.accessLon, function(res){
-									console.log('two two two two two two two two two two two two two two two two two two two two two two two two ');
-									console.log(res);
-								});
-							},1000);
-						}
-
+						ambiarc.getDirections('', '', youAreHereLat, youAreHereLon, accesspoint[0], accesspoint[1], accesspoint[2], accesspoint[3], function(res){
+							console.log('dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic dynamic ');
+							console.log(res);
+						});
 					} else {
-
-						ambiarc.getDirections('', '', 40.690354, -73.964872, '', '', params.accessLat, params.accessLon, function(res){
+						ambiarc.getDirections('', '', 40.690354, -73.964872, accesspoint[0], accesspoint[1], accesspoint[2], accesspoint[3], function(res){
 							console.log('static static static static static static static static static static static static static static static static static ');
 							console.log(res);
 						});
-
 					}
+
+					if (params.destination.length > 8) {
+						var createObj = {};
+						createObj.latitude =					destination[2]
+						createObj.longitude =					destination[3]
+						createObj.label =						destination[4]
+						createObj.showOnCreation =				true
+						createObj.type =						'IconWithText'
+						createObj.location =					'URL'
+						createObj.partialPath =					'images/icons/ic_building.png'
+						createObj.collapsedIconLocation =		'URL'
+						createObj.collapsedIconPartialPath =	'images/icons/ic_building.png'
+						createObj.ignoreCollision =				true
+						createTextIcon(createObj);
+						console.log('show building point');
+					}
+
+					if (params.elevator.length > 8) {
+						var createObj = {};
+						createObj.latitude =					elevator[2]
+						createObj.longitude =					elevator[3]
+						createObj.label =						'Elevator'
+						createObj.showOnCreation =				true
+						createObj.type =						'IconWithText'
+						createObj.location =					'URL'
+						createObj.partialPath =					'images/icons/ic_admin_elevator_v1.png'
+						createObj.collapsedIconLocation =		'URL'
+						createObj.collapsedIconPartialPath =	'images/icons/ic_admin_elevator_v1.png'
+						createObj.ignoreCollision =				true
+						createTextIcon(createObj);
+						console.log('show elevator point');
+					}
+
+					setTimeout(function(){
+						legendCopy = params.legendCopy;
+						popMapLegend2(1000,1500,5000,'demo 701');
+						ambiarc.focusOnLatLonAndZoomToHeight('', '', destination[2], destination[3], params.zoom);
+					},1500);
 
 				},1500);
 
-			},1500);
+			},delay);
 
-		},1500);
+		},250);
+
 	}
 
 	if (params.action == 'doProhThing') {
@@ -778,8 +885,6 @@ var zoomInHandler = function(){
 /// added functions /////////////////////////////////////////////////////////////////////
 
 var createPointLabel = function(buildingId,floorId) {
-
-	//hideAllLabels();
 
 	///console.log('createPointLabel ' + buildingId + floorId);
 
@@ -885,6 +990,8 @@ var createTextIcon = function (mapLabelInfo) {
 var repositionLabel = function(currentLabelId){
 
 	console.log('currentLabelId ' + currentLabelId);
+
+	console.log(ambiarc.poiStuff);
 
     ambiarc.getMapPositionAtCursor(ambiarc.coordType.gps, (latlon) => {
     	console.log(latlon);

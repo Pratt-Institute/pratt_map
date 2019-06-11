@@ -113,31 +113,17 @@ class DbTools {
 
 	private function runQuery() {
 
-		$sql = " select * from facilities
+		$sql = "
+			select *
+			from facilities
 			where department not in ('INACTIVE','UNUSABLE')
 			and room_name not like '%inactive%'
-
-
-			/* and room_name not like '%toilet%'
-			and room_name not like '%men%'
-			and room_name not like '%women%'
-			and room_name not like '%bath%' */
-
 			and department not like '%inactive%'
 			and major_category not like '%inactive%'
 			and functional_category not like '%inactive%'
-
 			and gk_display != 'N'
-			/*and gk_bldg_id != ''
-			and gk_floor_id != ''*/
 			and room_name != ''
-			/* and room_name not like '%storage%'
-			and room_name not like '%corr%' */
-			and room_name not like '%elev%'
 			and room_name not like '%stair%'
-
-			and bldg_abbre != 'W18'
-
 			";
 
 		//$sql .= " group by bldg_abbre, floor, gk_department, department, room_name, gk_sculpture_name ";
@@ -387,17 +373,39 @@ class DbTools {
 					F.longitude,
 					F.bldg_name,
 					F.room_name,
+
 					A.latitude as accessLat,
 					A.longitude as accessLong,
+					A.gk_bldg_id as accessBldgId,
+					A.gk_floor_id as accessFlrId,
+					A.overhead,
+					A.zoom,
+					A.rotation,
 					A.type,
+					A.legend_copy,
+
 					B.latitude as bldgLat,
-					B.longitude as bldgLong
+					B.longitude as bldgLong,
+
+					C.latitude as elevLat,
+					C.longitude as elevLong,
+
+					C.gk_bldg_id as elevBldgId,
+					C.gk_floor_id as elevFlrId
+
 				from facilities F
-				left join access A on A.gk_floor_id = F.gk_floor_id
+
+				join access A on A.floor_fk = F.gk_floor_id
+
 				join buildings B on B.gk_bldg_id = F.gk_bldg_id
-				where `accessible` = 'Y'
-				and gk_display != 'N'
-				order by bldg_name asc, room_name asc ";
+
+				left join elevators E on F.id = E.entrance
+				left join facilities C on E.elevator = C.id
+
+				where F.accessible = 'Y'
+				and F.gk_display != 'N'
+				and F.room_name LIKE '%Entrance%'
+				order by F.bldg_name asc, F.room_name asc ";
 
 			$stmt = $this->dbh->prepare($sql);
 			$stmt->execute();
@@ -425,25 +433,48 @@ class DbTools {
 
 					$type = ucwords($type);
 
-					$out[] = "<span
+					if ($record['elevLat'] != '') {
+						$type = 'Elevator';
+					}
+
+					// 	data-elevlat=\"".$record['elevLat']."\"
+					// 	data-elevlong=\"".$record['elevLon']."\"
+					// 	data-elevbldg=\"".$record['elevBldgId']."\"
+					// 	data-elevflr=\"".$record['elevFlrId']."\"
+					// 	data-lat=\"".$record['latitude']."\"
+					// 	data-long=\"".$record['longitude']."\"
+					// 	data-acclat=\"".$record['accessLat']."\"
+					// 	data-acclong=\"".$record['accessLong']."\"
+					// 	data-bldglat=\"".$record['bldgLat']."\"
+					// 	data-bldglong=\"".$record['bldgLong']."\"
+
+					$out[$record['gk_floor_id']] = "<span
 						class=\"fly-box buildings accessible\"
+
 						data-recordid=\"".$record['id']."\"
+
 						data-bldg=\"".$record['bldg_abbre']."\"
+
 						data-buildingid=\"".$record['gk_bldg_id']."\"
 						data-floorid=\"".$record['gk_floor_id']."\"
+
 						data-cat=\"buildings\"
 						data-accessible=\"Y\"
-						data-lat=\"".$record['latitude']."\"
-						data-long=\"".$record['longitude']."\"
-						data-acclat=\"".$record['accessLat']."\"
-						data-acclong=\"".$record['accessLong']."\"
-						data-bldglat=\"".$record['bldgLat']."\"
-						data-bldglong=\"".$record['bldgLong']."\"
-						>".$record['bldg_name'].$level.' - '.$type."</span>";
+
+						data-overhead=\"".$record['overhead']."\"
+						data-zoom=\"".$record['zoom']."\"
+						data-rotation=\"".$record['rotation']."\"
+
+						data-accesspoint=\"".$record['accessBldgId'].','.$record['accessFlrId'].','.$record['accessLat'].','.$record['accessLong']."\"
+						data-elevator=\"".$record['elevBldgId'].','.$record['elevFlrId'].','.$record['elevLat'].','.$record['elevLong']."\"
+						data-destination=\"".$record['gk_bldg_id'].','.$record['gk_floor_id'].','.$record['bldgLat'].','.$record['bldgLong'].','.$record['bldg_name']."\"
+						data-legendcopy=\"".$record['legend_copy']."\"
+
+						><div class=\"left\">".$record['bldg_name'].$level.'</div> &nbsp; <div class="right">'.$type."</div></span>";
 
 				}
 
-				ksort($out);
+				//ksort($out);
 
 				// 	echo '<pre>';
 				// 	print_r($out);
@@ -591,7 +622,7 @@ class DbTools {
 					from facilities
 					where gk_sculpture_name != ''
 					and gk_display != 'N'
-					group by gk_sculpture_artist_last, gk_sculpture_artist_first
+					/*group by gk_sculpture_artist_last, gk_sculpture_artist_first*/
 					order by gk_sculpture_artist_last asc, gk_sculpture_artist_first asc";
 
 			$stmt = $this->dbh->prepare($sql);
@@ -601,13 +632,11 @@ class DbTools {
 			if ($rows[0]['id']) {
 				foreach($rows as $field=>$record) {
 
-					if (strlen(trim($record['latitude'])) > '14') {
-				//		continue;
-					}
-
 					foreach($record as $key=>$value) {
 						$record[$key] = htmlentities(utf8_encode($value), 0, "UTF-8");
 					}
+
+					$record['gk_sculpture_name'] = substr($record['gk_sculpture_name'], 0, 30);
 
 					$sculpture = $record['gk_sculpture_name'];
 					$out[] = "<span
@@ -620,7 +649,7 @@ class DbTools {
 						data-sculptures=\"$sculpture\"
 						data-hasimage=\"Y\"
 						data-value=\"".$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist_first'].' '.$record['gk_sculpture_artist_last']."\"
-						>".$record['gk_sculpture_artist_first'].' '.$record['gk_sculpture_artist_last']."</span>";
+						><div class=\"left\">".$record['gk_sculpture_artist_first'].' '.$record['gk_sculpture_artist_last'].'</div> &nbsp; <div class="right">'.$record['gk_sculpture_name']."</div></span>";
 				}
 				echo implode('',$out);
 			}
@@ -651,6 +680,7 @@ class DbTools {
 				from facilities
 				where gk_display != 'N'
 				and (gk_space_provisions != '' OR bldg_abbre = 'PPS')
+				and gk_space_provisions != 'Blue Light Emergency Phone'
 				";
 
 		//echo '<p>'.$sql;
@@ -800,6 +830,7 @@ class DbTools {
 						class=\"fly-box ".$camploc."\"
 						data-recordid=\"".$record['id']."\"
 						data-bldg=\"".$record['bldg_abbre']."\"
+						data-buildingid=\"".$record['gk_bldg_id']."\"
 						data-floorid=\"".$record['gk_floor_id']."\"
 						data-cat=\"facility\"
 						data-dept=\"$gk_dept\"
@@ -875,7 +906,11 @@ class DbTools {
 					$camploc = strtolower($record['on_off_campus']).'camp';
 
 					if ($record['bldg_name'] == 'PMC') {
-						$record['bldg_name'] = 'Pratt Manhattan';
+						$record['bldg_name'] = 'Pratt Manhattan 14th St';
+					}
+
+					if ($record['bldg_abbre'] == 'W18') {
+						$record['bldg_name'] = 'Pratt Manhattan 18th St';
 					}
 
 					//$record['bldg_name'] = strtoupper(trim($record['bldg_name']));
@@ -903,7 +938,11 @@ class DbTools {
 						//$dept_exp = explode(',',$record['gk_department']);
 						$dept_exp = explode('|',$record['gk_department']);
 
-						if ($record['bldg_abbre'] == 'W14' || $record['bldg_abbre'] == 'W18' || $record['bldg_abbre'] == 'FLSH' || $record['bldg_abbre'] == 'CRR') {
+						if ($record['bldg_abbre'] == 'W14' ||
+							$record['bldg_abbre'] == 'W18' ||
+							$record['bldg_abbre'] == 'FLSH' ||
+							$record['bldg_abbre'] == 'CRR' ||
+							$record['bldg_abbre'] == '100G') {
 							$campLoc = 'offcamp';
 						} else {
 							$campLoc = 'oncamp';
@@ -973,6 +1012,7 @@ class DbTools {
 
 					if ($bldg_stuff['on_off_campus'] == 'ON') {
 						$bldgOpt[] = '<option value="'.$bldg_stuff['bldg_abbre'].'" data-floorid="'.$bldg_stuff['gk_floor_id'].'">'.$bldg_name.'</option>';
+						//continue;
 					}
 
 					if ($bldg_stuff['gk_bldg_id'] == '0000') {
@@ -989,8 +1029,14 @@ class DbTools {
 						$hide_this = '';
 					}
 
+					if ($bldg_stuff['camploc'] == 'oncamp') {
+						$oncamp = ' oncamp labelbuildings ';
+					} else {
+						$oncamp = ' offcamp ';
+					}
+
 					$bldgMnu[] = '<span
-						class="fly-box dbtools '.$bldg_stuff['camploc'].' buildings '.$class_accessible.' '.$hide_this.' "
+						class="fly-box dbtools '.$oncamp.' buildings '.$class_accessible.' '.$hide_this.' "
 						data-cat="buildings"
 						data-bldg="'.$bldg_stuff['bldg_abbre'].'"
 						data-buildingid="'.$bldg_stuff['gk_bldg_id'].'"

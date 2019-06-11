@@ -93,12 +93,12 @@ div#keyboard #keypad
 
     div#keyboard button.enter
     {
-        width: 12%;
+        width: 19.5%;
     }
 
     div#keyboard button.shift
     {
-        width: 12.5%;
+        width: 16.5%;
     }
 
     div#keyboard button.space

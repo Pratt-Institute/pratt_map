@@ -1,17 +1,20 @@
 // once Ambiarc is loaded, we can use the ambiarc object to call SDK functions
 var onAmbiarcLoaded = function() {
 	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
-    // Subscribe to various events needed for this application
-    ambiarc.registerForEvent(ambiarc.eventLabel.RightMouseDown, onRightMouseDown);
-    ambiarc.registerForEvent(ambiarc.eventLabel.FloorSelected, onFloorSelected);
-    ambiarc.registerForEvent(ambiarc.eventLabel.FloorSelectorEnabled, onEnteredFloorSelector);
-    ambiarc.registerForEvent(ambiarc.eventLabel.FloorSelectorDisabled, onExitedFloorSelector);
-    ambiarc.registerForEvent(ambiarc.eventLabel.FloorSelectorFloorFocusChanged, onFloorSelectorFocusChanged);
-    ambiarc.registerForEvent(ambiarc.eventLabel.BuildingExitCompleted, BuildingExitCompleted);
-    ambiarc.registerForEvent(ambiarc.eventLabel.CameraMotionCompleted, cameraCompletedHandler);
-    ambiarc.registerForEvent(ambiarc.eventLabel.CameraMotionStarted, cameraStartedHandler);
-    ambiarc.registerForEvent(ambiarc.eventLabel.StartedLoadingMap, mapStartedLoading);
-    ambiarc.registerForEvent(ambiarc.eventLabel.FinishedLoadingMap, mapFinishedLoading);
+
+	// Subscribe to various events needed for this application
+	ambiarc.registerForEvent(ambiarc.eventLabel.RightMouseDown, onRightMouseDown);
+	ambiarc.registerForEvent(ambiarc.eventLabel.FloorSelected, onFloorSelected);
+	ambiarc.registerForEvent(ambiarc.eventLabel.FloorSelectorEnabled, onEnteredFloorSelector);
+	ambiarc.registerForEvent(ambiarc.eventLabel.FloorSelectorDisabled, onExitedFloorSelector);
+	ambiarc.registerForEvent(ambiarc.eventLabel.FloorSelectorFloorFocusChanged, onFloorSelectorFocusChanged);
+	ambiarc.registerForEvent(ambiarc.eventLabel.BuildingExitCompleted, BuildingExitCompleted);
+
+	ambiarc.registerForEvent(ambiarc.eventLabel.CameraMotionCompleted, cameraCompletedHandler);
+
+	ambiarc.registerForEvent(ambiarc.eventLabel.CameraMotionStarted, cameraStartedHandler);
+	ambiarc.registerForEvent(ambiarc.eventLabel.StartedLoadingMap, mapStartedLoading);
+	ambiarc.registerForEvent(ambiarc.eventLabel.FinishedLoadingMap, mapFinishedLoading);
 
 	ambiarc.registerForEvent(ambiarc.eventLabel.MapLabelSelected, mapLabelSelected);
 
@@ -35,33 +38,52 @@ var mapLabelSelected = function(e) {
 
 var mapLabelClickHandler = function(e) {
 
-    console.log('mapLabelClickHandler');
-	///console.log(e);
-	///console.log(e.detail);
-	///console.log(ambiarc.poiStuff[e.detail]);
+	console.log('mapLabelClickHandler');
+	//console.log(e);
+	//console.log(e.detail);
+	//console.log(ambiarc.poiStuff[e.detail]);
 
 	currentLabelId = e.detail;
 
-	//resetMenus();
-	hidePopMap();
+	try {
 
-// 	try {
-// 		params = {};
-// 		params.floor	= ambiarc.poiStuff[e.detail].floorId;
-// 		params.recordId	= ambiarc.poiStuff[e.detail].recordId;
-// 		params.action	= 'focusAfterDataLoad';
-// 		ambiarc.recordId = ambiarc.poiStuff[e.detail].recordId;
-// 		ambiarc.floorId = ambiarc.poiStuff[e.detail].floorId;
-// 	} catch(err) {
-// 		///console.log(err)
-// 		params = false;
-// 	}
-//
-// 	if (params) {
-// 		clearMapLegend('events 62');
-// 		ambiarc.menuAction = 'yes';
-// 		fetchPoisFromApi(params);
-// 	}
+		/// zoom and explode the building if click on building label
+		if ( typeof buildingLabels[currentLabelId].buildingId != 'undefined') {
+
+			console.log('::::::::::::::::::::::::::::::::::::::::::::::::');
+			console.log(currentLabelId);
+			console.log(buildingLabels);
+			console.log('::::::::::::::::::::::::::::::::::::::::::::::::');
+
+			ambiarc.buildingId	= buildingLabels[currentLabelId].buildingId;
+			ambiarc.floorId		= buildingLabels[currentLabelId].buildingFloor;
+			popMapLegend2(1000,1500,5000,'events 57');
+
+			ambiarc.focusOnMapLabel(currentLabelId, 'focus_building_on_label_click');
+
+			setTimeout(function(){
+
+				ambiarc.focusOnLatLonAndZoomToHeight('', '', buildingLabels[currentLabelId].buildingLat, buildingLabels[currentLabelId].buildingLon, '100');
+				ambiarc.buildingId	= buildingLabels[currentLabelId].buildingId;
+				ambiarc.floorId		= buildingLabels[currentLabelId].buildingFloor;
+				popMapLegend2(1000,1500,5000,'events 66');
+
+				setTimeout(function(){
+					ambiarc.viewFloorSelector(buildingLabels[currentLabelId].buildingId, 'explode_building_on_label_click');
+					ambiarc.buildingId	= buildingLabels[currentLabelId].buildingId;
+					ambiarc.floorId		= buildingLabels[currentLabelId].buildingFloor;
+					popMapLegend2(1000,1500,5000,'events 72');
+					//$('.reset-map-vert').removeClass('disabled');
+				},3000);
+
+			},500);
+		}
+
+	} catch(err) {
+		///console.log(err);
+	}
+
+	hidePopMap();
 
 };
 
@@ -188,6 +210,25 @@ var mapFinishedLoading = function() {
 
 	$('.menu-open').show();
 	$('.veil').show();
+
+	setTimeout(function(){
+
+		var pollMapStatus = setInterval(function(){
+
+			//$('div.debug').html(currentMapStatus);
+
+			ambiarc.getCameraRotation(function(rot){
+				//$('div.debug').html(rot);
+				//console.log(rot);
+
+				$('.compass').css({
+					//'transform': 'rotate('+ ((parseInt(rot)-10) * -1) +'deg)'
+					'transform': 'rotate('+ (parseInt(rot) * -1) +'deg)'
+				});
+			});
+		},125);
+
+	},parseInt(30*1000));
 
 }
 
@@ -442,6 +483,12 @@ var cameraStartedHandler = function(event){
 
 var cameraCompletedHandler = function(event){
 
+	// set a CameraMotionId in the function callback params
+    //if (event.detail == 'focus_on_floor_after_accessible_path') {
+    if (event.detail != '') {
+        console.log(event.detail);
+    }
+
 	//clearTimeout(timeoutVariables);
 
 	clearTimeout(resetFloorEvent);
@@ -490,7 +537,7 @@ var cameraCompletedHandler = function(event){
 
 	if (allowFloorEvent == false) {
 		if (event.detail == 'UNTRACKED_AMBIARC_EVENT_RotateCamera' ||  event.detail == 'UNTRACKED_AMBIARC_EVENT_ZoomCamera') {
-			popMapLegend2(1000,1500,5000,'events 493');
+			popMapLegend2(1000,1500,5000,'events 521');
 		}
 	}
 

@@ -33,6 +33,13 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 
 	//console.log(ambiarc);
 
+	// 	$('.title').html('');
+	// 	$('.course').html('');
+	// 	$('.professor').html('');
+	// 	$('.times').html('');
+	// 	$('.roomNo').html('');
+	// 	$('.roomName').html('');
+
 	var hasFloor = false;
 
 	if (floorId != '') {
@@ -73,9 +80,10 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 		try {
 			$('img.access').remove();
 			var imgBldg = '<img class="floor-is-int" src="images/buildings/'+bldgMap[floorId].buildingId+'.jpg">'
-			var imgAccs = '<img class="access" src="images/buildings/'+bldgMap[floorId].buildingId+'.png" onerror="this.style.display=\'none\'">'
+			var imgAccs = '<img width="450" class="access" src="images/buildings/'+bldgMap[floorId].buildingId+'.png" onerror="this.style.display=\'none\'">'
 			$('.legend-building').html(imgBldg);
-			$('.legend-copy').prepend(imgAccs);
+			//$('.legend-copy').prepend(imgAccs);
+			$('.legend-access').html(imgAccs);
 		} catch(err) {
 			///console.log(err)
 			$('div.legend-img-building').html('');
@@ -170,9 +178,9 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 	}
 
 	try {
-		if (roomNo.length < '1') {
+		if (roomNo.length < '1' && ambiarc.poiStuff[ambiarcId].roomNo != '') {
 			$('.roomNo').html('Room '+ambiarc.poiStuff[ambiarcId].roomNo);
-		} else {
+		} else if (roomNo.length > '0')  {
 			$('.roomNo').html('Room '+roomNo);
 		}
 	} catch(err) {
@@ -187,7 +195,6 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 			var bId = buildingId;
 		}
 
-
 		if (typeof person != 'undefined' && person != '') {
 			var bId = building;
 		}
@@ -195,7 +202,8 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 		var copyArr = prattCopy[bId].split(' ');
 		$.each(copyArr, function(k, v) {
 			if (v.indexOf(':') != -1) {
-				copyArr[k] = '<br><span class="copy-bold">'+v+'</span>';
+				//copyArr[k] = '<br><span class="copy-bold">'+v+'</span>';
+				copyArr[k] = '<span class="copy-bold">'+v+'</span>';
 			}
 		});
 		var newCopy = copyArr.join(' ');
@@ -219,6 +227,7 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 		$('.bldgName').html(sculptureName);
 		$('.roomName').html(roomName);
 		$('.floorNo').html('');
+		//$('.history').html(legendCopy);
 	}
 
 	if (pointLable == 'PPS') {
@@ -258,9 +267,11 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 			///try { console.log('popMapLegend bldg_name: ' + hallMap[buildingId].bldg_name); } catch(err) {}
 
 			$('img.access').remove();
+			$('.legend-access').html('');
+
 
 			var imgBldg = '<img src="images/buildings/'+buildingId+'.jpg">'
-			var imgAccs = '<img class="access" src="images/buildings/'+buildingId+'.png" onerror="this.style.display=\'none\'">'
+			var imgAccs = '<img width="450" class="access" src="images/buildings/'+buildingId+'.png" onerror="this.style.display=\'none\'">'
 
 			try { var bldgName = hallMap[buildingId].bldg_name; } catch(err) {}
 
@@ -273,7 +284,8 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 			//var imgBldg = '<img class="last-try" src="images/buildings/'+buildingId+'.jpg">'
 			//var imgAccs = '<img class="access" src="images/buildings/'+buildingId+'.png">'
 			$('.legend-building').html(imgBldg);
-			$('.legend-copy').prepend(imgAccs);
+			//$('.legend-copy').prepend(imgAccs);
+			$('.legend-access').html(imgAccs);
 		}
 
 	} catch(err) {
@@ -324,17 +336,18 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 			$('.title').html(title);
 
 			$('img.access').remove();
+			$('.legend-access').html('');
 
 			var imgBldg = '<img class="last-try" src="images/buildings/'+buildingId+'.jpg">'
-			var imgAccs = '<img class="access" src="images/buildings/'+buildingId+'.png" onerror="this.style.display=\'none\'">'
+			var imgAccs = '<img width="450" class="access" src="images/buildings/'+buildingId+'.png" onerror="this.style.display=\'none\'">'
 			$('.legend-building').html(imgBldg);
-			$('.legend-copy').prepend(imgAccs);
+			//$('.legend-copy').prepend(imgAccs);
+			$('.legend-access').html(imgAccs);
 
 		}
 	} catch(err) {
 		console.log(err)
 	}
-
 
 	try {
 		if (legendType == 'menuBuilding') {
@@ -342,6 +355,10 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 		}
 	} catch(err) {
 		//console.log(err)
+	}
+
+	if (legendCopy.length > 1) {
+		$('.history').html(legendCopy);
 	}
 
 	revealLegend(delayReveal);
@@ -358,22 +375,29 @@ var setFloorInfo = function() {
 }
 
 var clearRoomInfo = function() {
+	ambiarc.title		= '';
+	ambiarc.course		= '';
+	ambiarc.professor	= '';
+	ambiarc.times		= '';
 	$('.roomName').html('');
 	$('.roomNo').html('');
+	//$('img.access').remove();
+	//clearMapLegend();
 }
 
 var clearMapLegend = function(src) {
-	///return;
 	///console.log('clearMapLegend ' + src);
 	$('.showlegend').removeClass('showlegend').promise().then(function(){
 		setTimeout(function(){
-			$('.bldgName').html('');
-			$('.floorNo').html('');
-			$('.roomName').html('');
-			$('.roomNo').html('');
+			legendCopy = '';
+			//$('.bldgName').html('');
+			//$('.floorNo').html('');
+			//$('.roomName').html('');
+			//$('.roomNo').html('');
+			//$('.title').html('');
+			//$('.times').html('');
+			$('span.block').html('');
 			$('.history').html('');
-			$('.title').html('');
-			$('.times').html('');
 		},1);
 	});
 }

@@ -134,7 +134,21 @@ table.nav-menu-new {
 	pointer-events: auto;
     cursor: pointer;
     z-index: 999999;
+
+    -webkit-transition: all 0.5s ease; /* For Safari 3.1 to 6.0 */
+    transition: all 0.5s ease;
+
 }
+
+table.nav-menu-new.accessible {
+	/*position: unset;*/
+	top:	unset;
+	width:	unset;
+	height: unset;
+	min-height: unset;
+	max-height: unset;
+}
+
 
 table.nav-menu-new tr.row-menu {
 	/*height: 20%;*/
@@ -146,13 +160,30 @@ table.nav-menu-new tr.row-btn {
 
 table.nav-menu-new td {
 	border: none;
+
+    -webkit-transition: all 0.5s ease; /* For Safari 3.1 to 6.0 */
+    transition: all 0.5s ease;
+}
+
+table.nav-menu-new.accessible td {
+	text-align: right;
+	padding-right: 12px;
+	padding-left: 12px;
+	height: 60px;
+	min-height: 60px;
+	max-height: 60px;
 }
 
 table.nav-menu-new span {
 	writing-mode: vertical-rl;
 	transform: rotate(180deg);
 	white-space: nowrap;
-	/*text-orientation: upright;*/
+}
+
+table.nav-menu-new.accessible span {
+	writing-mode:	unset;
+	transform:		unset;
+	margin:			0px !important;
 }
 
 table.nav-menu-new span.cat-box-search {
@@ -228,14 +259,13 @@ div.fade-out {
 
 div.flyout, div.subfly {
 	position: fixed;
-	/*bottom: 124px;*/
 	bottom: 0px;
 	left: 84px;
 	z-index: 901;
 	background-color: transparent;
 	height: auto;
 	/*max-height: 954px;*/
-	max-height: 100%;
+	/*max-height: 100%;*/
     overflow-y: scroll;
     overflow-x: hidden;
     white-space: nowrap;
@@ -447,7 +477,7 @@ div.poi-box img {
 }
 
 .offcamp {
-	/*color: #900 !important;*/
+	color: #900 !important;
 }
 
 div#back-button button {
@@ -465,18 +495,24 @@ div#back-button button img {
 div.legend {
 	position: fixed;
 	top: 35px;
+	/*bottom: 100px;*/
 	right: 0px;
 	width: 500px;
 	height: auto;
+	/*max-height: 85%;*/
 	/*padding-bottom: 15px;*/
 	border-radius: 4px;
 	border: none;
 	opacity: 0;
-    box-shadow: 0 0 300px 300px rgba(60,60,60, 0.7) inset;
+    box-shadow: 0 0 300px 300px rgba(30,30,30, 0.9) inset;
     transition: all 0.25s ease;
     line-height: 150%;
     /*background-image: url(images/lines.png);*/
     z-index: 999;
+}
+
+div.legend table {
+	height: 100%;
 }
 
 div.showlegend {
@@ -507,11 +543,15 @@ div.legend td img {
 
 div.legend span {
 	/*display: inline-block;*/
-	display: block;
+	/*display: block;*/
 	margin: 0px;
-	margin-bottom: 10px;
+	margin-bottom: 3px;
 	/*white-space: nowrap;*/
 	font-weight: bold;
+}
+
+div.legend span.block {
+	display: block;
 }
 
 div.legend span.bldgName {
@@ -536,17 +576,26 @@ div.legend td.legend-building img {
 }
 
 div.legend td.legend-access {
-	width: 10px;
+	/*text-align: right;*/
+}
+
+table.accessible td span {
+	float:		right;
+	display:	block;
+}
+
+div.legend td.legend-access span {
+	float:	right;
 }
 
 div.legend img.access {
-	width: 140px;
+	width: 250px;
     float: right;
 }
 
 div.legend td.legend-access img {
-	width: 140px;
-    float: right;
+	/*width: 250px;
+    float: right;*/
 }
 
 div.legend span.history {
@@ -564,6 +613,30 @@ div.legend .copy-bold {
 hr.dotted {
 	border-top: 1px dotted gray;
 	margin:	25px 0px;
+}
+
+td.legend-copy {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+div.scrollable {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+
+span.cancel-access-menu {
+	float: left;
+	display: none;
+}
+
+table.accessible span.cancel-access-menu {
+	float: left;
+	display: block;
 }
 
 /* -------------------------------------------------------------------------------------- */

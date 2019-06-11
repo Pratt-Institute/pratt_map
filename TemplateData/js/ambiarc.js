@@ -146,6 +146,7 @@
     };
 
     this.destroyMapLabel = function(mapLabelId) {
+      mapLabelId = Number(mapLabelId);
       gameInstance.SendMessage('Ambiarc', 'DestroyMapLabel', mapLabelId);
     };
 
@@ -158,6 +159,7 @@
     };
 
     this.hideMapLabel = function(mapLabelId, immediate) {
+      mapLabelId = Number(mapLabelId);
       var json = JSON.stringify({
         mapLabelId: mapLabelId,
         immediate: immediate

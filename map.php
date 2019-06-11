@@ -18,9 +18,9 @@
 
   <script>
 
+    var gameInstance = UnityLoader.instantiate("gameContainer", "map/ab8a8de5d35775e85ea091d5c2d26b60.json?nc=<?php echo time(); ?>", {
     ///var gameInstance = UnityLoader.instantiate("gameContainer", "map/77448287a7e719cee5c3228556fc4962.json?nc=<?php echo time(); ?>", {
-    var gameInstance = UnityLoader.instantiate("gameContainer", "map/3771d2a502e93bf4d8e431a496eb1908.json?nc=<?php echo time(); ?>", {
-
+    ///var gameInstance = UnityLoader.instantiate("gameContainer", "map/3771d2a502e93bf4d8e431a496eb1908.json?nc=<?php echo time(); ?>", {
       onProgress: UnityProgress,
       Module: {
         onRuntimeInitialized: function() {
@@ -28,6 +28,11 @@
         }
       }
     });
+
+//     window.alert = function() { location.reload(); };
+//     setInterval(function(){
+//         window.alert = function() { location.reload(); };
+//     },10*1000);
 
   </script>
 </head>

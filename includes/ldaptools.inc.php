@@ -48,6 +48,7 @@ class LdapTools {
 		$arr['Machinery Building']			=  '0016';
 		$arr['Engineering Building']		=  '0017';
 		$arr['Design Center']				=  '0018'; /// ???
+		$arr['Pratt Studios']				=  '0018'; /// ???
 		$arr['Film Video']					=  '0019';
 		$arr['Activity Resource']			=  '0021';
 		$arr['Activities Resource']			=  '0021';
@@ -81,6 +82,7 @@ class LdapTools {
 		$arr['0005'] = '40.69179916381836,-73.96444702148438';		///'NH'
 		$arr['0013'] = '40.690120697021484,-73.96381378173828';		///'LJP'
 		$arr['w14'] = '40.738000,-73.998900';						///'W14'
+		$arr['w18'] = '40.740609, -73.995922';						///'W18'
 		$arr['0018'] = '40.690250396728516,-73.96299743652344';		///'PS'
 		$arr['0010'] = '40.691054,-73.964238';						///'SH'
 		$arr['0022'] = '40.69165802001953,-73.96163940429688';		///'SBL'
@@ -88,6 +90,7 @@ class LdapTools {
 		$arr['0007'] = '40.691599,-73.963907';						///'SU'
 		$arr['0012'] = '40.69010925292969,-73.96412658691406';		///'TH'
 		$arr['0014'] = '40.692935943603516,-73.9635009765625';		///'WILL'
+		$arr['100g'] = '40.694507, -73.964380';						///'100G'
 
 		return $arr[$this->buildingId];
 
@@ -106,6 +109,8 @@ class LdapTools {
 			$info = ldap_get_entries($this->conn, $sr);
 
 			//echo $info['count'].' entries returned';
+
+			//print_r($info);
 
 			$line = array();
 

@@ -490,7 +490,7 @@
                     {d: 'b',u: 'B'},
                     {d: 'n',u: 'N'},
                     {d: 'm',u: 'M'},
-                    {d: 'delete', u: '&rarr; Del'},         // Delete
+                    //{d: 'delete', u: '&rarr; Del'},         // Delete
                     {d: 'enter', u: '&crarr; Enter'},
 
 
