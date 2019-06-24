@@ -438,6 +438,7 @@ var clearLegendVariables = function(src=''){
 	ambiarc.buildingId	= '';
 	///ambiarc.floorId		= '';
 	ambiarc.roomName	= '';
+	ambiarc.roomNo		= '';
 	ambiarc.hasImage	= '';
 	ambiarc.lat			= '';
 	ambiarc.lon			= '';

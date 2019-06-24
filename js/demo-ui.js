@@ -65,7 +65,13 @@ function range(start, edge, step=1) {
 
 var resetMap = function() {
 
-	destroyAllLabels();
+	try {
+		var roomName = $('.roomName').html();
+		if (roomName.length > 10) {
+			destroyAllLabels();
+		}
+	} catch(err) {
+	}
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 	var zoom = ambiarc.getCurrentNormalizedZoomLevel(function(ret){
@@ -540,12 +546,16 @@ var fetchPoisFromApi = function(params) {
 
 var destroyAllLabels = function() {
 
-	console.log('destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels ');
+	skipPointLoad = false;
+	clearLegendVariables('demo 543');
+	clearMapLegend();
+
+	//console.log('destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels destroyAllLabels ');
 
 	var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 
 	for (var i = -1100; i <= 1100; i++) {
-		console.log('destroyAllLabels '+i);
+		//console.log('destroyAllLabels '+i);
 		ambiarc.destroyMapLabel(i);
 	}
 
