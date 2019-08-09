@@ -29,10 +29,10 @@
       }
     });
 
-//     window.alert = function() { location.reload(); };
-//     setInterval(function(){
-//         window.alert = function() { location.reload(); };
-//     },10*1000);
+     window.alert = function() { location.reload(); };
+     setInterval(function(){
+         window.alert = function() { location.reload(); };
+     },10*1000);
 
   </script>
 </head>

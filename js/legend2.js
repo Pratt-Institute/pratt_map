@@ -32,6 +32,11 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 	var times		= ambiarc.times;
 
 	//console.log(ambiarc);
+	console.log(' legend sculptureName ----------------- ' + sculptureName + ' ----------------- ');
+	console.log(' legend person ----------------- ' + person + ' ----------------- ');
+	console.log(' legend course ----------------- ' + course + ' ----------------- ');
+	console.log(' legend times ----------------- ' + times + ' ----------------- ');
+	console.log(' legend building ----------------- ' + building + ' ----------------- ');
 
 	// 	$('.title').html('');
 	// 	$('.course').html('');
@@ -213,12 +218,16 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 
 	try {
 		if (sculptureName != '') {
+
+			var imgSclp = '<img src="images/pois/'+recordId+'.jpg">'
+			$('.legend-building').html(imgSclp);
+
 			$('.bldgName').html(sculptureName);
 			$('.floorNo').html(sculptureArtist);
 			$('.history').html('');
 		}
 	} catch(err) {
-		//console.log(err)
+		console.log(err)
 	}
 
 	if (pointLable == 'PPS' || pointLable == 'GATE') {
@@ -329,6 +338,11 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 
 		if (times.length > '1') {
 
+			console.log(' ^^^^^^^^^^^^^^^^^^^^^^^^^^ ' + professor + ' ^^^^^^^^^^^^^^^^^^^^^^^^^^ ');
+			console.log(' ^^^^^^^^^^^^^^^^^^^^^^^^^^ ' + course + ' ^^^^^^^^^^^^^^^^^^^^^^^^^^ ');
+			console.log(' ^^^^^^^^^^^^^^^^^^^^^^^^^^ ' + times + ' ^^^^^^^^^^^^^^^^^^^^^^^^^^ ');
+			console.log(' ^^^^^^^^^^^^^^^^^^^^^^^^^^ ' + title + ' ^^^^^^^^^^^^^^^^^^^^^^^^^^ ');
+
 			$('.times').html(times);
 			$('.floorNo').html('');
 
@@ -341,8 +355,10 @@ var popMapLegend2 = function(legendDelay=1000,delayReveal=1500,timeoutVars=5000,
 			var imgBldg = '<img class="last-try" src="images/buildings/'+buildingId+'.jpg">'
 			var imgAccs = '<img width="450" class="access" src="images/buildings/'+buildingId+'.png" onerror="this.style.display=\'none\'">'
 			$('.legend-building').html(imgBldg);
-			//$('.legend-copy').prepend(imgAccs);
 			$('.legend-access').html(imgAccs);
+			$('.bldgName').html(hallMap[buildingId].bldg_name);
+
+			delayReveal = '750';
 
 		}
 	} catch(err) {
@@ -374,41 +390,57 @@ var setFloorInfo = function() {
 	$('.floorNo').html(bldgMap[ambiarc.floorId].floor + ' floor');
 }
 
-var clearRoomInfo = function() {
+var clearRoomInfo = function(src='') {
+
+	//return ;
+	console.log('clearRoomInfo clearRoomInfo clearRoomInfo clearRoomInfo clearRoomInfo clearRoomInfo ' + src);
+
 	ambiarc.title		= '';
 	ambiarc.course		= '';
 	ambiarc.professor	= '';
+	ambiarc.roomName	= '';
+	ambiarc.roomNo		= '';
 	ambiarc.times		= '';
+
+	$('.title').html('');
+	$('.course').html('');
+	$('.professor').html('');
 	$('.roomName').html('');
+	$('.times').html('');
 	$('.roomNo').html('');
-	//$('img.access').remove();
-	//clearMapLegend();
+
 }
 
 var clearMapLegend = function(src) {
-	///console.log('clearMapLegend ' + src);
+
+	console.log('clearMapLegend clearMapLegend clearMapLegend clearMapLegend clearMapLegend clearMapLegend ' + src);
+
 	$('.showlegend').removeClass('showlegend').promise().then(function(){
-		setTimeout(function(){
-			legendCopy = '';
-			//$('.bldgName').html('');
-			//$('.floorNo').html('');
-			//$('.roomName').html('');
-			//$('.roomNo').html('');
-			//$('.title').html('');
-			//$('.times').html('');
-			$('span.block').html('');
-			$('.history').html('');
-		},1);
+		legendCopy = '';
+		$('.bldgName').html('');
+		//$('.floorNo').html('');
+		//$('.roomName').html('');
+		//$('.roomNo').html('');
+		//$('.title').html('');
+		//$('.times').html('');
+		$('span.block').html('');
+		$('.history').html('');
 	});
 }
 
 var revealLegend = function(delayReveal){
+
+	console.log(delayReveal);
 
 	setTimeout(function(){
 
 		try {
 
 			var isLegendFilled = $('.bldgName').html();
+
+			console.log('ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ' + $('.bldgName').html() + 'ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ');
+			console.log('ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ' + isLegendFilled.length + 'ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ');
+
 			if (isLegendFilled.length > '1') {
 				$('.legend').addClass('showlegend');
 			} else {
@@ -416,13 +448,15 @@ var revealLegend = function(delayReveal){
 			}
 
 		} catch(err) {
-			//console.log(err)
+			console.log(err)
 		}
 
 	},delayReveal);
 }
 
 var clearLegendVariables = function(src=''){
+
+	//returnl
 
 	if (skipPointLoad == true) {
 		return;

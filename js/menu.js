@@ -22,6 +22,7 @@
 			window.tourIsRunning	= false;
 			window.pauseTour		= false;
 			window.overhead			= false;
+			window.keyboardIsLoaded = false;
 			window.keypadVisible	= false;
 
 			window.timeoutVariables = '';
@@ -122,9 +123,11 @@
 
 				$('div.proh').fadeOut();
 
-				clearLegendVariables('menu 133');
+				skipPointLoad = false;
+				clearLegendVariables('menu 125');
 
 				allowFloorEvent = false;
+				controlEventLegend();
 
 				if ($(this).attr('data-type')=='buildings') {
 					showBuildingLabels();
@@ -144,12 +147,13 @@
 
 			$(document).on("click", "li.list-group-item, span.fly-sculp", function(e){
 
-				clearRoomInfo();
+				clearRoomInfo('menu 149');
+				clearMapLegend('menu 151');
+
 				$('img.access').remove();
 
 				$('div.proh').fadeOut();
 
-				clearMapLegend('menu 151');
 				ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				ambiarc.menuAction = 'yes';
 
@@ -213,6 +217,7 @@
 
 					ambiarc.roomNo		= '';
 					ambiarc.roomName	= $(this).attr('data-roomname');
+					ambiarc.floorId		= '';
 
 					// 	for(var item in ambiarc) {
 					// 		if (typeof ambiarc[item] == 'undefined') {
@@ -245,7 +250,7 @@
 
 					}
 
-					popMapLegend2(1000,1500,5000,'menu 197');
+					popMapLegend2(1000,1500,5000,'menu 249');
 
 					return true;
 
@@ -266,6 +271,8 @@
 				if ($(this).attr('data-building') == 'SG' || $(this).attr('data-building') == 'PPS' || $(this).attr('data-building') == 'GATE') {
 
 					//alert($(this).attr('data-building'));
+
+					controlEventLegend();
 
 					//ambiarc.buildingId = $(this).attr('data-building');
 					ambiarc.pointLable = $(this).attr('data-building');
@@ -295,8 +302,15 @@
 						var split = sculpture.split(' :: ');
 
 						ambiarc.legendType		= 'menuBuilding';
+						ambiarc.recordId		= $(this).attr('data-recordid');
 						ambiarc.sculptureName	= split[0];
 						ambiarc.sculptureArtist	= split[1];
+
+						params.recordId			= $(this).attr('data-recordid');
+						params.sculptureName	= split[0];
+						params.sculptureArtist	= split[1];
+
+						console.log(' menu 301 ----------------- ' + ambiarc.sculptureName + ' ----------------- ');
 
 					}
 
@@ -306,7 +320,7 @@
 
 			});
 
-			$(document).on('click', '.pratt-logo', function() {
+			$(document).on('click', '.menu-refresh', function() {
 				//collapseMenus();
 				//$('.showpopmap').removeClass('showpopmap');
 				//resetMenus();
@@ -336,17 +350,16 @@
 				//$('div.proh').fadeIn();
 			});
 
-			$(document).on('click', '.cancel-access-menu', function(){
-				$(this).closest('table').removeClass('accessible');
-
-				doMenuOffsetThing();
-			});
+			//$(document).on('click', '.cancel-access-menu', function(){
+			//	$(this).closest('table').removeClass('accessible');
+			//	doMenuOffsetThing();
+			//});
 
 			$(document).on('click', '.cat-box', function() {
 
-				if ( $(this).closest('td').hasClass('menu-accessibility') ) {
-					$(this).closest('table').addClass('accessible');
-				}
+				//if ( $(this).closest('td').hasClass('menu-accessibility') ) {
+				//	$(this).closest('table').addClass('accessible');
+				//}
 
 				$('div.proh').fadeOut();
 
@@ -390,6 +403,11 @@
 					$('input.filter').focus();
 				}
 
+			});
+
+
+			$(document).on('click', '.cat-box-search', function() {
+				$('input.filter').focus();
 			});
 
 			function doMenuOffsetThing(){
@@ -498,7 +516,7 @@
 				//var ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
 				//ambiarc.clearDirections();
 
-				clearRoomInfo();
+				clearRoomInfo('menu 514');
 				$('img.access').remove();
 
 				skipPointLoad = false;
@@ -1029,12 +1047,12 @@
 			$('input.filter').keyboard({
 				theme: 'default',
 				//is_hidden: false,
-				close_speed: 1000,
+				close_speed: 500,
 				enabled: true,
 				layout: 'en_US',
 			});
 			var pWid = $(window).width();
-			var kLeft = parseInt( (pWid - 776) / 2 );
+			var kLeft = parseInt( (pWid - 776) * .75 );
 			$('div#keyboard').css({'left':kLeft+'px'});
 		}
 
@@ -1212,7 +1230,7 @@
 
 	function searchFunction() {
 
-		clearRoomInfo();
+		clearRoomInfo('menu 1228');
 		$('img.access').remove();
 		allowFloorEvent = false;
 		skipPointLoad = false;
@@ -1229,8 +1247,12 @@
 			$(".list-group-item").addClass("hidden");
 		}
 
+		// 	$('div.search-list').css({
+		// 		'max-height':parseInt($(window).height()-80),
+		// 	});
+
 		$('div.search-list').css({
-			'max-height':parseInt($(window).height()-80),
+			'max-height':parseInt($('.tbl-search').height()-80),
 		});
 
 		//if (filter.length > '3') {

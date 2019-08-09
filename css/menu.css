@@ -160,7 +160,6 @@ table.nav-menu-new tr.row-btn {
 
 table.nav-menu-new td {
 	border: none;
-
     -webkit-transition: all 0.5s ease; /* For Safari 3.1 to 6.0 */
     transition: all 0.5s ease;
 }
@@ -186,16 +185,9 @@ table.nav-menu-new.accessible span {
 	margin:			0px !important;
 }
 
-table.nav-menu-new span.cat-box-search {
-	/*writing-mode: vertical-rl;
-	transform: rotate(0deg);
-	text-orientation: upright;*/
-}
-
 table.nav-menu-new span.nav-icon {
-	writing-mode: vertical-rl;
-	transform: rotate(0deg);
-	/*text-orientation: upright;*/
+	/*writing-mode: vertical-rl;
+	transform: rotate(0deg);*/
 	margin: 15px auto;
 }
 
@@ -208,16 +200,6 @@ div.nav-menu-new .menu-category {
 	align-items: center;
 	width: 84px;
 }
-
-/*
-div.nav-menu-new .menu-category img {
-	margin: 0px auto;
-	display: block;
-
-    max-width: 50px;
-    max-height: 50px;
-}
- */
 
 div.menu-open {
 	left: 0px;
@@ -724,13 +706,13 @@ div.veil-text {
 	/*font-variant: small-caps;*/
 	/*text-transform: uppercase;*/
 	position: fixed;
-	/*top: 50%;*/
+	top: 50%;
 	/*left: 84px;*/
-	/*transform: translate(-50%, -50%);*/
-	/*transform: translateY(-50%);*/
+	transform: translate(-50%, -50%);
+	transform: translateY(-50%);
 	/*height: auto;*/
-	top: 0px;
-	height: 100px;
+	/*top: 0px;*/
+	height: auto;
 	font-weight: normal;
 	letter-spacing: 5px;
 	line-height: 140%;
@@ -860,6 +842,10 @@ table.icons img {
 	pointer-events: auto;
 	cursor: pointer;
 	height: 35px;
+}
+
+span.fly-box {
+	height: 48px;
 }
 
 span.fly-box div {

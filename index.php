@@ -126,10 +126,11 @@
 	</div>
 
 	<div class="nav-menu-new" style="">
-		<table class="nav-menu-new ">
+		<table class="nav-menu-new accessible">
 			<tr class="row-btn menu-top">
 				<td style="background-color:#fff" class="menu-category">
-					<span class="nav-icon cancel-access-menu"><img class="cancel-access-menu" src="images/cancel.png"></span>
+					<!--<span class="nav-icon cancel-access-menu"><img class="cancel-access-menu" src="images/cancel.png"></span>-->
+					<span class="nav-icon cancel-access-menu menu-refresh"><img class="cancel-access-menu menu-refresh" src="images/refresh.png"></span>
 					<span class="nav-icon"><img class="reset-map-vert disabled" src="images/back-arrow2.png"></span>
 				</td>
 			</tr>
@@ -140,17 +141,17 @@
 			</tr>
 			<tr class="row-menu">
 				<td style="background-color:#d6cecd" class="menu-category">
-					<span class="cat-box" data-type="academics">academics</span>
+					<span class="cat-box" data-type="academics">academic offices</span>
 				</td>
 			</tr>
 			<tr class="row-menu ban1">
 				<td style="background-color:#9a8e88" class="menu-category">
-					<span class="cat-box" data-type="offices">offices</span>
+					<span class="cat-box" data-type="offices">admin offices</span>
 				</td>
 			</tr>
 			<tr class="row-menu ban2">
 				<td style="background-color:#52869f" class="menu-category">
-					<span class="cat-box" data-type="facilities">make/do</span>
+					<span class="cat-box" data-type="facilities">labs/studios</span>
 				</td>
 			</tr>
 			<tr class="row-menu">
@@ -161,18 +162,18 @@
 			<tr class="row-menu">
 				<td style="background-color:#ed1b2e" class="menu-category">
 					<!--<span class="cat-box" data-type="accessibility">accessibility</span>-->
-					<span class="cat-box nav-icon" data-type="firstaid"><img src="images/firstaid2.png"></span>
+					<span class="cat-box nav-icon" data-type="firstaid">first aid &nbsp;<img src="images/firstaid2.png"></span>
 				</td>
 			</tr>
 			<tr class="row-menu">
 				<td style="background-color:#3cf" class="menu-category menu-accessibility">
 					<!--<span class="cat-box" data-type="accessibility">accessibility</span>-->
-					<span class="cat-box nav-icon" data-type="accessibility"><img src="images/accessible.png"></span>
+					<span class="cat-box nav-icon" data-type="accessibility">accessibility &nbsp; <img src="images/accessible.png">&nbsp;</span>
 				</td>
 			</tr>
 			<tr class="row-btn">
 				<td style="background-color:#fff" class="menu-category">
-					<span class="cat-box cat-box-search nav-icon" data-type="search-box"><img class="search-btn" src="images/view.png"></span>
+					<span class="cat-box cat-box-search nav-icon" data-type="search-box">search &nbsp;<img class="search-btn" src="images/view.png"></span>
 				</td>
 			</tr>
 		</table>
@@ -297,10 +298,10 @@
 		$('.veil').hide();
 		var pos1 = $('.ban1').offset();
 		var hei = parseInt($('.ban1').height() + $('.ban2').height());
-		$('.veil').css({
-			'top':pos1.top,
-			'height':hei
-		});
+		//$('.veil').css({
+		//	'top':pos1.top,
+		//	'height':hei
+		//});
 
 		// 	var pos2 = $('img.proh').offset();
 		// 	$('div.proh').css({

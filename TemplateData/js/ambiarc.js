@@ -429,9 +429,9 @@
 							//element.properties.id = element.user_properties.recordId;
 							element.user_properties.ambiarcId = id;
 
-							if (typeof id == 'undefined') {
-								alert(element.user_properties.recordId);
-							}
+							//if (typeof id == 'undefined') {
+							//	alert(element.user_properties.recordId);
+							//}
 
 							///console.log('~~~loadRemoteMapLabels~~~begin~~~');
 							///console.log(id);

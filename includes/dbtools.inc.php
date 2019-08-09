@@ -190,6 +190,8 @@ class DbTools {
 		$arr[] = 'Rapid Prototyping Room';/// ps 4th floor -----
 		$arr[] = 'Wood Shop';/// Pratt Studios 57 -----
 
+		$arr[] = 'Interdisciplinary Technology Lab';/// Engr 002 -----
+
 		return $arr;
 
 	}
@@ -470,7 +472,7 @@ class DbTools {
 						data-destination=\"".$record['gk_bldg_id'].','.$record['gk_floor_id'].','.$record['bldgLat'].','.$record['bldgLong'].','.$record['bldg_name']."\"
 						data-legendcopy=\"".$record['legend_copy']."\"
 
-						><div class=\"left\">".$record['bldg_name'].$level.'</div> &nbsp; <div class="right">'.$type."</div></span>";
+						><div class=\"left\">".$record['bldg_name'].$level.'</div>  <div class="right">'.$type."</div></span>";
 
 				}
 
@@ -649,7 +651,7 @@ class DbTools {
 						data-sculptures=\"$sculpture\"
 						data-hasimage=\"Y\"
 						data-value=\"".$record['gk_sculpture_name'].' :: '.$record['gk_sculpture_artist_first'].' '.$record['gk_sculpture_artist_last']."\"
-						><div class=\"left\">".$record['gk_sculpture_artist_first'].' '.$record['gk_sculpture_artist_last'].'</div> &nbsp; <div class="right">'.$record['gk_sculpture_name']."</div></span>";
+						><div class=\"left\"><img src=\"includes/image.php?type=sculpture&size=thumb&file=".$record['id'].".jpg\"></div><div class=\"left\">".$record['gk_sculpture_name'].'</div>  <div class="right">'.$record['gk_sculpture_artist_first'].' '.$record['gk_sculpture_artist_last']."</div></span>";
 				}
 				echo implode('',$out);
 			}

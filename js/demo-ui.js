@@ -19,6 +19,7 @@
  window.labelLoop		= 'Y';
  window.processProceed	= 'Y';
  window.allowFloorEvent = true;
+ window.skipEventLegend = false;
  window.skipPointLoad	= false;
  window.processingPoints = false;
  window.fetchDelay		= 0;
@@ -34,6 +35,8 @@
 
  window.buildingLabels = [];
  window.buildingHolder = {};
+
+ window.timerSkipEventLegend = '';
 
  /// icampb15@pratt.edu
  /// 718.687.5762
@@ -340,6 +343,8 @@ var fetchPoisFromApi = function(params) {
 
 	destroyAllLabels();
 
+	//createYouAreHere();
+
 	if (params.action == 'doAccessibilityThing') {
 		processAndRun(params);
 		return;
@@ -604,10 +609,10 @@ var processAndRun = function(params) {
 
 	if (params.action == 'focusAfterDataLoad') {
 
-		var legendType	= ambiarc.legendType;
-		var ambiarcId	= ambiarc.ambiarcId;
-		var buildingId	= ambiarc.buildingId;
-		var floorId		= ambiarc.floorId;
+		//var legendType	= ambiarc.legendType;
+		//var ambiarcId	= ambiarc.ambiarcId;
+		//var buildingId	= ambiarc.buildingId;
+		//var floorId		= ambiarc.floorId;
 		var roomName	= ambiarc.roomName;
 
 		/// testing heatmap stuff
@@ -665,17 +670,26 @@ var processAndRun = function(params) {
 			setTimeout(function(){
 
 				ambiarc.showMapLabel(itemId, true);
-				popMapLegend2(1000,1500,5000,'demo 561');
+
+				controlEventLegend();
+
+				console.log(' demo 672 ----------------- ' + ambiarc.sculptureName + ' ----------------- ');
+
+				if (ambiarc.sculptureName == '') {
+					ambiarc.recordId			= params.recordId;
+					ambiarc.sculptureName		= params.sculptureName;
+					ambiarc.sculptureArtist		= params.sculptureArtist;
+				}
+
+				popMapLegend2(1000,1500,5000,'demo 668');
 
 				setTimeout(function(){
-
 					ambiarc.setCameraRotation(45, 0);
+				},1500);
 
-				},2000);
+			},1500);
 
-			},2000);
-
-		},1000);
+		},125);
 
 	}
 
@@ -812,7 +826,7 @@ var processAndRun = function(params) {
 
 		//ambiarc.exitBuilding();
 
-		skipPointLoad = true;
+		//skipPointLoad = true;
 
 		allowFloorEvent = false;
 
@@ -852,9 +866,9 @@ var processAndRun = function(params) {
 
 								ambiarc.focusOnMapLabel(itemId, 200);
 
-								setTimeout(function(){
-									skipPointLoad = false;
-								},1500);
+								//setTimeout(function(){
+								//	skipPointLoad = false;
+								//},1500);
 
 							},1500);
 
@@ -869,6 +883,20 @@ var processAndRun = function(params) {
 		},wait);
 
 	}
+}
+
+var controlEventLegend = function(time=8000) {
+
+	clearTimeout(timerSkipEventLegend);
+
+	skipEventLegend = true;
+	console.log('skipEventLegend = true skipEventLegend = true skipEventLegend = true skipEventLegend = true skipEventLegend = true skipEventLegend = true skipEventLegend = true skipEventLegend = true ');
+
+	timerSkipEventLegend = setTimeout(function(){
+		skipEventLegend = false;
+		console.log('skipEventLegend = false skipEventLegend = false skipEventLegend = false skipEventLegend = false skipEventLegend = false skipEventLegend = false skipEventLegend = false skipEventLegend = false ');
+	},time);
+
 }
 
 //Rotate handlers
@@ -996,6 +1024,35 @@ var createTextIcon = function (mapLabelInfo) {
 		//mapLabelCreatedCallback(labelId, mapLabelInfo.label, mapLabelInfo);
 	});
 };
+
+var createYouAreHere = function() {
+
+	var createObj = {};
+
+	if (typeof youAreHereLat != 'undefined' && youAreHereLat.length > 0) {
+		createObj.latitude		= youAreHereLat;
+		createObj.longitude		= youAreHereLon;
+	} else {
+		createObj.latitude		= 40.690354;
+		createObj.longitude		= -73.964872;
+	}
+
+	createObj.showTooltip 				= false;
+	createObj.label 					= 'You Are Here';
+	createObj.showOnCreation 			= true;
+	createObj.location 					= 'URL';
+	createObj.partialPath 				= 'images/icons/you-are-here.png';
+	createObj.collapsedIconLocation 	= 'URL';
+	createObj.collapsedIconPartialPath 	= 'images/icons/you-are-here.png';
+	createObj.ignoreCollision 			= true;
+
+	ambiarc = $("#ambiarcIframe")[0].contentWindow.Ambiarc;
+
+	ambiarc.createMapLabel('IconWithText', createObj, (labelId) => {
+		console.log('You Are Here ' + labelId);
+	});
+
+}
 
 var repositionLabel = function(currentLabelId){
 
