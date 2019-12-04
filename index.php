@@ -54,6 +54,7 @@
   <link rel="stylesheet" media="all" href="css/pop_maps.css?nc=<?php echo time(); ?>" />
   <link rel="stylesheet" media="all" href="css/jquery.virtual_keyboard.css?nc=<?php echo time(); ?>" />
   <link rel="stylesheet" media="all" href="css/scroll.css?nc=<?php echo time(); ?>" />
+  <link rel="stylesheet" media="all" href="css/guides.css?nc=<?php echo time(); ?>" />
 
   	<script>
 		var mode = '<?php echo $obj->fetchThemeMode() ?>';
@@ -130,50 +131,57 @@
 			<tr class="row-btn menu-top">
 				<td style="background-color:#fff" class="menu-category">
 					<!--<span class="nav-icon cancel-access-menu"><img class="cancel-access-menu" src="images/cancel.png"></span>-->
-					<span class="nav-icon cancel-access-menu menu-refresh"><img class="cancel-access-menu menu-refresh" src="images/refresh.png"></span>
+					<span class="nav-icon menu-refresh"><img class="cancel-access-menu menu-refresh" src="images/refresh.png"></span>
+					<span class="nav-icon"><img class="youarehere-btn" src="images/here.png"></span>
+					<span class="nav-icon"><img class="gesture-btn" src="images/gestures.png"></span>
 					<span class="nav-icon"><img class="reset-map-vert disabled" src="images/back-arrow2.png"></span>
 				</td>
 			</tr>
 			<tr class="row-menu">
 				<td style="background-color:#dde2e2" class="menu-category">
-					<span class="cat-box" data-type="buildings">buildings</span>
+					<span class="cat-box" data-type="buildings">buildings&nbsp;&nbsp;<img src="images/buildings2.png"></span>
 				</td>
 			</tr>
 			<tr class="row-menu">
 				<td style="background-color:#d6cecd" class="menu-category">
-					<span class="cat-box" data-type="academics">academic offices</span>
+					<span class="cat-box" data-type="academics">academics&nbsp;&nbsp;<img src="images/academics.png"></span>
 				</td>
 			</tr>
 			<tr class="row-menu ban1">
 				<td style="background-color:#9a8e88" class="menu-category">
-					<span class="cat-box" data-type="offices">admin offices</span>
+					<span class="cat-box" data-type="offices">administration&nbsp;&nbsp;<img src="images/admin2.png"></span>
 				</td>
 			</tr>
 			<tr class="row-menu ban2">
 				<td style="background-color:#52869f" class="menu-category">
-					<span class="cat-box" data-type="facilities">labs/studios</span>
-				</td>
+					<span class="cat-box" data-type="facilities">labs/studios&nbsp;&nbsp;<img src="images/computer.png"></span>
+				</td
 			</tr>
 			<tr class="row-menu">
 				<td style="background-color:#f4581e" class="menu-category">
-					<span class="cat-box" data-type="sculptures">sculptures</span>
+					<span class="cat-box" data-type="sculptures">sculptures&nbsp;&nbsp;<img src="images/artwork2.png"></span>
 				</td>
 			</tr>
 			<tr class="row-menu">
 				<td style="background-color:#ed1b2e" class="menu-category">
 					<!--<span class="cat-box" data-type="accessibility">accessibility</span>-->
-					<span class="cat-box nav-icon" data-type="firstaid">first aid &nbsp;<img src="images/firstaid2.png"></span>
+					<span class="cat-box nav-icon" data-type="firstaid">first aid&nbsp;&nbsp;<img src="images/firstaid2.png"></span>
 				</td>
 			</tr>
 			<tr class="row-menu">
 				<td style="background-color:#3cf" class="menu-category menu-accessibility">
 					<!--<span class="cat-box" data-type="accessibility">accessibility</span>-->
-					<span class="cat-box nav-icon" data-type="accessibility">accessibility &nbsp; <img src="images/accessible.png">&nbsp;</span>
+					<span class="cat-box nav-icon" data-type="accessibility">accessibility&nbsp;&nbsp;<img src="images/accessible.png">&nbsp;</span>
 				</td>
 			</tr>
+			<!--<tr class="row-menu">
+				<td style="background-color:#dde2e2" class="menu-category">
+					<span class="cat-box" data-type="gestures">gesture guide</span>
+				</td>
+			</tr>-->
 			<tr class="row-btn">
 				<td style="background-color:#fff" class="menu-category">
-					<span class="cat-box cat-box-search nav-icon" data-type="search-box">search &nbsp;<img class="search-btn" src="images/view.png"></span>
+					<span class="cat-box cat-box-search nav-icon" data-type="search-box">search&nbsp;&nbsp;<img class="search-btn" src="images/view.png"></span>
 				</td>
 			</tr>
 		</table>
@@ -290,6 +298,24 @@
 	</div>-->
 
 	<div id="show_info"></div>
+
+	<div class="guide-panel gestures">
+		<img class="close-dialog" src="images/close-button.png"><br />
+		<table border="0">
+			<tr>
+				<td class="icon"><img src="images/gesture-drag.png"></td>
+				<td class="text">One finger ⋮ Touch and drag to move the map.</td>
+			</tr>
+			<tr>
+				<td class="icon"><img src="images/gesture-zoom.png"></td>
+				<td class="text">Two fingers ⋮ Pinch or stretch to zoom.</td>
+			</tr>
+			<tr>
+				<td class="icon"><img src="images/gesture-spin.png"></td>
+				<td class="text">Two fingers ⋮ Twist to rotate the map.</td>
+			</tr>
+		</table>
+	</div>
 
 	<!--<button class="ripple"></button>-->
 

@@ -1,0 +1,59 @@
+.guide-panel {
+	pointer-events: auto;
+	box-shadow: 0px 0px 25px grey;
+	text-align:	right;
+	position:	fixed;
+    bottom:		10px;
+    right:		20px;
+    width:		auto;
+    height:		auto;
+    background-color:	#fff;
+    border:		1px solid #ccc;
+    padding:	0px;
+    z-index:	888;
+	opacity:	0;
+	transition:	all 0.25s ease;
+}
+
+.guide-panel img.close-dialog {
+	pointer-events: auto;
+	cursor: pointer;
+	position: relative;
+	left: -10px;
+	top: -10px;
+	height: 25px;
+	margin: 0px;
+	padding: 0px;
+	float: left;
+}
+
+.guide-panel.show-guide {
+	opacity:	1;
+	bottom:		20px;
+}
+
+.guide-panel table {
+	margin: 10px 25px 25px 25px;
+	border-spacing: 0px;
+}
+
+.guide-panel td {
+	padding: 8px;
+	color: #333;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.guide-panel td.icon {
+	text-align: right;
+}
+
+.guide-panel td.text {
+	border-left: thin solid gray;
+	text-align: left;
+}
+
+.guide-panel td.icon img {
+	height: 60px;
+}
+

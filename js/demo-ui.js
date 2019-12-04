@@ -216,7 +216,10 @@ var showBuildingLabels = function() {
 		var elm = this;
 		var lLat = $(elm).attr('data-lat');
 		var lLon = $(elm).attr('data-long');
-		var lBld = $(elm).html();
+
+		//var lBld = $(elm).html();
+		var lBld = $(elm).attr('data-bldgname');
+
 		var lBldId = $(elm).attr('data-buildingid');
 		var lFlrId = $(elm).attr('data-floorid');
 

@@ -946,9 +946,20 @@ class DbTools {
 							$record['bldg_abbre'] == 'CRR' ||
 							$record['bldg_abbre'] == '100G') {
 							$campLoc = 'offcamp';
+							//$menu_offcampus = ' (Off Campus Location)';
+							$menu_offcampus = '';
 						} else {
 							$campLoc = 'oncamp';
+							$menu_offcampus = '';
 						}
+
+						// 	$menu_offcampus = '';
+						// 	if ($record['bldg_abbre'] == 'W14') {
+						// 		$menu_offcampus = ' (Manhattan)';
+						// 	}
+						// 	if ($record['bldg_abbre'] == 'W18') {
+						// 		$menu_offcampus = ' (Manhattan)';
+						// 	}
 
 						foreach($schl_exp as $gkschl) {
 
@@ -984,7 +995,7 @@ class DbTools {
 									data-cat=\"dept\"
 									data-schl=\"".$gkschl."\"
 									data-dept=\"".$gkdept."\"
-									data-roomno=\"$room_number\">".$gkdept."</span>";
+									data-roomno=\"$room_number\"><div class=\"left\">".$gkdept."</div><div class=\"right\">".$menu_offcampus."</div></span>";
 							}
 						}
 					}
@@ -1033,8 +1044,11 @@ class DbTools {
 
 					if ($bldg_stuff['camploc'] == 'oncamp') {
 						$oncamp = ' oncamp labelbuildings ';
+						$menu_offcampus = '';
 					} else {
 						$oncamp = ' offcamp ';
+						//$menu_offcampus = ' (Off Campus Location)';
+						$menu_offcampus = '';
 					}
 
 					$bldgMnu[] = '<span
@@ -1042,12 +1056,12 @@ class DbTools {
 						data-cat="buildings"
 						data-bldg="'.$bldg_stuff['bldg_abbre'].'"
 						data-buildingid="'.$bldg_stuff['gk_bldg_id'].'"
-						data-bldgname="'.@$bldg_stuff['bldg_name'].'"
+						data-bldgname="'.$bldg_name.'"
 						data-floorid="'.$bldg_stuff['gk_floor_id'].'"
 						data-lat="'.$bldg_stuff['latitude'].'"
 						data-long="'.$bldg_stuff['longitude'].'"
 						data-accessible="'.$accessible.'"
-						>'.$bldg_name.'</span>';
+						><div class="left">'.$bldg_name.'</div><div class="right">'.$menu_offcampus.'</div></span>';
 
 				}
 

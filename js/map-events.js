@@ -389,7 +389,26 @@ var onFloorSelectorFocusChanged = function(event) {
 
 }
 
+function startRefreshTimer() {
+	window.intRefresh2 = setTimeout(function(){
+		location.href = location.href;
+	}, parseInt(2*60*1000)); // 2 minutes
+}
+
+function stopRefreshTimer() {
+	try {
+		clearTimeout(intRefresh2);
+	} catch(err) {
+		console.log(' refresh not set ');
+	}
+}
+
 var cameraStartedHandler = function(event){
+
+	// restart interval timer
+	// intRefresh2;
+	stopRefreshTimer();
+	startRefreshTimer();
 
 	setTimeout(function(){
 		$('div.proh').fadeOut();

@@ -1,3 +1,10 @@
+.float-right {
+	float: right;
+}
+.float-left {
+	float: left;
+}
+
 br {
    display: block;
    margin: 0px;
@@ -13,8 +20,12 @@ br {
 	/*display: none;*/
 	pointer-events: auto;
 	position: fixed;
-	top: 25px;
-	left: 115px;
+	/*top: 25px;
+	left: 115px;*/
+
+	top: 80px;
+	left: 80px;
+
 	width: 175px;
 	height: 175px;
 	/*transition: 125ms linear all;*/
@@ -162,12 +173,13 @@ table.nav-menu-new td {
 	border: none;
     -webkit-transition: all 0.5s ease; /* For Safari 3.1 to 6.0 */
     transition: all 0.5s ease;
+    padding: 12px 12px 12px 40px;
 }
 
 table.nav-menu-new.accessible td {
 	text-align: right;
-	padding-right: 12px;
-	padding-left: 12px;
+	/*padding-right: 12px;
+	padding-left: 12px;*/
 	height: 60px;
 	min-height: 60px;
 	max-height: 60px;
@@ -231,6 +243,11 @@ span.cat-box {
 	/*display: block;*/
 	margin: 18px 30px;
 	pointer-events: auto;
+}
+
+span.cat-box img {
+	max-height: 30px;
+	max-width: 30px;
 }
 
 div.fade-out {
@@ -459,7 +476,7 @@ div.poi-box img {
 }
 
 .offcamp {
-	color: #900 !important;
+	/*color: #900 !important;*/
 }
 
 div#back-button button {
@@ -562,8 +579,8 @@ div.legend td.legend-access {
 }
 
 table.accessible td span {
-	float:		right;
-	display:	block;
+	/*float:		right;
+	display:	block;*/
 }
 
 div.legend td.legend-access span {
@@ -612,7 +629,7 @@ div.scrollable {
 }
 
 span.cancel-access-menu {
-	float: left;
+	/*float: left;*/
 	display: none;
 }
 
