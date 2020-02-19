@@ -10,7 +10,7 @@
     background-color:	#fff;
     border:		1px solid #ccc;
     padding:	0px;
-    z-index:	888;
+    z-index:	999;
 	opacity:	0;
 	transition:	all 0.25s ease;
 }

@@ -683,6 +683,7 @@ class DbTools {
 				where gk_display != 'N'
 				and (gk_space_provisions != '' OR bldg_abbre = 'PPS')
 				and gk_space_provisions != 'Blue Light Emergency Phone'
+				and gk_space_provisions != 'Bottle Filler'
 				";
 
 		//echo '<p>'.$sql;
